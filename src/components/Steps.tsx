@@ -1,21 +1,29 @@
 const steps = [
-  { n: "01", title: "Integrate", body: "Connect your tools and data." },
+  {
+    n: "01",
+    title: "Map",
+    body: "Break the manual process into clear steps.",
+  },
   {
     n: "02",
-    title: "Automate",
-    body: "Replace repetitive tasks with reliable flows.",
+    title: "Identify",
+    body: "Identify the systems and data involved.",
   },
-  { n: "03", title: "Operate", body: "Keep everything in sync." },
+  {
+    n: "03",
+    title: "Connect",
+    body: "Use data across systems to build capabilities around your existing software.",
+  },
   {
     n: "04",
-    title: "Grow",
-    body: "Less manual work. More time for what matters.",
+    title: "Extend",
+    body: "Make those capabilities visible, configurable, and actionable in one place.",
   },
 ];
 
 export default function Steps() {
   return (
-    <section className="border-t border-line py-12">
+    <section className="border-t border-line py-12 px-6">
       <div className="grid grid-cols-2 gap-8 text-left md:grid-cols-4">
         {steps.map((step) => (
           <div key={step.n}>
@@ -23,7 +31,7 @@ export default function Steps() {
               {step.n}
             </span>
             <h3 className="mt-2 text-fg">{step.title}</h3>
-            <p className="mt-1 text-sm text-subtle">{step.body}</p>
+            <p className="mt-1 text-subtle">{step.body}</p>
           </div>
         ))}
       </div>

@@ -6,13 +6,13 @@ export default function Hero() {
   return (
     <section
       className={cn(
-        "flex flex-col items-start gap-10 py-12 text-left",
-        "md:flex-row items-center md:justify-between",
+        "flex flex-col items-start gap-10 py-16 px-4 text-left",
+        "lg:flex-row items-center lg:justify-between",
       )}
     >
-      <div className="md:ml-6">
-        <h1 className="text-4xl leading-tight text-fg md:text-5xl text-center md:text-start">
-          Systems <br className="hidden md:block" />
+      <div className="flex flex-col items-center text-center lg:items-start lg:text-start">
+        <h1 className="text-4xl leading-tight text-fg line-clamp-2 lg:text-5xl ">
+          Systems <br className="hidden lg:block" />
           that work <span className="text-accent">together.</span>
         </h1>
         <p className="mt-4 text-subtle tracking-lg">
@@ -30,7 +30,7 @@ export default function Hero() {
         </a>
       </div>
 
-      <div>
+      <div className="shrink-0">
         <Map />
       </div>
     </section>

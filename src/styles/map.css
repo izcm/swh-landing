@@ -1,14 +1,14 @@
 :root {
   --node-stroke-width: 0.5;
-  --rx-center: 16;
-  --rx-node: 14;
+  --rx-center: 12;
+  --rx-node: 12;
   --icon-scale: 1.25;
 }
 
 .map {
   width: 100%;
-  min-width: 600px;
-  /* min-width: 400px; */
+  /* min-width: 600px; */
+  min-width: 420px;
 }
 
 /* traveling pulse: a short glowing streak (12) + gap (396), slid along the

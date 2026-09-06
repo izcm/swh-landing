@@ -73,7 +73,7 @@ export default function Map() {
     <svg
       className="map"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 600 400"
+      viewBox="100 60 400 280"
     >
       <defs>
         <linearGradient

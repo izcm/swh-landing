@@ -2,7 +2,7 @@ const steps = [
   {
     n: "01",
     title: "Map",
-    body: "Break the manual process into clear steps.",
+    body: "Break a manual process into clear steps.",
   },
   {
     n: "02",
@@ -12,7 +12,7 @@ const steps = [
   {
     n: "03",
     title: "Connect",
-    body: "Use data across systems to build capabilities around your existing software.",
+    body: "Collect the relevant data to build new capabilities.",
   },
   {
     n: "04",
@@ -27,9 +27,7 @@ export default function Steps() {
       <div className="grid grid-cols-2 gap-8 text-left md:grid-cols-4">
         {steps.map((step) => (
           <div key={step.n}>
-            <span className="tracking-lg text-xs font-medium text-accent">
-              {step.n}
-            </span>
+            <span className="eyebrow">{step.n}</span>
             <h3 className="mt-2 text-fg">{step.title}</h3>
             <p className="mt-1 text-subtle">{step.body}</p>
           </div>

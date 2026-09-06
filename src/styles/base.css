@@ -7,10 +7,16 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  padding: 16px 16px;
 }
 
 body {
   margin: 0;
   background-color: var(--ground);
   font-family: "Inter", sans-serif;
+}
+
+/* small uppercase label above a section heading */
+@utility eyebrow {
+  @apply text-[13px] font-medium text-accent-muted tracking-widest;
 }

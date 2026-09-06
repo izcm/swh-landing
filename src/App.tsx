@@ -1,8 +1,12 @@
-import Nav from "./components/Nav";
-import Hero from "./components/Hero";
-import Steps from "./components/Steps";
-import ToolsGrid from "./components/ToolsGrid";
-import Cta from "./components/Cta";
+import {
+  Nav,
+  Hero,
+  Steps,
+  BuildOnExisting,
+  HubShowcase,
+  RealExample,
+  Footer,
+} from "./components";
 
 function App() {
   return (
@@ -10,8 +14,10 @@ function App() {
       <Nav />
       <Hero />
       <Steps />
-      <ToolsGrid />
-      <Cta />
+      <BuildOnExisting />
+      <HubShowcase />
+      <RealExample />
+      <Footer />
     </>
   );
 }

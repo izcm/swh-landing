@@ -5,8 +5,10 @@ import {
   ChartNoAxesColumnIncreasing,
   Settings,
   Plus,
+  ArrowRight,
 } from "lucide-react";
 import Card from "./Card";
+import IconLink from "./IconLink";
 
 const tools = [
   { icon: Cloud, tint: "text-accent" },
@@ -30,12 +32,13 @@ export default function ToolsGrid() {
           We integrate with the systems you already use — and build the
           missing connections.
         </p>
-        <a
+        <IconLink
           href="#integrations"
-          className="token-action mt-6 inline-flex items-center gap-1 text-sm"
+          icon={ArrowRight}
+          className="token-action mt-6 text-sm"
         >
-          View integrations <span aria-hidden="true">→</span>
-        </a>
+          View integrations
+        </IconLink>
       </div>
 
       <div className="grid grid-cols-3 gap-4">

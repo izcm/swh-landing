@@ -1,0 +1,158 @@
+/* menu elements that look nicer with bg-ground in dark vs raised in light theme*/
+.menu-surface {
+  @apply rounded border border-faint;
+  background: light-dark(var(--raised), var(--ground));
+}
+
+@layer components {
+  /* Override a2zb's filled btn-secondary with an outlined accent style:
+   * orange border + orange text on a transparent ground (the "Filtre" look). */
+  /* Match every button's corner radius to the text input's rounded */
+  .btn {
+    border-radius: 0.5rem;
+  }
+
+  /* Solid, strong primary: orange fill + black text */
+
+  .btn-primary {
+    color: var(--color-fg);
+    font-weight: 600;
+    background: color-mix(in oklab, var(--accent) 16%, var(--raised));
+    border: 1px solid color-mix(in oklab, var(--accent) 35%, var(--line));
+    box-shadow: none;
+  }
+
+  .btn-primary:hover {
+    background: color-mix(in oklab, var(--accent) 22%, var(--raised));
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--line));
+  }
+
+  .btn-primary:active {
+    transform: none;
+    background: color-mix(in oklab, var(--accent) 12%, var(--raised));
+    border-color: color-mix(in oklab, var(--accent) 35%, var(--line));
+    box-shadow: none;
+  }
+
+  /* BTN SECONDARY STYLES */
+  .btn-secondary {
+    color: color-mix(in oklab, var(--fg) 40%, var(--subtle));
+    border-color: color-mix(in oklab, var(--accent) 24%, var(--line));
+    background: light-dark(var(--raised), var(--ground));
+    box-shadow: none;
+  }
+
+  .btn-secondary:hover {
+    color: var(--accent-strong);
+    background: color-mix(in oklab, var(--accent) 8%, var(--raised));
+    box-shadow: none;
+  }
+
+  .btn-secondary:active {
+    color: var(--accent-strong);
+    background: color-mix(in oklab, var(--accent) 10%, var(--raised));
+    box-shadow: none;
+  }
+
+  /* BTN NEUTRAL STYLES */
+  .btn-neutral {
+    color: var(--fg);
+    border-color: var(--faint);
+    background: var(--ground);
+  }
+
+  .btn-neutral:hover {
+    background: color-mix(in oklab, var(--accent) 4%, var(--ground));
+  }
+
+  .btn-neutral:active {
+    background: color-mix(in oklab, var(--accent) 8%, var(--ground));
+  }
+
+  /* BTN INVERTED STYLES — fg fill, base text; the login modal's high-contrast CTA */
+  .btn-inverted {
+    color: var(--ground);
+    border-color: var(--subtle);
+    background: var(--fg);
+  }
+
+  .btn-inverted:hover {
+    background: color-mix(in oklab, var(--fg) 88%, var(--ground));
+  }
+
+  .btn-inverted:active {
+    background: color-mix(in oklab, var(--fg) 85%, var(--ground));
+  }
+
+  .btn-menu {
+    font-weight: 400;
+    text-align: start;
+    border-color: var(--faint);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  /* hover: let the accent border carry it; just a whisper of fill (both themes) */
+  .btn-menu:hover {
+    color: var(--accent-strong);
+    border-color: var(--accent);
+    background: color-mix(in oklab, var(--accent) 2%, var(--raised));
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 4px 8px;
+    border-radius: 5px;
+
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .badge__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .badge--success {
+    color: var(--success);
+    background: var(--success-weak);
+  }
+
+  .badge--warning {
+    color: var(--warning);
+    background: var(--warning-weak);
+  }
+
+  .badge--danger {
+    color: var(--failure);
+    background: var(--failure-weak);
+  }
+
+  .badge--neutral {
+    color: var(--neutral);
+    background: var(--neutral-weak);
+  }
+
+  .text-input {
+    --field-bg: light-dark(var(--raised), transparent);
+    @apply rounded;
+    background: var(--field-bg);
+    border: 1px solid var(--faint);
+  }
+
+  .text-input:focus-within {
+    background: color-mix(in oklab, var(--field-bg) 96%, var(--accent));
+    border-color: var(--accent);
+  }
+}
+
+.btn-menu {
+  @apply items-center justify-start;
+}

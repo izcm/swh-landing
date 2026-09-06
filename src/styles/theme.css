@@ -1,0 +1,45 @@
+@import "@a2zb/styles";
+@source "../../node_modules/@a2zb/react/dist";
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* surfaces */
+  --ground: #060f17;
+  --raised: #0a1724;
+  --lowered: #09131c;
+  --elevated: #0c1926;
+  --elevated-alt: #0e1b2a;
+
+  /* text / borders */
+  --fg: rgba(238, 242, 245, 0.94);
+  --line: lab(88.79% -2.46 -8.05 / 0.24);
+
+  --subtle: rgba(200, 214, 225, 0.66);
+  --muted: rgba(174, 191, 204, 0.5);
+  --faint: rgba(174, 191, 204, 0.19);
+  --extra-faint: rgba(174, 191, 204, 0.1);
+
+  /* accent */
+  --accent: #5b9dff;
+  --accent-strong: #8fbfff;
+  --accent-weak: rgba(91, 157, 255, 0.6);
+  --accent-neutral: #7fb0ff;
+  --accent-neutral-weak: rgba(127, 176, 255, 0.5);
+
+  /* status */
+  --success: #4cff9a;
+  --success-weak: rgba(76, 255, 154, 0.18);
+
+  --warning: #ffc12f;
+  --warning-weak: rgba(255, 193, 47, 0.18);
+
+  --failure: #ff5470;
+  --failure-weak: rgba(255, 84, 112, 0.18);
+
+  --neutral: #91a7b8;
+  --neutral-weak: rgba(145, 167, 184, 0.2);
+
+  --panel-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(91, 157, 255, 0.06);
+}

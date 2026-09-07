@@ -12,7 +12,7 @@ const steps = [
   {
     n: "03",
     title: "Connect",
-    body: "Collect the relevant data to build new capabilities.",
+    body: "Collect and transform data to build new capabilities.",
   },
   {
     n: "04",
@@ -23,7 +23,7 @@ const steps = [
 
 export default function Steps() {
   return (
-    <section className="border-t border-line py-12 px-6">
+    <section className="border-t border-accent-muted/60 py-12 px-6">
       <div className="grid grid-cols-2 gap-8 text-left md:grid-cols-4">
         {steps.map((step) => (
           <div key={step.n}>

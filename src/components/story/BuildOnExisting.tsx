@@ -5,7 +5,7 @@ export default function BuildOnExisting() {
   return (
     <section
       id="how-it-works"
-      className="border-t border-line py-16 text-center"
+      className="border-t border-accent-muted/60 py-16 text-center"
     >
       <span className="eyebrow">BUILD ON WHAT YOU ALREADY HAVE</span>
       <h2 className="mt-2 text-2xl text-fg md:text-3xl">

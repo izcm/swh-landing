@@ -15,7 +15,10 @@ const outputs = [
 
 export default function RealExample() {
   return (
-    <section id="real-example" className="border-t border-line py-16 text-center">
+    <section
+      id="real-example"
+      className="border-t border-accent-muted/60 py-16 text-center"
+    >
       <span className="eyebrow">SEE THE MINDSET IN PRACTICE</span>
       <h2 className="mt-2 text-2xl text-fg md:text-3xl">A real example.</h2>
       <p className="mx-auto mt-4 max-w-xl text-subtle">

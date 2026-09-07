@@ -8,17 +8,18 @@ export default function Hero() {
     <section
       className={cn(
         "flex flex-col items-start gap-10 py-16 text-left",
-        "lg:flex-row items-center lg:justify-between",
+        "lg:flex-row items-center",
       )}
     >
-      <div className="flex flex-col items-center text-center lg:items-start lg:text-start">
-        <h1 className="text-4xl leading-tight text-fg line-clamp-2">
+      <div className="flex-1 flex flex-col items-center text-center lg:items-start lg:text-start">
+        <h1 className="heading-1">
           Systems <br className="hidden lg:block" />
           that work <span className="text-accent">together.</span>
         </h1>
-        <p className="mt-4 text-subtle tracking-lg lg:max-w-xl">
-          Break down information silos by making your existing systems talk to
-          eachother.
+        <p className="mt-4 text-subtle tracking-lg">
+          Discover hidden value through new connections.
+          {/* Break down information silos by making your existing systems talk to
+          eachother. */}
         </p>
         <IconLink
           href="#how-it-works"
@@ -29,9 +30,7 @@ export default function Hero() {
         </IconLink>
       </div>
 
-      <div className="flex flex-1 justify-end">
-        <Map />
-      </div>
+      <Map />
     </section>
   );
 }

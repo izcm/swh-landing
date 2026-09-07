@@ -20,3 +20,39 @@ body {
 @utility eyebrow {
   @apply text-[13px] font-medium text-accent-muted tracking-widest;
 }
+
+/* main heading style, reused wherever an h1 appears */
+@utility heading-1 {
+  @apply text-4xl leading-tight text-fg line-clamp-2;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* briefly highlight whichever section an anchor link (e.g. "See how it
+   works") just scrolled to, so landing there doesn't feel abrupt 
+   
+  https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:target
+*/
+section:target {
+  animation: section-highlight 1.2s ease-out;
+}
+
+@keyframes section-highlight {
+  from {
+    background-color: color-mix(in oklab, var(--accent) 12%, transparent);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  section:target {
+    animation: none;
+  }
+}

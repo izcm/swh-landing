@@ -134,7 +134,7 @@ export default function Map() {
       </defs>
 
       {/* connectors: base lines, drawn first so the boxes sit on top of the ends */}
-      <g fill="none" stroke="var(--line)" strokeWidth={1}>
+      <g fill="none" stroke="var(--accent-weak)" strokeWidth={0.64}>
         {nodes.map((n) => (
           <path key={n.id} d={connectorPath(n)} />
         ))}

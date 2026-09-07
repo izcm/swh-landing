@@ -21,7 +21,7 @@ const tools = [
 
 export default function ToolsGrid() {
   return (
-    <section className="grid gap-10 border-t border-line py-16 text-left md:grid-cols-2 md:items-center">
+    <section className="grid gap-10 border-t border-accent-muted/60 py-16 text-left md:grid-cols-2 md:items-center">
       <div>
         <h2 className="text-2xl text-fg">
           Built around
@@ -29,8 +29,8 @@ export default function ToolsGrid() {
           your tools.
         </h2>
         <p className="mt-4 max-w-sm text-subtle">
-          We integrate with the systems you already use — and build the
-          missing connections.
+          We integrate with the systems you already use — and build the missing
+          connections.
         </p>
         <IconLink
           href="#integrations"

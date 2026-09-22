@@ -60,10 +60,9 @@
 }
 
 @utility eyebrow {
-  @apply text-sm font-medium text-accent tracking-wider;
+  @apply text-base font-medium text-accent tracking-wider;
 }
 
-/* main heading style, reused wherever an h1 appears */
-@utility heading-1 {
-  @apply text-3xl lg:text-4xl leading-tight text-fg line-clamp-2;
+@utility border-faint-accent {
+  @apply border-accent-muted/20;
 }

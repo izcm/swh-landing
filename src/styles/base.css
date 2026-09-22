@@ -10,12 +10,12 @@
     width: 1280px;
     max-width: 100%;
     margin: 0 auto;
-    border-inline: 1px solid var(--extra-faint);
+    border-inline: 1px solid;
     min-height: 100svh;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    padding: 16px 16px;
+    @apply border-accent-muted/20;
   }
 
   :focus-visible {

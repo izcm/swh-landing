@@ -4,12 +4,27 @@
   background: light-dark(var(--raised), var(--ground));
 }
 
+/* recharts' <svg> (or something inside it) picks up the browser's default
+   focus ring on click (e.g. clicking a custom XAxis tick) — not a
+   deliberate a11y outline. Covering svg + wrapper + every descendant,
+   both :focus and :focus-visible, since exactly which element gets it
+   varies by browser. */
+.recharts-wrapper,
+.recharts-wrapper *,
+.recharts-surface {
+  outline: none !important;
+}
+
 @layer components {
   /* Override a2zb's filled btn-secondary with an outlined accent style:
    * orange border + orange text on a transparent ground (the "Filtre" look). */
   /* Match every button's corner radius to the text input's rounded */
   .btn {
-    border-radius: 0.5rem;
+    @apply rounded min-w-8 min-h-10;
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease,
+      box-shadow 0.15s ease;
   }
 
   /* Solid, strong primary: orange fill + black text */
@@ -17,13 +32,22 @@
   .btn-primary {
     color: var(--color-fg);
     font-weight: 600;
-    background: color-mix(in oklab, var(--accent) 16%, var(--raised));
+    background: linear-gradient(
+      160deg,
+      color-mix(in oklab, var(--accent) 22%, var(--raised)) 0%,
+      color-mix(in oklab, var(--accent) 15%, var(--raised)) 100%
+    );
     border: 1px solid color-mix(in oklab, var(--accent) 35%, var(--line));
-    box-shadow: none;
+    /* glossy top edge — a little more dimensionality on the "strong" CTA */
+    box-shadow: inset 0 1px 0 color-mix(in oklab, white 15%, transparent);
   }
 
   .btn-primary:hover {
-    background: color-mix(in oklab, var(--accent) 22%, var(--raised));
+    background: linear-gradient(
+      160deg,
+      color-mix(in oklab, var(--accent) 28%, var(--raised)) 0%,
+      color-mix(in oklab, var(--accent) 20%, var(--raised)) 100%
+    );
     border-color: color-mix(in oklab, var(--accent) 40%, var(--line));
   }
 
@@ -36,15 +60,19 @@
 
   /* BTN SECONDARY STYLES */
   .btn-secondary {
-    color: color-mix(in oklab, var(--fg) 40%, var(--subtle));
-    border-color: color-mix(in oklab, var(--accent) 24%, var(--line));
-    background: light-dark(var(--raised), var(--ground));
+    color: color-mix(in oklab, var(--fg) 40%, var(--accent));
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--line));
+    background: var(--raised-gradient);
     box-shadow: none;
   }
 
   .btn-secondary:hover {
     color: var(--accent-strong);
-    background: color-mix(in oklab, var(--accent) 8%, var(--raised));
+    background: linear-gradient(
+      160deg,
+      color-mix(in oklab, var(--accent) 10%, var(--raised)) 0%,
+      color-mix(in oklab, var(--accent) 6%, var(--elevated)) 100%
+    );
     box-shadow: none;
   }
 
@@ -58,7 +86,11 @@
   .btn-neutral {
     color: var(--fg);
     border-color: var(--faint);
-    background: var(--ground);
+    background: linear-gradient(
+      160deg,
+      var(--ground) 0%,
+      color-mix(in oklab, var(--lowered) 92%, var(--accent)) 100%
+    );
   }
 
   .btn-neutral:hover {
@@ -85,13 +117,13 @@
   }
 
   .btn-menu {
-    font-weight: 400;
-    text-align: start;
-    border-color: var(--faint);
-    transition:
-      background-color 0.15s ease,
-      border-color 0.15s ease,
-      color 0.15s ease;
+    border: none;
+    letter-spacing: normal;
+    /* font-weight: 400; */
+    /* border-color/color transitions come from the shared .btn now —
+       this is the one variant whose hover changes a flat color (not a
+       gradient), so it's the only one that can actually animate it. */
+    transition: background-color 0.15s ease;
   }
 
   /* hover: let the accent border carry it; just a whisper of fill (both themes) */
@@ -140,6 +172,31 @@
     background: var(--neutral-weak);
   }
 
+  .badge--accent {
+    color: var(--accent);
+    background: color-mix(in oklab, var(--accent) 16%, transparent);
+  }
+
+  .badge--advisory {
+    color: var(--advisory);
+    background: var(--advisory-weak);
+  }
+
+  .badge--caution {
+    color: var(--caution);
+    background: var(--caution-weak);
+  }
+
+  .badge--critical {
+    color: var(--critical);
+    background: var(--critical-weak);
+  }
+
+  .badge--safe {
+    color: var(--safe);
+    background: var(--safe-weak);
+  }
+
   .text-input {
     --field-bg: light-dark(var(--raised), transparent);
     @apply rounded;
@@ -151,8 +208,4 @@
     background: color-mix(in oklab, var(--field-bg) 96%, var(--accent));
     border-color: var(--accent);
   }
-}
-
-.btn-menu {
-  @apply items-center justify-start;
 }

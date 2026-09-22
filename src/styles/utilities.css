@@ -1,0 +1,69 @@
+/* flex + center on both axes */
+@utility flex-center {
+  @apply flex items-center justify-center;
+}
+
+/* page body for a resource list — centered vertical stack (header + list) */
+@utility resource-page {
+  @apply flex flex-col flex-1 h-dvh min-h-0 gap-4 max-w-3xl mx-auto px-2 mt-4;
+}
+
+@utility horizontal-line {
+  @apply bg-line h-px w-full;
+}
+
+@utility vertical-line {
+  @apply bg-line w-px self-stretch;
+}
+
+/* raised surface, faint outline, rounded corners — pagination steps, dropdowns, toolbars */
+@utility raised-outline {
+  @apply rounded bg-raised border border-faint;
+}
+
+/* darker raised panel, extra-faint outline — side-panel section cards */
+@utility raised-outline-panel {
+  @apply rounded-lg bg-elevated-gradient border border-extra-faint;
+}
+
+/* focus ring drawn inward instead of outward — for elements whose focus ring
+   must stay within their own bounds (e.g. clipped or tightly packed grids) */
+@utility focus-inset {
+  @apply focus-visible:!ring-1 focus-visible:!ring-accent focus-visible:!ring-inset;
+}
+
+/* chip-shaped surface — works on a <button> or a plain <div>, so composite
+   chips (a div wrapping more than one interactive element) can look the
+   same as a single-button chip without needing a shared component */
+@utility chip {
+  @apply flex items-center gap-3 rounded-full px-4 h-10
+    bg-raised border border-faint/60 text-fg/80
+    transition-colors hover:bg-lowered hover:text-fg;
+}
+
+/* dropdown popover content for filter bar dropdowns — value lists and the
+   "add filter" list share this shell */
+@utility filter-popover {
+  @apply flex flex-col gap-1 py-2 px-4
+    bg-elevated-gradient rounded-lg border-extra-faint min-w-[300px];
+}
+
+/* search input inside a filter dropdown's value list */
+@utility filter-search-input {
+  @apply h-9 rounded-xl bg-accent/4 my-1 mx-auto;
+}
+
+/* visually disables a non-form element (div/button) driven by aria-disabled
+   — pair with a guarded onClick, since aria-disabled doesn't block clicks */
+@utility disabled-look {
+  @apply aria-disabled:opacity-40 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed;
+}
+
+@utility eyebrow {
+  @apply text-sm font-medium text-accent tracking-wider;
+}
+
+/* main heading style, reused wherever an h1 appears */
+@utility heading-1 {
+  @apply text-3xl lg:text-4xl leading-tight text-fg line-clamp-2;
+}

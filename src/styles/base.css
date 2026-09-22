@@ -1,58 +1,87 @@
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  padding: 16px 16px;
-}
-
-body {
-  margin: 0;
-  background-color: var(--ground);
-  font-family: "Inter", sans-serif;
-}
-
-/* small uppercase label above a section heading */
-@utility eyebrow {
-  @apply text-[13px] font-medium text-accent-muted tracking-widest;
-}
-
-/* main heading style, reused wherever an h1 appears */
-@utility heading-1 {
-  @apply text-4xl leading-tight text-fg line-clamp-2;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-/* briefly highlight whichever section an anchor link (e.g. "See how it
-   works") just scrolled to, so landing there doesn't feel abrupt 
-   
-  https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:target
-*/
-section:target {
-  animation: section-highlight 1.2s ease-out;
-}
-
-@keyframes section-highlight {
-  from {
-    background-color: color-mix(in oklab, var(--accent) 12%, transparent);
+@layer base {
+  body {
+    @apply bg-ground bg-ground-gradient flex items-center justify-center;
+    margin: 0;
+    color: var(--fg);
+    font-family: var(--font-sans);
   }
-  to {
-    background-color: transparent;
+
+  #root {
+    width: 1280px;
+    max-width: 100%;
+    margin: 0 auto;
+    border-inline: 1px solid var(--extra-faint);
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 16px 16px;
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 1px var(--ground),
+      0 0 0 3px var(--accent);
+  }
+
+  :root[data-theme="light"] :focus-visible {
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  .inset-focus:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--accent);
+  }
+
+  .subtle-focus:focus-visible {
+    box-shadow: none;
+    background: var(--elevated);
+    color: var(--fg);
+  }
+
+  /* Chromium / Safari */
+  *::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: var(--color-line);
+    border-radius: 9999px;
+  }
+
+  *::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  /* Firefox */
+  @supports not selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-line) transparent;
+    }
+  }
+
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    color: var(--subtle);
+  }
+
+  .landing-bg {
+    background-image: url("/landing.jpg");
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  section:target {
-    animation: none;
-  }
+.base-element {
+  @apply rounded-lg;
+  background: light-dark(var(--raised), var(--ground));
 }

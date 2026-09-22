@@ -1,38 +1,45 @@
 const steps = [
   {
     n: "01",
-    title: "Map",
-    body: "Break a manual process into clear steps.",
+    title: "Connect",
+    body: "Bring together and transform data from your existing systems.",
   },
   {
     n: "02",
-    title: "Identify",
-    body: "Identify the systems and data involved.",
+    title: "Visualize",
+    body: "Display that information in a clear and interactive way.",
   },
   {
     n: "03",
-    title: "Connect",
-    body: "Collect and transform data to build new capabilities.",
+    title: "Act",
+    body: "Make data actionable by defining rules and workflows.",
   },
   {
     n: "04",
-    title: "Extend",
-    body: "Make those capabilities visible, configurable, and actionable in one place.",
+    title: "Automate",
+    body: "Let predictable processes run in the background.",
   },
 ];
 
 export default function Steps() {
   return (
-    <section className="border-t border-accent-muted/60 py-12 px-6">
-      <div className="grid grid-cols-2 gap-8 text-left md:grid-cols-4">
-        {steps.map((step) => (
-          <div key={step.n}>
-            <span className="eyebrow">{step.n}</span>
-            <h3 className="mt-2 text-fg">{step.title}</h3>
-            <p className="mt-1 text-subtle">{step.body}</p>
-          </div>
-        ))}
-      </div>
+    <section className="grid grid-cols-2 gap-4 text-left md:grid-cols-4 p-4">
+      {steps.map((step) => (
+        <div
+          key={step.n}
+          className="rounded-lg border border-accent-muted/20 bg-raised/40 p-4"
+        >
+          <span className="eyebrow font-semibold">{step.n}</span>
+          <h3 className="mt-2 text-xl text-fg">{step.title}</h3>
+          {step.body.split("\n").map((item) => (
+            <p className="mt-1 text-subtle">
+              <>
+                {item} <br />
+              </>
+            </p>
+          ))}
+        </div>
+      ))}
     </section>
   );
 }

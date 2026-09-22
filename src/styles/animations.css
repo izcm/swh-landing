@@ -1,0 +1,73 @@
+@keyframes popoverIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.popover-in {
+  animation: popoverIn 0.15s ease-out;
+  transform-origin: top;
+}
+
+/* a full-page/content-area swap (e.g. dashboard <-> list) reads as too much
+   motion with popover-in's scale+translate at that size — plain opacity
+   only, no transform. */
+@keyframes viewIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.view-in {
+  animation: viewIn 0.12s ease-out;
+}
+
+@keyframes chipIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.chip-in {
+  animation: chipIn 0.15s ease-out;
+}
+
+/* briefly highlight whichever section an anchor link (e.g. "See how it
+   works") just scrolled to, so landing there doesn't feel abrupt 
+   
+  https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:target
+*/
+section:target {
+  animation: section-highlight 1.2s ease-out;
+}
+
+@keyframes section-highlight {
+  from {
+    background-color: color-mix(in oklab, var(--accent) 12%, transparent);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  section:target {
+    animation: none;
+  }
+}

@@ -1,18 +1,12 @@
 import { useEffect, useState } from "react";
-import {
-  Nav,
-  Hero,
-  Steps,
-  BuildOnExisting,
-  HubShowcase,
-  RealExample,
-  Footer,
-} from "./components";
+import { Nav, Hero, Steps, Story, Footer } from "./components";
 import { AboutHero } from "./components/about/AboutHero";
+import { ConnectDiagram } from "./components/diagrams/ConnecDiagram";
 
 function App() {
-  const [tab, setTab] = useState<"story" | "about">(
-    location.hash === "#about" ? "about" : "story",
+  const [tab, setTab] = useState<"story" | "about" | "tmp">(
+    // location.hash === "#about" ? "about" : "story",
+    "story",
   );
 
   useEffect(() => {
@@ -34,9 +28,7 @@ function App() {
         <>
           <Hero />
           <Steps />
-          <BuildOnExisting />
-          <HubShowcase />
-          <RealExample />
+          <Story />
         </>
       )}
 
@@ -45,6 +37,8 @@ function App() {
           <AboutHero />
         </>
       )}
+
+      {tab === "tmp" && <ConnectDiagram />}
 
       <div className="mt-auto">
         <Footer />

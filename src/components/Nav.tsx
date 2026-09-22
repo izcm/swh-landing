@@ -18,7 +18,10 @@ export default function Nav({ tabs }: { tabs: NavTab[] }) {
         ))}
       </nav>
 
-      <a href="#contact" className="btn btn-secondary text-sm">
+      <a
+        href="#contact"
+        className="btn btn-menu border border-accent/40 text-sm"
+      >
         Get in touch
       </a>
     </header>

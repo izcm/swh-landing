@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@a2zb/react": "file:../../izblocks/shared-packages/react",
-    "@a2zb/styles": "file:../../izblocks/shared-packages/styles",
+    "@a2zb/react": "workspace:*",
+    "@a2zb/styles": "workspace:*",
     "clsx": "^2.1.1",
     "lucide-react": "^1.41.0",
     "react": "^19.2.8",

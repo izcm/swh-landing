@@ -1,13 +1,15 @@
 import { ArrowRight } from "lucide-react";
+import { IconLink } from "@a2zb/react";
+
 import Map from "../../Map";
-import IconLink from "../IconLink";
+
 import { cn } from "../../lib/cn";
 
 export default function Hero() {
   return (
     <section
       className={cn(
-        "flex flex-col items-start gap-10 py-16 text-left",
+        "flex flex-col items-start gap-10 py-24 px-8 text-left",
         "lg:flex-row items-center",
       )}
     >
@@ -22,15 +24,17 @@ export default function Hero() {
           eachother. */}
         </p>
         <IconLink
-          href="#how-it-works"
-          icon={ArrowRight}
-          className="token-action mt-6"
+          href="#story-connect"
+          icon={<ArrowRight size={16} />}
+          className="mt-3 px-0 text-base btn-menu text-accent"
         >
           See how it works
         </IconLink>
       </div>
 
-      <Map />
+      <div className="mx-auto grid place-items-center flex-1">
+        <Map />
+      </div>
     </section>
   );
 }

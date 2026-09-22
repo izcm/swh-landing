@@ -2,6 +2,10 @@
 @import "@a2zb/styles";
 @import "./theme.css";
 @import "./base.css";
+@import "./diagram.css";
 @import "./map.css";
+@import "./animations.css";
+@import "./components.css";
+@import "./utilities.css";
 
 @source "../../node_modules/@a2zb/react/dist";

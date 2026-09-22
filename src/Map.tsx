@@ -13,14 +13,6 @@ const hub = { x: 300, y: 200 };
 
 type NodeId = "sheet" | "cloud" | "settings" | "file" | "chart";
 
-// const nodes: { id: NodeId; x: number; y: number; gradient: string }[] = [
-//   { id: "sheet", x: 180, y: 90, gradient: "sheet-gradient" },
-//   { id: "cloud", x: 420, y: 90, gradient: "cloud-gradient" },
-//   { id: "settings", x: 150, y: 200, gradient: "settings-gradient" },
-//   { id: "file", x: 450, y: 200, gradient: "document-gradient" },
-//   { id: "chart", x: 180, y: 310, gradient: "chart-gradient" },
-// ];
-
 const nodes: { id: NodeId; x: number; y: number; gradient: string }[] = [
   { id: "sheet", x: 180, y: 110, gradient: "sheet-gradient" },
   { id: "cloud", x: 420, y: 110, gradient: "cloud-gradient" },
@@ -164,9 +156,9 @@ export default function Map() {
           y={-HUB_HALF}
           width={HUB_HALF * 2}
           height={HUB_HALF * 2}
-          rx="var(--rx-center)"
-          fill="none"
-          stroke="#335976"
+          rx="var(--rx-node-lg)"
+          fill="var(--node-color)"
+          stroke="var(--node-border-color)"
           strokeWidth="var(--node-stroke-width) * 1.5"
         />
         <text
@@ -190,9 +182,9 @@ export default function Map() {
             y={-NODE_HALF}
             width={NODE_HALF * 2}
             height={NODE_HALF * 2}
-            rx="var(--rx-node)"
-            fill="none"
-            stroke="#335976"
+            rx="var(--rx-node-lg)"
+            fill="var(--node-color)"
+            stroke="var(--node-border-color)"
             strokeWidth="var(--node-stroke-width)"
           />
           <g

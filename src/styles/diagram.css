@@ -1,0 +1,62 @@
+/* Shared between map.css and local-icons.css: values and animation common
+   to any node+connector diagram, regardless of that diagram's own style.
+   Diagram-specific stuff (sizing, unique colors) stays in its own file. */
+:root {
+  --rx-center: 12;
+  --rx-node-lg: 12;
+  --rx-node-md: 8;
+  --rx-node-sm: 6;
+  --node-stroke-width: 0.5;
+
+  --connector-weight: 0.64;
+  --connector-color: color-mix(in oklab, var(--muted), var(--accent) 32%);
+
+  --node-color: color-mix(in oklab, var(--raised), transparent 64%);
+  --node-border-color: color-mix(in oklab, #335976, var(--accent) 32%);
+}
+
+/* traveling pulse: a short glowing streak (12) + gap (396), slid along the
+   path with stroke-dashoffset; each node's animation-delay is staggered so
+   they don't all fire at once */
+.pulse {
+  stroke-dasharray: 12 396;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 2px var(--accent));
+  animation: diagram-travel 5s linear infinite;
+}
+
+@keyframes diagram-travel {
+  to {
+    stroke-dashoffset: -408;
+  }
+}
+
+/* accent dot: a gentle breathing scale+fade, not the traveling .pulse above */
+.accent-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse {
+    animation: none;
+    opacity: 0;
+  }
+
+  .accent-dot {
+    animation: none;
+  }
+}

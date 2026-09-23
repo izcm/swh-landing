@@ -3,115 +3,16 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* dashboard panels + resource header glow — this app's own, no upstream equivalent */
-  --background-image-panel-gradient: var(--panel-gradient);
-  --background-image-resource-header-gradient: var(--resource-header-gradient);
-  --background-image-gradient-safe: var(--gradient-safe);
-  --background-image-gradient-critical-weak: var(--gradient-critical-weak);
-  --background-image-gradient-caution-weak: var(--gradient-caution-weak);
-  --background-image-gradient-advisory-weak: var(--gradient-advisory-weak);
-  --background-image-gradient-safe-weak: var(--gradient-safe-weak);
-  --background-image-gradient-neutral-weak: var(--gradient-neutral-weak);
+  --background-image-story-connect: var(--story-connect-bg);
+  --background-image-story-visualize: var(--story-visualize-bg);
+  --background-image-story-act: var(--story-act-bg);
+  --background-image-story-automate: var(--story-automate-bg);
 
   --safe-weak: color-mix(
     in oklab,
     var(--safe) var(--weak-opacity),
     transparent
   );
-}
-
-:root[data-theme="dark"] {
-  .landing-surface {
-    background: #0e0e10;
-  }
-}
-
-:root[data-theme="light"] {
-  .landing-surface {
-    background: var(--ground);
-  }
-}
-
-/* ---------------------------------------------------------------------------
- * Custom themes. Variable names must match exactly — the @theme mapping in
- * node_modules/@a2zb/styles/theme.css references them literally.
- * ------------------------------------------------------------------------- */
-
-/* light — blue */
-:root[data-theme="light"] {
-  color-scheme: light;
-
-  /* surfaces */
-  --ground: #eef0f2;
-  --raised: #ffffff;
-  --lowered: #e4e7eb;
-
-  /* workspace can retain a TINY cool tint */
-  --elevated: #f0f3f7;
-  --elevated-alt: #fafbfc;
-
-  --ground-gradient: radial-gradient(
-    1200px 600px at 50% -10%,
-    color-mix(in oklab, var(--accent) 4%, transparent),
-    transparent
-  );
-  --resource-header-gradient: radial-gradient(
-    900px 350px at 65% 0%,
-    color-mix(in oklab, var(--accent) 8%, transparent),
-    transparent 70%
-  );
-  --raised-gradient: linear-gradient(
-    160deg,
-    var(--raised) 0%,
-    var(--elevated) 100%
-  );
-  --panel-gradient: linear-gradient(
-    160deg,
-    color-mix(in oklab, var(--raised) 95%, var(--ground)) 0%,
-    color-mix(in oklab, var(--elevated) 95%, var(--ground)) 100%
-  );
-  --elevated-gradient: linear-gradient(
-    160deg,
-    var(--elevated-alt) 0%,
-    var(--elevated) 100%
-  );
-
-  /* ink */
-  --fg: rgba(15, 21, 28, 0.92);
-  --subtle: rgba(15, 21, 28, 0.62);
-  --muted: rgba(15, 21, 28, 0.46);
-  --faint: rgba(15, 21, 28, 0.28);
-
-  --line: rgba(15, 21, 28, 0.16);
-
-  /* accent */
-  --accent: #3f63e0;
-  --accent-strong: #2a49bf;
-  --accent-muted: color-mix(in oklab, var(--accent) 45%, var(--muted));
-
-  --accent-neutral: #6f8fe6;
-
-  /* semantic */
-  --success: #1f9d64;
-  --warning: #c1860a;
-  --failure: #e0435f;
-  --neutral: #5f7290;
-
-  --weak-opacity: 12%;
-
-  /* family 1 — attention levels, same colors as success/warning/failure above */
-  --advisory: var(--success);
-  --caution: var(--warning);
-  --critical: var(--failure);
-
-  /* family 2 — not-actionable info. "neutral" already defined above (gray).
-     "safe" (all clear — approved, nothing outstanding) reuses accent-neutral
-     — a blue distinct from --accent itself, since accent is this app's
-     general-purpose chrome color, not a status. */
-  --safe: var(--accent-neutral);
-
-  --panel-shadow:
-    0 1px 2px rgba(15, 21, 28, 0.04), 0 8px 24px rgba(15, 21, 28, 0.06);
 }
 
 /* dark — dark grey + blue */
@@ -191,52 +92,4 @@
 
   --panel-shadow:
     0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(91, 157, 255, 0.06);
-}
-
-/* @a2zb/styles' "void"/"runtime"/"swh" themes don't know about panel-gradient
-   or resource-header-gradient — those are this app's own additions, not
-   upstream ones — so supplement each with the same formula light/dark use,
-   which resolves against that theme's own --raised/--elevated/--ground/--accent. */
-:root[data-theme="void"] {
-  --resource-header-gradient: linear-gradient(
-    155deg,
-    transparent 35%,
-    color-mix(in oklab, var(--accent) 10%, transparent) 70%,
-    color-mix(in oklab, var(--accent) 16%, transparent) 100%
-  );
-
-  --panel-gradient: linear-gradient(
-    160deg,
-    color-mix(in oklab, var(--raised) 95%, var(--ground)) 0%,
-    color-mix(in oklab, var(--elevated) 95%, var(--ground)) 100%
-  );
-  --safe: var(--accent-neutral);
-}
-
-:root[data-theme="runtime"] {
-  --resource-header-gradient: radial-gradient(
-    700px 350px at 65% 0%,
-    color-mix(in oklab, var(--accent) 8%, transparent),
-    transparent 70%
-  );
-  --panel-gradient: linear-gradient(
-    160deg,
-    color-mix(in oklab, var(--raised) 95%, var(--ground)) 0%,
-    color-mix(in oklab, var(--elevated) 95%, var(--ground)) 100%
-  );
-  --safe: var(--accent-neutral);
-}
-
-:root[data-theme="swh"] {
-  --resource-header-gradient: radial-gradient(
-    700px 350px at 65% 0%,
-    color-mix(in oklab, var(--accent) 8%, transparent),
-    transparent 70%
-  );
-  --panel-gradient: linear-gradient(
-    160deg,
-    color-mix(in oklab, var(--raised) 95%, var(--ground)) 0%,
-    color-mix(in oklab, var(--elevated) 95%, var(--ground)) 100%
-  );
-  --safe: var(--accent-neutral);
 }

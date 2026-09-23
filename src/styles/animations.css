@@ -46,20 +46,37 @@
 }
 
 /* briefly highlight whichever section an anchor link (e.g. "See how it
-   works") just scrolled to, so landing there doesn't feel abrupt 
-   
+   works") just scrolled to, so landing there doesn't feel abrupt — a soft
+   accent glow behind the section's title that fades away, rather than
+   flashing the whole section's background.
+
   https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:target
 */
-section:target {
-  animation: section-highlight 1.2s ease-out;
+section:target h2 {
+  position: relative;
 }
 
-@keyframes section-highlight {
+section:target h2::before {
+  content: "";
+  position: absolute;
+  inset: -0.3em -0.8em;
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--accent) 30%, transparent),
+    transparent
+  );
+  filter: blur(14px);
+  animation: title-glow-fade 1.6s ease-out forwards;
+}
+
+@keyframes title-glow-fade {
   from {
-    background-color: color-mix(in oklab, var(--accent) 12%, transparent);
+    opacity: 1;
   }
   to {
-    background-color: transparent;
+    opacity: 0;
   }
 }
 
@@ -67,7 +84,8 @@ section:target {
   html {
     scroll-behavior: auto;
   }
-  section:target {
+  section:target h2::before {
     animation: none;
+    opacity: 0;
   }
 }

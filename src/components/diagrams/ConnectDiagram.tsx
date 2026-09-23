@@ -9,32 +9,33 @@ const nodeIcons = {
 };
 
 export function ConnectDiagram() {
-  const viewboxWidth = 300;
-  const viewboxHeight = 100;
+  const viewboxWidth = 320;
+  const viewboxHeight = 120;
+  const unit = viewboxHeight / 12; // shared base unit derived from the viewBox
 
-  const outerPadding = 8; // top, bottom, left, right
+  const outerPadding = unit * 1; // top, bottom, left, right
   const contentHeight = viewboxHeight - outerPadding * 2;
 
   const iconSize = {
-    shuffle: 16,
+    shuffle: unit * 1.6,
   };
 
   const nodes = ["Accounting", "HR", "Others"] as const;
 
-  const fontSize = 8;
-  const nodeWidth = 96;
-  const nodeHeight = fontSize * 2.4;
-  const nodeIconSize = 12;
-  const nodeIconGap = 7;
+  const fontSize = unit * 0.85;
+  const nodeWidth = unit * 9.6;
+  const nodeHeight = fontSize * 2.5;
+  const nodeIconSize = unit * 1.4;
+  const nodeIconGap = unit * 0.7;
 
   const rightmostPiece = {
-    width: 96,
-    height: contentHeight * 0.72,
+    width: unit * 10.5,
+    height: contentHeight * 0.7,
   };
 
   // absolute x where the node connectors converge, and where the box's
   // left edge sits (box hugs the right edge with exactly `padding` gap)
-  const mergeX = outerPadding + nodeWidth + 16;
+  const mergeX = outerPadding + nodeWidth + unit * 2.4;
   const boxX = viewboxWidth - outerPadding - rightmostPiece.width;
   const boxY = (viewboxHeight - rightmostPiece.height) / 2;
   // shuffle icon sits at the midpoint between the two, so the connector
@@ -56,7 +57,7 @@ export function ConnectDiagram() {
           const center =
             spaceEvenly(1, 3, nodeHeight, 0, contentHeight) + nodeHeight / 2;
           const destX = mergeX - outerPadding;
-          const connectorCurveRadius = 12;
+          const connectorCurveRadius = unit * 1.2;
 
           return (
             <>
@@ -81,7 +82,7 @@ export function ConnectDiagram() {
               })}
               <circle
                 className="accent-dot"
-                r="2.4"
+                r={unit * 0.24}
                 cx={destX}
                 cy={center}
                 fill="var(--accent)"
@@ -155,7 +156,7 @@ export function ConnectDiagram() {
         <circle
           cx={iconSize.shuffle / 2}
           cy={iconSize.shuffle / 2}
-          r={iconSize.shuffle / 2 + 6}
+          r={iconSize.shuffle / 2 + unit * 0.6}
           fill="var(--raised)"
           stroke="var(--accent)"
           strokeWidth="var(--node-stroke-width)"

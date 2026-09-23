@@ -1,26 +1,29 @@
 import { SlidersHorizontal } from "lucide-react";
-import { DataGrid } from "./DataGrid";
-import { glyphStroke } from "../../lib/svg-helpers";
+import { DataGrid } from "../DataGrid";
+import { StatCard } from "./StatCard";
+import { Donut } from "./Donut";
+import { BarChart } from "./BarChart";
 
 export function VisualizeDiagram() {
-  const viewboxWidth = 300;
-  const viewboxHeight = 100;
+  const viewboxWidth = 320;
+  const viewboxHeight = 120;
+  const unit = viewboxHeight / 12; // same base unit as ConnectDiagram
 
-  const outerPadding = 8; // top, bottom, left, right
+  const outerPadding = unit * 1; // top, bottom, left, right
   const contentHeight = viewboxHeight - outerPadding * 2;
 
-  const fontSize = 8;
+  const fontSize = unit * 0.8;
 
   const iconSize = {
-    slider: 16,
+    slider: unit * 1.6,
   };
 
   // structured data stack items, all grouped together
   const stack = (() => {
-    const width = 80;
-    const height = contentHeight * 0.56;
-    const offset = 4; // step unit for the diagonal card stack
-    const count = 3;
+    const width = unit * 8;
+    const height = contentHeight * 0.6;
+    const offset = unit * 0.4; // step unit for the diagonal card stack
+    const count = 4;
 
     // card in back has index 0 -> its y / x positions were multiplied by 0 -> unchanged
     // -> add offset * count - 1 to get total height
@@ -49,8 +52,8 @@ export function VisualizeDiagram() {
   const dashboard = (() => {
     // bigger than the stack, but not by so much it dwarfs it; width kept
     // modest so there's still a decent connector gap for the future animation
-    const width = (viewboxWidth - outerPadding * 2) * 0.4;
-    const height = 76;
+    const width = (viewboxWidth - outerPadding * 2) * 0.38;
+    const height = unit * 7.2;
 
     const startX = viewboxWidth - outerPadding - width;
     const translateY = (contentHeight - height) / 2;
@@ -69,19 +72,19 @@ export function VisualizeDiagram() {
   return (
     <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}>
       {/* debug: svg bounds */}
-      <rect
+      {/* <rect
         x={0}
         y={0}
         width={viewboxWidth}
         height={viewboxHeight}
         fill="none"
         stroke="red"
-      />
+      /> */}
 
       <path
         stroke="var(--connector-color)"
         strokeWidth="var(--connector-weight)"
-        d={`M ${stack.endX} ${stack.resolvedCenterY} H ${stack.endX + 100}`}
+        d={`M ${stack.endX} ${stack.resolvedCenterY} H ${stack.endX + unit * 10}`}
       />
 
       {/* Transform */}
@@ -94,7 +97,7 @@ export function VisualizeDiagram() {
         <circle
           cx={iconSize.slider / 2}
           cy={iconSize.slider / 2}
-          r={iconSize.slider / 2 + 6}
+          r={iconSize.slider / 2 + unit * 0.6}
           fill="var(--raised)"
           stroke="var(--accent)"
           strokeWidth="var(--node-stroke-width)"
@@ -135,6 +138,70 @@ export function VisualizeDiagram() {
           stroke="var(--node-border-color)"
           strokeWidth="var(--node-stroke-width)"
         />
+
+        {(() => {
+          const padding = unit * 0.5;
+          const innerWidth = dashboard.width - padding * 2;
+          const innerHeight = dashboard.height - padding * 2;
+          const topHeight = innerHeight * 0.6;
+
+          const gap = unit * 0.5;
+
+          // placeholder data — swap for live/animated values later
+          const barValues = [
+            0.45, 0.35, 0.65, 0.4, 0.42, 0.58, 0.75, 0.62, 0.9,
+          ];
+
+          const bottomHeight = innerHeight - topHeight - gap;
+          const donutSize = bottomHeight;
+          const cardWidth = (innerWidth - donutSize - gap * 2) / 2;
+
+          return (
+            <g transform={`translate(${padding}, ${padding})`}>
+              <rect
+                x={0}
+                y={0}
+                width={innerWidth}
+                height={topHeight}
+                rx="var(--rx-node-xxs)"
+                fill="var(--raised)"
+              />
+
+              <BarChart
+                x={0}
+                y={0}
+                width={innerWidth}
+                height={topHeight}
+                values={barValues}
+              />
+
+              <StatCard
+                x={0}
+                y={topHeight + gap}
+                width={cardWidth}
+                height={bottomHeight}
+                trend="up"
+                progress={0.8}
+              />
+
+              <StatCard
+                x={cardWidth + gap}
+                y={topHeight + gap}
+                width={cardWidth}
+                height={bottomHeight}
+                trend="down"
+                progress={0.45}
+              />
+
+              <Donut
+                x={(cardWidth + gap) * 2}
+                y={topHeight + gap}
+                size={donutSize}
+                split={0.5}
+              />
+            </g>
+          );
+        })()}
       </g>
     </svg>
   );

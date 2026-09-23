@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { Nav, Hero, Steps, Story, Footer } from "./components";
 import { AboutHero } from "./components/about/AboutHero";
-import { VisualizeDiagram } from "./components/diagrams/VisualizeDiagram";
-import { ConnectDiagram } from "./components/diagrams/ConnectDiagram";
+import { VisualizeDiagram } from "./components/diagrams/Visualize/VisualizeDiagram";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
     // location.hash === "#about" ? "about" : "story",
-    "tmp",
+    "story",
   );
 
   useEffect(() => {
@@ -42,7 +41,7 @@ function App() {
       {tab === "tmp" && (
         <>
           <VisualizeDiagram />
-          <ConnectDiagram />
+          {/* <ConnectDiagram /> */}
         </>
       )}
 

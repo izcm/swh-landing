@@ -38,7 +38,7 @@ export default function Steps() {
     <section
       className="
         grid grid-cols-2 gap-4 p-3
-        lg:grid-cols-4 lg:p-6
+        lg:grid-cols-4 lg:p-6 mt-6
         "
     >
       {steps.map((step, i) => (

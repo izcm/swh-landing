@@ -1,4 +1,4 @@
-import { ConnectDiagram } from "../diagrams/ConnecDiagram";
+import { ConnectDiagram } from "../diagrams/ConnectDiagram";
 
 const sections = [
   {
@@ -13,7 +13,7 @@ const sections = [
   },
   {
     eyebrow: "VISUALIZE",
-    title: "From data to clarity",
+    title: "From data to insight",
     paragraphs: [
       "Having access to data is one thing. Making sense of it is another.",
       "Spreadsheets are excellent tools, but understanding a larger operation can mean moving between several sheets, comparing numbers, and building a picture of what is happening in your head.",
@@ -22,7 +22,7 @@ const sections = [
   },
   {
     eyebrow: "ACT",
-    title: "Turn information into action.",
+    title: "Turn insight into action.",
     paragraphs: [
       "Visibility is most useful when it leads naturally to action.",
       "From there, we define how the information can be acted on — assigning records to specific employees, notifying the right parties through their preferred channels, flagging records when certain conditions are met, handling approvals, or triggering the next step in a process.",
@@ -39,27 +39,34 @@ export function Story() {
           className="
             flex flex-col gap-3 
             border-t border-faint-accent 
-            px-6 lg:px-12 py-8 min-h-[480px]
+            px-3 lg:px-12 py-8 min-h-[480px]
           "
           key={`story-${i}`}
           id={`story-${i}`}
         >
           <div className="flex items-center gap-6 mb-3">
-            <span className="eyebrow">0{i + 1}</span>
+            <span className="eyebrow text-sm lg:text-base">0{i + 1}</span>
             <div className="horizontal-line bg-accent/40" />
-            <span className="eyebrow">{section.eyebrow}</span>
+            <span className="eyebrow text-sm lg:text-base">
+              {section.eyebrow}
+            </span>
           </div>
 
-          <h2 className="text-3xl text-fg ">{section.title}</h2>
+          <h2 className="text-2xl lg:text-3xl text-fg ">{section.title}</h2>
 
           <div className="flex flex-col gap-6 lg:flex-row lg:gap-12">
-            <div className="flex flex-col gap-6 text-subtle max-w-xl">
+            <div className="flex flex-col gap-6 text-subtle flex-1 min-w-0 max-w-xl min-w-lg">
               {section.paragraphs.map((p) => (
                 <p>{p}</p>
               ))}
             </div>
 
-            <div className="min-w-[480px] max-w-[560px] flex-1 shrink-0 grid place-items-center h-full">
+            {/* THESE SIZES R GOOD MAKE FLEX-COL AT 1280 LATER */}
+            <div
+              className="
+                lg:self-center lg:w-[640px]
+                min-w-[560px] max-w-[720px]"
+            >
               {section.diagram}
             </div>
           </div>

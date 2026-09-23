@@ -1,5 +1,6 @@
 import { Shuffle, FileText, Users, Box } from "lucide-react";
-import { spaceAround, glyphStroke, spaceEvenly } from "../../lib/svg-helpers";
+import { glyphStroke, spaceEvenly } from "../../lib/svg-helpers";
+import { DataGrid } from "./DataGrid";
 
 const nodeIcons = {
   Accounting: FileText,
@@ -8,32 +9,32 @@ const nodeIcons = {
 };
 
 export function ConnectDiagram() {
-  const viewboxWidth = 360;
-  const viewboxHeight = 160;
+  const viewboxWidth = 300;
+  const viewboxHeight = 100;
 
-  const outerPadding = 10; // top, bottom, left, right
+  const outerPadding = 8; // top, bottom, left, right
   const contentHeight = viewboxHeight - outerPadding * 2;
 
   const iconSize = {
-    shuffle: 24,
+    shuffle: 16,
   };
 
   const nodes = ["Accounting", "HR", "Others"] as const;
 
-  const fontSize = 10;
-  const nodeWidth = 110;
-  const nodeHeight = fontSize * 2.7;
-  const nodeIconSize = 16;
-  const nodeIconGap = 10;
+  const fontSize = 8;
+  const nodeWidth = 96;
+  const nodeHeight = fontSize * 2.4;
+  const nodeIconSize = 12;
+  const nodeIconGap = 7;
 
   const rightmostPiece = {
-    width: 110,
-    height: contentHeight * 0.6,
+    width: 96,
+    height: contentHeight * 0.72,
   };
 
   // absolute x where the node connectors converge, and where the box's
   // left edge sits (box hugs the right edge with exactly `padding` gap)
-  const mergeX = outerPadding + nodeWidth + 24;
+  const mergeX = outerPadding + nodeWidth + 16;
   const boxX = viewboxWidth - outerPadding - rightmostPiece.width;
   const boxY = (viewboxHeight - rightmostPiece.height) / 2;
   // shuffle icon sits at the midpoint between the two, so the connector
@@ -50,6 +51,8 @@ export function ConnectDiagram() {
         strokeLinecap="round"
       >
         {(() => {
+          // keep it for future proofing, but note for self:
+          // as is, this will always equal containerHeight / 2
           const center =
             spaceEvenly(1, 3, nodeHeight, 0, contentHeight) + nodeHeight / 2;
           const destX = mergeX - outerPadding;
@@ -134,7 +137,7 @@ export function ConnectDiagram() {
                 fill="var(--fg)"
                 fontSize={fontSize}
                 fontFamily="inherit"
-                letterSpacing="0.02em"
+                letterSpacing="0em"
               >
                 {system}
               </text>
@@ -145,112 +148,29 @@ export function ConnectDiagram() {
       {/* Transform */}
       <g
         transform={`translate(
-    ${shuffleCenterX - iconSize.shuffle / 2},
-    ${(viewboxHeight - iconSize.shuffle) / 2}
-  )`}
+          ${shuffleCenterX - iconSize.shuffle / 2},
+          ${(viewboxHeight - iconSize.shuffle) / 2}
+        )`}
       >
         <circle
           cx={iconSize.shuffle / 2}
           cy={iconSize.shuffle / 2}
-          r={iconSize.shuffle / 2 + 9}
+          r={iconSize.shuffle / 2 + 6}
           fill="var(--raised)"
           stroke="var(--accent)"
           strokeWidth="var(--node-stroke-width)"
         />
 
-        <Shuffle
-          size={iconSize.shuffle}
-          strokeWidth={glyphStroke(iconSize.shuffle)}
-          stroke="var(--fg)"
-        />
+        <Shuffle size={iconSize.shuffle} strokeWidth={1} stroke="var(--fg)" />
       </g>
 
       {/* Structured output */}
-      {(() => {
-        const x = boxX;
-        const y = boxY;
-        const width = rightmostPiece.width;
-        const height = rightmostPiece.height;
-
-        const paddingX = 8;
-        const paddingY = 4;
-
-        const rowCount = 3;
-        const rowHeight = (height - paddingY * 2) / rowCount;
-
-        const avatarSize = 12;
-        // no * 2 here, see (*) below
-        const contentX = x + paddingX + avatarSize + 8;
-
-        return (
-          <g>
-            {/* outer container */}
-            <rect
-              x={x}
-              y={y}
-              width={width}
-              height={height}
-              rx="var(--rx-node-lg)"
-              fill="var(--node-color)"
-              stroke="var(--node-border-color)"
-              strokeWidth="var(--node-stroke-width)"
-            />
-
-            {/* rows */}
-            {Array.from({ length: rowCount }).map((_, i) => {
-              const rowY = y + paddingY + i * rowHeight;
-              const centerY = rowY + rowHeight / 2;
-
-              return (
-                <g key={i}>
-                  {/* separators */}
-                  {i > 0 && (
-                    <line
-                      x1={x + paddingX}
-                      y1={rowY}
-                      x2={x + width - paddingX} // (*) other edge, padding again
-                      y2={rowY}
-                      stroke="var(--node-border-color)"
-                      strokeWidth="var(--node-stroke-width)"
-                      opacity={0.55}
-                    />
-                  )}
-
-                  {/* avatar */}
-                  <rect
-                    x={x + paddingX}
-                    y={centerY - avatarSize / 2}
-                    width={avatarSize}
-                    height={avatarSize}
-                    rx={3}
-                    fill="var(--node-border-color)"
-                  />
-
-                  {/* primary */}
-                  <rect
-                    x={contentX}
-                    y={centerY - 5}
-                    width={width * (0.34 + i * 0.04)}
-                    height={3}
-                    rx={1.5}
-                    fill="var(--node-border-color)"
-                  />
-
-                  {/* secondary */}
-                  <rect
-                    x={contentX}
-                    y={centerY + 2}
-                    width={width * (0.5 - i * 0.04)}
-                    height={3}
-                    rx={1.5}
-                    fill="var(--muted)"
-                  />
-                </g>
-              );
-            })}
-          </g>
-        );
-      })()}
+      <DataGrid
+        x={boxX}
+        y={boxY}
+        width={rightmostPiece.width}
+        height={rightmostPiece.height}
+      />
     </svg>
   );
 }

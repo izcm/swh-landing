@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Nav, Hero, Steps, Story, Footer } from "./components";
 import { AboutHero } from "./components/about/AboutHero";
-import { ConnectDiagram } from "./components/diagrams/ConnecDiagram";
+import { VisualizeDiagram } from "./components/diagrams/VisualizeDiagram";
+import { ConnectDiagram } from "./components/diagrams/ConnectDiagram";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
     // location.hash === "#about" ? "about" : "story",
-    "story",
+    "tmp",
   );
 
   useEffect(() => {
@@ -38,7 +39,12 @@ function App() {
         </>
       )}
 
-      {tab === "tmp" && <ConnectDiagram />}
+      {tab === "tmp" && (
+        <>
+          <VisualizeDiagram />
+          <ConnectDiagram />
+        </>
+      )}
 
       <div className="mt-auto">
         <Footer />

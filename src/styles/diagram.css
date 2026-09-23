@@ -6,12 +6,15 @@
   --rx-node-lg: 12;
   --rx-node-md: 8;
   --rx-node-sm: 6;
-  --node-stroke-width: 0.5;
+  --rx-node-xs: 4;
 
-  --connector-weight: 0.64;
+  --node-stroke-width: 0.32;
+
+  --connector-weight: 0.44;
   --connector-color: color-mix(in oklab, var(--muted), var(--accent) 32%);
 
-  --node-color: color-mix(in oklab, var(--raised), transparent 64%);
+  /* --node-color: var(--ground); */
+  --node-color: color-mix(in oklab, var(--raised), var(--ground) 40%);
   --node-border-color: color-mix(in oklab, #335976, var(--accent) 32%);
 }
 

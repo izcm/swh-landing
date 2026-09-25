@@ -68,7 +68,7 @@ section:target h2::before {
     transparent
   );
   filter: blur(14px);
-  animation: title-glow-fade 1.6s ease-out forwards;
+  animation: title-glow-fade 1.1s ease-out forwards;
 }
 
 @keyframes title-glow-fade {

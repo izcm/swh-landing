@@ -3,39 +3,39 @@ import { DataGrid } from "../DataGrid";
 import { StatCard } from "./StatCard";
 import { Donut } from "./Donut";
 import { BarChart } from "./BarChart";
+import { centerInParent } from "../../../lib/svg-helpers";
 
 export function VisualizeDiagram() {
-  const viewboxWidth = 320;
-  const viewboxHeight = 120;
+  const viewboxWidth = 340;
+  const viewboxHeight = 100;
+
   const unit = viewboxHeight / 12; // same base unit as ConnectDiagram
-
   const outerPadding = unit * 1; // top, bottom, left, right
-  const contentHeight = viewboxHeight - outerPadding * 2;
 
-  const fontSize = unit * 0.8;
+  const contentHeight = viewboxHeight - outerPadding * 2;
+  const contentWidth = viewboxWidth - outerPadding * 2;
 
   const iconSize = {
-    slider: unit * 1.6,
+    slider: unit * 2.5,
   };
 
   // structured data stack items, all grouped together
   const stack = (() => {
-    const width = unit * 8;
-    const height = contentHeight * 0.6;
+    const width = contentWidth * 0.3;
+    const height = contentHeight * 0.9;
     const offset = unit * 0.4; // step unit for the diagonal card stack
     const count = 4;
 
     // card in back has index 0 -> its y / x positions were multiplied by 0 -> unchanged
     // -> add offset * count - 1 to get total height
     const stackHeight = height + offset * (count - 1);
-
-    const centerY = stackHeight / 2;
-
-    // to move the stack to center -> find translateY
-    const translateY = (contentHeight - stackHeight) / 2;
     const endX = width + outerPadding + offset * (count - 1);
 
-    const resolvedCenterY = centerY + translateY + outerPadding;
+    const { translateY, centerY, resolvedCenterY } = centerInParent(
+      contentHeight,
+      stackHeight,
+      outerPadding,
+    );
 
     return {
       width,
@@ -53,7 +53,7 @@ export function VisualizeDiagram() {
     // bigger than the stack, but not by so much it dwarfs it; width kept
     // modest so there's still a decent connector gap for the future animation
     const width = (viewboxWidth - outerPadding * 2) * 0.38;
-    const height = unit * 7.2;
+    const height = contentHeight;
 
     const startX = viewboxWidth - outerPadding - width;
     const translateY = (contentHeight - height) / 2;
@@ -84,7 +84,7 @@ export function VisualizeDiagram() {
       <path
         stroke="var(--connector-color)"
         strokeWidth="var(--connector-weight)"
-        d={`M ${stack.endX} ${stack.resolvedCenterY} H ${stack.endX + unit * 10}`}
+        d={`M ${stack.endX} ${stack.resolvedCenterY} H ${dashboard.startX}`}
       />
 
       {/* Transform */}
@@ -106,7 +106,7 @@ export function VisualizeDiagram() {
         <SlidersHorizontal
           size={iconSize.slider}
           strokeWidth={1}
-          stroke="var(--fg)"
+          stroke="var(--node-text-color)"
         />
       </g>
 

@@ -9,14 +9,16 @@
   --rx-node-xs: 4;
   --rx-node-xxs: 2;
 
-  --node-stroke-width: 0.32;
+  --node-stroke-width: 0.4;
 
-  --connector-weight: 0.44;
-  --connector-color: color-mix(in oklab, var(--muted), var(--accent) 32%);
+  --connector-weight: 0.5;
+  --connector-color: color-mix(in oklab, var(--muted), var(--accent) 30%);
+
+  --node-text-color: color-mix(in oklab, var(--fg), var(--accent) 32%);
 
   /* --node-color: var(--ground); */
   --node-color: color-mix(in oklab, var(--raised), var(--ground) 40%);
-  --node-border-color: color-mix(in oklab, #335976, var(--accent) 32%);
+  --node-border-color: color-mix(in oklab, #335976, var(--accent) 40%);
   --node-border-color-faint: color-mix(
     in oklab,
     var(--node-border-color),

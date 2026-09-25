@@ -1,5 +1,5 @@
 import { Shuffle, FileText, Users, Box } from "lucide-react";
-import { glyphStroke, spaceEvenly } from "../../lib/svg-helpers";
+import { glyphStroke, spaceBetween } from "../../lib/svg-helpers";
 import { DataGrid } from "./DataGrid";
 
 const nodeIcons = {
@@ -9,28 +9,29 @@ const nodeIcons = {
 };
 
 export function ConnectDiagram() {
-  const viewboxWidth = 320;
-  const viewboxHeight = 120;
+  const viewboxWidth = 340;
+  const viewboxHeight = 100;
   const unit = viewboxHeight / 12; // shared base unit derived from the viewBox
 
   const outerPadding = unit * 1; // top, bottom, left, right
   const contentHeight = viewboxHeight - outerPadding * 2;
+  const contentWidth = viewboxWidth - outerPadding * 2;
 
   const iconSize = {
-    shuffle: unit * 1.6,
+    shuffle: unit * 2.5,
   };
 
   const nodes = ["Accounting", "HR", "Others"] as const;
 
-  const fontSize = unit * 0.85;
-  const nodeWidth = unit * 9.6;
-  const nodeHeight = fontSize * 2.5;
-  const nodeIconSize = unit * 1.4;
-  const nodeIconGap = unit * 0.7;
+  const fontSize = unit * 1.12;
+  const nodeWidth = unit * 12;
+  const nodeHeight = unit * 2.4;
+  const nodeIconSize = unit * 1.2;
+  const nodeIconGap = unit * 0.8;
 
   const rightmostPiece = {
-    width: unit * 10.5,
-    height: contentHeight * 0.7,
+    width: contentWidth * 0.38,
+    height: contentHeight,
   };
 
   // absolute x where the node connectors converge, and where the box's
@@ -55,7 +56,7 @@ export function ConnectDiagram() {
           // keep it for future proofing, but note for self:
           // as is, this will always equal containerHeight / 2
           const center =
-            spaceEvenly(1, 3, nodeHeight, 0, contentHeight) + nodeHeight / 2;
+            spaceBetween(1, 3, nodeHeight, 0, contentHeight) + nodeHeight / 2;
           const destX = mergeX - outerPadding;
           const connectorCurveRadius = unit * 1.2;
 
@@ -63,7 +64,7 @@ export function ConnectDiagram() {
             <>
               {nodes.map((_, i) => {
                 const y =
-                  spaceEvenly(i, nodes.length, nodeHeight, 0, contentHeight) +
+                  spaceBetween(i, nodes.length, nodeHeight, 0, contentHeight) +
                   nodeHeight / 2;
 
                 const bend = y === center ? 0 : y > center ? -1 : 1;
@@ -105,7 +106,7 @@ export function ConnectDiagram() {
         {nodes.map((system, i) => {
           const itemHeight = nodeHeight;
 
-          const y = spaceEvenly(i, nodes.length, itemHeight, 0, contentHeight);
+          const y = spaceBetween(i, nodes.length, itemHeight, 0, contentHeight);
 
           const Icon = nodeIcons[system];
 
@@ -116,7 +117,7 @@ export function ConnectDiagram() {
                 y={y}
                 width={nodeWidth}
                 height={itemHeight}
-                rx="var(--rx-node-lg)"
+                rx="var(--rx-node-md)"
                 fill="var(--node-color)"
                 stroke="var(--node-border-color)"
                 strokeWidth="var(--node-stroke-width)"
@@ -127,7 +128,7 @@ export function ConnectDiagram() {
                 y={y + itemHeight / 2 - nodeIconSize / 2}
                 size={nodeIconSize}
                 strokeWidth={glyphStroke(nodeIconSize, 0.5)}
-                stroke="var(--fg)"
+                stroke="var(--node-text-color)"
               />
 
               <text
@@ -135,7 +136,7 @@ export function ConnectDiagram() {
                 y={y + itemHeight / 2}
                 dominantBaseline="middle"
                 textAnchor="start"
-                fill="var(--fg)"
+                fill="var(--node-text-color)"
                 fontSize={fontSize}
                 fontFamily="inherit"
                 letterSpacing="0em"
@@ -162,7 +163,11 @@ export function ConnectDiagram() {
           strokeWidth="var(--node-stroke-width)"
         />
 
-        <Shuffle size={iconSize.shuffle} strokeWidth={1} stroke="var(--fg)" />
+        <Shuffle
+          size={iconSize.shuffle}
+          strokeWidth={1}
+          stroke="var(--node-text-color)"
+        />
       </g>
 
       {/* Structured output */}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Nav, Hero, Steps, Story, Footer } from "./components";
 import { AboutHero } from "./components/about/AboutHero";
 import { VisualizeDiagram } from "./components/diagrams/Visualize/VisualizeDiagram";
+import { ActDiagram } from "./components/diagrams/ActDiagram";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
@@ -40,7 +41,7 @@ function App() {
 
       {tab === "tmp" && (
         <>
-          <VisualizeDiagram />
+          <ActDiagram />
           {/* <ConnectDiagram /> */}
         </>
       )}

@@ -5,7 +5,7 @@ type NavTab = {
 
 export default function Nav({ tabs }: { tabs: NavTab[] }) {
   return (
-    <header className="flex items-center justify-between gap-8 py-4 px-8">
+    <header className="flex items-center justify-between gap-8 mt-4 mb-2 px-8">
       <span className="flex-1 text-lg font-semibold tracking-wide text-fg">
         SWH
       </span>

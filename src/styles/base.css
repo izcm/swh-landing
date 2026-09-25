@@ -6,8 +6,12 @@
     font-family: var(--font-sans);
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   #root {
-    width: 1280px;
+    width: 1024px;
     max-width: 100%;
     margin: 0 auto;
     border-inline: 1px solid;

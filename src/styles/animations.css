@@ -89,3 +89,25 @@ section:target h2::before {
     opacity: 0;
   }
 }
+
+@keyframes in-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+@keyframes in-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+}
+
+.in-from-right {
+  animation: in-from-right 180ms ease-out;
+}
+
+.in-from-left {
+  animation: in-from-left 180ms ease-out;
+}

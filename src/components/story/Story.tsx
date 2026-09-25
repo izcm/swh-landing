@@ -9,9 +9,9 @@ const sections = [
     eyebrow: "CONNECT",
     title: "Extend what your data can do",
     paragraphs: [
-      "Most businesses use several robust systems to run their day-to-day operations — accounting software, industry-specific tools, spreadsheets, and more.",
+      "Most businesses use several robust systems to run their day-to-day operations — accounting software, industry-specific tools, etc.",
       "While each system may work well on its own, there is often significant room for improvement in how data flows between them.",
-      "We have the expertise to bridge this gap by collecting and transforming data across your existing systems.",
+      // "We have the expertise to bridge this gap by collecting and transforming data across your existing systems.",
     ],
     diagram: <ConnectDiagram />,
     bg: "bg-story-connect",
@@ -20,7 +20,7 @@ const sections = [
     eyebrow: "VISUALIZE",
     title: "See the bigger picture",
     paragraphs: [
-      "Bringing data together makes it possible to see more than any individual system or spreadsheet can show on its own.",
+      "Collecting data cross systems makes it possible to see more than any individual system or spreadsheet can show on its own.",
       "Spreadsheets are excellent tools, but understanding a larger operation can mean moving between several sheets, comparing numbers, and building a picture of what is happening in your head.",
       "We make that process easier by presenting relevant information through interactive dashboards designed to show the bigger picture.",
     ],
@@ -33,7 +33,7 @@ const sections = [
     paragraphs: [
       "Connected data and better visibility make it easier to identify what needs attention and decide what to do next.",
       "We extend your existing systems with tools that let you act directly on that information, rather than moving between systems and completing each step manually.",
-      "This can turn a time-consuming, multi-step process into a much simpler and faster workflow.",
+      // "This can turn a time-consuming, multi-step process into a much simpler and faster workflow.",
     ],
     diagram: <ActDiagram />,
     bg: "bg-story-act",
@@ -49,7 +49,6 @@ export function Story() {
             "flex flex-col items-center gap-8",
             "border-t border-faint-accent",
             "px-4 py-8",
-            // "text-center",
             "lg:px-12",
             section.bg,
           )}
@@ -70,14 +69,17 @@ export function Story() {
             {section.title}
           </h2>
 
-          <div className="flex max-w-2xl min-w-0 flex-col gap-6 text-subtle">
-            {section.paragraphs.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
+          <div className="flex gap-6 max-w-[600px] mx-auto px-6">
+            <div className="vertical-line rounded w-0.5 bg-accent/75" />
+            <div className="flex flex-col py-1 gap-4 text-subtle">
+              {section.paragraphs.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+            </div>
           </div>
 
           {section.diagram && (
-            <div className="w-full my-8 max-w-[640px]">{section.diagram}</div>
+            <div className="w-full my-8 max-w-[600px]">{section.diagram}</div>
           )}
         </section>
       ))}

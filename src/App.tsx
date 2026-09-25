@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Nav, Hero, Steps, Story, Footer } from "./components";
+import { Nav, Hero, Steps, Story, Demo, Footer } from "./components";
 import { AboutHero } from "./components/about/AboutHero";
 import { VisualizeDiagram } from "./components/diagrams/Visualize/VisualizeDiagram";
 import { ActDiagram } from "./components/diagrams/ActDiagram";
@@ -30,6 +30,7 @@ function App() {
           <Hero />
           <Steps />
           <Story />
+          <Demo />
         </>
       )}
 

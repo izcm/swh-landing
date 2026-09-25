@@ -1,5 +1,7 @@
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+
+import { RoundIconBtn } from "./RoundIconBtn";
 import { cn } from "../../lib/cn";
 
 type Props = {
@@ -32,7 +34,7 @@ export function Carosel({ items }: Props) {
     <div className="flex flex-col gap-4">
       <div
         className={cn(
-          "flex-1 self-center",
+          "flex-1 self-center rounded-sm overflow-hidden",
           direction === "right" && "in-from-right",
           direction === "left" && "in-from-left",
         )}
@@ -42,9 +44,9 @@ export function Carosel({ items }: Props) {
       </div>
 
       <div className="flex gap-6 items-center justify-evenly">
-        <NavButton onClick={prev} label="Previous">
+        <RoundIconBtn onClick={prev} label="Previous">
           <ArrowLeft className="size-5" strokeWidth={1.8} />
-        </NavButton>
+        </RoundIconBtn>
 
         <div className="flex gap-4">
           {items.map((item, i) => (
@@ -62,9 +64,9 @@ export function Carosel({ items }: Props) {
           ))}
         </div>
 
-        <NavButton onClick={next} label="Next">
+        <RoundIconBtn onClick={next} label="Next">
           <ArrowRight className="size-5" strokeWidth={1.8} />
-        </NavButton>
+        </RoundIconBtn>
       </div>
 
       <div className="flex self-center gap-3">
@@ -83,30 +85,5 @@ export function Carosel({ items }: Props) {
         ))}
       </div>
     </div>
-  );
-}
-
-type NavButtonProps = {
-  onClick: () => void;
-  label: string;
-  children: ReactNode;
-};
-
-function NavButton({ onClick, label, children }: NavButtonProps) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={label}
-      className="
-        grid size-10 shrink-0 place-items-center rounded-full
-        border border-accent/60 bg-ground text-accent
-        transition-colors hover:bg-accent/10 active:bg-accent/20
-        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent
-        touch-manipulation
-      "
-    >
-      {children}
-    </button>
   );
 }

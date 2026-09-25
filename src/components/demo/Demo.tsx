@@ -2,6 +2,8 @@ import { IconLink } from "@a2zb/react";
 import { ExternalLink, FileText, Mail, Users } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { Carosel } from "./Carosel";
+import { LightBox } from "./LightBox";
+import { useState } from "react";
 
 const features = [
   {
@@ -19,6 +21,18 @@ const features = [
 ];
 
 export function Demo() {
+  const [openLightBox, setOpenLightBox] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  // const mediaItems = Array.from({ length: 3 }).map((_, i) => (
+  //           <img src={`hubben_${i + 1}.png`} />
+  //         ))}
+  const mediaItems = Array.from({ length: 3 }).map((_, i) => ({
+    type: "image" as const,
+    src: `hubben_${i + 1}.png`,
+    alt: "temporary alt",
+  }));
+
   return (
     <section
       className={cn(
@@ -41,8 +55,20 @@ export function Demo() {
       <div className="max-w-2xl">
         <Carosel
           items={Array.from({ length: 3 }).map((_, i) => (
-            <img src={`hubben_${i + 1}.png`} />
+            <img
+              src={`hubben_${i + 1}.png`}
+              onClick={() => {
+                setLightboxIndex(i);
+                setOpenLightBox(true);
+              }}
+            />
           ))}
+        />
+        <LightBox
+          items={mediaItems}
+          isOpen={openLightBox}
+          index={lightboxIndex}
+          onClose={() => setOpenLightBox(false)}
         />
       </div>
 

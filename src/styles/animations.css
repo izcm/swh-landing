@@ -93,14 +93,14 @@ section:target h2::before {
 @keyframes in-from-right {
   from {
     opacity: 0;
-    transform: translateX(16px);
+    transform: translateX(8px);
   }
 }
 
 @keyframes in-from-left {
   from {
     opacity: 0;
-    transform: translateX(-16px);
+    transform: translateX(-8px);
   }
 }
 

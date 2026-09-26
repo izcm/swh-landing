@@ -1,34 +1,34 @@
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { RoundIconBtn } from "./RoundIconBtn";
 import { cn } from "../../lib/cn";
+import { useSlides } from "../../lib/useSlides";
 
 type Props = {
   items: ReactNode[];
+
+  defaultIndex?: number; // where to start when uncontrolled
+
+  // pass if parent controls the index
+  index?: number;
+  onChange?: (i: number) => void;
 };
 
-export function Carosel({ items }: Props) {
-  const [index, setIndex] = useState<number>(0);
-  const [direction, setDirection] = useState<"left" | "right">("right");
+export function Carosel({
+  items,
+  index: indexProp,
+  defaultIndex,
+  onChange,
+}: Props) {
+  const { index, direction, prev, next, goTo } = useSlides({
+    count: items.length,
+    index: indexProp,
+    defaultIndex,
+    onChange,
+  });
 
   const current = items[index];
-
-  const prev = () => {
-    setDirection("left");
-    setIndex((index - 1 + items.length) % items.length);
-  };
-
-  const next = () => {
-    setDirection("right");
-    setIndex((index + 1) % items.length);
-  };
-
-  const goTo = (i: number) => {
-    if (i === index) return;
-    setDirection(i > index ? "right" : "left");
-    setIndex(i);
-  };
 
   return (
     <div className="flex flex-col gap-4">

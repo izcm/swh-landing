@@ -1,6 +1,7 @@
 import { Modal } from "@a2zb/react";
 import { RoundIconBtn } from "./RoundIconBtn";
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
+import { useSlides } from "../../lib/useSlides";
 
 type LightboxItem =
   | { type: "image"; src: string; title?: string; alt: string }
@@ -8,12 +9,30 @@ type LightboxItem =
 
 type Props = {
   items: LightboxItem[];
-  index: number;
+
+  defaultIndex?: number; // where to start when uncontrolled
   isOpen: boolean;
   onClose: () => void;
+
+  // pass if parent controls the index
+  index?: number;
+  onChange?: (i: number) => void;
 };
 
-export function LightBox({ items, index, isOpen, onClose }: Props) {
+export function LightBox({
+  items,
+  index: indexProp,
+  defaultIndex,
+  onChange,
+  isOpen,
+  onClose,
+}: Props) {
+  const { index, prev, next } = useSlides({
+    count: items.length,
+    index: indexProp,
+    defaultIndex,
+    onChange,
+  });
   const current = items[index];
 
   return (
@@ -32,7 +51,7 @@ export function LightBox({ items, index, isOpen, onClose }: Props) {
             "
         >
           <span className="text-lg">
-            {index} / {items.length}
+            {index + 1} / {items.length}
           </span>
 
           <RoundIconBtn
@@ -44,9 +63,15 @@ export function LightBox({ items, index, isOpen, onClose }: Props) {
           </RoundIconBtn>
         </div>
 
-        <div className="flex items-center justify-center gap-6 p-12 rounded h-full">
+        <div
+          className="
+            flex flex-wrap items-center justify-center 
+            gap-6 rounded h-full content-center
+            xl:flex-nowrap
+            "
+        >
           <RoundIconBtn
-            onClick={() => {}}
+            onClick={prev}
             label="Previous"
             className="size-12 border-transparent"
           >
@@ -57,14 +82,22 @@ export function LightBox({ items, index, isOpen, onClose }: Props) {
             <img
               src={current.src}
               alt={current.alt}
-              className="rounded-lg min-w-0 object-contain"
+              className="
+                rounded-lg  min-w-0 object-contain max-w-7xl
+                max-xl:order-first max-xl:basis-full
+
+                "
             />
           ) : (
-            <video src={current.src} controls className="rounded-lg min-w-0" />
+            <video
+              src={current.src}
+              controls
+              className="rounded-lg min-w-0 max-xl:order-first"
+            />
           )}
 
           <RoundIconBtn
-            onClick={() => {}}
+            onClick={next}
             label="Next"
             className="size-12 border-transparent"
           >

@@ -22,11 +22,8 @@ const features = [
 
 export function Demo() {
   const [openLightBox, setOpenLightBox] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [slideIndex, setSlideIndex] = useState(0);
 
-  // const mediaItems = Array.from({ length: 3 }).map((_, i) => (
-  //           <img src={`hubben_${i + 1}.png`} />
-  //         ))}
   const mediaItems = Array.from({ length: 3 }).map((_, i) => ({
     type: "image" as const,
     src: `hubben_${i + 1}.png`,
@@ -58,16 +55,19 @@ export function Demo() {
             <img
               src={`hubben_${i + 1}.png`}
               onClick={() => {
-                setLightboxIndex(i);
+                setSlideIndex(i);
                 setOpenLightBox(true);
               }}
             />
           ))}
+          index={slideIndex}
+          onChange={setSlideIndex}
         />
         <LightBox
           items={mediaItems}
           isOpen={openLightBox}
-          index={lightboxIndex}
+          index={slideIndex}
+          onChange={setSlideIndex}
           onClose={() => setOpenLightBox(false)}
         />
       </div>

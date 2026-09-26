@@ -60,7 +60,7 @@
 }
 
 @utility eyebrow {
-  @apply text-base font-medium text-accent tracking-wider;
+  @apply font-medium text-accent tracking-wider text-sm lg:text-base;
 }
 
 @utility border-faint-accent {

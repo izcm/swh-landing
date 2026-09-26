@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Nav, Hero, Steps, Story, Demo, Footer } from "./components";
-import { AboutHero } from "./components/about/AboutHero";
+import { About } from "./components/about/About";
 import { ActDiagram } from "./components/diagrams/ActDiagram";
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
 
       {tab === "about" && (
         <>
-          <AboutHero />
+          <About />
         </>
       )}
 

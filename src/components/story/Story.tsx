@@ -56,13 +56,11 @@ export function Story() {
           id={`story-${i}`}
         >
           <div className="flex w-full items-center gap-6 self-start">
-            <span className="eyebrow text-sm lg:text-base">0{i + 1}</span>
+            <span className="eyebrow">0{i + 1}</span>
 
             <div className="horizontal-line bg-accent/40" />
 
-            <span className="eyebrow text-sm lg:text-base">
-              {section.eyebrow}
-            </span>
+            <span className="eyebrow">{section.eyebrow}</span>
           </div>
 
           <h2 className={cn("text-2xl text-fg", "lg:text-3xl")}>

@@ -54,9 +54,10 @@ export function Demo() {
           items={Array.from({ length: 3 }).map((_, i) => (
             <img
               src={`hubben_${i + 1}.png`}
+              // the same img is used as a thumbnail — only the current
+              // slide opens the lightbox, others just navigate
               onClick={() => {
-                setSlideIndex(i);
-                setOpenLightBox(true);
+                if (i === slideIndex) setOpenLightBox(true);
               }}
             />
           ))}

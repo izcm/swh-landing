@@ -11,8 +11,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@a2zb/react": "workspace:*",
-    "@a2zb/styles": "workspace:*",
+    "@a2zb/react": "0.100.0-reset",
+    "@a2zb/styles": "0.100.0-reset",
     "clsx": "^2.1.1",
     "lucide-react": "^1.41.0",
     "react": "^19.2.8",

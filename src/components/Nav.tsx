@@ -11,16 +11,22 @@ export default function Nav({ tabs }: { tabs: NavTab[] }) {
       </div>
 
       <header className="flex items-center justify-between gap-8 my-3 px-8">
-        <span className="flex-1 text-lg font-semibold tracking-wide text-fg">
-          SWH
+        <span className="flex-1">
+          <a href="#" className="text-lg font-semibold tracking-wide text-fg">
+            SWH
+          </a>
         </span>
-        {/* <nav className="items-center gap-8 text-sm text-subtle flex">
+
         {tabs.map((tab) => (
-          <a key={tab.hash} href={`#${tab.hash}`} className="hover:text-fg">
+          <a
+            key={tab.hash}
+            href={`#${tab.hash}`}
+            className="btn btn-menu text-fg text-sm"
+          >
             {tab.label}
           </a>
         ))}
-      </nav> */}
+
         <a href="#demo" className="btn btn-menu text-fg text-sm">
           Live Demo
         </a>

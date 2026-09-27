@@ -1,157 +1,92 @@
-import {
-  ArrowUpRight,
-  Code,
-  Database,
-  ExternalLink,
-  Eye,
-  Layers,
-  Link,
-  Lock,
-  Server,
-  Shield,
-} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { ArrowRight, Layers, Package } from "lucide-react";
 
 import { IconLink } from "@a2zb/react";
 
-import { cn } from "../../lib/cn";
+import { Section } from "./Section";
 
-const tools = [
-  { icon: Code, title: "TypeScript", items: ["Next.js, React"] },
-  { icon: Database, title: "PostgreSQL", items: ["Drizzle"] },
-  {
-    icon: Lock,
-    title: "Authentication",
-    items: ["OIDC, OAuth2", "Microsoft Entra ID"],
-  },
-  {
-    icon: Link,
-    title: "Integrations",
-    items: ["REST APIs, Webhooks", "Background workers"],
-  },
-  {
-    icon: Server,
-    title: "Infrastructure",
-    items: ["Vercel, Railway, Docker"],
-  },
-  {
-    icon: Layers,
-    title: "Architecture",
-    items: ["Modular monorepo", "Reusable packages"],
-  },
-  {
-    icon: Shield,
-    title: "Testing & quality",
-    items: ["Vitest, E2E tests", "Type-safe APIs"],
-  },
-  {
-    icon: Eye,
-    title: "Tooling",
-    items: ["ESLint, Prettier", "pnpm, GitHub Actions"],
-  },
+const technologies = [
+  "TypeScript",
+  "React / Next.js",
+  "Node.js",
+  "PostgreSQL",
+  "Drizzle",
+  "Mongo",
+  "Docker",
+  "Vercel / Railway",
+  "OIDC Auth",
+  "OAuth2",
 ];
 
 // todo: real repo urls
 const GITHUB_URL = "#";
 
 const packages = [
-  {
-    name: "@swh/auth",
-    description: "Authentication and session handling",
-    href: GITHUB_URL,
-  },
-  {
-    name: "@swh/db",
-    description: "Database utilities and models",
-    href: GITHUB_URL,
-  },
-  {
-    name: "@swh/notifications",
-    description: "Email and in-app notifications",
-    href: GITHUB_URL,
-  },
-  {
-    name: "@swh/react",
-    description: "Shared UI components and patterns",
-    href: GITHUB_URL,
-  },
+  "@a2zb/auth",
+  "@a2zb/db",
+  "@a2zb/notifications",
+  "@a2zb/react",
 ];
 
-export function Toolbox({ className }: { className?: string }) {
+export function Toolbox() {
   return (
-    <div className={cn("flex flex-col gap-10", className)}>
-      <Tools />
-      <Packages />
-    </div>
-  );
-}
-
-function Tools() {
-  return (
-    <ul className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-      {tools.map(({ icon: Icon, title, items }) => (
-        <li
-          key={title}
-          className="flex gap-4 rounded-lg border border-faint-accent bg-raised/40 p-4"
-        >
-          <Icon className="size-6 shrink-0 text-accent" strokeWidth={1.6} />
-
-          <div className="flex flex-col gap-1">
-            <h3 className="text-sm text-fg">{title}</h3>
-            {items.map((item) => (
-              <span key={item} className="text-sm text-subtle">
-                {item}
-              </span>
-            ))}
-          </div>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function Packages() {
-  return (
-    <div className="flex flex-col items-center gap-6">
-      <p className="max-w-md text-center text-sm text-subtle">
-        I maintain a set of internal packages to make it easier to build and
-        integrate systems. These are used across my own projects and client
-        work.
+    <Section index="03" eyebrow="Toolbox">
+      <h2 className="text-3xl text-fg">What I build with</h2>
+      <p className="mt-5 max-w-xl text-sm text-subtle">
+        My toolbox combines the technologies I work with most often with
+        reusable libraries and components I've built across projects.
       </p>
 
-      <ul className="grid w-full gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-        {packages.map(({ name, description, href }) => (
-          <li key={name}>
-            <a
-              href={href}
-              target="_blank"
-              rel="noreferrer"
-              className="
-                group flex h-full flex-col gap-2 rounded-lg p-4
-                border border-faint-accent bg-raised/40
-                transition-colors hover:border-accent/60
-              "
-            >
-              <div className="flex items-start justify-between gap-3">
-                <span className="text-sm font-medium text-accent">{name}</span>
-                <ExternalLink
-                  className="size-4 shrink-0 text-subtle transition-colors group-hover:text-accent"
-                  strokeWidth={1.6}
-                />
-              </div>
-              <span className="text-sm text-subtle">{description}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <Panel icon={Layers} title="Core technologies">
+          {technologies.map((t) => (
+            <Chip key={t}>{t}</Chip>
+          ))}
+        </Panel>
 
-      <IconLink
-        href={GITHUB_URL}
-        external
-        className="btn-secondary rounded-lg gap-2"
-        icon={<ArrowUpRight className="size-4" strokeWidth={1.6} />}
-      >
-        View packages on GitHub
-      </IconLink>
+        <Panel icon={Package} title="My packages (@swh)">
+          {packages.map((p) => (
+            <Chip key={p}>{p}</Chip>
+          ))}
+          <IconLink
+            href={GITHUB_URL}
+            external
+            // chip-sized for mouse users; touch keeps .btn's min-h-10 tap target
+            className="btn btn-secondary text-accent  bg-transparent gap-2 px-3 py-1.5 text-xs pointer-fine:min-h-0"
+            icon={<ArrowRight className="size-4" strokeWidth={1.6} />}
+          >
+            View on GitHub
+          </IconLink>
+        </Panel>
+      </div>
+    </Section>
+  );
+}
+
+function Panel({
+  icon: Icon,
+  title,
+  children,
+}: {
+  icon: LucideIcon;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-lg border border-faint-accent bg-raised/40 p-5">
+      <div className="flex items-center gap-3">
+        <Icon className="size-6 text-accent" strokeWidth={1.4} />
+        <h3 className="text-sm text-fg">{title}</h3>
+      </div>
+      <div className="mt-5 flex flex-wrap items-center gap-2">{children}</div>
     </div>
+  );
+}
+
+function Chip({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="rounded border border-faint-accent px-3 py-1.5 text-xs text-subtle">
+      {children}
+    </span>
   );
 }

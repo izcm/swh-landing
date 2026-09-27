@@ -5,8 +5,7 @@ import { ActDiagram } from "./components/diagrams/ActDiagram";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
-    // location.hash === "#about" ? "about" : "story",
-    "story",
+    location.hash === "#about" ? "about" : "story",
   );
 
   useEffect(() => {
@@ -15,6 +14,14 @@ function App() {
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
+
+  // the hash target (e.g. #demo) only exists once the tab has rendered,
+  // so the browser's native anchor jump misses it — scroll manually
+  useEffect(() => {
+    const target = location.hash && document.getElementById(location.hash.slice(1));
+    if (target) target.scrollIntoView();
+    else window.scrollTo(0, 0);
+  }, [tab]);
 
   return (
     <>

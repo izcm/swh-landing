@@ -31,11 +31,11 @@ export function VisualizeDiagram() {
     const stackHeight = height + offset * (count - 1);
     const endX = width + outerPadding + offset * (count - 1);
 
-    const { translateY, centerY, resolvedCenterY } = centerInParent(
-      contentHeight,
-      stackHeight,
-      outerPadding,
-    );
+    const {
+      translateY,
+      relativeCenterY: centerY,
+      absoluteCenterY: resolvedCenterY,
+    } = centerInParent(contentHeight, stackHeight, outerPadding);
 
     return {
       width,

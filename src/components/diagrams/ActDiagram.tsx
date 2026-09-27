@@ -64,7 +64,7 @@ export function ActDiagram() {
     const width = contentWidth * 0.32;
     const height = contentHeight;
 
-    const { translateY, resolvedCenterY } = centerInParent(
+    const { translateY, absoluteCenterY: resolvedCenterY } = centerInParent(
       contentHeight,
       height,
       outerPadding,
@@ -84,7 +84,7 @@ export function ActDiagram() {
 
     const startX = viewboxWidth - outerPadding - width;
 
-    const { translateY, resolvedCenterY } = centerInParent(
+    const { translateY, absoluteCenterY: resolvedCenterY } = centerInParent(
       contentHeight,
       height,
       outerPadding,

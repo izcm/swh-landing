@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Nav, Hero, Steps, Story, Demo, Footer } from "./components";
 import { About } from "./components/about/About";
 import { ActDiagram } from "./components/diagrams/ActDiagram";
-import { AISvg } from "./components/diagrams/about/AI";
+import { AISvg, CodeEditor } from "./components/diagrams/about/AI";
+// import { AISvg } from "./components/diagrams/about/AI";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
@@ -29,6 +30,7 @@ function App() {
   return (
     <>
       <Nav
+        current={tab}
         tabs={[
           { label: "Story", hash: "" },
           { label: "About", hash: "about" },
@@ -51,7 +53,10 @@ function App() {
 
       {tab === "tmp" && (
         <>
-          <AISvg />
+          <div className="w-full h-auto">
+            {/* <CodeEditor /> */}
+            <AISvg />
+          </div>
           {/* <ConnectDiagram /> */}
         </>
       )}

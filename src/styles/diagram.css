@@ -18,6 +18,7 @@
 
   /* --node-color: var(--ground); */
   --node-color: color-mix(in oklab, var(--raised), var(--ground) 40%);
+  --node-color-deep: color-mix(in oklab, var(--node-color), var(--ground) 80%);
   --node-border-color: color-mix(in oklab, #335976, var(--accent) 40%);
   --node-border-color-faint: color-mix(
     in oklab,

@@ -1,3 +1,4 @@
+import { AISvg } from "../diagrams/about/AI";
 import { Philosophy } from "./Philosophy";
 import { Section, SvgPlaceholder } from "./Section";
 import { Toolbox } from "./Toolbox";
@@ -59,7 +60,7 @@ function AiUsage() {
           </div>
         </div>
 
-        <SvgPlaceholder label="ai svg" className="h-56" />
+        <AISvg />
       </div>
     </Section>
   );

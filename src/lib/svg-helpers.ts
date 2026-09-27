@@ -60,10 +60,10 @@ export function centerInParent(
   parentOffset = 0,
 ) {
   const translateY = (parentHeight - itemHeight) / 2;
-  const centerY = itemHeight / 2;
-  const resolvedCenterY = centerY + translateY + parentOffset;
+  const relativeCenterY = itemHeight / 2;
+  const absoluteCenterY = relativeCenterY + translateY + parentOffset;
 
-  return { translateY, centerY, resolvedCenterY };
+  return { translateY, relativeCenterY, absoluteCenterY };
 }
 
 // Lucide icons are drawn on a fixed 0 0 24 24 viewBox; the `size` prop

@@ -3,22 +3,30 @@ export function AISvg() {
   const viewboxHeight = 400;
 
   const unit = viewboxHeight / 12;
-  const outerPadding = unit;
+  const outerPadding = unit / 2;
 
   const contentHeight = viewboxHeight - outerPadding * 2;
   const contentWidth = viewboxWidth - outerPadding * 2;
 
   // preserve CodeEditor's 300:200 aspect ratio
   const editorBox = (() => {
-    const width = contentWidth * 0.75;
-    const height = width * (200 / 300);
-
+    const width = contentWidth * 0.8;
     const skew = 10;
 
     const skewSlope = Math.tan((skew * Math.PI) / 180);
-    const addedHeight = width * skewSlope;
 
-    const resolvedHeight = height + addedHeight;
+    const itemCount = 3;
+    const gapX = 45;
+    const gapY = (gapX * 2) / 3;
+
+    const itemWidth = width - gapX * (itemCount - 1);
+    const itemHeight = (itemWidth * 2) / 3;
+
+    // highest point: back editor's top-right corner from origin (a distance thats why we add it to bottom)
+    const topLift = itemWidth * skewSlope;
+    // // lowest point: front editor's bottom-left corner
+    const bottom = itemHeight + (itemCount - 1) * (gapY - gapX * skewSlope);
+    const resolvedHeight = topLift + bottom;
 
     const { translateY, absoluteCenterY: resolvedCenterY } = centerInParent(
       contentHeight,
@@ -27,12 +35,15 @@ export function AISvg() {
     );
 
     return {
+      // whole stack, as it sits in the content area after skewing
       width,
-      height,
-      skew,
-      addedHeight,
+      resolvedHeight,
       translateY,
       resolvedCenterY,
+
+      skew: { angle: skew, addedHeight: topLift },
+      stack: { count: itemCount, gapX, gapY },
+      item: { width: itemWidth, height: itemHeight },
     };
   })();
 
@@ -41,66 +52,64 @@ export function AISvg() {
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       className="w-full h-auto"
     >
+      {/* <rect
+        x={0}
+        y={0}
+        width={viewboxWidth}
+        height={viewboxHeight}
+        fill="none"
+        stroke="red"
+      /> */}
+
       <g transform={`translate(${outerPadding}, ${outerPadding})`}>
+        {/* debug: editor's skewed bounding box */}
+        {/* <rect
+          x={0}
+          y={editorBox.translateY}
+          width={editorBox.width}
+          height={editorBox.resolvedHeight}
+          fill="none"
+          stroke="red"
+        /> */}
+
         <g
-          transform={`translate(0, ${editorBox.translateY + editorBox.addedHeight}) skewY(${-editorBox.skew})`}
+          transform={`translate(0, ${editorBox.translateY + editorBox.skew.addedHeight}) skewY(${-editorBox.skew.angle})`}
         >
-          <g opacity={0.4}>
-            <CodeEditor
-              x={-60}
-              y={-60}
-              width={editorBox.width}
-              height={editorBox.height}
-            />
-          </g>
+          {/* drawn back to front: i = 0 is the furthest back, the last one is in front */}
+          {Array.from({ length: editorBox.stack.count }).map((_, i) => {
+            const { count, gapX, gapY } = editorBox.stack;
 
-          <g opacity={0.6}>
-            <CodeEditor
-              x={-30}
-              y={-30}
-              width={editorBox.width}
-              height={editorBox.height}
-            />
-          </g>
+            // 0 at the back → 1 at the front
+            const depth = count > 1 ? i / (count - 1) : 1;
+            const opacity = 0.4 + depth * 0.6;
 
-          <CodeEditor width={editorBox.width} height={editorBox.height} />
+            // only the front editor shows code
+            const isFront = i === count - 1;
+
+            return (
+              <g key={i} opacity={opacity}>
+                <EditorWindow
+                  x={i * gapX}
+                  y={i * gapY}
+                  width={editorBox.item.width}
+                  height={editorBox.item.height}
+                >
+                  {isFront && <EditorCode />}
+                </EditorWindow>
+              </g>
+            );
+          })}
         </g>
       </g>
     </svg>
   );
 }
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import { centerInParent, spaceBetween } from "../../../lib/svg-helpers";
 
-type CodeEditorProps = {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-};
-
-export function CodeEditor({
-  x = 0,
-  y = 0,
-  width = 300,
-  height = 200,
-}: CodeEditorProps) {
-  const [animation, setAnimation] = useState(0);
-
-  useEffect(() => {
-    let id: number;
-
-    function animate(time: number) {
-      setAnimation(Math.sin(time / 1000));
-      id = requestAnimationFrame(animate);
-    }
-
-    id = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(id);
-  }, []);
-
+// shared layout for EditorWindow and EditorCode, in the window's own 300×200 viewBox
+const editor = (() => {
   const viewboxWidth = 300;
   const viewboxHeight = 200;
 
@@ -116,35 +125,67 @@ export function CodeEditor({
   const contentWidth = viewboxWidth - inset * 2;
   const contentHeight = viewboxHeight - inset * 2;
 
-  const editorHeaderHeight = unit * 2;
-  const editorBottomHeight = unit * 1.5;
+  const headerHeight = unit * 2;
+  const bottomHeight = unit * 1.5;
 
-  const fontSize = 12;
+  return {
+    viewboxWidth,
+    viewboxHeight,
+    unit,
+    strokeWidth,
+    inset,
+    contentWidth,
+    contentHeight,
+    headerHeight,
+    bottomHeight,
+  };
+})();
 
-  const code = (() => {
-    const lineCount = 6;
-    const top = editorHeaderHeight;
-    const height = contentHeight - editorHeaderHeight - editorBottomHeight;
+// bright at the start, fading out to the right — used by the window dots and the code bars
+function AccentBarGradient({ id }: { id: string }) {
+  return (
+    <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop
+        offset="0%"
+        style={{
+          stopColor: "color-mix(in oklab, var(--accent) 50%, #1d4ed8)",
+        }}
+      />
 
-    const paddingX = unit;
-    const width = contentWidth - paddingX * 2;
+      <stop
+        offset="100%"
+        style={{
+          stopColor: "color-mix(in oklab, var(--accent) 75%, #1d4ed8)",
+        }}
+      />
+    </linearGradient>
+  );
+}
 
-    return {
-      lineCount,
-      height,
-      paddingX,
-      width,
-      translateY: top,
-    };
-  })();
+type EditorWindowProps = {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  children?: ReactNode;
+};
 
+// the editor frame: background, border and the three header dots.
+// children are drawn inside it, in the same 300×200 viewBox
+export function EditorWindow({
+  x = 0,
+  y = 0,
+  width = 300,
+  height = 200,
+  children,
+}: EditorWindowProps) {
   const gradientId = useId();
-  const barGradientId = `${gradientId}-bar`;
+  const dotGradientId = `${gradientId}-dot`;
 
   const nodeStyle = {
     fill: "var(--node-color-deep)",
     stroke: `url(#${gradientId})`,
-    strokeWidth,
+    strokeWidth: editor.strokeWidth,
   };
 
   return (
@@ -153,7 +194,7 @@ export function CodeEditor({
       y={y}
       width={width}
       height={height}
-      viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
+      viewBox={`0 0 ${editor.viewboxWidth} ${editor.viewboxHeight}`}
       overflow="visible"
     >
       <defs>
@@ -177,138 +218,164 @@ export function CodeEditor({
           <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.35" />
         </linearGradient>
 
-        {/* code bars: bright at the start, fading out to the right */}
-        <linearGradient id={barGradientId} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop
-            offset="0%"
-            style={{
-              stopColor: "color-mix(in oklab, var(--accent) 50%, #1d4ed8)",
-            }}
-          />
-
-          <stop
-            offset="100%"
-            style={{
-              stopColor: "color-mix(in oklab, var(--accent) 75%, #1d4ed8)",
-            }}
-          />
-        </linearGradient>
+        <AccentBarGradient id={dotGradientId} />
       </defs>
 
       {/* background */}
       <rect
-        x={inset}
-        y={inset}
-        width={contentWidth}
-        height={contentHeight}
+        x={editor.inset}
+        y={editor.inset}
+        width={editor.contentWidth}
+        height={editor.contentHeight}
         rx="var(--rx-node-md)"
         // filter="url(#tinyGlow)"
         {...nodeStyle}
       />
 
-      {/* straight lines have a zero-height bbox, so a bbox-based gradient stroke renders nothing */}
-      {/* <path
-        d={`M 0 ${contentHeight / 8}
-            H ${contentWidth}`}
-        {...nodeStyle}
-        stroke="var(--accent)"
-      /> */}
-
       {[0, 1, 2].map((i) => (
         <circle
           key={i}
           cx={12 + i * 12}
-          cy={contentHeight / 16}
+          cy={editor.contentHeight / 16}
           r={3}
-          fill={`url(#${barGradientId})`}
+          fill={`url(#${dotGradientId})`}
           opacity={1 - (i * 0.2 + 0.2)}
           filter="url(#tinyGlow)"
           // filter="drop-shadow(0 0 1px color-mix(in oklab, var(--accent) 35%, transparent))"
         />
       ))}
 
-      <g transform={`translate(${code.paddingX}, ${code.translateY})`}>
-        {Array.from({ length: code.lineCount }).map((_, i) => {
-          const y = spaceBetween(i, code.lineCount, fontSize, 0, code.height);
-
-          const maxFillPercent = 35 + ((i * 17) % 46);
-          const maxFill = code.width * (maxFillPercent / 100);
-
-          const fillPercent = 40 + ((i * 13) % 51);
-          const fillValue = maxFill * (fillPercent / 100);
-
-          const indent = i % 3 === 1 ? 8 : 0;
-          const tubeX = 24 + indent;
-
-          const normalScale = 1;
-          const movementAmount = 0.1;
-
-          const tubeScale = normalScale;
-          // i === 1 ? normalScale + animation * movementAmount : normalScale;
-
-          const normalOpacity = 0.8;
-          const opacityMovement = 0.1;
-
-          const tubeOpacity = normalOpacity + animation * opacityMovement;
-
-          return (
-            <g key={i}>
-              <text
-                x={0}
-                y={y}
-                dominantBaseline="hanging"
-                fill="var(--accent)"
-                fontSize={fontSize}
-                opacity={0.25 + (i % 2) * 0.2}
-                filter="url(#tinyGlow)"
-                // style={{ filter: "drop-shadow(2px 2px 5px var(--accent))" }}
-              >
-                {i + 1}
-              </text>
-
-              <g>
-                {/* tube / empty amount */}
-                <rect
-                  x={tubeX}
-                  y={y}
-                  width={maxFill - code.paddingX}
-                  height={6}
-                  rx={3}
-                  fill="var(--accent)"
-                  opacity={0.15}
-                />
-
-                {/* filled amount */}
-                <rect
-                  x={tubeX}
-                  y={y}
-                  width={fillValue}
-                  height={6}
-                  rx={3}
-                  fill={`url(#${barGradientId})`}
-                  style={{
-                    transform: `scaleX(${tubeScale})`,
-                    transformBox: "fill-box",
-                    transformOrigin: "left center",
-                  }}
-                  opacity={tubeOpacity}
-                  filter="url(#tinyGlow)"
-                />
-              </g>
-            </g>
-          );
-        })}
-      </g>
-
-      <path
-        d="H 0 100"
-        width={contentWidth}
-        height={contentHeight}
-        rx="var(--rx-node-md)"
-        {...nodeStyle}
-      />
-
-      {/* fake code */}
+      {children}
     </svg>
+  );
+}
+
+// fake code: line numbers + animated bars. meant to be a child of EditorWindow
+export function EditorCode() {
+  const [animation, setAnimation] = useState(0);
+
+  useEffect(() => {
+    let id: number;
+
+    function animate(time: number) {
+      setAnimation(Math.sin(time / 1000));
+      id = requestAnimationFrame(animate);
+    }
+
+    id = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  const barGradientId = useId();
+
+  const fontSize = 12;
+
+  const code = (() => {
+    const lineCount = 6;
+    const top = editor.headerHeight;
+    const height =
+      editor.contentHeight - editor.headerHeight - editor.bottomHeight;
+
+    const paddingX = editor.unit;
+    const width = editor.contentWidth - paddingX * 2;
+
+    return {
+      lineCount,
+      height,
+      paddingX,
+      width,
+      translateY: top,
+    };
+  })();
+
+  return (
+    <g transform={`translate(${code.paddingX}, ${code.translateY})`}>
+      <defs>
+        <AccentBarGradient id={barGradientId} />
+      </defs>
+
+      {Array.from({ length: code.lineCount }).map((_, i) => {
+        const y = spaceBetween(i, code.lineCount, fontSize, 0, code.height);
+
+        const maxFillPercent = 35 + ((i * 17) % 46);
+        const maxFill = code.width * (maxFillPercent / 100);
+
+        const fillPercent = 40 + ((i * 13) % 51);
+        const fillValue = maxFill * (fillPercent / 100);
+
+        const indent = i % 3 === 1 ? 8 : 0;
+        const tubeX = 24 + indent;
+
+        const normalScale = 1;
+        const movementAmount = 0.1;
+
+        const tubeScale = normalScale;
+        // i === 1 ? normalScale + animation * movementAmount : normalScale;
+
+        const normalOpacity = 0.8;
+        const opacityMovement = 0.1;
+
+        const tubeOpacity = normalOpacity + animation * opacityMovement;
+
+        return (
+          <g key={i}>
+            <text
+              x={0}
+              y={y}
+              dominantBaseline="hanging"
+              fill="var(--accent)"
+              fontSize={fontSize}
+              opacity={0.25 + (i % 2) * 0.2}
+              filter="url(#tinyGlow)"
+              // style={{ filter: "drop-shadow(2px 2px 5px var(--accent))" }}
+            >
+              {i + 1}
+            </text>
+
+            <g>
+              {/* tube / empty amount */}
+              <rect
+                x={tubeX}
+                y={y}
+                width={maxFill - code.paddingX}
+                height={6}
+                rx={3}
+                fill="var(--accent)"
+                opacity={0.15}
+              />
+
+              {/* filled amount */}
+              <rect
+                x={tubeX}
+                y={y}
+                width={fillValue}
+                height={6}
+                rx={3}
+                fill={`url(#${barGradientId})`}
+                style={{
+                  transform: `scaleX(${tubeScale})`,
+                  transformBox: "fill-box",
+                  transformOrigin: "left center",
+                }}
+                opacity={tubeOpacity}
+                filter="url(#tinyGlow)"
+              />
+            </g>
+          </g>
+        );
+      })}
+    </g>
+  );
+}
+
+type CodeEditorProps = Omit<EditorWindowProps, "children">;
+
+// window + fake code
+export function CodeEditor(props: CodeEditorProps) {
+  return (
+    <EditorWindow {...props}>
+      <EditorCode />
+    </EditorWindow>
   );
 }

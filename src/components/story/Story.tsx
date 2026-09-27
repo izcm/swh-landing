@@ -1,7 +1,7 @@
 import { cn } from "../../lib/cn";
 
 import { ConnectDiagram } from "../diagrams/ConnectDiagram";
-import { VisualizeDiagram } from "../diagrams/Visualize/VisualizeDiagram";
+import { VisualizeDiagram } from "../diagrams/visualize/VisualizeDiagram";
 import { ActDiagram } from "../diagrams/ActDiagram";
 
 const sections = [

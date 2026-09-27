@@ -15,15 +15,17 @@ export function Section({
   className?: string;
 }) {
   return (
-    <section className="border-b border-faint-accent px-6 py-12">
+    <section className="border-b border-faint-accent px-6 py-6">
       <div className={cn("mx-auto w-full max-w-5xl", className)}>
-        <div className="flex items-center gap-4 text-xs tracking-wider text-accent">
-          <span>{index}</span>
-          <span className="h-px flex-1 bg-accent-muted/30" />
-          <span className="uppercase">{eyebrow}</span>
+        <div className="flex w-full items-center gap-6 self-start">
+          <span className="eyebrow">{index}</span>
+
+          <div className="horizontal-line bg-accent/40" />
+
+          <span className="eyebrow shrink-0">{eyebrow.toUpperCase()}</span>
         </div>
 
-        <div className="mt-10">{children}</div>
+        <div className="mt-6">{children}</div>
       </div>
     </section>
   );

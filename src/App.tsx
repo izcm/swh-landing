@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { Nav, Hero, Steps, Story, Demo, Footer } from "./components";
 import { About } from "./components/about/About";
 import { ActDiagram } from "./components/diagrams/ActDiagram";
+import { AISvg } from "./components/diagrams/about/AI";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
+    // "tmp",
     location.hash === "#about" ? "about" : "story",
   );
 
@@ -18,7 +20,8 @@ function App() {
   // the hash target (e.g. #demo) only exists once the tab has rendered,
   // so the browser's native anchor jump misses it — scroll manually
   useEffect(() => {
-    const target = location.hash && document.getElementById(location.hash.slice(1));
+    const target =
+      location.hash && document.getElementById(location.hash.slice(1));
     if (target) target.scrollIntoView();
     else window.scrollTo(0, 0);
   }, [tab]);
@@ -48,7 +51,7 @@ function App() {
 
       {tab === "tmp" && (
         <>
-          <ActDiagram />
+          <AISvg />
           {/* <ConnectDiagram /> */}
         </>
       )}

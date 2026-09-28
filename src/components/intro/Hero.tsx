@@ -10,7 +10,7 @@ export default function Hero() {
     <section
       className={cn(
         "flex flex-col items-center",
-        "px-8 py-6 md:px-12",
+        "px-8 py-3 mt-6 md:px-12",
         "text-center gap-6",
       )}
     >
@@ -24,7 +24,7 @@ export default function Hero() {
         </p>
 
         <IconLink
-          href="#story-connect"
+          href="#story-0"
           icon={<ArrowRight size={16} />}
           className="btn-menu mt-3 gap-3 text-base text-accent"
         >
@@ -32,7 +32,7 @@ export default function Hero() {
         </IconLink>
       </div>
 
-      <div className="w-full py-6 max-w-[460px]">
+      <div className="w-full py-6 max-w-[420px]">
         <Map />
       </div>
     </section>

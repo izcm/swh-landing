@@ -38,7 +38,7 @@ export default function Steps() {
     <section
       className="
         grid grid-cols-1 min-[560px]:grid-cols-2 gap-4 p-3
-        lg:grid-cols-4 lg:p-6 mt-6
+        lg:grid-cols-4 lg:p-6
         "
     >
       {steps.map((step, i) => (
@@ -52,17 +52,17 @@ export default function Steps() {
         >
           <span
             className="
-              eyebrow font-semibold 
-              inline-flex items-center gap-6 
-              [&_svg]:size-8 [&_svg]:[stroke-width:1.6]
+              eyebrow font-semibold opacity-70
+              inline-flex items-center gap-4
+              [&_svg]:size-6 [&_svg]:[stroke-width:1.6]
             "
           >
             {step.icon}
             {step.n}
           </span>
-          <h3 className="mt-2 text-xl text-fg">{step.title}</h3>
+          <h3 className="mt-1 text-lg text-fg">{step.title}</h3>
           {step.body.split("\n").map((item) => (
-            <p className="mt-1 text-subtle flex-1">
+            <p className="flex-1 text-sm text-subtle">
               <>
                 {item} <br />
               </>
@@ -72,7 +72,7 @@ export default function Steps() {
           <a
             href={`#story-${i}`}
             aria-label={`Learn more about ${step.title}`}
-            className="btn btn-menu self-start mt-3"
+            className="btn btn-menu self-start mt-1"
           >
             <ArrowRight />
           </a>

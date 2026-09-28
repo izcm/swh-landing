@@ -49,6 +49,8 @@ export function Story() {
             "flex flex-col items-center gap-8",
             "border-t border-faint-accent",
             "px-4 py-8",
+            // anchor jumps stop below the sticky nav instead of hiding the eyebrow behind it
+            "scroll-mt-16",
             "lg:px-12",
             section.bg,
           )}

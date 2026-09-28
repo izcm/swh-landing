@@ -47,6 +47,46 @@ export function AISvg() {
     };
   })();
 
+  // AI suggestion panel, placed relative to the front editor (in the tilted group's coords)
+  const suggestionGradientId = useId();
+  const suggestion = (() => {
+    const { count, gapX, gapY } = editorBox.stack;
+    const front = { x: (count - 1) * gapX, y: (count - 1) * gapY };
+
+    // starts a quarter in from the front editor's left and sticks out past its right edge
+    const x = front.x + editorBox.item.width * 0.28;
+    const y = front.y + editorBox.item.height * 0.42;
+    const width = editorBox.item.width * 0.82;
+    const height = editorBox.item.height * 0.4;
+
+    const padding = height * 0.22;
+    const barHeight = 6;
+
+    // three suggested lines, spread over the panel's inner height
+    const lineShapes = [
+      { indent: 0, width: 0.72 },
+      { indent: 12, width: 0.42 },
+      { indent: 12, width: 0.3 },
+    ];
+    const innerWidth = width - padding * 2;
+    const lines = lineShapes.map((shape, i) => ({
+      indent: shape.indent,
+      width: innerWidth * shape.width,
+      y: spaceBetween(
+        i,
+        lineShapes.length,
+        barHeight,
+        y + padding,
+        y + height - padding,
+      ),
+    }));
+
+    // dashed wire from the panel's right edge out to a node
+    const node = { x: x + width + 40, y: y + height / 2 };
+
+    return { x, y, width, height, padding, barHeight, lines, node };
+  })();
+
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
@@ -81,24 +121,95 @@ export function AISvg() {
 
             // 0 at the back → 1 at the front
             const depth = count > 1 ? i / (count - 1) : 1;
-            const opacity = 0.4 + depth * 0.6;
+            // ghost panes are already see-through, so fade them less overall
+            // to keep their borders readable
+            const opacity = 0.6 + depth * 0.4;
 
             // only the front editor shows code
             const isFront = i === count - 1;
 
             return (
-              <g key={i} opacity={opacity}>
+              <g
+                key={i}
+                opacity={opacity}
+                // front: quiet halo to lift it off the rest. back: big faint haze, a bit out of focus
+                style={{
+                  filter: isFront ? accentGlow(4, 12) : accentGlow(2, 6),
+                }}
+              >
                 <EditorWindow
                   x={i * gapX}
                   y={i * gapY}
                   width={editorBox.item.width}
                   height={editorBox.item.height}
+                  ghost={!isFront}
                 >
                   {isFront && <EditorCode />}
                 </EditorWindow>
               </g>
             );
           })}
+
+          {/* AI suggestion: glass panel over the front editor's lower right, wired out to a node */}
+          <g>
+            <rect
+              x={suggestion.x}
+              y={suggestion.y}
+              width={suggestion.width}
+              height={suggestion.height}
+              rx="var(--rx-node-md)"
+              fill="oklch(from var(--accent) 0.18 0.06 h)"
+              fillOpacity={0.8}
+              stroke="color-mix(in oklab, var(--accent) 40%, transparent)"
+              strokeWidth={0.8}
+              style={{ filter: accentGlow(6, 18) }}
+            />
+
+            <defs>
+              <AccentBarGradient id={suggestionGradientId} />
+            </defs>
+
+            {suggestion.lines.map((line, i) => (
+              <rect
+                key={i}
+                x={suggestion.x + suggestion.padding + line.indent}
+                y={line.y}
+                width={line.width}
+                height={suggestion.barHeight}
+                rx={suggestion.barHeight / 2}
+                fill={`url(#${suggestionGradientId})`}
+                style={{
+                  filter:
+                    "drop-shadow(0 0 2.5px color-mix(in oklab, var(--accent) 45%, transparent))",
+                }}
+              />
+            ))}
+
+            <line
+              x1={suggestion.x + suggestion.width}
+              y1={suggestion.node.y}
+              x2={suggestion.node.x}
+              y2={suggestion.node.y}
+              stroke="var(--accent)"
+              strokeWidth={1}
+              strokeDasharray="3 4"
+              opacity={0.6}
+            />
+
+            {/* node: a small diamond */}
+            <rect
+              x={suggestion.node.x - 4}
+              y={suggestion.node.y - 4}
+              width={8}
+              height={8}
+              transform={`rotate(45 ${suggestion.node.x} ${suggestion.node.y})`}
+              fill="var(--accent)"
+              style={{
+                filter:
+                  "drop-shadow(0 0 4px color-mix(in oklab, var(--accent) 65%, transparent))",
+              }}
+            />
+          </g>
         </g>
       </g>
     </svg>
@@ -162,11 +273,19 @@ function AccentBarGradient({ id }: { id: string }) {
   );
 }
 
+// soft accent glow, same recipe as the suggestion panel's bars
+// glow colour: the accent's own hue, kept saturated (oklch chroma 0.12) at mid lightness. plain --accent is
+// light enough that a soft halo of it reads as white-ish mist on the dark background
+const accentGlow = (blur: number, strength: number) =>
+  `drop-shadow(0 0 ${blur}px oklch(from var(--accent) 0.55 0.12 h / ${strength}%))`;
+
 type EditorWindowProps = {
   x?: number;
   y?: number;
   width?: number;
   height?: number;
+  // see-through, slightly lighter "glass" pane for editors in the background
+  ghost?: boolean;
   children?: ReactNode;
 };
 
@@ -177,13 +296,18 @@ export function EditorWindow({
   y = 0,
   width = 300,
   height = 200,
+  ghost = false,
   children,
 }: EditorWindowProps) {
   const gradientId = useId();
   const dotGradientId = `${gradientId}-dot`;
 
   const nodeStyle = {
-    fill: "var(--node-color-deep)",
+    // ghost: tinted toward the accent and mostly transparent, so what's behind shows through
+    fill: ghost
+      ? "oklch(from var(--accent) 0.18 0.06 h)"
+      : "var(--node-color-deep)",
+    fillOpacity: ghost ? 0.3 : 1,
     stroke: `url(#${gradientId})`,
     strokeWidth: editor.strokeWidth,
   };
@@ -235,12 +359,12 @@ export function EditorWindow({
       {[0, 1, 2].map((i) => (
         <circle
           key={i}
-          cx={12 + i * 12}
+          cx={12 + i * 14}
           cy={editor.contentHeight / 16}
           r={3}
           fill={`url(#${dotGradientId})`}
           opacity={1 - (i * 0.2 + 0.2)}
-          filter="url(#tinyGlow)"
+          style={{ filter: accentGlow(2, 45) }}
           // filter="drop-shadow(0 0 1px color-mix(in oklab, var(--accent) 35%, transparent))"
         />
       ))}
@@ -306,6 +430,22 @@ export function EditorCode() {
 
         const indent = i % 3 === 1 ? 8 : 0;
         const tubeX = 24 + indent;
+        const tubeWidth = maxFill - code.paddingX;
+
+        // short lines get a second bar after them (two "tokens" on one line).
+        // when there are two, the first is always fully filled
+        const hasSecond = tubeWidth < code.width * 0.45;
+        const firstFill = hasSecond ? tubeWidth : fillValue;
+        const second = (() => {
+          if (!hasSecond) return null;
+          const gap = 8;
+          const width = code.width * (0.18 + ((i * 11) % 20) / 100);
+          return {
+            x: tubeX + tubeWidth + gap,
+            width,
+            fill: width * (fillPercent / 100),
+          };
+        })();
 
         const normalScale = 1;
         const movementAmount = 0.1;
@@ -322,8 +462,9 @@ export function EditorCode() {
           <g key={i}>
             <text
               x={0}
-              y={y}
-              dominantBaseline="hanging"
+              // centred on the bar (bars are 6 high, so their middle is y + 3)
+              y={y + 3}
+              dominantBaseline="central"
               fill="var(--accent)"
               fontSize={fontSize}
               opacity={0.25 + (i % 2) * 0.2}
@@ -338,7 +479,7 @@ export function EditorCode() {
               <rect
                 x={tubeX}
                 y={y}
-                width={maxFill - code.paddingX}
+                width={tubeWidth}
                 height={6}
                 rx={3}
                 fill="var(--accent)"
@@ -349,7 +490,7 @@ export function EditorCode() {
               <rect
                 x={tubeX}
                 y={y}
-                width={fillValue}
+                width={firstFill}
                 height={6}
                 rx={3}
                 fill={`url(#${barGradientId})`}
@@ -359,8 +500,31 @@ export function EditorCode() {
                   transformOrigin: "left center",
                 }}
                 opacity={tubeOpacity}
-                filter="url(#tinyGlow)"
               />
+
+              {/* second bar on short lines: its own tube + partial fill */}
+              {second && (
+                <>
+                  <rect
+                    x={second.x}
+                    y={y}
+                    width={second.width}
+                    height={6}
+                    rx={3}
+                    fill="var(--accent)"
+                    opacity={0.15}
+                  />
+                  <rect
+                    x={second.x}
+                    y={y}
+                    width={second.fill}
+                    height={6}
+                    rx={3}
+                    fill={`url(#${barGradientId})`}
+                    opacity={tubeOpacity}
+                  />
+                </>
+              )}
             </g>
           </g>
         );

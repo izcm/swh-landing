@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Nav, Hero, Steps, Story, Demo, Footer } from "./components";
 import { About } from "./components/about/About";
-import { ActDiagram } from "./components/diagrams/ActDiagram";
-import { AISvg, CodeEditor } from "./components/diagrams/about/AI";
+import { SoftwareDiagram } from "./components/diagrams/about/Software";
 // import { AISvg } from "./components/diagrams/about/AI";
 
 function App() {
@@ -52,19 +51,43 @@ function App() {
       )}
 
       {tab === "tmp" && (
-        <>
-          <div className="w-full h-auto">
-            {/* <CodeEditor /> */}
-            <AISvg />
-          </div>
-          {/* <ConnectDiagram /> */}
-        </>
+        <div className="w-full h-full flex-1">
+          <SoftwareDiagram />
+        </div>
       )}
 
       <div className="mt-auto">
         <Footer />
       </div>
     </>
+  );
+}
+
+function ScrollPlayground() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    function handleScroll() {
+      setScrollY(window.scrollY);
+      console.log(window.scrollY);
+    }
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return (
+    <div className="h-[200vh] pt-40">
+      <div
+        className="w-20 h-20 bg-blue-500"
+        style={{
+          transform: `translateY(${scrollY}px)`,
+        }}
+      />
+    </div>
   );
 }
 

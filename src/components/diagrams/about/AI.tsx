@@ -90,7 +90,7 @@ export function AISvg() {
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
-      className="w-full h-auto"
+      // className="w-full h-auto"
     >
       {/* <rect
         x={0}
@@ -217,7 +217,11 @@ export function AISvg() {
 }
 
 import { useEffect, useId, useState, type ReactNode } from "react";
-import { centerInParent, spaceBetween } from "../../../lib/svg-helpers";
+import {
+  accentGlow,
+  centerInParent,
+  spaceBetween,
+} from "../../../lib/svg-helpers";
 
 // shared layout for EditorWindow and EditorCode, in the window's own 300×200 viewBox
 const editor = (() => {
@@ -272,12 +276,6 @@ function AccentBarGradient({ id }: { id: string }) {
     </linearGradient>
   );
 }
-
-// soft accent glow, same recipe as the suggestion panel's bars
-// glow colour: the accent's own hue, kept saturated (oklch chroma 0.12) at mid lightness. plain --accent is
-// light enough that a soft halo of it reads as white-ish mist on the dark background
-const accentGlow = (blur: number, strength: number) =>
-  `drop-shadow(0 0 ${blur}px oklch(from var(--accent) 0.55 0.12 h / ${strength}%))`;
 
 type EditorWindowProps = {
   x?: number;

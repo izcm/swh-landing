@@ -111,3 +111,6 @@ section:target h2::before {
 .in-from-left {
   animation: in-from-left 180ms ease-out;
 }
+
+@media (prefers-reduced-motion: reduce) {
+}

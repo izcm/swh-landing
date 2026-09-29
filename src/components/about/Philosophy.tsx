@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { ArrowRight, Box, LayoutGrid, Settings } from "lucide-react";
 
 import { Section, SvgPlaceholder } from "./Section";
+import { SoftwareDiagram } from "../diagrams/about/Software";
 
 const principles = [
   {
@@ -24,7 +25,7 @@ const principles = [
 export function Philosophy() {
   return (
     <Section index="01" eyebrow="Building philosophy">
-      <div className="grid items-center gap-8 md:grid-cols-[1fr_1fr]">
+      <div className="grid gap-8 md:grid-cols-[1fr_1fr]">
         <div>
           <h2 className="text-3xl text-fg">
             How I approach <span className="text-accent">software</span>
@@ -36,7 +37,7 @@ export function Philosophy() {
           </p>
         </div>
 
-        <SvgPlaceholder label="philosophy svg" className="h-40" />
+        <SoftwareDiagram />
       </div>
 
       <ul className="mt-10 grid gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-center">

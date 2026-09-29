@@ -44,45 +44,56 @@ export function Story() {
   return (
     <>
       {sections.map((section, i) => (
-        <section
-          className={cn(
-            "flex flex-col items-center gap-8",
-            "border-t border-faint-accent",
-            "px-4 py-8",
-            // anchor jumps stop below the sticky nav instead of hiding the eyebrow behind it
-            "scroll-mt-16",
-            "lg:px-12",
-            section.bg,
-          )}
-          key={`story-${i}`}
-          id={`story-${i}`}
-        >
-          <div className="flex w-full items-center gap-6 self-start">
-            <span className="eyebrow">0{i + 1}</span>
-
-            <div className="horizontal-line bg-accent/40" />
-
-            <span className="eyebrow">{section.eyebrow}</span>
-          </div>
-
-          <h2 className={cn("text-2xl text-fg", "lg:text-3xl")}>
-            {section.title}
-          </h2>
-
-          <div className="flex gap-6 max-w-[600px] mx-auto px-6">
-            <div className="vertical-line rounded w-0.5 bg-accent/75" />
-            <div className="flex flex-col py-1 gap-4 text-subtle">
-              {section.paragraphs.map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-            </div>
-          </div>
-
-          {section.diagram && (
-            <div className="w-full my-8 max-w-[600px]">{section.diagram}</div>
-          )}
-        </section>
+        <StorySection key={`story-${i}`} index={i} section={section} />
       ))}
     </>
+  );
+}
+
+function StorySection({
+  index,
+  section,
+}: {
+  index: number;
+  section: (typeof sections)[number];
+}) {
+  return (
+    <section
+      className={cn(
+        "flex flex-col items-center gap-8",
+        "border-t border-faint-accent",
+        "px-4 py-8",
+        // anchor jumps stop below the sticky nav instead of hiding the eyebrow behind it
+        "scroll-mt-16",
+        "lg:px-12",
+        section.bg,
+      )}
+      id={`story-${index}`}
+    >
+      <div className="flex w-full items-center gap-6 self-start">
+        <span className="eyebrow">0{index + 1}</span>
+
+        <div className="horizontal-line bg-accent/40" />
+
+        <span className="eyebrow">{section.eyebrow}</span>
+      </div>
+
+      <h2 className={cn("text-2xl text-fg", "lg:text-3xl")}>
+        {section.title}
+      </h2>
+
+      <div className="flex gap-6 max-w-[600px] mx-auto px-6">
+        <div className="vertical-line rounded w-0.5 bg-accent/75" />
+        <div className="flex flex-col py-1 gap-4 text-subtle">
+          {section.paragraphs.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
+        </div>
+      </div>
+
+      {section.diagram && (
+        <div className="w-full my-8 max-w-[600px]">{section.diagram}</div>
+      )}
+    </section>
   );
 }

@@ -40,7 +40,7 @@ export function About() {
 function AiUsage() {
   return (
     <Section index="02" eyebrow="AI">
-      <div className="grid items-center gap-8 md:grid-cols-[1fr_1fr]">
+      <div className="grid gap-8 md:grid-cols-[1fr_1fr]">
         <div>
           <h2 className="text-3xl text-fg">
             How I use <span className="text-accent">AI</span>

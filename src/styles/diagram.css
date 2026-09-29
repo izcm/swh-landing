@@ -72,3 +72,7 @@
     animation: none;
   }
 }
+
+:root {
+  --icon-scale: 1.25;
+}

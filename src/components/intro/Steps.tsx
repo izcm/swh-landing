@@ -6,6 +6,8 @@ import {
   Zap,
 } from "lucide-react";
 
+import { Reveal } from "../Reveal";
+
 const steps = [
   {
     n: "01",
@@ -42,10 +44,12 @@ export default function Steps() {
         "
     >
       {steps.map((step, i) => (
-        <div
+        <Reveal
           key={step.n}
+          // cards come in one after another
+          delay={i * 80}
           className="
-              flex flex-col 
+              flex flex-col
               gap-2 rounded-lg p-4
               border border-accent-muted/20 bg-raised/40
             "
@@ -76,7 +80,7 @@ export default function Steps() {
           >
             <ArrowRight />
           </a>
-        </div>
+        </Reveal>
       ))}
     </section>
   );

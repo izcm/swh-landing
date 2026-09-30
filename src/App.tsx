@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Nav, Hero, Steps, Story, Demo, Footer } from "./components";
 import { About } from "./components/about/About";
 import { SoftwareDiagram } from "./components/diagrams/about/software/diagram";
-import { Platform } from "./components/diagrams/about/software/Platform";
+import { RoundedIsoCube } from "./components/diagrams/about/software/RoundedIsoCube";
 // import { AISvg } from "./components/diagrams/about/ai/diagram";
 
 function App() {

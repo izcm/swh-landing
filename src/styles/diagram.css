@@ -62,13 +62,52 @@
   }
 }
 
+/* floating cube: bobs up and down; its floor shadow shrinks + fades as it rises.
+   tune per element with --float-dist / --float-duration / --float-delay.
+   note: a CSS transform replaces the SVG transform attribute, so put this class
+   on a wrapper <g> that has no transform of its own */
+.float-bob {
+  animation: float-bob var(--float-duration, 4s) ease-in-out
+    var(--float-delay, 0s) infinite;
+}
+
+.float-shadow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: float-shadow 4s ease-in-out infinite;
+}
+
+@keyframes float-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(var(--float-dist, -6px));
+  }
+}
+
+@keyframes float-shadow {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.85);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pulse {
     animation: none;
     opacity: 0;
   }
 
-  .accent-dot {
+  .accent-dot,
+  .float-bob,
+  .float-shadow {
     animation: none;
   }
 }

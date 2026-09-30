@@ -1,9 +1,14 @@
 import { useId } from "react";
+import { EdgeGradient } from "./EdgeGradient";
 import { accentGlow, type Point } from "./helpers";
 
 // angle = how steep the top edges slope from horizontal, in degrees.
 // 30 is true isometric; smaller = flatter top, bigger = steeper top
-export const isoCubeMetrics = (size: number, thickness?: number, angle = 30) => {
+export const isoCubeMetrics = (
+  size: number,
+  thickness?: number,
+  angle = 30,
+) => {
   const half = size / 2;
   const radians = (angle * Math.PI) / 180;
 
@@ -11,7 +16,31 @@ export const isoCubeMetrics = (size: number, thickness?: number, angle = 30) => 
   const edgeLength = half / Math.cos(radians); // the top edge itself (hypotenuse)
   const height = depth * 2 + (thickness ?? edgeLength); // top diamond + walls
 
-  return { size, depth, edgeLength, height };
+  // return for convenience
+  const finalThickness = thickness ?? size;
+
+  return { size, depth, edgeLength, height, thickness: finalThickness };
+};
+
+// anything iso-shaped (one cube or a group of them): width across, full height,
+// and how far its top / bottom diamond drops. isoCubeMetrics returns this shape
+type IsoBox = { size: number; height: number; depth: number };
+
+// centers of the top and bottom diamonds, measured from the box's top-left (its x/y)
+export const isoTopCenter = (box: IsoBox): Point => ({
+  x: box.size / 2,
+  y: box.depth,
+});
+
+export const isoBottomCenter = (box: IsoBox): Point => ({
+  x: box.size / 2,
+  y: box.height - box.depth,
+});
+
+// the x/y to give `box` so its bottom center stands on `point`
+export const standOn = (point: Point, box: IsoBox): Point => {
+  const bottom = isoBottomCenter(box);
+  return { x: point.x - bottom.x, y: point.y - bottom.y };
 };
 
 // the 8 corners of an iso box, in the 100-wide box it's drawn in (scaled to size afterwards)
@@ -66,6 +95,10 @@ export type ISOCubeProps = {
   angle?: number;
   // the vertical edge where the left and right faces meet (topFront → bottomFront)
   showFrontEdge?: boolean;
+  // edge color. ISOCube defaults to its accent gradient when left out
+  stroke?: string;
+  // face color. defaults to the dark glass fill
+  fill?: string;
 };
 
 export function ISOCube({
@@ -78,8 +111,11 @@ export function ISOCube({
   thickness,
   angle = 30,
   showFrontEdge = true,
+  stroke,
+  fill = "oklch(from var(--accent) 0.18 0.06 h)",
 }: ISOCubeProps = {}) {
   const edgeGradientId = useId();
+  const edgeStroke = stroke ?? `url(#${edgeGradientId})`;
 
   const {
     scale,
@@ -97,14 +133,14 @@ export function ISOCube({
 
   // glass fill, same as the AI diagram's ghost editors
   const faceProps = {
-    fill: "oklch(from var(--accent) 0.18 0.06 h)",
+    fill,
     fillOpacity: surfaceOpacity,
-    stroke: `url(#${edgeGradientId})`,
+    stroke: edgeStroke,
     strokeWidth: 0.8,
   };
 
   const edgeProps = {
-    stroke: `url(#${edgeGradientId})`,
+    stroke: edgeStroke,
     strokeWidth: 0.4,
   };
 
@@ -115,26 +151,11 @@ export function ISOCube({
       style={{ filter: ghost ? accentGlow(2, 6) : accentGlow(4, 12) }}
     >
       <defs>
-        {/* EditorWindow's border gradient. userSpaceOnUse because straight
-            vertical lines have a zero-width bounding box */}
-        <linearGradient
+        <EdgeGradient
           id={edgeGradientId}
-          gradientUnits="userSpaceOnUse"
-          x1={0}
-          y1={0}
-          x2={100}
-          y2={depth * 2 + verticalHeight}
-        >
-          <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.5" />
-          <stop
-            offset="55%"
-            style={{
-              stopColor: "color-mix(in oklab, var(--accent) 70%, #1d4ed8)",
-            }}
-            stopOpacity="1"
-          />
-          <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.35" />
-        </linearGradient>
+          width={100}
+          height={depth * 2 + verticalHeight}
+        />
       </defs>
 
       {/* BACK EDGES — drawn first so the glass faces sit over them */}

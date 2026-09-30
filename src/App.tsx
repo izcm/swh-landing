@@ -6,8 +6,8 @@ import { SoftwareDiagram } from "./components/diagrams/about/software/diagram";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
-    "tmp",
-    // location.hash === "#about" ? "about" : "story",
+    // "tmp",
+    location.hash === "#about" ? "about" : "story",
   );
 
   useEffect(() => {

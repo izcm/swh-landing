@@ -82,20 +82,26 @@ export function SoftwareDiagram() {
 
     const platform = {
       thickness: unit / 2,
-      size: cubeGroup.width * 1.5,
+      width: cubeGroup.width * 1.5,
       height: isoCubeMetrics(cubeGroup.width * 1.5, unit / 2).height,
     };
 
-    const groupWidth = platform.size;
-    const groupHeight = platform.size;
+    const cubeGroupDepth = isoCubeMetrics(cubeGroup.width).depth;
+    const platformDepth = isoCubeMetrics(platform.width).depth;
+
+    const platformY = cubeGroup.height - cubeGroupDepth - platformDepth;
+
+    const groupWidth = platform.width;
+    const groupHeight = platformY + platform.height;
 
     // in bottomRight, after `platform`
-    const cubeOffsetX = (platform.size - cubeGroup.width) / 2;
+    const cubeOffsetX = (platform.width - cubeGroup.width) / 2;
 
     return {
       positions: positions.bottomRight,
       platform,
       cubeOffsetX,
+      platformY,
       cubeSize,
       cubeGroup,
       groupHeight,
@@ -171,17 +177,15 @@ export function SoftwareDiagram() {
           x={0}
           y={0}
           width={bottomRight.groupWidth}
-          height={bottomRight.cubeGroup.height}
+          height={bottomRight.groupHeight}
           fill="none"
           stroke="yellow"
         />
 
         {/* PLATFORM */}
-        <g
-          transform={`translate(0, ${bottomRight.cubeGroup.height - (bottomRight.platform.height / 4) * 3})`}
-        >
+        <g transform={`translate(0, ${bottomRight.platformY})`}>
           <Platform
-            size={bottomRight.platform.size}
+            size={bottomRight.platform.width}
             thickness={bottomRight.platform.thickness}
           />
         </g>

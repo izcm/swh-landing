@@ -5,12 +5,12 @@ import {
   isoTopCenter,
   standOn,
 } from "@/lib/svg/ISOCube";
-import { diagramLayout } from "@/lib/svg/helpers";
+import { diagramLayout, type Point } from "@/lib/svg/helpers";
 import { RoundedIsoCube } from "./RoundedIsoCube";
 
 export function SoftwareDiagram() {
-  const viewboxWidth = 600;
-  const viewboxHeight = 500;
+  const viewboxWidth = 500;
+  const viewboxHeight = 400;
 
   // the default cube dims / metrics
   const cubeSize = viewboxWidth / 8;
@@ -22,27 +22,11 @@ export function SoftwareDiagram() {
   const { contentX, contentY, contentWidth, contentHeight, unit } =
     diagramLayout(viewboxWidth, viewboxHeight, 0.5);
 
-  const groupSize = 180;
-  const connectorGutter = 55;
-
-  const positions = {
-    top: {
+  const top = (() => {
+    const positions = {
       x: contentX + contentWidth * 0.4,
       y: contentY,
-    },
-
-    bottomLeft: {
-      x: contentX + contentWidth * 0.1,
-      y: contentY + contentHeight - groupSize - connectorGutter,
-    },
-
-    bottomRight: {
-      x: contentX + contentWidth * 0.6,
-      y: contentY + contentHeight - groupSize - connectorGutter,
-    },
-  };
-
-  const top = (() => {
+    };
     // width = 2 cubes across. each cube's width is the long side of the
     // triangle you get by splitting its bottom diamond in half — that's cubeSize
     const groupWidth = cubeSize * 2;
@@ -53,7 +37,7 @@ export function SoftwareDiagram() {
     return {
       //   translateY,
       //   absoluteCenterY,
-      positions: positions.top,
+      positions,
       cubeSize,
       groupWidth,
       groupHeight,
@@ -63,7 +47,7 @@ export function SoftwareDiagram() {
   const bottomLeft = (() => {
     // one lg cube: width = size, height = top diamond + walls
     const bigCubeDim = {
-      size: 180,
+      size: 160,
       thickness: 100,
     };
 
@@ -84,7 +68,10 @@ export function SoftwareDiagram() {
     // and its confusing cuz this isnt hyst the corners in the cube
 
     return {
-      positions: positions.bottomLeft,
+      positions: {
+        x: contentX + 20,
+        y: contentY + contentHeight - groupHeight - contentHeight * 0.08,
+      },
       bigCube,
       groupWidth,
       groupHeight,
@@ -116,7 +103,10 @@ export function SoftwareDiagram() {
     const groupHeight = platformY + platform.height;
 
     return {
-      positions: positions.bottomRight,
+      positions: {
+        x: contentX + contentWidth - groupWidth,
+        y: contentY + contentHeight - groupHeight,
+      },
       platform,
       cubeOffsetX,
       platformY,
@@ -127,8 +117,118 @@ export function SoftwareDiagram() {
     };
   })();
 
+  // cubic bezier. c1 pulls the line out of `from`, c2 pulls it into `to`
+  function connector(from: Point, to: Point, c1: Point, c2: Point) {
+    return (
+      <path
+        d={`
+          M ${from.x} ${from.y}
+          C ${c1.x} ${c1.y}  ${c2.x} ${c2.y}  ${to.x} ${to.y}
+          `}
+        fill="none"
+        stroke="var(--accent)"
+        strokeWidth={1}
+      />
+    );
+  }
+
+  // all connectors ride one big ellipse, so together they read as one ring.
+  // ringSquash = ellipse height / width. center + squash fitted so every
+  // connector end sits roughly on the same ellipse
+  const ringCenter = {
+    x: contentX + contentWidth * 0.52,
+    y: contentY + contentHeight * 0.54,
+  };
+  const ringSquash = 0.73;
+
+  // curve that bends around ringCenter like a piece of the ellipse.
+  // we stretch y by 1/ringSquash so the ellipse becomes a circle, do the
+  // circle recipe there, then squash back.
+  // circle recipe: each control point sticks out along the tangent at its end,
+  // (4/3)·tan(angle/4)·radius long
+  function arc(from: Point, to: Point) {
+    const toCircle = (p: Point) => ({
+      x: p.x - ringCenter.x,
+      y: (p.y - ringCenter.y) / ringSquash,
+    });
+    const fromCircle = (p: Point) => ({
+      x: ringCenter.x + p.x,
+      y: ringCenter.y + p.y * ringSquash,
+    });
+
+    const a = toCircle(from);
+    const b = toCircle(to);
+    const angle = Math.abs(
+      Math.atan2(a.x * b.y - a.y * b.x, a.x * b.x + a.y * b.y),
+    );
+    const k = (4 / 3) * Math.tan(angle / 4);
+
+    // tangent at p = radius turned 90°, flipped to face `towards`
+    const handle = (p: Point, towards: Point) => {
+      let t = { x: -p.y, y: p.x };
+      if (t.x * (towards.x - p.x) + t.y * (towards.y - p.y) < 0) {
+        t = { x: -t.x, y: -t.y };
+      }
+      return fromCircle({ x: p.x + t.x * k, y: p.y + t.y * k });
+    };
+
+    return connector(from, to, handle(a, b), handle(b, a));
+  }
+
+  // leaves the top group's side, halfway down
+  const topExitY = top.positions.y + top.groupHeight * 0.5;
+
+  // loop: bottom-right → bottom-left → top → bottom-right
+
+  // halfway along bottom-right platform's front-left bottom edge
+  const bottomRightOut = {
+    x: bottomRight.positions.x + (bottomRight.platform.size / 2) * 0.5,
+    y:
+      bottomRight.positions.y +
+      bottomRight.platformY +
+      bottomRight.platform.depth * 1.4 +
+      bottomRight.platform.thickness,
+  };
+
+  // halfway along bottom-left cube's front-right bottom edge
+  const bottomLeftIn = {
+    x: bottomLeft.positions.x + bottomLeft.bigCube.size * 0.75,
+    y:
+      bottomLeft.positions.y +
+      bottomLeft.bigCube.height -
+      bottomLeft.bigCube.depth / 2,
+  };
+
+  // halfway along bottom-left cube's back-left top edge
+  const bottomLeftOut = {
+    x: bottomLeft.positions.x + bottomLeft.groupWidth * 0.25,
+    y: bottomLeft.positions.y + bottomLeft.bigCube.depth / 2,
+  };
+
+  // bows down under the gap between the two bottom groups
+  const bottomRightToBottomLeft = arc(bottomRightOut, bottomLeftIn);
+
+  // up out of bottom-left's top → into the top group's left side
+  const bottomLeftToTop = arc(bottomLeftOut, {
+    x: top.positions.x,
+    y: topExitY,
+  });
+
+  // up from bottom-right, 80% across its top → into the top group's right side
+  const bottomRightToTop = arc(
+    {
+      x: bottomRight.positions.x + bottomRight.groupWidth * 0.8,
+      y: bottomRight.positions.y,
+    },
+    { x: top.positions.x + top.groupWidth, y: topExitY },
+  );
+
   return (
     <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}>
+      {bottomRightToBottomLeft}
+      {bottomLeftToTop}
+      {bottomRightToTop}
+
       <rect
         x={0}
         y={0}
@@ -149,6 +249,14 @@ export function SoftwareDiagram() {
 
       {/* top */}
       <g transform={`translate(${top.positions.x}, ${top.positions.y})`}>
+        <rect
+          x={0}
+          y={0}
+          width={top.groupWidth}
+          height={top.groupHeight}
+          fill="none"
+          stroke="yellow"
+        />
         <CubeBase size={cubeSize} y={cube.edgeLength - cube.depth / 2} />
 
         {/* TOP CUBE — straddles the back seam, lifts a little off the base */}
@@ -170,6 +278,15 @@ export function SoftwareDiagram() {
       <g
         transform={`translate(${bottomLeft.positions.x}, ${bottomLeft.positions.y})`}
       >
+        <rect
+          x={0}
+          y={0}
+          width={bottomLeft.groupWidth}
+          height={bottomLeft.groupHeight}
+          fill="none"
+          stroke="yellow"
+        />
+
         <g opacity={0.8}>
           <RoundedIsoCube
             size={bottomLeft.bigCube.size}
@@ -207,6 +324,24 @@ export function SoftwareDiagram() {
       <g
         transform={`translate(${bottomRight.positions.x}, ${bottomRight.positions.y})`}
       >
+        <rect
+          x={0}
+          y={0}
+          width={bottomRight.groupWidth}
+          height={bottomRight.groupHeight}
+          fill="none"
+          stroke="yellow"
+        />
+
+        <rect
+          x={0}
+          y={0}
+          width={bottomRight.groupWidth}
+          height={bottomRight.groupHeight}
+          fill="none"
+          stroke="yellow"
+        />
+
         {/* platform + its cubes drift together, slow and small */}
         <g
           className="float-bob"
@@ -237,6 +372,34 @@ export function SoftwareDiagram() {
           </g>
         </g>
       </g>
+
+      {/* BOTTOM RIGHT CONNECTOR OUT – connects to bottomleft */}
+      <circle cx={bottomRightOut.x} cy={bottomRightOut.y} r={4} fill="lime" />
+
+      {/* BOTTOM LEFT CONNECTOR  OUT – connects to top */}
+      <circle cx={bottomLeftOut.x} cy={bottomLeftOut.y} r={4} fill="cyan" />
+
+      {/* BOTTOM LEFT CONNECTOR  IN – from bottom-right */}
+      <circle cx={bottomLeftIn.x} cy={bottomLeftIn.y} r={4} fill="magenta" />
+
+      {/* TEMP: the ring the connectors ride — center dot + ellipse through the cyan dot */}
+      {(() => {
+        const rx = Math.hypot(
+          bottomLeftOut.x - ringCenter.x,
+          (bottomLeftOut.y - ringCenter.y) / ringSquash,
+        );
+        return (
+          <g fill="none" stroke="orange" strokeDasharray="4 4">
+            <ellipse
+              cx={ringCenter.x}
+              cy={ringCenter.y}
+              rx={rx}
+              ry={rx * ringSquash}
+            />
+            <circle cx={ringCenter.x} cy={ringCenter.y} r={4} fill="orange" />
+          </g>
+        );
+      })()}
     </svg>
   );
 }

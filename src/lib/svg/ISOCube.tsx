@@ -1,6 +1,6 @@
 import { useId } from "react";
 import { EdgeGradient } from "./EdgeGradient";
-import { accentGlow, type Point } from "./helpers";
+import { accentGlow, glyphStroke, type Point } from "./helpers";
 
 // angle = how steep the top edges slope from horizontal, in degrees.
 // 30 is true isometric; smaller = flatter top, bigger = steeper top
@@ -136,12 +136,13 @@ export function ISOCube({
     fill,
     fillOpacity: surfaceOpacity,
     stroke: edgeStroke,
-    strokeWidth: 0.8,
+    // same visible thickness at any cube size (the cube is drawn 100 wide, then scaled)
+    strokeWidth: glyphStroke(size, 0.6, 100),
   };
 
   const edgeProps = {
     stroke: edgeStroke,
-    strokeWidth: 0.4,
+    strokeWidth: glyphStroke(size, 0.75, 100),
   };
 
   return (

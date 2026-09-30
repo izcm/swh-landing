@@ -1,7 +1,12 @@
 import { useId } from "react";
 import { EdgeGradient } from "@/lib/svg/EdgeGradient";
 import { isoCubePoints, type ISOCubeProps } from "@/lib/svg/ISOCube";
-import { accentGlow, pointOnLine, roundedPolygonPath } from "@/lib/svg/helpers";
+import {
+  accentGlow,
+  glyphStroke,
+  pointOnLine,
+  roundedPolygonPath,
+} from "@/lib/svg/helpers";
 
 type RoundedIsoCubeProps = ISOCubeProps & {
   radius?: number;
@@ -52,7 +57,7 @@ export function RoundedIsoCube({
   const backTip = { x: topBack.x, y: topBack.y + tipRise };
 
   // in real units (undo the scale) so edges match ISOCube's at any size
-  const strokeWidth = 1.2 / scale;
+  const strokeWidth = glyphStroke(size, 1.2, 100);
 
   // faint grid on the top face: lines between opposite edges at 1/4, 1/2, 3/4
   const gridSteps = [0.25, 0.5, 0.75];

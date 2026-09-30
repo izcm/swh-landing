@@ -93,3 +93,76 @@
   --panel-shadow:
     0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(91, 157, 255, 0.06);
 }
+
+/* light — cool off-white + the same blue, deepened for contrast on white */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* surfaces */
+  --ground: #f5f7fb;
+  --raised: #ffffff;
+  --lowered: #eef2f8;
+  --elevated: #ffffff;
+  --elevated-alt: #f8faff;
+
+  --ground-gradient: radial-gradient(
+    1200px 600px at 50% -10%,
+    color-mix(in oklab, var(--accent) 6%, transparent),
+    transparent
+  );
+  --resource-header-gradient: radial-gradient(
+    700px 350px at 65% 0%,
+    color-mix(in oklab, var(--accent) 8%, transparent),
+    transparent 70%
+  );
+  --raised-gradient: linear-gradient(
+    160deg,
+    var(--raised) 0%,
+    var(--elevated-alt) 100%
+  );
+  --panel-gradient: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--raised) 95%, var(--ground)) 0%,
+    color-mix(in oklab, var(--elevated-alt) 95%, var(--ground)) 100%
+  );
+  --elevated-gradient: linear-gradient(
+    160deg,
+    var(--elevated-alt) 0%,
+    var(--elevated) 100%
+  );
+
+  /* text / borders */
+  --fg: rgba(10, 19, 40, 0.92);
+  --line: rgba(10, 30, 60, 0.14);
+
+  --subtle: rgba(20, 35, 60, 0.74);
+  --muted: rgba(40, 58, 85, 0.55);
+  --faint: rgba(40, 58, 85, 0.16);
+  --extra-faint: rgba(40, 58, 85, 0.08);
+
+  /* accent */
+  --accent: #2f6fe0;
+  --accent-strong: #1d4fb0;
+  --accent-muted: color-mix(in oklab, var(--accent) 45%, var(--muted));
+  --accent-weak: rgba(47, 111, 224, 0.55);
+  --accent-neutral: #4a86e8;
+  --accent-neutral-weak: rgba(74, 134, 232, 0.45);
+
+  --weak-opacity: 14%;
+
+  /* status — darker than dark mode so they read on white */
+  --success: #12a05c;
+  --warning: #c98a00;
+  --failure: #d6334f;
+
+  --advisory: var(--success);
+  --caution: var(--warning);
+  --critical: var(--failure);
+
+  --neutral: #6b7f90;
+
+  --safe: var(--accent-neutral);
+
+  --panel-shadow:
+    0 8px 24px rgba(15, 30, 60, 0.08), 0 0 20px rgba(47, 111, 224, 0.05);
+}

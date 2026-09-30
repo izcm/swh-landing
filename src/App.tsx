@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { Nav, Hero, Steps, Story, Demo, Footer } from "./components";
 import { About } from "./components/about/About";
 import { SoftwareDiagram } from "./components/diagrams/about/software/diagram";
-import { RoundedIsoCube } from "./components/diagrams/about/software/RoundedIsoCube";
 // import { AISvg } from "./components/diagrams/about/ai/diagram";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
-    // "tmp",
-    location.hash === "#about" ? "about" : "story",
+    "tmp",
+    // location.hash === "#about" ? "about" : "story",
   );
 
   useEffect(() => {

@@ -7,6 +7,8 @@ export const accentGlow = (blur: number, strength: number) =>
 // scales that whole box (and strokeWidth along with it) up to the
 // rendered size. Dividing by 24/size undoes that stretch in advance, so
 // `weight` is the visual thickness you actually see, at any icon size.
-export function glyphStroke(size: number, weight = 1) {
-  return weight * (24 / size);
+// `box` is the width the shape is drawn in before scaling (24 for Lucide,
+// 100 for ISOCube)
+export function glyphStroke(size: number, weight = 1, box = 24) {
+  return weight * (box / size);
 }

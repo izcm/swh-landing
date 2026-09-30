@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { ArrowRight, Box, LayoutGrid, Settings } from "lucide-react";
 
 import { Section, SvgPlaceholder } from "./Section";
-import { SoftwareDiagram } from "../diagrams/about/Software";
+import { SoftwareDiagram } from "../diagrams/about/software/diagram";
 
 const principles = [
   {

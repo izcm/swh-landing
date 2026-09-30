@@ -1,5 +1,5 @@
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { glyphStroke } from "../../../lib/svg-helpers";
+import { glyphStroke } from "@/lib/svg/helpers";
 
 type StatCardProps = {
   x: number;

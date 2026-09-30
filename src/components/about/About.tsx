@@ -1,4 +1,4 @@
-import { AISvg } from "../diagrams/about/AI";
+import { AISvg } from "@/components/diagrams/about/ai/diagram";
 import { Philosophy } from "./Philosophy";
 import { Section, SvgPlaceholder } from "./Section";
 import { Toolbox } from "./Toolbox";

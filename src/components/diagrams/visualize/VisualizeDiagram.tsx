@@ -3,17 +3,16 @@ import { DataGrid } from "../DataGrid";
 import { StatCard } from "./StatCard";
 import { Donut } from "./Donut";
 import { BarChart } from "./BarChart";
-import { centerInParent } from "../../../lib/svg-helpers";
+import { centerInParent, diagramLayout } from "@/lib/svg/helpers";
 
 export function VisualizeDiagram() {
   const viewboxWidth = 340;
   const viewboxHeight = 100;
 
-  const unit = viewboxHeight / 12; // same base unit as ConnectDiagram
-  const outerPadding = unit * 1; // top, bottom, left, right
-
-  const contentHeight = viewboxHeight - outerPadding * 2;
-  const contentWidth = viewboxWidth - outerPadding * 2;
+  const { unit, outerPadding, contentWidth, contentHeight } = diagramLayout(
+    viewboxWidth,
+    viewboxHeight,
+  );
 
   const iconSize = {
     slider: unit * 2.5,

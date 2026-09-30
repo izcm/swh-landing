@@ -1,6 +1,6 @@
 import { IconLink } from "@a2zb/react";
 import { ExternalLink, FileText, Mail, Users } from "lucide-react";
-import { cn } from "../../lib/cn";
+import { cn } from "@/lib/cn";
 import { Carosel } from "./Carosel";
 import { LightBox } from "./LightBox";
 import { useState } from "react";

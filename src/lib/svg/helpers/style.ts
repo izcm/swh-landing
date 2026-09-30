@@ -1,0 +1,12 @@
+// soft accent glow. colour: the accent's own hue, kept saturated (oklch chroma 0.12) at mid lightness.
+// plain --accent is light enough that a soft halo of it reads as white-ish mist on the dark background
+export const accentGlow = (blur: number, strength: number) =>
+  `drop-shadow(0 0 ${blur}px oklch(from var(--accent) 0.55 0.12 h / ${strength}%))`;
+
+// Lucide icons are drawn on a fixed 0 0 24 24 viewBox; the `size` prop
+// scales that whole box (and strokeWidth along with it) up to the
+// rendered size. Dividing by 24/size undoes that stretch in advance, so
+// `weight` is the visual thickness you actually see, at any icon size.
+export function glyphStroke(size: number, weight = 1) {
+  return weight * (24 / size);
+}

@@ -1,5 +1,5 @@
 import { Shuffle, FileText, Users, Box } from "lucide-react";
-import { glyphStroke, spaceBetween } from "../../lib/svg-helpers";
+import { diagramLayout, glyphStroke, spaceBetween } from "@/lib/svg/helpers";
 import { DataGrid } from "./DataGrid";
 
 const nodeIcons = {
@@ -11,11 +11,10 @@ const nodeIcons = {
 export function ConnectDiagram() {
   const viewboxWidth = 340;
   const viewboxHeight = 100;
-  const unit = viewboxHeight / 12; // shared base unit derived from the viewBox
-
-  const outerPadding = unit * 1; // top, bottom, left, right
-  const contentHeight = viewboxHeight - outerPadding * 2;
-  const contentWidth = viewboxWidth - outerPadding * 2;
+  const { unit, outerPadding, contentWidth, contentHeight } = diagramLayout(
+    viewboxWidth,
+    viewboxHeight,
+  );
 
   const iconSize = {
     shuffle: unit * 2.5,

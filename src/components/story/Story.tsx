@@ -1,4 +1,4 @@
-import { cn } from "../../lib/cn";
+import { cn } from "@/lib/cn";
 
 import { ConnectDiagram } from "../diagrams/ConnectDiagram";
 import { VisualizeDiagram } from "../diagrams/visualize/VisualizeDiagram";

@@ -1,7 +1,7 @@
 import { Modal } from "@a2zb/react";
 import { RoundIconBtn } from "./RoundIconBtn";
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
-import { useSlides } from "../../lib/useSlides";
+import { useSlides } from "@/lib/useSlides";
 
 type LightboxItem =
   | { type: "image"; src: string; title?: string; alt: string }

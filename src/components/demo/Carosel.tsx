@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { RoundIconBtn } from "./RoundIconBtn";
-import { cn } from "../../lib/cn";
-import { useSlides } from "../../lib/useSlides";
+import { cn } from "@/lib/cn";
+import { useSlides } from "@/lib/useSlides";
 
 type Props = {
   items: ReactNode[];

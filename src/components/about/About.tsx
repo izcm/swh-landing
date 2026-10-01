@@ -1,6 +1,6 @@
 import { AISvg } from "@/components/diagrams/about/ai/diagram";
 import { Philosophy } from "./Philosophy";
-import { Section } from "./Section";
+import { Section } from "../Section";
 import { Toolbox } from "./Toolbox";
 
 export function About() {
@@ -39,7 +39,7 @@ export function About() {
 
 function AiUsage() {
   return (
-    <Section index="02" eyebrow="AI">
+    <Section index={1} maxIndex={3} eyebrow="AI">
       <div className="grid gap-8 md:grid-cols-[1fr_1fr]">
         <div>
           <h2 className="text-3xl text-fg">

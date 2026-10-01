@@ -17,9 +17,9 @@
     transparent
   );
 
-  /* nav (64px) + the "CURRENTLY UNDER DEVELOPMENT" bar above it (28px).
-     drop back to 64px when the bar is removed */
-  --nav-height: 92px;
+  --nav-height: 64px;
+  /* the "CURRENTLY UNDER DEVELOPMENT" bar above the nav */
+  --dev-banner-height: 28px;
 }
 
 /* dark — dark grey + blue */

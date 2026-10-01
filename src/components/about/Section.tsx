@@ -1,31 +1,4 @@
-import type { ReactNode } from "react";
-
 import { cn } from "@/lib/cn";
-import EyebrowRule from "../EyebrowRule";
-
-// numbered section wrapper: "01 ──────── EYEBROW" rule above the content
-export function Section({
-  index,
-  eyebrow,
-  children,
-  className,
-}: {
-  index: string;
-  eyebrow: string;
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <section className="border-b border-faint-accent px-6 py-6">
-      <div className={cn("mx-auto", className)}>
-        {/* index is "01".."03"; About has 3 sections */}
-        <EyebrowRule index={Number(index) - 1} label={eyebrow} maxIndex={3} />
-
-        <div className="mt-6">{children}</div>
-      </div>
-    </section>
-  );
-}
 
 // stand-in for illustrations that haven't been drawn yet
 export function SvgPlaceholder({
@@ -38,7 +11,9 @@ export function SvgPlaceholder({
   return (
     <div
       className={cn(
-        "flex items-center justify-center rounded-lg border border-dashed border-accent-muted/30 text-xs text-subtle",
+        "flex items-center justify-center",
+        "rounded-lg border border-dashed",
+        "text-xs text-subtle",
         className,
       )}
     >

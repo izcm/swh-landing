@@ -6,6 +6,10 @@
   @apply bg-line w-px self-stretch;
 }
 
+@utility page-section {
+  @apply flex flex-col gap-6 h-below-nav scroll-mt-18 px-4 py-6;
+}
+
 /* raised surface, faint outline, rounded corners — pagination steps, dropdowns, toolbars */
 @utility raised-outline {
   @apply rounded bg-raised border border-faint;
@@ -19,7 +23,7 @@
 /* focus ring drawn inward instead of outward — for elements whose focus ring
    must stay within their own bounds (e.g. clipped or tightly packed grids) */
 @utility focus-inset {
-  @apply focus-visible:!ring-1 focus-visible:!ring-accent focus-visible:!ring-inset;
+  @apply focus-visible:ring-1! focus-visible:ring-accent! focus-visible:ring-inset!;
 }
 
 @utility eyebrow {
@@ -39,4 +43,14 @@
 /* fills the screen below the sticky nav */
 @utility min-h-below-nav {
   @apply min-h-[calc(100dvh-var(--nav-height))];
+}
+
+/* fills the screen below the sticky nav */
+@utility h-below-nav {
+  @apply min-h-[calc(100dvh-var(--nav-height))];
+}
+
+/* fills the screen below the sticky nav and the dev banner above it */
+@utility min-h-below-nav-and-dev-banner {
+  @apply min-h-[calc(100dvh-var(--nav-height)-var(--dev-banner-height))];
 }

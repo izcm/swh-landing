@@ -35,7 +35,7 @@ export default function Hero() {
         </IconLink>
       </div>
 
-      <div className="w-full py-6 max-w-[440px] mx-auto">
+      <div className="w-full py-6 max-w-110 mx-auto">
         <Map />
       </div>
     </section>

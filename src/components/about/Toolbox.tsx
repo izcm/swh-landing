@@ -3,7 +3,7 @@ import { ArrowRight, Layers, Package } from "lucide-react";
 
 import { IconLink } from "@a2zb/react";
 
-import { Section } from "./Section";
+import { Section } from "../Section";
 
 const technologies = [
   "TypeScript",
@@ -30,7 +30,7 @@ const packages = [
 
 export function Toolbox() {
   return (
-    <Section index="03" eyebrow="Toolbox">
+    <Section index={2} maxIndex={3} eyebrow="Toolbox">
       <h2 className="text-3xl text-fg">What I build with</h2>
       <p className="mt-5 max-w-xl  text-subtle">
         My toolbox combines the technologies I work with most often with

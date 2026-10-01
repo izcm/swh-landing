@@ -1,5 +1,5 @@
 import { cn } from "@/lib/cn";
-import EyebrowRule from "../EyebrowRule";
+import { Section } from "../Section";
 
 import { ConnectDiagram } from "../diagrams/ConnectDiagram";
 import { VisualizeDiagram } from "../diagrams/visualize/VisualizeDiagram";
@@ -59,22 +59,13 @@ function StorySection({
   section: (typeof sections)[number];
 }) {
   return (
-    <section
-      className={cn(
-        "flex flex-col gap-6",
-        "px-4 py-6",
-        // anchor jumps stop below the sticky nav instead of hiding the eyebrow behind it
-        "scroll-mt-18",
-        section.bg,
-      )}
+    <Section
+      index={index}
+      maxIndex={sections.length}
+      eyebrow={section.eyebrow}
       id={`story-${index}`}
+      className={section.bg}
     >
-      <EyebrowRule
-        index={index}
-        label={section.eyebrow}
-        maxIndex={sections.length}
-      />
-
       <h2 className={cn("text-2xl font-medium", "sm:text-3xl")}>
         {section.title}
       </h2>
@@ -88,6 +79,6 @@ function StorySection({
       {section.diagram && (
         <div className="w-full max-w-[600px]">{section.diagram}</div>
       )}
-    </section>
+    </Section>
   );
 }

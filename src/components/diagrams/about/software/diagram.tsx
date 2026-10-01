@@ -7,8 +7,16 @@ import {
 } from "@/lib/svg/ISOCube";
 import { diagramLayout, type Point } from "@/lib/svg/helpers";
 import { RoundedIsoCube } from "./RoundedIsoCube";
+import { useEffect, useRef } from "react";
 
 export function SoftwareDiagram() {
+  // the dot's animation doesn't always start by itself when this diagram is
+  // re-added (switching tabs), so start it ourselves every time it appears
+  const motionRef = useRef<SVGAnimateMotionElement>(null);
+  useEffect(() => {
+    motionRef.current?.beginElement();
+  }, []);
+
   const viewboxWidth = 500;
   const viewboxHeight = 400;
 
@@ -256,7 +264,13 @@ export function SoftwareDiagram() {
       />
 
       <circle r={4} fill="var(--accent-weak)">
-        <animateMotion dur="9s" path={motionPath} repeatCount="indefinite" />
+        <animateMotion
+          ref={motionRef}
+          begin="indefinite"
+          dur="9s"
+          path={motionPath}
+          repeatCount="indefinite"
+        />
       </circle>
 
       {/* top */}

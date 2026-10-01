@@ -31,9 +31,14 @@ export function Philosophy() {
             How I approach <span className="text-accent">software</span>
           </h2>
           <p className="mt-5 max-w-md text-sm text-subtle">
-            I keep business logic separate from frameworks and infrastructure,
-            treating things like databases and external services as
-            implementation details.
+            I build products around their business logic, while keeping
+            reusable pieces separate from the product itself.
+          </p>
+          <p className="mt-3 max-w-md text-sm text-subtle">
+            When a component, pattern, or integration is useful beyond one
+            project, I extract it into a reusable library. Those pieces become
+            part of a growing toolbox that can be combined with new business
+            logic in future systems.
           </p>
         </div>
 

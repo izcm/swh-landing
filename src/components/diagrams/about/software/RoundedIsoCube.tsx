@@ -12,6 +12,8 @@ type RoundedIsoCubeProps = ISOCubeProps & {
   radius?: number;
   topFill?: string;
   wallFill?: string;
+  // floor of the cube. defaults to wallFill
+  bottomFill?: string;
   showGrid?: boolean;
 };
 
@@ -25,6 +27,7 @@ export function RoundedIsoCube({
   // glassy accent-tinted fills: top face a touch lighter than the walls
   topFill = "oklch(from var(--accent) 0.22 0.08 h)",
   wallFill = "oklch(from var(--accent) 0.15 0.06 h / 0.9)",
+  bottomFill = wallFill,
   stroke,
   showGrid = false,
   showFrontEdge = false,
@@ -94,7 +97,7 @@ export function RoundedIsoCube({
           [bottomLeft, bottomBack, bottomRight, bottomFront],
           radius,
         )}
-        fill={wallFill}
+        fill={bottomFill}
         stroke={edgeStroke}
         strokeWidth={strokeWidth}
       />

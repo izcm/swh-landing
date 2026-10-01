@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Nav, Hero, Steps, Story, Demo, Footer } from "./components";
 import { About } from "./components/about/About";
-import { SoftwareDiagram } from "./components/diagrams/about/software/diagram";
 // import { AISvg } from "./components/diagrams/about/ai/diagram";
 
 function App() {
@@ -37,8 +36,10 @@ function App() {
       />
       {tab === "story" && (
         <>
-          <Hero />
-          <Steps />
+          <div className="min-h-below-nav flex flex-col">
+            <Hero />
+            <Steps />
+          </div>
           <Story />
           <Demo />
         </>
@@ -48,24 +49,6 @@ function App() {
         <>
           <About />
         </>
-      )}
-
-      {tab === "tmp" && (
-        <div className="w-full h-full flex-1">
-          <SoftwareDiagram />
-          {/* <svg viewBox={`0 0 100 100`}>
-            <rect
-              x={0}
-              y={0}
-              width={100}
-              height={100}
-              fill="none"
-              stroke="red"
-            />
-
-            <Platform size={100} thickness={10} />
-          </svg> */}
-        </div>
       )}
 
       <div className="mt-auto">

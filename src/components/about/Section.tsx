@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { cn } from "@/lib/cn";
+import EyebrowRule from "../EyebrowRule";
 
 // numbered section wrapper: "01 ──────── EYEBROW" rule above the content
 export function Section({
@@ -16,14 +17,9 @@ export function Section({
 }) {
   return (
     <section className="border-b border-faint-accent px-6 py-6">
-      <div className={cn("mx-auto w-full max-w-5xl", className)}>
-        <div className="flex w-full items-center gap-6 self-start">
-          <span className="eyebrow">{index}</span>
-
-          <div className="horizontal-line bg-accent/40" />
-
-          <span className="eyebrow shrink-0">{eyebrow.toUpperCase()}</span>
-        </div>
+      <div className={cn("mx-auto", className)}>
+        {/* index is "01".."03"; About has 3 sections */}
+        <EyebrowRule index={Number(index) - 1} label={eyebrow} maxIndex={3} />
 
         <div className="mt-6">{children}</div>
       </div>

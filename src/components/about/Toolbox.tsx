@@ -32,7 +32,7 @@ export function Toolbox() {
   return (
     <Section index="03" eyebrow="Toolbox">
       <h2 className="text-3xl text-fg">What I build with</h2>
-      <p className="mt-5 max-w-xl text-sm text-subtle">
+      <p className="mt-5 max-w-xl  text-subtle">
         My toolbox combines the technologies I work with most often with
         reusable libraries and components I've built across projects.
       </p>
@@ -52,7 +52,7 @@ export function Toolbox() {
             href={GITHUB_URL}
             external
             // chip-sized for mouse users; touch keeps .btn's min-h-10 tap target
-            className="btn btn-secondary text-accent  bg-transparent gap-2 px-3 py-1.5 text-xs pointer-fine:min-h-0"
+            className="btn btn-secondary text-accent bg-transparent gap-2 px-3 py-1.5 text-xs pointer-fine:min-h-0"
             icon={<ArrowRight className="size-4" strokeWidth={1.6} />}
           >
             View on GitHub
@@ -76,7 +76,7 @@ function Panel({
     <div className="rounded-lg border border-faint-accent bg-raised/40 p-5">
       <div className="flex items-center gap-3">
         <Icon className="size-6 text-accent" strokeWidth={1.4} />
-        <h3 className="text-sm text-fg">{title}</h3>
+        <h3 className="text-fg">{title}</h3>
       </div>
       <div className="mt-5 flex flex-wrap items-center gap-2">{children}</div>
     </div>

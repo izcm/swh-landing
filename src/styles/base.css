@@ -1,3 +1,32 @@
+/* Per-section ambient glow for the Story sections — one radial gradient
+   each, keyed by story topic. Registered as bg-image utilities via the
+   @theme inline mapping in theme.css. */
+:root {
+  --story-connect-bg: radial-gradient(
+    circle at 50% 40%,
+    color-mix(in srgb, var(--accent) 4%, transparent),
+    transparent 90%
+  );
+
+  --story-visualize-bg: radial-gradient(
+    circle at 30% 50%,
+    color-mix(in srgb, var(--accent) 5%, transparent),
+    transparent 90%
+  );
+
+  --story-act-bg: radial-gradient(
+    circle at 70% 45%,
+    color-mix(in srgb, var(--accent) 3.5%, transparent),
+    transparent 90%
+  );
+
+  --story-automate-bg: radial-gradient(
+    circle at 50% 60%,
+    color-mix(in srgb, var(--accent) 4.5%, transparent),
+    transparent 90%
+  );
+}
+
 @layer base {
   body {
     @apply bg-ground bg-ground-gradient flex items-center justify-center;
@@ -11,15 +40,14 @@
   }
 
   #root {
-    width: 1024px;
-    max-width: 100%;
+    width: 100%;
     margin: 0 auto;
     border-inline: 1px solid;
+    border-color: var(--faint);
     min-height: 100svh;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    @apply border-accent-muted/20;
   }
 
   :focus-visible {

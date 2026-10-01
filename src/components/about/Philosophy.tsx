@@ -30,11 +30,11 @@ export function Philosophy() {
           <h2 className="text-3xl text-fg">
             How I approach <span className="text-accent">software</span>
           </h2>
-          <p className="mt-5 max-w-md text-sm text-subtle">
-            I build products around their business logic, while keeping
-            reusable pieces separate from the product itself.
+          <p className="mt-5 max-w-md text-subtle">
+            I build products around their business logic, while keeping reusable
+            pieces separate from the product itself.
           </p>
-          <p className="mt-3 max-w-md text-sm text-subtle">
+          <p className="mt-3 max-w-md text-subtle">
             When a component, pattern, or integration is useful beyond one
             project, I extract it into a reusable library. Those pieces become
             part of a growing toolbox that can be combined with new business
@@ -58,7 +58,7 @@ export function Philosophy() {
             <li className="flex h-full flex-col gap-2 rounded-lg border border-faint-accent bg-raised/40 p-5">
               <Icon className="size-5 text-accent" strokeWidth={1.6} />
               <h3 className="mt-2 text-fg">{title}</h3>
-              <p className="text-sm text-subtle">{text}</p>
+              <p className="text-subtle">{text}</p>
             </li>
           </Fragment>
         ))}

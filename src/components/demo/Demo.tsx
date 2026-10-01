@@ -92,7 +92,7 @@ export function Demo() {
             </p>
           </div>
 
-          <ul className="flex flex-col gap-3 text-sm text-subtle">
+          <ul className="flex flex-col gap-3  text-subtle">
             {features.map(({ icon: Icon, text }) => (
               <li key={text} className="flex items-center gap-3">
                 <span className="grid size-8 shrink-0 place-items-center rounded-lg border border-faint-accent">
@@ -103,7 +103,7 @@ export function Demo() {
             ))}
           </ul>
 
-          <div className="border-t border-faint-accent pt-5 text-sm text-subtle">
+          <div className="border-t border-faint-accent pt-5  text-subtle">
             The next step would be to add further automation. Background workers
             could notify key people before a due date or check if an employee
             has vacation scheduled and alert if it conflicts with upcoming

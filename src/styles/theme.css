@@ -1,6 +1,6 @@
-/* Map the Geist fonts loaded in layout.tsx onto the a2zb tokens */
+/* Inter is loaded in index.css */
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: "Inter", sans-serif;
   --font-mono: var(--font-geist-mono);
 
   --background-image-story-connect: var(--story-connect-bg);
@@ -8,11 +8,18 @@
   --background-image-story-act: var(--story-act-bg);
   --background-image-story-automate: var(--story-automate-bg);
 
+  /* text color with a touch of accent */
+  --color-fg-tinted: color-mix(in oklab, var(--fg), var(--accent) 40%);
+
   --safe-weak: color-mix(
     in oklab,
     var(--safe) var(--weak-opacity),
     transparent
   );
+
+  /* nav (64px) + the "CURRENTLY UNDER DEVELOPMENT" bar above it (28px).
+     drop back to 64px when the bar is removed */
+  --nav-height: 92px;
 }
 
 /* dark — dark grey + blue */
@@ -68,8 +75,6 @@
   --accent-muted: color-mix(in oklab, var(--accent) 45%, var(--muted));
   --accent-deep: color-mix(in oklab, var(--accent) 70%, #1d4ed8);
   --accent-weak: rgba(91, 157, 255, 0.6);
-  --accent-neutral: #7fb0ff;
-  --accent-neutral-weak: rgba(127, 176, 255, 0.5);
 
   --weak-opacity: 18%;
 
@@ -147,8 +152,6 @@
   --accent-muted: color-mix(in oklab, var(--accent) 45%, var(--muted));
   --accent-deep: color-mix(in oklab, var(--accent) 70%, #1d4ed8);
   --accent-weak: rgba(47, 111, 224, 0.55);
-  --accent-neutral: #4a86e8;
-  --accent-neutral-weak: rgba(74, 134, 232, 0.45);
 
   --weak-opacity: 14%;
 

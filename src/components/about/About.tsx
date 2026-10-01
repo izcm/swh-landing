@@ -1,12 +1,12 @@
 import { AISvg } from "@/components/diagrams/about/ai/diagram";
 import { Philosophy } from "./Philosophy";
-import { Section, SvgPlaceholder } from "./Section";
+import { Section } from "./Section";
 import { Toolbox } from "./Toolbox";
 
 export function About() {
   return (
     <>
-      <header className="mx-auto w-full max-w-5xl px-6 py-24">
+      <header className="mx-auto w-full px-6 py-24">
         <span className="eyebrow">ABOUT SWH</span>
 
         <h1 className="mt-4 text-4xl text-fg">
@@ -46,7 +46,7 @@ function AiUsage() {
             How I use <span className="text-accent">AI</span>
           </h2>
 
-          <div className="mt-5 flex max-w-md flex-col gap-4 text-sm text-subtle">
+          <div className="mt-5 flex max-w-md flex-col gap-4 text-subtle">
             <p>
               I use AI for research, exploring alternatives, reviewing ideas and
               speeding up focused development tasks.

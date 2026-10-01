@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import EyebrowRule from "../EyebrowRule";
 
 import { ConnectDiagram } from "../diagrams/ConnectDiagram";
 import { VisualizeDiagram } from "../diagrams/visualize/VisualizeDiagram";
@@ -60,39 +61,32 @@ function StorySection({
   return (
     <section
       className={cn(
-        "flex flex-col items-center gap-8",
-        "border-t border-faint-accent",
-        "px-4 py-8",
+        "flex flex-col gap-6",
+        "px-4 py-6",
         // anchor jumps stop below the sticky nav instead of hiding the eyebrow behind it
-        "scroll-mt-16",
-        "lg:px-12",
+        "scroll-mt-18",
         section.bg,
       )}
       id={`story-${index}`}
     >
-      <div className="flex w-full items-center gap-6 self-start">
-        <span className="eyebrow">0{index + 1}</span>
+      <EyebrowRule
+        index={index}
+        label={section.eyebrow}
+        maxIndex={sections.length}
+      />
 
-        <div className="horizontal-line bg-accent/40" />
-
-        <span className="eyebrow">{section.eyebrow}</span>
-      </div>
-
-      <h2 className={cn("text-2xl text-fg", "lg:text-3xl")}>
+      <h2 className={cn("text-2xl font-medium", "sm:text-3xl")}>
         {section.title}
       </h2>
 
-      <div className="flex gap-6 max-w-[600px] mx-auto px-6">
-        <div className="vertical-line rounded w-0.5 bg-accent/75" />
-        <div className="flex flex-col py-1 gap-4 text-subtle">
-          {section.paragraphs.map((p) => (
-            <p key={p}>{p}</p>
-          ))}
-        </div>
+      <div className="flex flex-col py-1 gap-4 text-subtle max-w-xl">
+        {section.paragraphs.map((p) => (
+          <p key={p}>{p}</p>
+        ))}
       </div>
 
       {section.diagram && (
-        <div className="w-full my-8 max-w-[600px]">{section.diagram}</div>
+        <div className="w-full max-w-[600px]">{section.diagram}</div>
       )}
     </section>
   );

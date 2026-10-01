@@ -66,7 +66,7 @@ export default function Steps() {
           </span>
           <h3 className="mt-1 text-lg text-fg">{step.title}</h3>
           {step.body.split("\n").map((item) => (
-            <p className="flex-1 text-sm text-subtle">
+            <p className="flex-1  text-subtle">
               <>
                 {item} <br />
               </>

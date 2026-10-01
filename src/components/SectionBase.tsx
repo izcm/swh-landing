@@ -20,12 +20,18 @@ export function SectionBase({
   diagram?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-6 scroll-mt-18 p-4 sm:p-8 lg:px-12 mt-6 w-full">
+    <div
+      className="
+      flex flex-col gap-6 
+      scroll-mt-18 p-4 w-full mt-6 max-w-360 mx-auto
+      sm:p-8
+      "
+    >
       <EyebrowRule index={index} label={eyebrow} maxIndex={maxIndex} />
       <h2 className="text-3xl font-medium text-fg">{title}</h2>
 
       <div className="flex flex-col xl:flex-row gap-6 justify-between">
-        <div className="flex max-w-2xl min-w-xl w-full flex-col gap-4 text-subtle">
+        <div className="flex max-w-2xl w-full flex-col gap-4 text-fg-tinted/90 text-lg">
           {text}
         </div>
         <div className="max-w-140 w-full xl:mx-auto max-xl:mt-6">{diagram}</div>

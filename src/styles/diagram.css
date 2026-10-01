@@ -99,6 +99,21 @@
   }
 }
 
+/* a dot moving along a path. the path goes on the element itself:
+   style={{ offsetPath: `path("...")` }} */
+.path-dot {
+  animation: path-dot 12s linear infinite;
+}
+
+@keyframes path-dot {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pulse {
     animation: none;
@@ -107,7 +122,8 @@
 
   .accent-dot,
   .float-bob,
-  .float-shadow {
+  .float-shadow,
+  .path-dot {
     animation: none;
   }
 }

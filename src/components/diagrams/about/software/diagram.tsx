@@ -7,18 +7,8 @@ import {
 } from "@/lib/svg/ISOCube";
 import { diagramLayout, type Point } from "@/lib/svg/helpers";
 import { RoundedIsoCube } from "./RoundedIsoCube";
-import { useEffect, useRef } from "react";
 
 export function SoftwareDiagram() {
-  // the dots' animations don't always start by themselves when this diagram is
-  // re-added (switching tabs), so start them all ourselves every time it appears
-  const svgRef = useRef<SVGSVGElement>(null);
-  useEffect(() => {
-    svgRef.current
-      ?.querySelectorAll("animateMotion")
-      .forEach((a) => a.beginElement());
-  }, []);
-
   const viewboxWidth = 500;
   const viewboxHeight = 400;
 
@@ -167,8 +157,7 @@ export function SoftwareDiagram() {
     const c1 = handle(a, b);
     const c2 = handle(b, a);
 
-    return ` M ${from.x} ${from.y}
-          C ${c1.x} ${c1.y}  ${c2.x} ${c2.y}  ${to.x} ${to.y}`;
+    return `M ${from.x} ${from.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${to.x} ${to.y}`;
     // return connector(from, to, handle(a, b), handle(b, a));
   }
 
@@ -255,8 +244,11 @@ export function SoftwareDiagram() {
     topInTopOut,
   ].join(" ");
 
+  // CSS wants the path wrapped as path("...")
+  const cssPath = `path("${motionPath}")`;
+
   return (
-    <svg ref={svgRef} viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}>
+    <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}>
       <path
         d={arcConnector}
         fill="none"
@@ -265,26 +257,22 @@ export function SoftwareDiagram() {
         strokeDasharray="8 12"
       />
 
-      <circle r={5} fill="var(--accent-deep)" opacity={0.8}>
-        <animateMotion
-          begin="indefinite"
-          dur="12s"
-          path={motionPath}
-          repeatCount="indefinite"
-        />
-      </circle>
+      <circle
+        r={5}
+        fill="var(--accent-deep)"
+        opacity={0.8}
+        className="path-dot"
+        style={{ offsetPath: cssPath }}
+      />
 
-      <circle r={5} fill="var(--accent)" opacity={0.8}>
-        <animateMotion
-          begin="indefinite"
-          dur="12s"
-          path={motionPath}
-          repeatCount="indefinite"
-          calcMode="linear"
-          keyTimes="0;0.5;0.5;1"
-          keyPoints="0.5;1;0;0.5"
-        />
-      </circle>
+      {/* -6s = half of the 12s loop, so this dot runs half a lap ahead */}
+      <circle
+        r={5}
+        fill="var(--accent)"
+        opacity={0.8}
+        className="path-dot"
+        style={{ offsetPath: cssPath, animationDelay: "-6s" }}
+      />
 
       {/* top */}
       <g transform={`translate(${top.positions.x}, ${top.positions.y})`}>

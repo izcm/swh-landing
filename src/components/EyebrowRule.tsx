@@ -13,24 +13,22 @@ export default function EyebrowRule({
 
   return (
     <div className="flex items-center gap-6">
-      <div className="relative horizontal-line bg-[var(--accent-deep)] rounded-full w-8">
+      <div className="relative horizontal-line bg-accent-deep rounded-full w-8">
         <div
           className="
               absolute top-1/2 size-1.5 -translate-x-1/2 
-              -translate-y-1/2 rounded-full bg-[var(--accent-deep)] 
+              -translate-y-1/2 rounded-full bg-accent-deep 
               accent-dot drop-shadow-[0_0_2px_var(--accent-deep)]"
           style={{ left: `${part}%` }}
         />
       </div>
 
       <div className="flex gap-3">
-        <span className="eyebrow  text-[var(--accent-deep)]">{indexStr}</span>
+        <span className="eyebrow text-accent-deep">{indexStr}</span>
 
-        <span className="eyebrow text-[var(--color-fg-tinted)] opacity-80">
-          /
-        </span>
+        <span className="eyebrow text-fg-tinted  opacity-80">/</span>
 
-        <span className="eyebrow text-[var(--color-fg-tinted)] opacity-80">
+        <span className="eyebrow text-fg-tinted  opacity-80">
           {label.toUpperCase()}
         </span>
       </div>

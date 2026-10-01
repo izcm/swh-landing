@@ -1,9 +1,6 @@
-import { cn } from "@/lib/cn";
-import { Section } from "../Section";
+import { SectionBase } from "../SectionBase";
 
-import { ConnectDiagram } from "../diagrams/ConnectDiagram";
-import { VisualizeDiagram } from "../diagrams/visualize/VisualizeDiagram";
-import { ActDiagram } from "../diagrams/ActDiagram";
+import { SvgPlaceholder } from "../SvgPlaceholder";
 
 const sections = [
   {
@@ -14,8 +11,7 @@ const sections = [
       "While each system may work well on its own, there is often significant room for improvement in how data flows between them.",
       // "We have the expertise to bridge this gap by collecting and transforming data across your existing systems.",
     ],
-    diagram: <ConnectDiagram />,
-    bg: "bg-story-connect",
+    diagram: <SvgPlaceholder label="Connect diagram" />,
   },
   {
     eyebrow: "VISUALIZE",
@@ -25,8 +21,7 @@ const sections = [
       "Spreadsheets are excellent tools, but understanding a larger operation can mean moving between several sheets, comparing numbers, and building a picture of what is happening in your head.",
       "We make that process easier by presenting relevant information through interactive dashboards designed to show the bigger picture.",
     ],
-    diagram: <VisualizeDiagram />,
-    bg: "bg-story-visualize",
+    diagram: <SvgPlaceholder label="Visualize diagram" />,
   },
   {
     eyebrow: "ACT",
@@ -36,8 +31,7 @@ const sections = [
       "We extend your existing systems with tools that let you act directly on that information, rather than moving between systems and completing each step manually.",
       // "This can turn a time-consuming, multi-step process into a much simpler and faster workflow.",
     ],
-    diagram: <ActDiagram />,
-    bg: "bg-story-act",
+    diagram: <SvgPlaceholder label="Act diagram" />,
   },
 ];
 
@@ -59,26 +53,16 @@ function StorySection({
   section: (typeof sections)[number];
 }) {
   return (
-    <Section
+    <SectionBase
       index={index}
       maxIndex={sections.length}
       eyebrow={section.eyebrow}
       id={`story-${index}`}
-      className={section.bg}
-    >
-      <h2 className={cn("text-2xl font-medium", "sm:text-3xl")}>
-        {section.title}
-      </h2>
-
-      <div className="flex flex-col py-1 gap-4 text-subtle max-w-xl">
-        {section.paragraphs.map((p) => (
-          <p key={p}>{p}</p>
-        ))}
-      </div>
-
-      {section.diagram && (
-        <div className="w-full max-w-[600px]">{section.diagram}</div>
-      )}
-    </Section>
+      title={section.title}
+      text={section.paragraphs.map((p) => (
+        <p key={p}>{p}</p>
+      ))}
+      diagram={<div className="w-full max-w-150">{section.diagram}</div>}
+    />
   );
 }

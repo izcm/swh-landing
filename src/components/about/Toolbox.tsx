@@ -3,7 +3,7 @@ import { ArrowRight, Layers, Package } from "lucide-react";
 
 import { IconLink } from "@a2zb/react";
 
-import { Section } from "../Section";
+import { GITHUB_URL } from "@/lib/links";
 
 const technologies = [
   "TypeScript",
@@ -18,8 +18,7 @@ const technologies = [
   "OAuth2",
 ];
 
-// todo: real repo urls
-const GITHUB_URL = "#";
+const PACKAGES_URL = `${GITHUB_URL}/a2zb-packages`;
 
 const packages = [
   "@a2zb/auth",
@@ -28,38 +27,30 @@ const packages = [
   "@a2zb/react",
 ];
 
-export function Toolbox() {
+export function ToolboxPanels() {
   return (
-    <Section index={2} maxIndex={3} eyebrow="Toolbox">
-      <h2 className="text-3xl text-fg">What I build with</h2>
-      <p className="mt-5 max-w-xl  text-subtle">
-        My toolbox combines the technologies I work with most often with
-        reusable libraries and components I've built across projects.
-      </p>
+    <div className="grid gap-4 md:grid-cols-2">
+      <Panel icon={Layers} title="Core technologies">
+        {technologies.map((t) => (
+          <Chip key={t}>{t}</Chip>
+        ))}
+      </Panel>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-2">
-        <Panel icon={Layers} title="Core technologies">
-          {technologies.map((t) => (
-            <Chip key={t}>{t}</Chip>
-          ))}
-        </Panel>
-
-        <Panel icon={Package} title="My packages (@swh)">
-          {packages.map((p) => (
-            <Chip key={p}>{p}</Chip>
-          ))}
-          <IconLink
-            href={GITHUB_URL}
-            external
-            // chip-sized for mouse users; touch keeps .btn's min-h-10 tap target
-            className="btn btn-secondary text-accent bg-transparent gap-2 px-3 py-1.5 text-xs pointer-fine:min-h-0"
-            icon={<ArrowRight className="size-4" strokeWidth={1.6} />}
-          >
-            View on GitHub
-          </IconLink>
-        </Panel>
-      </div>
-    </Section>
+      <Panel icon={Package} title="My packages (@a2zb)">
+        {packages.map((p) => (
+          <Chip key={p}>{p}</Chip>
+        ))}
+        <IconLink
+          href={PACKAGES_URL}
+          external
+          // chip-sized for mouse users; touch keeps .btn's min-h-10 tap target
+          className="btn btn-secondary text-accent bg-transparent gap-2 px-3 py-1.5 text-xs pointer-fine:min-h-0"
+          icon={<ArrowRight className="size-4" strokeWidth={1.6} />}
+        >
+          View on GitHub
+        </IconLink>
+      </Panel>
+    </div>
   );
 }
 

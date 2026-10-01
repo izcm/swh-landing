@@ -6,10 +6,6 @@
   @apply bg-line w-px self-stretch;
 }
 
-@utility page-section {
-  @apply flex flex-col gap-6 h-below-nav scroll-mt-18 px-4 py-6;
-}
-
 /* raised surface, faint outline, rounded corners — pagination steps, dropdowns, toolbars */
 @utility raised-outline {
   @apply rounded bg-raised border border-faint;

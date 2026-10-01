@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { GITHUB_URL } from "@/lib/links";
 
 export default function Footer() {
   return (
@@ -24,7 +25,7 @@ export default function Footer() {
           Get in touch
         </a>
         <a
-          href="https://github.com/izcm"
+          href={GITHUB_URL}
           target="_blank"
           rel="noreferrer"
           className="inline-flex items-center gap-2 hover:text-fg"

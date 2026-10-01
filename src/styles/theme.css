@@ -10,6 +10,7 @@
 
   /* text color with a touch of accent */
   --color-fg-tinted: color-mix(in oklab, var(--fg), var(--accent) 40%);
+  --color-accent-deep: var(--accent-deep);
 
   --safe-weak: color-mix(
     in oklab,

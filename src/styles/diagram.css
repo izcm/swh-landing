@@ -12,7 +12,7 @@
   --node-stroke-width: 0.4;
 
   --connector-weight: 0.5;
-  --connector-color: color-mix(in oklab, var(--muted), var(--accent) 30%);
+  --connector-color: color-mix(in oklab, var(--muted), var(--accent) 60%);
 
   --node-text-color: color-mix(in oklab, var(--fg), var(--accent) 32%);
 

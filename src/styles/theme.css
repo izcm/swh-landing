@@ -66,6 +66,7 @@
   --accent: #5b9dff;
   --accent-strong: #8fbfff;
   --accent-muted: color-mix(in oklab, var(--accent) 45%, var(--muted));
+  --accent-deep: color-mix(in oklab, var(--accent) 70%, #1d4ed8);
   --accent-weak: rgba(91, 157, 255, 0.6);
   --accent-neutral: #7fb0ff;
   --accent-neutral-weak: rgba(127, 176, 255, 0.5);
@@ -144,6 +145,7 @@
   --accent: #2f6fe0;
   --accent-strong: #1d4fb0;
   --accent-muted: color-mix(in oklab, var(--accent) 45%, var(--muted));
+  --accent-deep: color-mix(in oklab, var(--accent) 70%, #1d4ed8);
   --accent-weak: rgba(47, 111, 224, 0.55);
   --accent-neutral: #4a86e8;
   --accent-neutral-weak: rgba(74, 134, 232, 0.45);

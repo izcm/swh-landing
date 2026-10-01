@@ -24,9 +24,7 @@ export function EdgeGradient({
       <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.5" />
       <stop
         offset="55%"
-        style={{
-          stopColor: "color-mix(in oklab, var(--accent) 70%, #1d4ed8)",
-        }}
+        style={{ stopColor: "var(--accent-deep)" }}
         stopOpacity="1"
       />
       <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.35" />

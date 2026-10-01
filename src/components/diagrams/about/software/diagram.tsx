@@ -10,11 +10,13 @@ import { RoundedIsoCube } from "./RoundedIsoCube";
 import { useEffect, useRef } from "react";
 
 export function SoftwareDiagram() {
-  // the dot's animation doesn't always start by itself when this diagram is
-  // re-added (switching tabs), so start it ourselves every time it appears
-  const motionRef = useRef<SVGAnimateMotionElement>(null);
+  // the dots' animations don't always start by themselves when this diagram is
+  // re-added (switching tabs), so start them all ourselves every time it appears
+  const svgRef = useRef<SVGSVGElement>(null);
   useEffect(() => {
-    motionRef.current?.beginElement();
+    svgRef.current
+      ?.querySelectorAll("animateMotion")
+      .forEach((a) => a.beginElement());
   }, []);
 
   const viewboxWidth = 500;
@@ -254,7 +256,7 @@ export function SoftwareDiagram() {
   ].join(" ");
 
   return (
-    <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}>
+    <svg ref={svgRef} viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}>
       <path
         d={arcConnector}
         fill="none"
@@ -263,13 +265,24 @@ export function SoftwareDiagram() {
         strokeDasharray="8 12"
       />
 
-      <circle r={4} fill="var(--accent-weak)">
+      <circle r={5} fill="var(--accent-deep)" opacity={0.8}>
         <animateMotion
-          ref={motionRef}
           begin="indefinite"
-          dur="9s"
+          dur="12s"
           path={motionPath}
           repeatCount="indefinite"
+        />
+      </circle>
+
+      <circle r={5} fill="var(--accent)" opacity={0.8}>
+        <animateMotion
+          begin="indefinite"
+          dur="12s"
+          path={motionPath}
+          repeatCount="indefinite"
+          calcMode="linear"
+          keyTimes="0;0.5;0.5;1"
+          keyPoints="0.5;1;0;0.5"
         />
       </circle>
 

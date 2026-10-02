@@ -36,7 +36,7 @@ export function HeroDiagram() {
   const leftBox = (() => {
     const groupWidth = contentWidth - rightBox.groupWidth;
     const groupHeight = contentHeight;
-    const nodeSize = unit * 3;
+    const nodeSize = unit * 2.8;
 
     // same dims as SoftwareDiagram's platform: size = cube group (2 × 500/8) × 1.5,
     // thickness = its unit / 2 (400 / 12 / 2)
@@ -61,7 +61,7 @@ export function HeroDiagram() {
     // corners of the platform's outline, measured from the point it's pinned
     // by (the middle of its top face)
     const corners = [
-      { x: 0, y: -platform.depth }, // top tip
+      { x: 0, y: -platform.depth }, // top tipop
       { x: -platform.size / 2, y: 0 }, // left
       { x: platform.size / 2, y: 0 }, // right
       { x: -platform.size / 2, y: platform.thickness }, // left, bottom
@@ -93,7 +93,7 @@ export function HeroDiagram() {
     const { translateY } = centerInParent(contentHeight, groupHeight);
 
     const centerNode = (() => {
-      const metrics = isoCubeMetrics(160);
+      const metrics = isoCubeMetrics(150);
 
       return {
         ...metrics,

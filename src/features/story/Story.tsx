@@ -37,11 +37,11 @@ const sections = [
 
 export function Story() {
   return (
-    <div>
+    <div className="overflow-clip">
       <div
         className="
           sticky top-[calc(100dvh-30rem)]
-          overflow-hidden h-120 -mb-120"
+          overflow-hidden h-120 -mb-120 pointer-events-none"
       >
         <div className="floor-grid" aria-hidden />
       </div>

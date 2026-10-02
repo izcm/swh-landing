@@ -10,18 +10,17 @@ export default function Hero() {
     <section
       className={cn(
         "flex flex-col items-center flex-1",
-        "px-8 py-3 mt-6 md:px-12",
-        "text-center gap-6",
-        "xl:flex-row xl:text-start",
+        "px-2 mt-12 text-center gap-3",
+        "xl:flex-row xl:text-start xl:mt-0",
       )}
     >
-      <div className="flex flex-col items-center gap-3 xl:items-start xl:gap-2">
-        <h1 className="text-3xl xl:text-5xl max-w-xl font-medium leading-tight text-fg">
+      <div className="flex flex-col items-center gap-3 xl:items-start xl:gap-2 xl:ml-12">
+        <h1 className="text-3xl xl:text-5xl max-w-xl min-w-lg font-medium leading-tight text-fg">
           Systems that work{" "}
           <span className="text-accent font-semibold">together.</span>
         </h1>
 
-        <p className="text-subtle xl:text-xl">
+        <p className="text-fg font-medium xl:text-xl">
           Discover hidden value through{" "}
           <span className="xl:block">new connections.</span>
         </p>
@@ -35,7 +34,7 @@ export default function Hero() {
         </IconLink>
       </div>
 
-      <div className="w-full py-6 max-w-200 mx-auto">
+      <div className="w-full max-w-240 mx-auto">
         <HeroDiagram />
       </div>
     </section>

@@ -14,16 +14,17 @@ const abouts: {
   extra?: ReactNode; // rendered below the text + diagram
 }[] = [
   {
-    eyebrow: "Building philosophy",
+    eyebrow: "Working together",
     title: (
       <>
-        My approach to <span className="text-accent">building</span> software
+        How I <span className="text-accent">work with you</span>
       </>
     ),
     paragraphs: [
-      "I start by talking with the client about how the work is done today, then map the process, systems, and pain points involved.",
-      "From there, I design the smallest useful solution around the actual business process — solving the core problem without building more than needed.",
-      "Reusable code is extracted into libraries that form my developer toolbox, making future projects faster to build and easier to maintain.",
+      "I start by understanding how your process works today and where the friction is. From there, we map out the smallest useful solution.",
+      "Next, I look through my existing toolbox for integrations, components and patterns that can be reused before writing anything custom.",
+      "The custom pieces are then built around your exact needs and connected into the finished solution.",
+      "Anything reusable that comes out of the project goes back into the toolbox, making future projects faster to build and easier to maintain.",
     ],
     diagram: <SoftwareDiagram />,
   },
@@ -35,8 +36,9 @@ const abouts: {
       </>
     ),
     paragraphs: [
-      "I use AI for research, exploring alternatives, reviewing ideas and speeding up focused development tasks.",
-      "It doesn't replace understanding the software I deliver. I need to know what the code does, why it's there and how to maintain it. I'm also exploring agentic workflows where my existing libraries and APIs become building blocks agents can work with.",
+      "AI lets solo developers like me broaden our expertise and move faster than was possible before. For you, that means getting a lot more horsepower from a single developer.",
+      "I use AI throughout the process — for research, exploring approaches, reviewing ideas and speeding up development.",
+      "But the final product is still built and understood by me, not handed over to AI. Knowing how the software actually works is what makes it possible to maintain, debug and improve later, so that stays a core principle at SWH.",
     ],
     diagram: <AISvg />,
   },

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Nav, Hero, Steps, Story, Demo, Footer } from "./components";
-import { About } from "./components/about/About";
-// import { AISvg } from "./components/diagrams/about/ai/diagram";
+import { Nav, Footer, Hero, Steps, Story, Demo, About } from "./features";
+// import { AISvg } from "./features/about/diagrams/ai/diagram";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
@@ -50,6 +49,8 @@ function App() {
           <About />
         </>
       )}
+
+      {tab === "tmp" && <>hello</>}
 
       <div className="mt-auto">
         <Footer />

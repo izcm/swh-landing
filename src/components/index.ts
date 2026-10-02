@@ -1,7 +1,0 @@
-export { default as Nav } from "./Nav";
-export { default as Footer } from "./Footer";
-export { default as EyebrowRule } from "./EyebrowRule";
-
-export * from "./intro";
-export * from "./story";
-export * from "./demo";

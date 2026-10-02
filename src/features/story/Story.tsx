@@ -1,6 +1,6 @@
-import { SectionBase } from "../SectionBase";
+import { SectionBase } from "@/features/core/SectionBase";
 
-import { SvgPlaceholder } from "../SvgPlaceholder";
+import { SvgPlaceholder } from "@/components/SvgPlaceholder";
 
 const sections = [
   {

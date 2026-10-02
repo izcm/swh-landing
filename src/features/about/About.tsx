@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 
-import { AISvg } from "@/components/diagrams/about/ai/diagram";
-import { SoftwareDiagram } from "../../features/story/diagrams/about/software/diagram";
+import { AISvg } from "./diagrams/ai/diagram";
+import { SoftwareDiagram } from "./diagrams/software/Diagram";
 import { IZBLOCKS_URL } from "@/lib/links";
-import { SectionBase } from "../SectionBase";
+import { SectionBase } from "@/features/core/SectionBase";
 import { ToolboxPanels } from "./Toolbox";
 
 const abouts: {

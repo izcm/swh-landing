@@ -1,8 +1,8 @@
 import { IconLink } from "@a2zb/react";
 import { ExternalLink, FileText, Mail, Users } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { Carosel } from "./Carosel";
-import { LightBox } from "./LightBox";
+import { Carosel } from "@/components/Carosel";
+import { LightBox } from "@/components/LightBox";
 import { useState } from "react";
 
 const features = [

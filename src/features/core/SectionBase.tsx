@@ -35,7 +35,12 @@ export function SectionBase({
         <div className="flex w-full flex-col gap-4 text-fg-tinted/90 text-lg">
           {text}
         </div>
-        <div className="max-w-140 w-full mt-6 mx-auto">{diagram}</div>
+        <div
+          id={`diagram-${eyebrow.toLowerCase().replaceAll(" ", "-")}`}
+          className="max-w-120 w-full mt-6 mx-auto"
+        >
+          {diagram}
+        </div>
       </div>
     </div>
   );

@@ -101,16 +101,16 @@
     0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(91, 157, 255, 0.06);
 }
 
-/* light — cool off-white + the same blue, deepened for contrast on white */
+/* light — white + black / grey, no blue */
 :root[data-theme="light"] {
   color-scheme: light;
 
   /* surfaces */
-  --ground: #f5f7fb;
+  --ground: #f6f6f6;
   --raised: #ffffff;
-  --lowered: #eef2f8;
+  --lowered: #eeeeee;
   --elevated: #ffffff;
-  --elevated-alt: #f8faff;
+  --elevated-alt: #fafafa;
 
   --ground-gradient: radial-gradient(
     1200px 600px at 50% -10%,
@@ -139,20 +139,20 @@
   );
 
   /* text / borders */
-  --fg: rgba(10, 19, 40, 0.92);
-  --line: rgba(10, 30, 60, 0.14);
+  --fg: rgba(0, 0, 0, 0.9);
+  --line: rgba(0, 0, 0, 0.14);
 
-  --subtle: rgba(20, 35, 60, 0.74);
-  --muted: rgba(40, 58, 85, 0.55);
-  --faint: rgba(40, 58, 85, 0.16);
-  --extra-faint: rgba(40, 58, 85, 0.08);
+  --subtle: rgba(0, 0, 0, 0.7);
+  --muted: rgba(0, 0, 0, 0.5);
+  --faint: rgba(0, 0, 0, 0.16);
+  --extra-faint: rgba(0, 0, 0, 0.08);
 
   /* accent */
-  --accent: #2f6fe0;
-  --accent-strong: #1d4fb0;
+  --accent: #333333;
+  --accent-strong: #000000;
   --accent-muted: color-mix(in oklab, var(--accent) 45%, var(--muted));
-  --accent-deep: color-mix(in oklab, var(--accent) 70%, #1d4ed8);
-  --accent-weak: rgba(47, 111, 224, 0.55);
+  --accent-deep: color-mix(in oklab, var(--accent) 70%, #000000);
+  --accent-weak: rgba(51, 51, 51, 0.55);
 
   --weak-opacity: 14%;
 

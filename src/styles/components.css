@@ -22,10 +22,33 @@
     100% 100%;
   mask-repeat: repeat, no-repeat;
   mask-composite: intersect;
-
   transform: perspective(500px) rotateX(60deg);
   transform-origin: top;
-  opacity: 0.15;
+  opacity: 0.2;
+}
+
+/* per-section diagram widths (SectionBase sets the id from the eyebrow).
+   default is max-w-120 = 30rem */
+/* story */
+#diagram-connect {
+  max-width: 30rem;
+}
+#diagram-visualize {
+  max-width: 30rem;
+}
+#diagram-act {
+  max-width: 30rem;
+}
+
+/* about */
+#diagram-building-philosophy {
+  max-width: 30rem;
+}
+#diagram-ai {
+  max-width: 35rem;
+}
+#diagram-tools {
+  max-width: 30rem;
 }
 
 /* recharts' <svg> (or something inside it) picks up the browser's default

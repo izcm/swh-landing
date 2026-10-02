@@ -15,6 +15,8 @@ type RoundedIsoCubeProps = ISOCubeProps & {
   // floor of the cube. defaults to wallFill
   bottomFill?: string;
   showGrid?: boolean;
+  // edge thickness in viewbox units. lower it in svgs the page zooms in more
+  strokeWeight?: number;
 };
 
 export function RoundedIsoCube({
@@ -32,6 +34,7 @@ export function RoundedIsoCube({
   showGrid = false,
   showFrontEdge = false,
   showBackEdges = false,
+  strokeWeight = 1,
 }: RoundedIsoCubeProps) {
   const edgeGradientId = useId();
   const edgeStroke = stroke ?? `url(#${edgeGradientId})`;
@@ -60,7 +63,7 @@ export function RoundedIsoCube({
   const backTip = { x: topBack.x, y: topBack.y + tipRise };
 
   // in real units (undo the scale) so edges match ISOCube's at any size
-  const strokeWidth = glyphStroke(size, 1.2, 100);
+  const strokeWidth = glyphStroke(size, strokeWeight, 100);
 
   // faint grid on the top face: lines between opposite edges at 1/4, 1/2, 3/4
   const gridSteps = [0.25, 0.5, 0.75];

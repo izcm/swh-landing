@@ -25,14 +25,14 @@ export function SectionBase({
       relative isolate overflow-hidden
       flex flex-col gap-6
       scroll-mt-18 p-4 w-full mt-6 mx-auto
-      sm:p-8 max-w-4xl
+      sm:p-8 max-w-3xl
       "
     >
       <EyebrowRule index={index} label={eyebrow} maxIndex={maxIndex} />
       <h2 className="text-3xl font-medium text-fg">{title}</h2>
 
       <div className="flex flex-col gap-6 justify-between">
-        <div className="flex w-full flex-col gap-4 text-fg-tinted/90 text-lg">
+        <div className="flex flex-col gap-4 text-fg-tinted/90 text-lg">
           {text}
         </div>
         <div

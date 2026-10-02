@@ -22,9 +22,9 @@
     100% 100%;
   mask-repeat: repeat, no-repeat;
   mask-composite: intersect;
-  transform: perspective(500px) rotateX(60deg);
+  transform: perspective(800px) rotateX(60deg);
   transform-origin: top;
-  opacity: 0.2;
+  opacity: 0.15;
 }
 
 /* per-section diagram widths (SectionBase sets the id from the eyebrow).

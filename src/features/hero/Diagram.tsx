@@ -3,9 +3,11 @@ import {
   diagramLayout,
   pointOnCircle,
 } from "@/lib/svg/helpers";
+import { RoundedIsoCube } from "../about/diagrams/software/RoundedIsoCube";
+import { isoCubeMetrics, isoTopCenter } from "@/lib/svg/ISOCube";
 
 export function HeroDiagram() {
-  const viewboxWidth = 700;
+  const viewboxWidth = 800;
   const viewboxHeight = 500;
 
   const { contentX, contentY, contentWidth, contentHeight, unit } =
@@ -34,10 +36,14 @@ export function HeroDiagram() {
   const leftBox = (() => {
     const groupWidth = contentWidth - rightBox.groupWidth;
     const groupHeight = contentHeight;
-    const nodeSize = unit * 6;
+    const nodeSize = unit * 3;
+
+    // same dims as SoftwareDiagram's platform: size = cube group (2 × 500/8) × 1.5,
+    // thickness = its unit / 2 (400 / 12 / 2)
+    const platform = isoCubeMetrics(nodeSize, contentHeight / 40);
 
     const contentRing = {
-      radius: (groupHeight - nodeSize / 2) / 2,
+      radius: groupWidth / 2,
       // middle of a square box as tall as the content box
       centerX: groupWidth / 2,
       centerY: groupHeight / 2,
@@ -47,13 +53,54 @@ export function HeroDiagram() {
       pointOnCircle({ angle: (degrees * Math.PI) / 180, circle: contentRing });
     const nodes = [
       pointOnContentRing(90),
-      pointOnContentRing(135),
+      pointOnContentRing(157),
       pointOnContentRing(210),
       pointOnContentRing(270),
     ];
 
+    // corners of the platform's outline, measured from the point it's pinned
+    // by (the middle of its top face)
+    const corners = [
+      { x: 0, y: -platform.depth }, // top tip
+      { x: -platform.size / 2, y: 0 }, // left
+      { x: platform.size / 2, y: 0 }, // right
+      { x: -platform.size / 2, y: platform.thickness }, // left, bottom
+      { x: platform.size / 2, y: platform.thickness }, // right, bottom
+      { x: 0, y: platform.depth + platform.thickness }, // front tip, bottom
+    ];
+
+    // each platform: start at its dot, then step back toward the center by
+    // as much as it sticks out past the ring. the dots and ring don't move
+    const platformPoints = nodes.map((node) => {
+      // direction from the center to the dot, one step long
+      const out = {
+        x: (node.x - contentRing.centerX) / contentRing.radius,
+        y: (node.y - contentRing.centerY) / contentRing.radius,
+      };
+
+      // how far the corner that sticks out most is past the dot, along `out`
+      const overflow = Math.max(
+        ...corners.map((c) => c.x * out.x + c.y * out.y),
+      );
+
+      return {
+        x: node.x - out.x * overflow,
+        y: node.y - out.y * overflow,
+      };
+    });
+
     const translateX = 0; // flush with the content box's left edge
     const { translateY } = centerInParent(contentHeight, groupHeight);
+
+    const centerNode = (() => {
+      const metrics = isoCubeMetrics(160);
+
+      return {
+        ...metrics,
+        x: contentRing.centerX - unit,
+        y: contentRing.centerY - metrics.height / 2 - unit / 4,
+      };
+    })();
 
     return {
       groupWidth,
@@ -61,8 +108,11 @@ export function HeroDiagram() {
       nodeSize,
       contentRing,
       nodes,
+      platformPoints,
       translateX,
       translateY,
+      centerNode,
+      platform,
     };
   })();
 
@@ -87,8 +137,18 @@ export function HeroDiagram() {
           transform={`translate(${leftBox.translateX}, ${leftBox.translateY})`}
         >
           {(() => {
-            const { contentRing, groupWidth, groupHeight, nodes, nodeSize } =
-              leftBox;
+            const {
+              contentRing,
+              groupWidth,
+              groupHeight,
+              nodes,
+              platformPoints,
+              centerNode,
+              platform,
+            } = leftBox;
+
+            // middle of the platform's top face, from its top-left corner
+            const topCenter = isoTopCenter(platform);
 
             return (
               <>
@@ -112,14 +172,38 @@ export function HeroDiagram() {
                   strokeWidth={0.75}
                 />
 
-                {nodes.map((node, i) => (
-                  <circle
-                    key={i}
-                    cx={node.x}
-                    cy={node.y}
-                    r={4}
-                    fill="#9cc5a8"
+                <g transform={`translate(${centerNode.x}, ${centerNode.y})`}>
+                  <RoundedIsoCube
+                    size={centerNode.size}
+                    // thickness={centerNode.thickness}
+                    showFrontEdge
+                    bottomFill="oklch(from var(--accent) 0.2 0.06 h)"
+                    topFill="oklch(from var(--accent) 0.15 0.06 h / 0.3)"
+                    wallFill="oklch(from var(--accent) 0.15 0.06 h / 0.3)"
+                    strokeWeight={0.85}
                   />
+                </g>
+
+                {nodes.map((node, i) => (
+                  <>
+                    <circle
+                      key={i}
+                      cx={node.x}
+                      cy={node.y}
+                      r={4}
+                      fill="#9cc5a8"
+                    />
+
+                    {/* PLATFORM */}
+                    <RoundedIsoCube
+                      x={platformPoints[i].x - topCenter.x}
+                      y={platformPoints[i].y - topCenter.y}
+                      size={platform.size}
+                      thickness={platform.thickness}
+                      strokeWeight={0.7}
+                      showGrid
+                    />
+                  </>
                 ))}
               </>
             );

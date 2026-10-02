@@ -22,19 +22,20 @@ export function SectionBase({
   return (
     <div
       className="
-      flex flex-col gap-6 
-      scroll-mt-18 p-4 w-full mt-6 max-w-360 mx-auto
-      sm:p-8
+      relative isolate overflow-hidden
+      flex flex-col gap-6
+      scroll-mt-18 p-4 w-full mt-6 mx-auto
+      sm:p-8 max-w-4xl
       "
     >
       <EyebrowRule index={index} label={eyebrow} maxIndex={maxIndex} />
       <h2 className="text-3xl font-medium text-fg">{title}</h2>
 
-      <div className="flex flex-col xl:flex-row gap-6 justify-between">
-        <div className="flex max-w-2xl w-full flex-col gap-4 text-fg-tinted/90 text-lg">
+      <div className="flex flex-col gap-6 justify-between">
+        <div className="flex w-full flex-col gap-4 text-fg-tinted/90 text-lg">
           {text}
         </div>
-        <div className="max-w-140 w-full xl:mx-auto max-xl:mt-6">{diagram}</div>
+        <div className="max-w-140 w-full mt-6 mx-auto">{diagram}</div>
       </div>
     </div>
   );

@@ -23,7 +23,7 @@
 }
 
 @utility eyebrow {
-  @apply font-light text-accent tracking-wider text-[13px];
+  @apply font-light text-accent tracking-wider text-[14px];
 }
 
 /* visually disables a non-form element (div/button) driven by aria-disabled

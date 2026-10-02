@@ -4,6 +4,30 @@
   background: light-dark(var(--raised), var(--ground));
 }
 
+/* decorative perspective grid "floor" behind a section's content.
+   floor-tile.svg is only the stencil (one diamond); the accent color shows
+   through it, and the gradient fades the far edge out. The parent needs
+   `relative isolate overflow-hidden` */
+.floor-grid {
+  position: absolute;
+  inset: 45% -20% -30%;
+  z-index: -1;
+  pointer-events: none;
+
+  background-color: var(--accent);
+  mask-image:
+    url("/floor-tile.svg"), linear-gradient(to bottom, transparent, black 40%);
+  mask-size:
+    80px 40px,
+    100% 100%;
+  mask-repeat: repeat, no-repeat;
+  mask-composite: intersect;
+
+  transform: perspective(500px) rotateX(60deg);
+  transform-origin: top;
+  opacity: 0.15;
+}
+
 /* recharts' <svg> (or something inside it) picks up the browser's default
    focus ring on click (e.g. clicking a custom XAxis tick) — not a
    deliberate a11y outline. Covering svg + wrapper + every descendant,

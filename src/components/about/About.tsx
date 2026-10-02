@@ -79,8 +79,23 @@ export function About() {
       </header>
 
       <div className="border-t border-faint-accent">
+        <div
+          className="
+            sticky top-[calc(100dvh-30rem)]
+            overflow-hidden h-120 -mb-120"
+        >
+          <div className="floor-grid" aria-hidden />
+        </div>
+
+        {/* <div className="sticky top-[calc(100dvh-30rem)] h-120 -mb-120 overflow-hidden">
+          <div className="floor-grid" aria-hidden />
+        </div> */}
+
         {abouts.map((about, i) => (
-          <section className="flex flex-col min-h-below-nav" key={about.eyebrow}>
+          <section
+            className="flex flex-col min-h-below-nav"
+            key={about.eyebrow}
+          >
             <SectionBase
               index={i}
               maxIndex={abouts.length}

@@ -37,11 +37,19 @@ const sections = [
 
 export function Story() {
   return (
-    <>
+    <div>
+      <div
+        className="
+          sticky top-[calc(100dvh-30rem)]
+          overflow-hidden h-120 -mb-120"
+      >
+        <div className="floor-grid" aria-hidden />
+      </div>
+
       {sections.map((section, i) => (
         <StorySection key={`story-${i}`} index={i} section={section} />
       ))}
-    </>
+    </div>
   );
 }
 

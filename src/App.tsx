@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Nav, Footer, Hero, Steps, Story, Demo, About } from "./features";
-import { HeroDiagram } from "./features/hero/HeroDiagram";
+import { HeroDiagram } from "./features/hero/Diagram";
 // import { AISvg } from "./features/about/diagrams/ai/diagram";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
-    // "tmp",
-    location.hash === "#about" ? "about" : "story",
+    "tmp",
+    // location.hash === "#about" ? "about" : "story",
   );
 
   useEffect(() => {
@@ -38,7 +38,7 @@ function App() {
         <>
           <div className="min-h-below-nav-and-dev-banner flex flex-col">
             <Hero />
-            <Steps />
+            {/* <Steps /> */}
           </div>
           <Story />
           <Demo />

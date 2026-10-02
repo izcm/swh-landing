@@ -42,7 +42,6 @@ export function AISvg() {
     const { translateY, absoluteCenterY: resolvedCenterY } = centerInParent(
       contentHeight,
       resolvedHeight,
-      outerPadding,
     );
 
     return {

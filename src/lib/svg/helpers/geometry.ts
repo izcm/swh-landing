@@ -9,6 +9,21 @@
 //   };
 // }
 
+export const pointOnCircle = ({
+  angle,
+  circle,
+}: {
+  angle: number;
+  circle: {
+    centerX: number;
+    centerY: number;
+    radius: number;
+  };
+}) => ({
+  x: circle.centerX + circle.radius * Math.cos(angle),
+  y: circle.centerY + circle.radius * Math.sin(angle),
+});
+
 export type Point = { x: number; y: number };
 
 export const pointOnLine = (A: Point, B: Point, t: number) => ({

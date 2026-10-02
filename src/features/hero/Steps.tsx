@@ -51,7 +51,7 @@ export default function Steps() {
           className="
               flex flex-col
               gap-2 rounded-lg p-4
-              border border-accent-muted/20 bg-raised/40
+              border border-faint-accent bg-raised/40
             "
         >
           <span

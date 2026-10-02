@@ -9,10 +9,8 @@ export function VisualizeDiagram() {
   const viewboxWidth = 340;
   const viewboxHeight = 100;
 
-  const { unit, outerPadding, contentWidth, contentHeight } = diagramLayout(
-    viewboxWidth,
-    viewboxHeight,
-  );
+  const { unit, contentX, contentY, contentWidth, contentHeight } =
+    diagramLayout(viewboxWidth, viewboxHeight);
 
   const iconSize = {
     slider: unit * 2.5,
@@ -28,13 +26,13 @@ export function VisualizeDiagram() {
     // card in back has index 0 -> its y / x positions were multiplied by 0 -> unchanged
     // -> add offset * count - 1 to get total height
     const stackHeight = height + offset * (count - 1);
-    const endX = width + outerPadding + offset * (count - 1);
+    const endX = width + offset * (count - 1);
 
     const {
       translateY,
       relativeCenterY: centerY,
       absoluteCenterY: resolvedCenterY,
-    } = centerInParent(contentHeight, stackHeight, outerPadding);
+    } = centerInParent(contentHeight, stackHeight);
 
     return {
       width,
@@ -51,10 +49,10 @@ export function VisualizeDiagram() {
   const dashboard = (() => {
     // bigger than the stack, but not by so much it dwarfs it; width kept
     // modest so there's still a decent connector gap for the future animation
-    const width = (viewboxWidth - outerPadding * 2) * 0.38;
+    const width = contentWidth * 0.38;
     const height = contentHeight;
 
-    const startX = viewboxWidth - outerPadding - width;
+    const startX = contentWidth - width;
     const translateY = (contentHeight - height) / 2;
 
     return {
@@ -70,137 +68,138 @@ export function VisualizeDiagram() {
 
   return (
     <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}>
-      {/* debug: svg bounds */}
-      {/* <rect
+      {/* everything inside starts at the content box's top-left */}
+      <g transform={`translate(${contentX}, ${contentY})`}>
+        {/* debug: content box (inside the padding) */}
+        {/* <rect
         x={0}
         y={0}
-        width={viewboxWidth}
-        height={viewboxHeight}
+        width={contentWidth}
+        height={contentHeight}
         fill="none"
         stroke="red"
       /> */}
 
-      <path
-        stroke="var(--connector-color)"
-        strokeWidth="var(--connector-weight)"
-        d={`M ${stack.endX} ${stack.resolvedCenterY} H ${dashboard.startX}`}
-      />
+        <path
+          stroke="var(--connector-color)"
+          strokeWidth="var(--connector-weight)"
+          d={`M ${stack.endX} ${stack.resolvedCenterY} H ${dashboard.startX}`}
+        />
 
-      {/* Transform */}
-      <g
-        transform={`translate(
+        {/* Transform */}
+        <g
+          transform={`translate(
           ${iconCenterX - iconSize.slider / 2},
-          ${(viewboxHeight - iconSize.slider) / 2}
+          ${(contentHeight - iconSize.slider) / 2}
         )`}
-      >
-        <circle
-          cx={iconSize.slider / 2}
-          cy={iconSize.slider / 2}
-          r={iconSize.slider / 2 + unit * 0.6}
-          fill="var(--raised)"
-          stroke="var(--accent)"
-          strokeWidth="var(--node-stroke-width)"
-        />
-
-        <SlidersHorizontal
-          size={iconSize.slider}
-          strokeWidth={1}
-          stroke="var(--node-text-color)"
-        />
-      </g>
-
-      {/* Structured data stacks */}
-      <g
-        transform={`translate(${outerPadding}, ${stack.translateY + outerPadding})`}
-      >
-        {Array.from({ length: stack.count }, (_, i) => (
-          <DataGrid
-            key={i}
-            x={stack.offset * i}
-            y={stack.offset * i}
-            width={stack.width}
-            height={stack.height}
+        >
+          <circle
+            cx={iconSize.slider / 2}
+            cy={iconSize.slider / 2}
+            r={iconSize.slider / 2 + unit * 0.6}
+            fill="var(--raised)"
+            stroke="var(--accent)"
+            strokeWidth="var(--node-stroke-width)"
           />
-        ))}
-      </g>
 
-      <g
-        transform={`translate(${dashboard.startX}, ${dashboard.translateY + outerPadding})`}
-      >
-        <rect
-          x={0}
-          y={0}
-          width={dashboard.width}
-          height={dashboard.height}
-          rx="var(--rx-node-sm)"
-          fill="var(--node-color)"
-          stroke="var(--node-border-color)"
-          strokeWidth="var(--node-stroke-width)"
-        />
+          <SlidersHorizontal
+            size={iconSize.slider}
+            strokeWidth={1}
+            stroke="var(--node-text-color)"
+          />
+        </g>
 
-        {(() => {
-          const padding = unit * 0.5;
-          const innerWidth = dashboard.width - padding * 2;
-          const innerHeight = dashboard.height - padding * 2;
-          const topHeight = innerHeight * 0.6;
+        {/* Structured data stacks */}
+        <g transform={`translate(0, ${stack.translateY})`}>
+          {Array.from({ length: stack.count }, (_, i) => (
+            <DataGrid
+              key={i}
+              x={stack.offset * i}
+              y={stack.offset * i}
+              width={stack.width}
+              height={stack.height}
+            />
+          ))}
+        </g>
 
-          const gap = unit * 0.5;
+        <g
+          transform={`translate(${dashboard.startX}, ${dashboard.translateY})`}
+        >
+          <rect
+            x={0}
+            y={0}
+            width={dashboard.width}
+            height={dashboard.height}
+            rx="var(--rx-node-sm)"
+            fill="var(--node-color)"
+            stroke="var(--node-border-color)"
+            strokeWidth="var(--node-stroke-width)"
+          />
 
-          // placeholder data — swap for live/animated values later
-          const barValues = [
-            0.45, 0.35, 0.65, 0.4, 0.42, 0.58, 0.75, 0.62, 0.9,
-          ];
+          {(() => {
+            const padding = unit * 0.5;
+            const innerWidth = dashboard.width - padding * 2;
+            const innerHeight = dashboard.height - padding * 2;
+            const topHeight = innerHeight * 0.6;
 
-          const bottomHeight = innerHeight - topHeight - gap;
-          const donutSize = bottomHeight;
-          const cardWidth = (innerWidth - donutSize - gap * 2) / 2;
+            const gap = unit * 0.5;
 
-          return (
-            <g transform={`translate(${padding}, ${padding})`}>
-              <rect
-                x={0}
-                y={0}
-                width={innerWidth}
-                height={topHeight}
-                rx="var(--rx-node-xxs)"
-                fill="var(--raised)"
-              />
+            // placeholder data — swap for live/animated values later
+            const barValues = [
+              0.45, 0.35, 0.65, 0.4, 0.42, 0.58, 0.75, 0.62, 0.9,
+            ];
 
-              <BarChart
-                x={0}
-                y={0}
-                width={innerWidth}
-                height={topHeight}
-                values={barValues}
-              />
+            const bottomHeight = innerHeight - topHeight - gap;
+            const donutSize = bottomHeight;
+            const cardWidth = (innerWidth - donutSize - gap * 2) / 2;
 
-              <StatCard
-                x={0}
-                y={topHeight + gap}
-                width={cardWidth}
-                height={bottomHeight}
-                trend="up"
-                progress={0.8}
-              />
+            return (
+              <g transform={`translate(${padding}, ${padding})`}>
+                <rect
+                  x={0}
+                  y={0}
+                  width={innerWidth}
+                  height={topHeight}
+                  rx="var(--rx-node-xxs)"
+                  fill="var(--raised)"
+                />
 
-              <StatCard
-                x={cardWidth + gap}
-                y={topHeight + gap}
-                width={cardWidth}
-                height={bottomHeight}
-                trend="down"
-                progress={0.45}
-              />
+                <BarChart
+                  x={0}
+                  y={0}
+                  width={innerWidth}
+                  height={topHeight}
+                  values={barValues}
+                />
 
-              <Donut
-                x={(cardWidth + gap) * 2}
-                y={topHeight + gap}
-                size={donutSize}
-                split={0.5}
-              />
-            </g>
-          );
-        })()}
+                <StatCard
+                  x={0}
+                  y={topHeight + gap}
+                  width={cardWidth}
+                  height={bottomHeight}
+                  trend="up"
+                  progress={0.8}
+                />
+
+                <StatCard
+                  x={cardWidth + gap}
+                  y={topHeight + gap}
+                  width={cardWidth}
+                  height={bottomHeight}
+                  trend="down"
+                  progress={0.45}
+                />
+
+                <Donut
+                  x={(cardWidth + gap) * 2}
+                  y={topHeight + gap}
+                  size={donutSize}
+                  split={0.5}
+                />
+              </g>
+            );
+          })()}
+        </g>
       </g>
     </svg>
   );

@@ -61,17 +61,16 @@ function StorySection({
   section: (typeof sections)[number];
 }) {
   return (
-    <section id={`story-${index}`} className="min-h-below-nav">
-      <SectionBase
-        index={index}
-        maxIndex={sections.length}
-        eyebrow={section.eyebrow}
-        title={section.title}
-        text={section.paragraphs.map((p) => (
-          <p key={p}>{p}</p>
-        ))}
-        diagram={<div className="w-full max-w-150">{section.diagram}</div>}
-      />
-    </section>
+    <SectionBase
+      id={`story-${index}`}
+      index={index}
+      maxIndex={sections.length}
+      eyebrow={section.eyebrow}
+      title={section.title}
+      text={section.paragraphs.map((p) => (
+        <p key={p}>{p}</p>
+      ))}
+      diagram={<div className="w-full max-w-150">{section.diagram}</div>}
+    />
   );
 }

@@ -1,6 +1,11 @@
 import { useId } from "react";
 import { EdgeGradient } from "./EdgeGradient";
-import { accentGlow, glyphStroke, type Point } from "./helpers";
+import {
+  accentGlow,
+  glyphStroke,
+  type Point,
+  type ShapeProps,
+} from "./helpers";
 
 // angle = how steep the top edges slope from horizontal, in degrees.
 // 30 is true isometric; smaller = flatter top, bigger = steeper top
@@ -78,10 +83,10 @@ export function isoCubePoints(
   };
 }
 
-export type ISOCubeProps = {
+// stroke: edge color, defaults to the accent gradient.
+// fill: face color, defaults to the dark glass fill
+export type ISOCubeProps = ShapeProps & {
   size?: number;
-  x?: number;
-  y?: number;
   // further back in the stack: faded, with a fainter glow
   ghost?: boolean;
   // face fill only — edges stay at full strength
@@ -95,10 +100,6 @@ export type ISOCubeProps = {
   angle?: number;
   // the vertical edge where the left and right faces meet (topFront → bottomFront)
   showFrontEdge?: boolean;
-  // edge color. ISOCube defaults to its accent gradient when left out
-  stroke?: string;
-  // face color. defaults to the dark glass fill
-  fill?: string;
 };
 
 export function ISOCube({

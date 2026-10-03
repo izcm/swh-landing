@@ -91,22 +91,19 @@ export function About() {
         </div>
 
         {abouts.map((about, i) => (
-          <section
-            className="flex flex-col min-h-below-nav"
+          <SectionBase
             key={about.eyebrow}
+            index={i}
+            maxIndex={abouts.length}
+            eyebrow={about.eyebrow}
+            title={about.title}
+            text={about.paragraphs.map((p) => (
+              <p key={p}>{p}</p>
+            ))}
+            diagram={about.diagram}
           >
-            <SectionBase
-              index={i}
-              maxIndex={abouts.length}
-              eyebrow={about.eyebrow}
-              title={about.title}
-              text={about.paragraphs.map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-              diagram={about.diagram}
-            />
             {about.extra}
-          </section>
+          </SectionBase>
         ))}
       </div>
     </>

@@ -5,6 +5,7 @@ import {
 } from "@/lib/svg/helpers";
 import { RoundedIsoCube } from "../about/diagrams/software/RoundedIsoCube";
 import { isoCubeMetrics, isoTopCenter } from "@/lib/svg/ISOCube";
+import { StandingSurface } from "@/lib/svg/StandingSurface";
 
 export function HeroDiagram() {
   const viewboxWidth = 800;
@@ -36,10 +37,8 @@ export function HeroDiagram() {
   const leftBox = (() => {
     const groupWidth = contentWidth - rightBox.groupWidth;
     const groupHeight = contentHeight;
-    const nodeSize = unit * 2.8;
 
-    // same dims as SoftwareDiagram's platform: size = cube group (2 × 500/8) × 1.5,
-    // thickness = its unit / 2 (400 / 12 / 2)
+    const nodeSize = unit * 2.8;
     const platform = isoCubeMetrics(nodeSize, contentHeight / 40);
 
     const contentRing = {
@@ -97,8 +96,8 @@ export function HeroDiagram() {
 
       return {
         ...metrics,
-        x: contentRing.centerX - unit,
-        y: contentRing.centerY - metrics.height / 2 - unit / 4,
+        x: contentRing.centerX - unit * 0.5,
+        y: contentRing.centerY - metrics.height * 0.5 - unit * 0.25,
       };
     })();
 
@@ -181,6 +180,7 @@ export function HeroDiagram() {
                     topFill="oklch(from var(--accent) 0.15 0.06 h / 0.3)"
                     wallFill="oklch(from var(--accent) 0.15 0.06 h / 0.3)"
                     strokeWeight={0.85}
+                    angle={30}
                   />
                 </g>
 
@@ -202,6 +202,12 @@ export function HeroDiagram() {
                       thickness={platform.thickness}
                       strokeWeight={0.7}
                       showGrid
+                    />
+
+                    <StandingSurface
+                      x={node.x}
+                      y={node.y - platform.edgeLength}
+                      size={platform.edgeLength}
                     />
                   </>
                 ))}

@@ -1,3 +1,5 @@
+import type { Point } from "./types";
+
 // const K = 0.5522847498;
 
 // function corner(r: number) {
@@ -23,8 +25,6 @@ export const pointOnCircle = ({
   x: circle.centerX + circle.radius * Math.cos(angle),
   y: circle.centerY + circle.radius * Math.sin(angle),
 });
-
-export type Point = { x: number; y: number };
 
 export const pointOnLine = (A: Point, B: Point, t: number) => ({
   x: A.x + (B.x - A.x) * t,

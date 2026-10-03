@@ -15,7 +15,7 @@ export default function Hero() {
       )}
     >
       <div className="flex flex-col items-center gap-3 xl:items-start xl:gap-2 xl:ml-12">
-        <h1 className="text-3xl xl:text-5xl max-w-xl min-w-lg font-medium leading-tight text-fg">
+        <h1 className="text-3xl xl:text-5xl max-w-xl xl:min-w-lg font-medium leading-tight text-fg">
           Systems that work{" "}
           <span className="text-accent font-semibold">together.</span>
         </h1>

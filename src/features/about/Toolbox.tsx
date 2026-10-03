@@ -29,7 +29,7 @@ const packages = [
 
 export function ToolboxPanels() {
   return (
-    <div className="grid gap-4 md:grid-cols-2 px-6 max-w-5xl ml-4">
+    <div className="grid gap-4 md:grid-cols-2 px-6 max-w-5xl mx-auto ">
       <Panel icon={Layers} title="Core technologies">
         {technologies.map((t) => (
           <Chip key={t}>{t}</Chip>

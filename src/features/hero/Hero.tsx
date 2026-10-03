@@ -28,7 +28,7 @@ export default function Hero() {
         <IconLink
           href="#story-0"
           icon={<ArrowRight size={16} />}
-          className="btn-menu gap-3 text-base text-accent xl:px-0"
+          className="btn-menu gap-3 text-lg text-accent xl:px-0 mt-3 font-light tracking-wide"
         >
           See how it works
         </IconLink>

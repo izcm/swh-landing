@@ -117,6 +117,22 @@ export function HeroDiagram() {
 
   return (
     <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}>
+      <defs>
+        {/* center cube glass: lighter front/top, darker sides */}
+        <linearGradient id="cubeFront" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="var(--accent-deep)" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#07172b" stopOpacity="0.4" />
+        </linearGradient>
+        <linearGradient id="cubeSide" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.2" />
+          <stop
+            offset="100%"
+            stopColor="var(--accent-deep)"
+            stopOpacity="0.15"
+          />
+        </linearGradient>
+      </defs>
+
       {/* everything inside starts at the content box's top-left */}
       <g transform={`translate(${contentX}, ${contentY})`}>
         {/* debug: content box (inside the padding) */}
@@ -176,9 +192,10 @@ export function HeroDiagram() {
                     size={centerNode.size}
                     // thickness={centerNode.thickness}
                     showFrontEdge
-                    bottomFill="oklch(from var(--accent) 0.2 0.06 h)"
-                    topFill="oklch(from var(--accent) 0.15 0.06 h / 0.3)"
-                    wallFill="oklch(from var(--accent) 0.15 0.06 h / 0.3)"
+                    // showBottom={false}
+                    bottomFill="none"
+                    topFill="url(#cubeFront)"
+                    wallFill="url(#cubeSide)"
                     strokeWeight={0.85}
                     angle={30}
                   />

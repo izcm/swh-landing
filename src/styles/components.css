@@ -14,7 +14,7 @@
   z-index: -1;
   pointer-events: none;
 
-  background-color: var(--accent);
+  background: linear-gradient(to right, var(--accent), var(--accent-deep));
   mask-image:
     url("/floor-tile.svg"), linear-gradient(to bottom, transparent, black 40%);
   mask-size:

@@ -4,7 +4,13 @@ import {
   pointOnCircle,
 } from "@/lib/svg/helpers";
 import { RoundedIsoCube } from "../about/diagrams/software/RoundedIsoCube";
-import { isoCubeMetrics, isoTopCenter } from "@/lib/svg/ISOCube";
+import {
+  ISOCube,
+  isoBottomCenter,
+  isoCubeMetrics,
+  isoTopCenter,
+  standOn,
+} from "@/lib/svg/ISOCube";
 import { StandingSurface } from "@/lib/svg/StandingSurface";
 
 export function HeroDiagram() {
@@ -94,8 +100,17 @@ export function HeroDiagram() {
     const centerNode = (() => {
       const metrics = isoCubeMetrics(150);
 
+      // small cube standing in the middle of the big cube's floor,
+      // same as SoftwareDiagram's bottom-left group
+      const innerCube = isoCubeMetrics(metrics.size / 2);
+      const innerCubePos = standOn(isoBottomCenter(metrics), innerCube);
+
       return {
         ...metrics,
+        innerCube,
+        innerCubePos,
+        // how far the small cube floats above the floor
+        floatLift: 12,
         x: contentRing.centerX - unit * 0.5,
         y: contentRing.centerY - metrics.height * 0.5 - unit * 0.25,
       };
@@ -119,22 +134,33 @@ export function HeroDiagram() {
     <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}>
       <defs>
         {/* center cube glass: lighter front/top, darker sides */}
-        <linearGradient id="cubeFront" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="var(--accent-deep)" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="#07172b" stopOpacity="0.4" />
-        </linearGradient>
         <linearGradient id="cubeSide" x1="0" y1="0" x2="1" y2="1">
+          {/* saturated blue glass: same hue as --accent, more chroma so it
+              doesn't wash out grey over the dark background */}
+          <stop
+            offset="0%"
+            stopColor="oklch(from var(--accent) 0.55 0.18 h)"
+            stopOpacity="0.35"
+          />
+          <stop
+            offset="100%"
+            stopColor="oklch(from var(--accent) 0.35 0.16 h)"
+            stopOpacity="0.3"
+          />
+        </linearGradient>
+        {/* <linearGradient id="cubeSide" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.2" />
           <stop
             offset="100%"
             stopColor="var(--accent-deep)"
             stopOpacity="0.15"
           />
-        </linearGradient>
+        </linearGradient> */}
       </defs>
 
       {/* everything inside starts at the content box's top-left */}
       <g transform={`translate(${contentX}, ${contentY})`}>
+        cubeFro
         {/* debug: content box (inside the padding) */}
         <rect
           x={0}
@@ -146,7 +172,6 @@ export function HeroDiagram() {
           strokeWidth={0.75}
           strokeDasharray="6 4"
         />
-
         {/* left: content ring */}
         <g
           transform={`translate(${leftBox.translateX}, ${leftBox.translateY})`}
@@ -188,15 +213,37 @@ export function HeroDiagram() {
                 />
 
                 <g transform={`translate(${centerNode.x}, ${centerNode.y})`}>
+                  {/* shadow on the floor, under the floating cube. iso-flattened ellipse */}
+                  <ellipse
+                    className="float-shadow"
+                    cx={centerNode.size / 2}
+                    cy={centerNode.height - centerNode.depth}
+                    rx={centerNode.innerCube.size * 0.4}
+                    ry={centerNode.innerCube.size * 0.4 * Math.tan(Math.PI / 6)}
+                    fill="black"
+                    opacity={0.4}
+                    style={{ filter: "blur(4px)" }}
+                  />
+                  <g className="float-bob">
+                    <ISOCube
+                      x={centerNode.innerCubePos.x}
+                      y={centerNode.innerCubePos.y - centerNode.floatLift}
+                      size={centerNode.innerCube.size}
+                      fill="oklch(from var(--ground) 0.2 0.12 h)"
+                      stroke="oklch(from var(--ground) 0.65 0.12 h / 0.8)"
+                      showBackEdges
+                    />
+                  </g>
+
                   <RoundedIsoCube
                     size={centerNode.size}
                     // thickness={centerNode.thickness}
                     showFrontEdge
                     // showBottom={false}
                     bottomFill="none"
-                    topFill="url(#cubeFront)"
+                    topFill="url(#cubeSide)"
                     wallFill="url(#cubeSide)"
-                    strokeWeight={0.85}
+                    strokeWeight={1}
                     angle={30}
                   />
                 </g>
@@ -232,7 +279,6 @@ export function HeroDiagram() {
             );
           })()}
         </g>
-
         {/* right box */}
         <g
           transform={`translate(${rightBox.translateX}, ${rightBox.translateY})`}

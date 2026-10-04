@@ -50,3 +50,8 @@
 @utility min-h-below-nav-and-dev-banner {
   @apply min-h-[calc(100dvh-var(--nav-height)-var(--dev-banner-height))];
 }
+
+/* fills the screen below the sticky nav and the dev banner above it */
+@utility h-below-nav-and-dev-banner {
+  @apply h-[calc(100dvh-var(--nav-height)-var(--dev-banner-height))];
+}

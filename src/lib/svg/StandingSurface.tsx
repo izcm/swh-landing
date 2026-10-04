@@ -1,10 +1,20 @@
-import { roundCorner, type Point, type ShapeProps } from "./helpers";
+import type { LucideIcon } from "lucide-react";
+import {
+  glyphStroke,
+  roundCorner,
+  type Point,
+  type ShapeProps,
+} from "./helpers";
 
 type Props = ShapeProps & {
   // slope of the top edge in degrees. 30 = true isometric
   angle?: number;
   size?: number;
   points?: Point[];
+  // drawn in the middle of the panel, skewed to sit flat on it
+  icon?: LucideIcon;
+  // icon color, e.g. "url(#some-gradient)"
+  iconStroke?: string;
 };
 
 export function StandingSurface({
@@ -12,6 +22,8 @@ export function StandingSurface({
   y = 0,
   size = 30,
   angle = 30,
+  icon: Icon,
+  iconStroke = "var(--accent)",
 }: Props) {
   const radians = (angle * Math.PI) / 180;
   //   const edgeLength = size / Math.cos(radians);
@@ -43,12 +55,6 @@ export function StandingSurface({
 
   console.log(path);
   return (
-    // <path
-    //     d={roundedPolygonPath([topLeft, topBack, topRight, topFront], radius)}
-    //     fill={topFill}
-    //     stroke={edgeStroke}
-    //     strokeWidth={strokeWidth}
-    //   />
     <g transform={`translate(${x}, ${y})`}>
       <path
         d={
@@ -62,6 +68,27 @@ export function StandingSurface({
         fill="none"
         stroke="var(--accent)"
       />
+
+      {Icon &&
+        (() => {
+          const iconSize = size * 0.6;
+          // middle of the panel = middle of its diagonal
+          const center = { x: size / 2, y: (size + depth) / 2 };
+
+          return (
+            <g
+              transform={`translate(${center.x}, ${center.y}) skewY(${angle})`}
+            >
+              <Icon
+                x={-iconSize / 2}
+                y={-iconSize / 2}
+                size={iconSize}
+                strokeWidth={glyphStroke(iconSize, 2)}
+                stroke={iconStroke}
+              />
+            </g>
+          );
+        })()}
     </g>
   );
 }

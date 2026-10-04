@@ -10,17 +10,17 @@ export default function Hero() {
     <section
       className={cn(
         "flex flex-col items-center flex-1",
-        "px-2 mt-12 text-center gap-3",
+        "px-2 mt-12 text-center gap-3 xl:gap-6",
         "xl:flex-row xl:text-start xl:mt-0",
       )}
     >
       <div className="flex flex-col items-center gap-3 xl:items-start xl:gap-2 xl:ml-12">
-        <h1 className="text-3xl xl:text-5xl max-w-xl xl:min-w-lg font-medium leading-tight text-fg">
+        <h1 className="text-3xl md:text-4xl xl:text-5xl max-w-xl xl:min-w-md font-medium  leading-tight text-fg">
           Systems that work{" "}
           <span className="text-accent font-semibold">together.</span>
         </h1>
 
-        <p className="text-fg font-medium xl:text-xl">
+        <p className="text-fg-tinted font-medium md:text-lg xl:text-xl">
           Discover hidden value through{" "}
           <span className="xl:block">new connections.</span>
         </p>

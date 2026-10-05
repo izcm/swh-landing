@@ -5,8 +5,8 @@ import type { IsoBox, Point } from "./types";
 export const isoCubeMetrics = (
   size: number,
   thickness?: number,
-  angleA = 30,
-  angleB = angleA,
+  // left / right top-edge slopes. angleB defaults to angleA (a true iso cube)
+  { angleA = 30, angleB = angleA }: { angleA?: number; angleB?: number } = {},
 ) => {
   const radA = (angleA * Math.PI) / 180;
   const radB = (angleB * Math.PI) / 180;
@@ -63,21 +63,19 @@ export function isoCubePoints(
   angleB: number = angleA,
 ) {
   const scale = size / 100;
-  const { depth, edgeLength, a, b } = isoCubeMetrics(
-    100,
-    undefined,
+  const { depth, edgeLength, a, b } = isoCubeMetrics(100, undefined, {
     angleA,
     angleB,
-  );
+  });
 
   // undo the scale so thickness stays in real units; default = true cube
   const verticalHeight =
     thickness !== undefined ? thickness / scale : edgeLength;
 
-  const topBack = { x: a.run, y: 0 };
+  const topBack = { x: b.run, y: 0 };
   const topLeft = { x: 0, y: depth };
   const topRight = { x: 100, y: depth };
-  const topFront = { x: b.run, y: depth * 2 };
+  const topFront = { x: a.run, y: depth * 2 };
 
   const down = (p: Point) => ({ x: p.x, y: p.y + verticalHeight });
 

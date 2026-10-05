@@ -27,6 +27,8 @@ export function StandingSurface({
   radius = 4,
   icon: Icon,
   iconStroke = "var(--accent)",
+  fill = "none",
+  stroke = "var(--accent)",
 }: Props) {
   const radians = (angle * Math.PI) / 180;
   //   const edgeLength = size / Math.cos(radians);
@@ -67,8 +69,8 @@ export function StandingSurface({
             )
             .join(" ") + " Z"
         }
-        fill="none"
-        stroke="var(--accent)"
+        fill={fill}
+        stroke={stroke}
       />
 
       {Icon &&

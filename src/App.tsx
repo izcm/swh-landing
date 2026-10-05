@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Nav, Footer, Hero, Steps, Story, Demo, About } from "./features";
-import { HeroDiagram } from "./features/hero/Diagram";
+import { HeroDiagram } from "./features/hero/diagram/Diagram";
 // import { AISvg } from "./features/about/diagrams/ai/diagram";
 
 function App() {

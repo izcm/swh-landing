@@ -113,6 +113,7 @@ export function Orbit({
             radius={8}
             angle={angles.angleA}
             fill="var(--hero-standing-surface-fill)"
+            stroke="var(--node-border-color)"
           />
         </>
       ))}

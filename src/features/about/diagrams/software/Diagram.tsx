@@ -52,7 +52,7 @@ export function SoftwareDiagram() {
     const groupHeight = bigCube.depth * 2 + bigCubeDim.thickness;
 
     // encapsulatedCube's offsetX
-    const encapsulatedCubeSize = 80;
+    const encapsulatedCubeSize = cube.size;
 
     const smallCube = isoCubeMetrics(encapsulatedCubeSize);
     // small cube stands in the middle of the big cube's floor
@@ -301,9 +301,12 @@ export function SoftwareDiagram() {
             size={bottomLeft.bigCube.size}
             thickness={bottomLeft.bigCube.thickness}
             radius={4}
-            bottomFill="oklch(from var(--accent) 0.2 0.06 h)"
-            topFill="oklch(from var(--accent) 0.15 0.06 h / 0.3)"
-            wallFill="oklch(from var(--accent) 0.15 0.06 h / 0.3)"
+            faces={{
+              top: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
+              left: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
+              right: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
+              bottom: "oklch(from var(--accent) 0.2 0.06 h)",
+            }}
             showFrontEdge
           />
         </g>
@@ -324,8 +327,11 @@ export function SoftwareDiagram() {
             x={bottomLeft.smallCubePos.x}
             y={bottomLeft.smallCubePos.y - bottomLeft.floatLift}
             size={cube.size}
-            topFill="oklch(from var(--accent) 0.4 0.12 h / 0.8)"
-            wallFill="oklch(from var(--accent) 0.4 0.12 h / 0.8)"
+            faces={{
+              top: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
+              left: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
+              right: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
+            }}
             // was / 0.8 drawn twice; one layer at 0.96 looks the same
             stroke="oklch(from var(--accent) 0.85 0.12 h / 0.96)"
             showBackEdges
@@ -383,8 +389,11 @@ function CubeBase({ size, y = 0 }: { size: number; y?: number }) {
         size={size}
         x={half}
         y={y}
-        topFill="oklch(from var(--accent) 0.18 0.06 h)"
-        wallFill="oklch(from var(--accent) 0.18 0.06 h)"
+        faces={{
+          top: "oklch(from var(--accent) 0.18 0.06 h)",
+          left: "oklch(from var(--accent) 0.18 0.06 h)",
+          right: "oklch(from var(--accent) 0.18 0.06 h)",
+        }}
       />{" "}
       {/* hack to hide animation dot when behind cluster in top group */}
       <ISOCube {...glassCube} size={size} x={0} y={y + depth} />

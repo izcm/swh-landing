@@ -71,6 +71,7 @@ export function StandingSurface({
         }
         fill={fill}
         stroke={stroke}
+        strokeWidth={0.65}
       />
 
       {Icon &&

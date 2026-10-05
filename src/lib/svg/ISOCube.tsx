@@ -10,16 +10,23 @@ import {
   type IsoCubeBaseProps,
 } from "./helpers";
 
+// one color per face. right and bottom default to left
+type ISOCubeFaces = {
+  top?: string;
+  left?: string;
+  right?: string;
+  bottom?: string;
+};
+
 type ISOCubeProps = IsoCubeBaseProps & {
   // colors, stroke, roundedness
-  topFill?: string;
-  wallFill?: string;
-  // floor of the cube. defaults to wallFill
-  bottomFill?: string;
+  faces?: ISOCubeFaces;
   // edge thickness in viewbox units. lower it in svgs the page zooms in more
   strokeWeight?: number;
   radius?: number;
 
+  // color of the back edges (showBackEdges). defaults to the normal edge color
+  backStroke?: string;
   // edge gradient stop opacities (start, middle, end). see EdgeGradient
   edgeOpacity?: [number, number, number];
   // soft accent glow around the whole cube
@@ -30,6 +37,9 @@ type ISOCubeProps = IsoCubeBaseProps & {
   // false: no floor fill and no hidden back-bottom edges, only the two
   // front-bottom edges. useful when the walls are see-through
   showBottom?: boolean;
+  // draw only half the cube, so something can sit inside it:
+  // "back" = back edges + floor, "front" = walls + edges + top. leave out = whole cube
+  part?: "back" | "front";
 };
 
 // the look of the old ISOCube: sharp dark glass at 80%, front edge on.
@@ -39,8 +49,7 @@ type ISOCubeProps = IsoCubeBaseProps & {
 const glassFill = "oklch(from var(--accent) 0.18 0.06 h / 0.8)";
 export const glassCube = {
   radius: 0,
-  topFill: glassFill,
-  wallFill: glassFill,
+  faces: { top: glassFill, left: glassFill } as ISOCubeFaces,
   showBottom: false,
   showFrontEdge: true,
   strokeWeight: 0.85,
@@ -60,23 +69,33 @@ export function ISOCube({
   angleB = angleA,
 
   // colors, stroke, roundedness
-  topFill = "oklch(from var(--accent) 0.22 0.08 h)",
-  wallFill = "oklch(from var(--accent) 0.15 0.06 h / 0.9)",
-  bottomFill = wallFill,
+  faces = {},
   strokeWeight = 1,
   radius = 4,
   edgeOpacity,
   glow = { blur: 2, strength: 18 },
 
   stroke,
+  backStroke,
   // show knobs
   showGrid = false,
   showFrontEdge = false,
   showBackEdges = false,
   showBottom = true,
+  part,
 }: ISOCubeProps) {
   const edgeGradientId = useId();
   const edgeStroke = stroke ?? `url(#${edgeGradientId})`;
+  const backEdgeStroke = backStroke ?? edgeStroke;
+  const drawBack = part !== "front";
+  const drawFront = part !== "back";
+
+  const {
+    top: topFill = "oklch(from var(--accent) 0.22 0.08 h)",
+    left: leftFill = "var(--platform-bottom-fill)",
+    right: rightFill = leftFill,
+    bottom: bottomFill = leftFill,
+  } = faces;
 
   const {
     scale,
@@ -131,26 +150,26 @@ export function ISOCube({
         />
       </defs>
       {/* back edge: drawn first so the glass sits over it */}
-      {showBackEdges && (
+      {drawBack && showBackEdges && (
         <line
           x1={backTip.x}
           y1={backTip.y}
           x2={backTip.x}
           y2={backTip.y + verticalHeight}
-          stroke={edgeStroke}
+          stroke={backEdgeStroke}
           strokeWidth={strokeWidth}
         />
       )}
       {/* without the floor, the floor's back edges still show through the glass */}
-      {showBackEdges && !showBottom && (
+      {drawBack && showBackEdges && !showBottom && (
         <path
           d={`M ${bottomLeft.x} ${bottomLeft.y} L ${bottomBack.x} ${bottomBack.y} L ${bottomRight.x} ${bottomRight.y}`}
           fill="none"
-          stroke={edgeStroke}
+          stroke={backEdgeStroke}
           strokeWidth={strokeWidth}
         />
       )}
-      {showBottom ? (
+      {drawBack && showBottom && (
         <path
           d={roundedPolygonPath(
             [bottomLeft, bottomBack, bottomRight, bottomFront],
@@ -160,7 +179,10 @@ export function ISOCube({
           stroke={edgeStroke}
           strokeWidth={strokeWidth}
         />
-      ) : (
+      )}
+      {/* front-bottom edges. with a floor they're already in the floor's outline,
+          except when drawing the front half on its own */}
+      {drawFront && (!showBottom || part === "front") && (
         <path
           d={`M ${leftBottomTip.x} ${leftBottomTip.y}
               L ${frontBottom.before.x} ${frontBottom.before.y}
@@ -171,63 +193,72 @@ export function ISOCube({
           strokeWidth={strokeWidth}
         />
       )}
-      {/* walls: left and right faces meeting at the front edge, then the two side edges */}
-      <polygon
-        points={`${leftTip.x},${leftTip.y} ${topFront.x},${topFront.y} ${bottomFront.x},${bottomFront.y} ${leftTip.x},${leftTip.y + verticalHeight}`}
-        fill={wallFill}
-      />
-      <polygon
-        points={`${topFront.x},${topFront.y} ${rightTip.x},${rightTip.y} ${rightTip.x},${rightTip.y + verticalHeight} ${bottomFront.x},${bottomFront.y}`}
-        fill={wallFill}
-      />
+      {drawFront && (
+        <>
+          {/* walls: left and right faces meeting at the front edge, then the two side edges */}
+          <polygon
+            points={`${leftTip.x},${leftTip.y} ${topFront.x},${topFront.y} ${bottomFront.x},${bottomFront.y} ${leftTip.x},${leftTip.y + verticalHeight}`}
+            fill={leftFill}
+            // opacity={0.6}
+          />
+          <polygon
+            points={`${topFront.x},${topFront.y} ${rightTip.x},${rightTip.y} ${rightTip.x},${rightTip.y + verticalHeight} ${bottomFront.x},${bottomFront.y}`}
+            fill={rightFill}
+            // opacity={0.6}
+          />
 
-      <line
-        x1={leftTip.x}
-        y1={leftTip.y}
-        x2={leftTip.x}
-        y2={leftTip.y + verticalHeight}
-        stroke={edgeStroke}
-        strokeWidth={strokeWidth}
-      />
-      <line
-        x1={rightTip.x}
-        y1={rightTip.y}
-        x2={rightTip.x}
-        y2={rightTip.y + verticalHeight}
-        stroke={edgeStroke}
-        strokeWidth={strokeWidth}
-      />
-      {showFrontEdge && (
-        <line
-          x1={frontTip.x}
-          y1={frontTip.y}
-          x2={frontTip.x}
-          y2={frontTip.y + verticalHeight}
-          stroke={edgeStroke}
-          strokeWidth={strokeWidth}
-        />
-      )}
-
-      <path
-        d={roundedPolygonPath([topLeft, topBack, topRight, topFront], radius)}
-        fill={topFill}
-        stroke={edgeStroke}
-        strokeWidth={strokeWidth}
-      />
-
-      {showGrid &&
-        gridLines.map(([a, b], i) => (
           <line
-            key={i}
-            x1={a.x}
-            y1={a.y}
-            x2={b.x}
-            y2={b.y}
+            x1={leftTip.x}
+            y1={leftTip.y}
+            x2={leftTip.x}
+            y2={leftTip.y + verticalHeight}
             stroke={edgeStroke}
             strokeWidth={strokeWidth}
-            opacity={0.2}
           />
-        ))}
+          <line
+            x1={rightTip.x}
+            y1={rightTip.y}
+            x2={rightTip.x}
+            y2={rightTip.y + verticalHeight}
+            stroke={edgeStroke}
+            strokeWidth={strokeWidth}
+          />
+          {showFrontEdge && (
+            <line
+              x1={frontTip.x}
+              y1={frontTip.y}
+              x2={frontTip.x}
+              y2={frontTip.y + verticalHeight}
+              stroke={edgeStroke}
+              strokeWidth={strokeWidth}
+            />
+          )}
+
+          <path
+            d={roundedPolygonPath(
+              [topLeft, topBack, topRight, topFront],
+              radius,
+            )}
+            fill={topFill}
+            stroke={edgeStroke}
+            strokeWidth={strokeWidth}
+          />
+
+          {showGrid &&
+            gridLines.map(([a, b], i) => (
+              <line
+                key={i}
+                x1={a.x}
+                y1={a.y}
+                x2={b.x}
+                y2={b.y}
+                stroke={edgeStroke}
+                strokeWidth={strokeWidth}
+                opacity={0.2}
+              />
+            ))}
+        </>
+      )}
     </g>
   );
 }

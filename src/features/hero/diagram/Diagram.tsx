@@ -18,7 +18,7 @@ export function HeroDiagram() {
     );
 
   const rightBox = (() => {
-    const groupWidth = contentWidth * 0.4;
+    const groupWidth = contentWidth * 0.42;
     const groupHeight = contentHeight * 0.8;
 
     const translateX = contentWidth - groupWidth;
@@ -71,7 +71,7 @@ export function HeroDiagram() {
           width={contentWidth}
           height={contentHeight}
           fill="none"
-          stroke="#e8a0a8" // dusty rose
+          stroke="#e8a0a8" // dusty rosei
           strokeWidth={0.75}
           strokeDasharray="6 4"
         />

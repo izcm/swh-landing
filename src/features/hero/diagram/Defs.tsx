@@ -4,19 +4,23 @@ export function HeroDefs() {
     <defs>
       {/* center cube glass: lighter front/top, darker sides */}
       <linearGradient id="cubeSide" x1="0" y1="0" x2="1" y2="1">
-        {/* saturated blue glass: same hue as --accent, more chroma so it
-            doesn't wash out grey over the dark background */}
         <stop
           offset="0%"
-          stopColor="oklch(from var(--accent) 0.55 0.18 h)"
+          stopColor="oklch(from var(--accent) 0.4 0.2 h)"
           stopOpacity="0.35"
         />
         <stop
+          offset="50%"
+          stopColor="oklch(from var(--accent) 0.38 0.14 h)"
+          stopOpacity="0.28"
+        />
+        <stop
           offset="100%"
-          stopColor="oklch(from var(--accent) 0.35 0.16 h)"
-          stopOpacity="0.3"
+          stopColor="oklch(from var(--accent) 0.3 0.12 h)"
+          stopOpacity="0.24"
         />
       </linearGradient>
+
       {/* <linearGradient id="cubeSide" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.2" />
         <stop

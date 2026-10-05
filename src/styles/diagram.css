@@ -26,11 +26,14 @@
     transparent 80%
   );
 
+  --platform-bottom-fill: oklch(from var(--ground) 0.15 0.04 h / 0.72);
+
   /* hero diagram (features/hero/Diagram.tsx) */
   --hero-center-cube-fill: url(#cubeSide);
-  --hero-inner-cube-fill: oklch(from var(--ground) 0.02 0.08 h / 0.8);
-  --hero-inner-cube-stroke: oklch(from var(--ground) 0.5 0.08 h / 0.8);
-  --hero-standing-surface-fill: oklch(from var(--accent) 0.25 0.075 h / 0.8);
+  --hero-inner-cube-fill: oklch(from var(--ground) 0.08 0.04 h / 1);
+  --hero-inner-cube-stroke: oklch(from var(--ground) 0.4 0.2 h / 0.65);
+
+  --hero-standing-surface-fill: oklch(from var(--accent) 0.25 0.075 h / 0.65);
 }
 
 /* traveling pulse: a short glowing streak (12) + gap (396), slid along the

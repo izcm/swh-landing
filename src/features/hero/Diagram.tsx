@@ -3,18 +3,18 @@ import {
   diagramLayout,
   pointOnCircle,
 } from "@/lib/svg/helpers";
-import {
-  RoundedIsoCube,
-  glassCube,
-} from "../about/diagrams/software/RoundedIsoCube";
+import { ISOCube, glassCube } from "@/lib/svg/ISOCube";
 import {
   isoBottomCenter,
   isoCubeMetrics,
   isoTopCenter,
   standOn,
-} from "@/lib/svg/ISOCube";
+} from "@/lib/svg/helpers";
 import { FileSpreadsheet, Cloud, FileText, Settings } from "lucide-react";
 import { StandingSurface } from "@/lib/svg/StandingSurface";
+
+// the hero's camera: left edges slope 30°, right edges 24°
+const heroAngles = { angleA: 30, angleB: 24 };
 
 export function HeroDiagram() {
   const viewboxWidth = 800;
@@ -148,11 +148,22 @@ export function HeroDiagram() {
 
     // the big glass cube in the middle, with a small cube floating inside
     const centerpiece = (() => {
-      const metrics = isoCubeMetrics(150);
+      const metrics = isoCubeMetrics(
+        150,
+        150 * 0.577,
+        heroAngles.angleA,
+        heroAngles.angleB,
+      );
 
       // small cube standing in the middle of the big cube's floor,
       // same as SoftwareDiagram's bottom-left group
-      const innerCube = isoCubeMetrics(metrics.size / 2);
+      const innerSize = metrics.size / 2;
+      const innerCube = isoCubeMetrics(
+        innerSize,
+        innerSize * 0.577,
+        heroAngles.angleA,
+        heroAngles.angleB,
+      );
       const innerCubePos = standOn(isoBottomCenter(metrics), innerCube);
 
       return {
@@ -299,45 +310,63 @@ export function HeroDiagram() {
                 />
 
                 {/* centerpiece */}
-                <g transform={`translate(${centerpiece.x}, ${centerpiece.y})`}>
-                  {/* shadow on the floor, under the floating cube. iso-flattened ellipse */}
-                  <ellipse
-                    className="float-shadow"
-                    cx={centerpiece.size / 2}
-                    cy={centerpiece.height - centerpiece.depth}
-                    rx={centerpiece.innerCube.size * 0.4}
-                    ry={
-                      centerpiece.innerCube.size * 0.4 * Math.tan(Math.PI / 6)
-                    }
-                    fill="black"
-                    opacity={0.4}
-                    style={{ filter: "blur(4px)" }}
-                  />
-                  <g className="float-bob">
-                    <RoundedIsoCube
-                      {...glassCube}
-                      x={centerpiece.innerCubePos.x}
-                      y={centerpiece.innerCubePos.y - centerpiece.floatLift}
-                      size={centerpiece.innerCube.size}
-                      topFill="oklch(from var(--ground) 0.15 0.12 h / 0.8)"
-                      wallFill="oklch(from var(--ground) 0.15 0.12 h / 0.8)"
-                      // was / 0.8 drawn twice; one layer at 0.96 looks the same
-                      stroke="oklch(from var(--ground) 0.65 0.12 h / 0.96)"
-                      showBackEdges
-                    />
-                  </g>
+                {(() => {
+                  const {
+                    x,
+                    y,
+                    size,
+                    height,
+                    depth,
+                    thickness,
+                    innerCube,
+                    innerCubePos,
+                    floatLift,
+                  } = centerpiece;
 
-                  <RoundedIsoCube
-                    size={centerpiece.size}
-                    // thickness={centerpiece.thickness}
-                    showFrontEdge
-                    // showBottom={false}
-                    bottomFill="none"
-                    topFill="url(#cubeSide)"
-                    wallFill="url(#cubeSide)"
-                    strokeWeight={1}
-                  />
-                </g>
+                  return (
+                    <g transform={`translate(${x}, ${y})`}>
+                      {/* shadow on the floor, under the floating cube. iso-flattened ellipse */}
+                      <ellipse
+                        className="float-shadow"
+                        cx={size / 2}
+                        cy={height - depth}
+                        rx={innerCube.size * 0.4}
+                        ry={innerCube.size * 0.4 * Math.tan(Math.PI / 6)}
+                        fill="black"
+                        opacity={0.4}
+                        style={{ filter: "blur(4px)" }}
+                      />
+                      <g className="float-bob">
+                        <ISOCube
+                          {...glassCube}
+                          x={innerCubePos.x}
+                          y={innerCubePos.y - floatLift}
+                          size={innerCube.size}
+                          thickness={innerCube.thickness}
+                          topFill="oklch(from var(--ground) 0.02 0.08 h / 0.8)"
+                          wallFill="oklch(from var(--ground) 0.02 0.08 h / 0.8)"
+                          // was / 0.8 drawn twice; one layer at 0.96 looks the same
+                          stroke="oklch(from var(--ground) 0.5 0.08 h / 0.8)"
+                          showBackEdges
+                          {...heroAngles}
+                        />
+                      </g>
+
+                      <ISOCube
+                        size={size}
+                        thickness={thickness}
+                        showFrontEdge
+                        // showBottom={false}
+                        bottomFill="none"
+                        topFill="url(#cubeSide)"
+                        wallFill="url(#cubeSide)"
+                        strokeWeight={0.8}
+                        showBottom={false}
+                        {...heroAngles}
+                      />
+                    </g>
+                  );
+                })()}
 
                 {/* orbit: dots, platforms, standing surfaces */}
                 <g>
@@ -352,19 +381,20 @@ export function HeroDiagram() {
                       />
 
                       {/* PLATFORM */}
-                      <RoundedIsoCube
+                      <ISOCube
                         x={platformPoints[i].x - topCenter.x}
                         y={platformPoints[i].y - topCenter.y}
                         size={platform.size}
                         thickness={platform.thickness}
                         strokeWeight={0.7}
                         showGrid
+                        {...heroAngles}
                       />
 
                       <StandingSurface
                         {...standingSurfaces[i]}
                         radius={12}
-                        // angle={24} // 24 is good for what we want use this for platform frontangle to
+                        angle={heroAngles.angleB}
                       />
                     </>
                   ))}

@@ -3,9 +3,9 @@ import {
   isoCubeMetrics,
   isoTopCenter,
   standOn,
-} from "@/lib/svg/ISOCube";
+} from "@/lib/svg/helpers";
 import { diagramLayout, type Point } from "@/lib/svg/helpers";
-import { RoundedIsoCube, glassCube } from "./RoundedIsoCube";
+import { ISOCube, glassCube } from "@/lib/svg/ISOCube";
 
 export function SoftwareDiagram() {
   const viewboxWidth = 500;
@@ -288,7 +288,7 @@ export function SoftwareDiagram() {
             } as React.CSSProperties
           }
         >
-          <RoundedIsoCube {...glassCube} size={cubeSize} x={half * 1.5} y={0} />
+          <ISOCube {...glassCube} size={cubeSize} x={half * 1.5} y={0} />
         </g>
       </g>
 
@@ -297,7 +297,7 @@ export function SoftwareDiagram() {
         transform={`translate(${bottomLeft.positions.x}, ${bottomLeft.positions.y})`}
       >
         <g opacity={1}>
-          <RoundedIsoCube
+          <ISOCube
             size={bottomLeft.bigCube.size}
             thickness={bottomLeft.bigCube.thickness}
             radius={4}
@@ -319,7 +319,7 @@ export function SoftwareDiagram() {
           style={{ filter: "blur(4px)" }}
         />
         <g className="float-bob">
-          <RoundedIsoCube
+          <ISOCube
             {...glassCube}
             x={bottomLeft.smallCubePos.x}
             y={bottomLeft.smallCubePos.y - bottomLeft.floatLift}
@@ -350,7 +350,7 @@ export function SoftwareDiagram() {
         >
           {/* PLATFORM */}
           <g transform={`translate(0, ${bottomRight.platformY})`}>
-            <RoundedIsoCube
+            <ISOCube
               size={bottomRight.platform.size}
               thickness={bottomRight.platform.thickness}
               showGrid
@@ -362,13 +362,8 @@ export function SoftwareDiagram() {
             <CubeBase size={cubeSize} y={rise} />
 
             {/* TOP ROW — two cubes on the back cells */}
-            <RoundedIsoCube {...glassCube} size={cubeSize} x={half} y={0} />
-            <RoundedIsoCube
-              {...glassCube}
-              size={cubeSize}
-              x={cubeSize}
-              y={depth}
-            />
+            <ISOCube {...glassCube} size={cubeSize} x={half} y={0} />
+            <ISOCube {...glassCube} size={cubeSize} x={cubeSize} y={depth} />
           </g>
         </g>
       </g>
@@ -383,7 +378,7 @@ function CubeBase({ size, y = 0 }: { size: number; y?: number }) {
 
   return (
     <>
-      <RoundedIsoCube
+      <ISOCube
         {...glassCube}
         size={size}
         x={half}
@@ -392,9 +387,9 @@ function CubeBase({ size, y = 0 }: { size: number; y?: number }) {
         wallFill="oklch(from var(--accent) 0.18 0.06 h)"
       />{" "}
       {/* hack to hide animation dot when behind cluster in top group */}
-      <RoundedIsoCube {...glassCube} size={size} x={0} y={y + depth} />
-      <RoundedIsoCube {...glassCube} size={size} x={size} y={y + depth} />
-      <RoundedIsoCube {...glassCube} size={size} x={half} y={y + depth * 2} />
+      <ISOCube {...glassCube} size={size} x={0} y={y + depth} />
+      <ISOCube {...glassCube} size={size} x={size} y={y + depth} />
+      <ISOCube {...glassCube} size={size} x={half} y={y + depth * 2} />
     </>
   );
 }

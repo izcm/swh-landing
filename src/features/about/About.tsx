@@ -81,11 +81,11 @@ export function About() {
         </p>
       </header>
 
-      <div className="border-t border-faint-accent">
+      <div className="border-t border-faint-accent overflow-clip">
         <div
           className="
             sticky top-[calc(100dvh-30rem)]
-            overflow-hidden h-120 -mb-120"
+            overflow-hidden h-120 -mb-120 pointer-events-none"
         >
           <div className="floor-grid" aria-hidden />
         </div>

@@ -3,9 +3,11 @@ import {
   diagramLayout,
   pointOnCircle,
 } from "@/lib/svg/helpers";
-import { RoundedIsoCube } from "../about/diagrams/software/RoundedIsoCube";
 import {
-  ISOCube,
+  RoundedIsoCube,
+  glassCube,
+} from "../about/diagrams/software/RoundedIsoCube";
+import {
   isoBottomCenter,
   isoCubeMetrics,
   isoTopCenter,
@@ -312,12 +314,15 @@ export function HeroDiagram() {
                     style={{ filter: "blur(4px)" }}
                   />
                   <g className="float-bob">
-                    <ISOCube
+                    <RoundedIsoCube
+                      {...glassCube}
                       x={centerpiece.innerCubePos.x}
                       y={centerpiece.innerCubePos.y - centerpiece.floatLift}
                       size={centerpiece.innerCube.size}
-                      fill="oklch(from var(--ground) 0.15 0.12 h)"
-                      stroke="oklch(from var(--ground) 0.65 0.12 h / 0.8)"
+                      topFill="oklch(from var(--ground) 0.15 0.12 h / 0.8)"
+                      wallFill="oklch(from var(--ground) 0.15 0.12 h / 0.8)"
+                      // was / 0.8 drawn twice; one layer at 0.96 looks the same
+                      stroke="oklch(from var(--ground) 0.65 0.12 h / 0.96)"
                       showBackEdges
                     />
                   </g>
@@ -331,7 +336,6 @@ export function HeroDiagram() {
                     topFill="url(#cubeSide)"
                     wallFill="url(#cubeSide)"
                     strokeWeight={1}
-                    angle={30}
                   />
                 </g>
 
@@ -357,7 +361,11 @@ export function HeroDiagram() {
                         showGrid
                       />
 
-                      <StandingSurface {...standingSurfaces[i]} />
+                      <StandingSurface
+                        {...standingSurfaces[i]}
+                        radius={12}
+                        // angle={24} // 24 is good for what we want use this for platform frontangle to
+                      />
                     </>
                   ))}
                 </g>

@@ -7,9 +7,11 @@ import {
 } from "./helpers";
 
 type Props = ShapeProps & {
+  size?: number;
   // slope of the top edge in degrees. 30 = true isometric
   angle?: number;
-  size?: number;
+  // corner rounding, in the same units as size
+  radius?: number;
   points?: Point[];
   // drawn in the middle of the panel, skewed to sit flat on it
   icon?: LucideIcon;
@@ -18,10 +20,11 @@ type Props = ShapeProps & {
 };
 
 export function StandingSurface({
+  size = 30,
   x = 0,
   y = 0,
-  size = 30,
   angle = 30,
+  radius = 4,
   icon: Icon,
   iconStroke = "var(--accent)",
 }: Props) {
@@ -41,7 +44,7 @@ export function StandingSurface({
   const n = points.length;
   //   const corners = points ?? [];
   const corners = points.map((corner, i) =>
-    roundCorner(points[(i - 1 + n) % n], corner, points[(i + 1) % n], 4),
+    roundCorner(points[(i - 1 + n) % n], corner, points[(i + 1) % n], radius),
   );
   //   const { before, corner, after } = roundCorner(start, { x: 0, y: 0 }, end, 4);
 
@@ -53,7 +56,6 @@ export function StandingSurface({
       )
       .join(" ") + " Z";
 
-  console.log(path);
   return (
     <g transform={`translate(${x}, ${y})`}>
       <path

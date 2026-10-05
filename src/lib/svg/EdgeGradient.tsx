@@ -7,10 +7,13 @@ export function EdgeGradient({
   id,
   width,
   height,
+  // stop opacities: start, middle, end
+  opacity = [0.5, 1, 0.35],
 }: {
   id: string;
   width: number;
   height: number;
+  opacity?: [number, number, number];
 }) {
   return (
     <linearGradient
@@ -21,13 +24,13 @@ export function EdgeGradient({
       x2={width}
       y2={height}
     >
-      <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.5" />
+      <stop offset="0%" stopColor="var(--accent)" stopOpacity={opacity[0]} />
       <stop
         offset="55%"
         style={{ stopColor: "var(--accent-deep)" }}
-        stopOpacity="1"
+        stopOpacity={opacity[1]}
       />
-      <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.35" />
+      <stop offset="100%" stopColor="var(--accent)" stopOpacity={opacity[2]} />
     </linearGradient>
   );
 }

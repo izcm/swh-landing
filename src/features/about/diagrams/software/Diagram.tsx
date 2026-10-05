@@ -1,12 +1,11 @@
 import {
-  ISOCube,
   isoBottomCenter,
   isoCubeMetrics,
   isoTopCenter,
   standOn,
 } from "@/lib/svg/ISOCube";
 import { diagramLayout, type Point } from "@/lib/svg/helpers";
-import { RoundedIsoCube } from "./RoundedIsoCube";
+import { RoundedIsoCube, glassCube } from "./RoundedIsoCube";
 
 export function SoftwareDiagram() {
   const viewboxWidth = 500;
@@ -289,7 +288,7 @@ export function SoftwareDiagram() {
             } as React.CSSProperties
           }
         >
-          <ISOCube size={cubeSize} x={half * 1.5} y={0} />
+          <RoundedIsoCube {...glassCube} size={cubeSize} x={half * 1.5} y={0} />
         </g>
       </g>
 
@@ -320,12 +319,15 @@ export function SoftwareDiagram() {
           style={{ filter: "blur(4px)" }}
         />
         <g className="float-bob">
-          <ISOCube
+          <RoundedIsoCube
+            {...glassCube}
             x={bottomLeft.smallCubePos.x}
             y={bottomLeft.smallCubePos.y - bottomLeft.floatLift}
             size={cube.size}
-            fill="oklch(from var(--accent) 0.4 0.12 h)"
-            stroke="oklch(from var(--accent) 0.85 0.12 h / 0.8)"
+            topFill="oklch(from var(--accent) 0.4 0.12 h / 0.8)"
+            wallFill="oklch(from var(--accent) 0.4 0.12 h / 0.8)"
+            // was / 0.8 drawn twice; one layer at 0.96 looks the same
+            stroke="oklch(from var(--accent) 0.85 0.12 h / 0.96)"
             showBackEdges
           />
         </g>
@@ -360,8 +362,13 @@ export function SoftwareDiagram() {
             <CubeBase size={cubeSize} y={rise} />
 
             {/* TOP ROW — two cubes on the back cells */}
-            <ISOCube size={cubeSize} x={half} y={0} />
-            <ISOCube size={cubeSize} x={cubeSize} y={depth} />
+            <RoundedIsoCube {...glassCube} size={cubeSize} x={half} y={0} />
+            <RoundedIsoCube
+              {...glassCube}
+              size={cubeSize}
+              x={cubeSize}
+              y={depth}
+            />
           </g>
         </g>
       </g>
@@ -376,11 +383,18 @@ function CubeBase({ size, y = 0 }: { size: number; y?: number }) {
 
   return (
     <>
-      <ISOCube size={size} x={half} y={y} surfaceOpacity={1} />{" "}
+      <RoundedIsoCube
+        {...glassCube}
+        size={size}
+        x={half}
+        y={y}
+        topFill="oklch(from var(--accent) 0.18 0.06 h)"
+        wallFill="oklch(from var(--accent) 0.18 0.06 h)"
+      />{" "}
       {/* hack to hide animation dot when behind cluster in top group */}
-      <ISOCube size={size} x={0} y={y + depth} />
-      <ISOCube size={size} x={size} y={y + depth} />
-      <ISOCube size={size} x={half} y={y + depth * 2} />
+      <RoundedIsoCube {...glassCube} size={size} x={0} y={y + depth} />
+      <RoundedIsoCube {...glassCube} size={size} x={size} y={y + depth} />
+      <RoundedIsoCube {...glassCube} size={size} x={half} y={y + depth * 2} />
     </>
   );
 }

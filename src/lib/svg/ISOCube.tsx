@@ -12,13 +12,16 @@ import {
 export const isoCubeMetrics = (
   size: number,
   thickness?: number,
-  angle = 30,
+  angleA = 30,
+  angleB = angleA,
 ) => {
   const half = size / 2;
-  const radians = (angle * Math.PI) / 180;
 
-  const depth = half * Math.tan(radians); // how far a top edge drops (opposite side)
-  const edgeLength = half / Math.cos(radians); // the top edge itself (hypotenuse)
+  const radA = (angleA * Math.PI) / 180;
+  const radB = (angleB * Math.PI) / 180;
+
+  const depth = half * Math.tan(radA); // how far a top edge drops (opposite side)
+  const edgeLength = half / Math.cos(radA); // the top edge itself (hypotenuse)
   const height = depth * 2 + (thickness ?? edgeLength); // top diamond + walls
 
   // return for convenience
@@ -52,10 +55,11 @@ export const standOn = (point: Point, box: IsoBox): Point => {
 export function isoCubePoints(
   size: number,
   thickness: number | undefined,
-  angle: number,
+  angleA: number,
+  angleB: number = angleA,
 ) {
   const scale = size / 100;
-  const { depth, edgeLength } = isoCubeMetrics(100, undefined, angle);
+  const { depth, edgeLength } = isoCubeMetrics(100, undefined, angleA, angleB);
 
   // undo the scale so thickness stays in real units; default = true cube
   const verticalHeight =
@@ -97,7 +101,10 @@ export type ISOCubeProps = ShapeProps & {
   // pass something small for a flat slab / platform
   thickness?: number;
   // slope of the top edges in degrees. 30 = true isometric
-  angle?: number;
+  // angle?: number;
+
+  angleFront?: number;
+  angleSide?: number;
   // the vertical edge where the left and right faces meet (topFront → bottomFront)
   showFrontEdge?: boolean;
 };
@@ -110,7 +117,9 @@ export function ISOCube({
   surfaceOpacity = 0.8,
   showBackEdges = false,
   thickness,
-  angle = 30,
+  angleFront = 30,
+  angleSide = angleFront,
+  // angle = 30,
   showFrontEdge = true,
   stroke,
   fill = "oklch(from var(--accent) 0.18 0.06 h)",
@@ -130,7 +139,7 @@ export function ISOCube({
     bottomLeft,
     bottomRight,
     bottomFront,
-  } = isoCubePoints(size, thickness, angle);
+  } = isoCubePoints(size, thickness, angleFront);
 
   // glass fill, same as the AI diagram's ghost editors
   const faceProps = {

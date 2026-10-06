@@ -31,6 +31,25 @@ export const pointOnLine = (A: Point, B: Point, t: number) => ({
   y: A.y + (B.y - A.y) * t,
 });
 
+// how far down you go when you walk `along` (0–1) of an edge that slopes at
+// `angle` degrees. run = the edge's full horizontal length
+export function dropAlongEdge({
+  run,
+  along = 0.5,
+  angle,
+}: {
+  run: number;
+  along?: number;
+  angle: number;
+}) {
+  const radians = angle * (Math.PI / 180);
+
+  const adj = run * along;
+  const opp = adj * Math.tan(radians);
+
+  return opp;
+}
+
 // the two points a rounded corner curves between: `radius` back along the edge towards
 // `prev`, and `radius` forward along the edge towards `next`. draw it as
 // `… L before Q corner after …`. radius is in the same units as the points

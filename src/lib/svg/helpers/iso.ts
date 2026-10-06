@@ -32,8 +32,8 @@ export const isoCubeMetrics = (
     height,
     thickness: finalThickness,
     // each top edge: how far it goes sideways (run) and how long it is
-    a: { run: runA, edgeLength: edgeLengthA },
-    b: { run: runB, edgeLength: edgeLengthB },
+    a: { run: runA, edgeLength: edgeLengthA, angle: angleA },
+    b: { run: runB, edgeLength: edgeLengthB, angle: angleB },
     edgeLength: edgeLengthA, // existing code still reads this
   };
 };

@@ -1,4 +1,8 @@
-import { centerInParent, diagramLayout } from "@/lib/svg/helpers";
+import {
+  centerInParent,
+  diagramLayout,
+  dropAlongEdge,
+} from "@/lib/svg/helpers";
 import { Centerpiece } from "./Centerpiece";
 import { HeroDefs } from "./Defs";
 import { heroLayout } from "./layout";
@@ -19,7 +23,7 @@ export function HeroDiagram() {
     );
 
   const rightBox = (() => {
-    const groupWidth = contentWidth * 0.42;
+    const groupWidth = contentWidth * 0.4;
     const groupHeight = contentHeight * 0.8;
 
     const translateX = contentWidth - groupWidth;
@@ -96,14 +100,44 @@ export function HeroDiagram() {
             const {
               x: cubeX,
               y: cubeY,
-              cube: { size, depth, thickness, b },
+              cube: { size, depth, thickness, b, a },
             } = centerpiece;
 
             const connectorStartingPoints = [
-              { x: cubeX, y: cubeY + depth + thickness * 0.8 },
-              { x: cubeX + b.run, y: cubeY },
-              { x: cubeX + size, y: cubeY + depth + thickness / 2 },
-              // { x: cubeX + size, y: cubeY + depth + thickness / 2 },
+              // position comments are written as per how I view the cube on screen from my chair :p
+              { x: cubeX, y: cubeY + depth + thickness * 0.8 }, // left edge of front panel
+              {
+                x: cubeX + a.run * 0.7,
+                // walk from the bottom-left corner 70% down the A edge
+                y:
+                  cubeY +
+                  depth +
+                  thickness +
+                  dropAlongEdge({ run: a.run, along: 0.7, angle: a.angle }),
+              }, // bottom edge of front panel
+
+              {
+                x: cubeX,
+                y:
+                  cubeY +
+                  dropAlongEdge({
+                    run: a.run,
+                    along: 0.5,
+                    angle: centerpiece.cube.a.angle,
+                  }) +
+                  thickness / 2,
+              }, // middle of left side panel
+              {
+                x: cubeX + b.run * 0.75,
+                // walk left from the back corner (at cubeY) a quarter of the
+                // way down the B edge
+                y:
+                  cubeY +
+                  dropAlongEdge({ run: b.run, along: 0.25, angle: b.angle }),
+              }, // right edge of left side panel
+
+              // connects to rightbox not orbit
+              { x: cubeX + size, y: cubeY + depth + thickness * 0.65 }, // right edge of right side panel
             ];
 
             return (
@@ -139,18 +173,6 @@ export function HeroDiagram() {
                   strokeDasharray="6 4"
                 />
 
-                {connectorStartingPoints.map((point, i) => (
-                  <circle
-                    key={i}
-                    cx={point.x}
-                    cy={point.y}
-                    r={2.5}
-                    fill="#9cc5a8"
-                    stroke="#9cc5a8" // sage
-                    strokeWidth={0.75}
-                  />
-                ))}
-
                 <rect
                   x={centerpiece.x}
                   y={centerpiece.y}
@@ -165,6 +187,18 @@ export function HeroDiagram() {
                 <Centerpiece {...layout.centerpiece} angles={heroAngles} />
 
                 <Orbit {...layout.orbit} angles={heroAngles} />
+
+                {connectorStartingPoints.map((point, i) => (
+                  <circle
+                    key={i}
+                    cx={point.x}
+                    cy={point.y}
+                    r={2.5}
+                    fill="#9cc5a8"
+                    stroke="#9cc5a8" // sage
+                    strokeWidth={0.75}
+                  />
+                ))}
               </>
             );
           })()}

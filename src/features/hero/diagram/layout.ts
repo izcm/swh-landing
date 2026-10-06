@@ -24,7 +24,7 @@ export function heroLayout({
 }) {
   // the big glass cube in the middle, with a small cube floating inside
   const centerpiece = (() => {
-    const cube = isoCubeMetrics(150, 150 * 0.577, angles);
+    const cube = isoCubeMetrics(156, 150 * 0.577, angles);
 
     // small cube standing in the middle of the big cube's floor,
     // same as SoftwareDiagram's bottom-left group
@@ -38,6 +38,7 @@ export function heroLayout({
 
     return {
       x: contentRing.centerX - unit,
+      // y: contentRing.centerY - cube.height * 0.5,
       y: contentRing.centerY - cube.height * 0.5,
       cube,
       innerCube,
@@ -47,25 +48,26 @@ export function heroLayout({
 
   // dots on the ring, each with a platform + standing surface
   const orbit = (() => {
-    const platformSize = unit * 2.8;
-    const platform = isoCubeMetrics(platformSize, contentHeight / 40, angles);
+    const platformSize = unit * 3;
+    const platform = isoCubeMetrics(platformSize, contentHeight / 35, angles);
 
     const pointOnContentRing = (degrees: number) =>
       pointOnCircle({
         angle: (degrees * Math.PI) / 180,
         circle: contentRing,
       });
-    const nodes = [
-      pointOnContentRing(90),
-      pointOnContentRing(157),
-      pointOnContentRing(210),
-      pointOnContentRing(270),
-    ];
+    // knob: turns all dots around the ring together, in degrees.
+    // the gaps between them stay the same
+    const orbitRotation = 0;
+    const nodeAngles = [85, 150, 205, 270];
+    const nodes = nodeAngles.map((degrees) =>
+      pointOnContentRing(degrees + orbitRotation),
+    );
 
     // stands along the platform's front-left edge, so it uses angle A
     // const surfaceSize = platform.b.edgeLength;
     const surfaceSize = platform.b.edgeLength;
-    const surfaceThickness = surfaceSize * 1.15;
+    const surfaceThickness = surfaceSize * 1.1;
 
     const standingSurface = {
       size: surfaceSize,
@@ -82,10 +84,10 @@ export function heroLayout({
       { x: -platform.size / 2, y: platform.thickness }, // left, bottom
       { x: platform.size / 2, y: platform.thickness }, // right, bottom
       { x: 0, y: platform.depth + platform.thickness }, // front tip, bottom
-      { x: -platform.size / 4, y: -standingSurface.size }, // surface top-left
+      { x: -platform.size / 4, y: -standingSurface.thickness }, // surface top-left
       {
         x: -platform.size / 4 + standingSurface.size,
-        y: -standingSurface.size + standingSurface.depth,
+        y: -standingSurface.thickness + standingSurface.depth,
       }, // surface top-right
     ];
 

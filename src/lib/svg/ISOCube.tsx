@@ -193,72 +193,65 @@ export function ISOCube({
           strokeWidth={strokeWidth}
         />
       )}
-      {drawFront && (
-        <>
-          {/* walls: left and right faces meeting at the front edge, then the two side edges */}
-          <polygon
-            points={`${leftTip.x},${leftTip.y} ${topFront.x},${topFront.y} ${bottomFront.x},${bottomFront.y} ${leftTip.x},${leftTip.y + verticalHeight}`}
-            fill={leftFill}
-            // opacity={0.6}
-          />
-          <polygon
-            points={`${topFront.x},${topFront.y} ${rightTip.x},${rightTip.y} ${rightTip.x},${rightTip.y + verticalHeight} ${bottomFront.x},${bottomFront.y}`}
-            fill={rightFill}
-            // opacity={0.6}
-          />
+      {/* walls: left and right faces meeting at the front edge, then the two side edges */}
+      <polygon
+        points={`${leftTip.x},${leftTip.y} ${topFront.x},${topFront.y} ${bottomFront.x},${bottomFront.y} ${leftTip.x},${leftTip.y + verticalHeight}`}
+        fill={leftFill}
+        // opacity={0.6}
+      />
+      <polygon
+        points={`${topFront.x},${topFront.y} ${rightTip.x},${rightTip.y} ${rightTip.x},${rightTip.y + verticalHeight} ${bottomFront.x},${bottomFront.y}`}
+        fill={rightFill}
+        // opacity={0.6}
+      />
 
-          <line
-            x1={leftTip.x}
-            y1={leftTip.y}
-            x2={leftTip.x}
-            y2={leftTip.y + verticalHeight}
-            stroke={edgeStroke}
-            strokeWidth={strokeWidth}
-          />
-          <line
-            x1={rightTip.x}
-            y1={rightTip.y}
-            x2={rightTip.x}
-            y2={rightTip.y + verticalHeight}
-            stroke={edgeStroke}
-            strokeWidth={strokeWidth}
-          />
-          {showFrontEdge && (
-            <line
-              x1={frontTip.x}
-              y1={frontTip.y}
-              x2={frontTip.x}
-              y2={frontTip.y + verticalHeight}
-              stroke={edgeStroke}
-              strokeWidth={strokeWidth}
-            />
-          )}
-
-          <path
-            d={roundedPolygonPath(
-              [topLeft, topBack, topRight, topFront],
-              radius,
-            )}
-            fill={topFill}
-            stroke={edgeStroke}
-            strokeWidth={strokeWidth}
-          />
-
-          {showGrid &&
-            gridLines.map(([a, b], i) => (
-              <line
-                key={i}
-                x1={a.x}
-                y1={a.y}
-                x2={b.x}
-                y2={b.y}
-                stroke={edgeStroke}
-                strokeWidth={strokeWidth}
-                opacity={0.2}
-              />
-            ))}
-        </>
+      <line
+        x1={leftTip.x}
+        y1={leftTip.y}
+        x2={leftTip.x}
+        y2={leftTip.y + verticalHeight}
+        stroke={edgeStroke}
+        strokeWidth={strokeWidth}
+      />
+      <line
+        x1={rightTip.x}
+        y1={rightTip.y}
+        x2={rightTip.x}
+        y2={rightTip.y + verticalHeight}
+        stroke={edgeStroke}
+        strokeWidth={strokeWidth}
+      />
+      {showFrontEdge && (
+        <line
+          x1={frontTip.x}
+          y1={frontTip.y}
+          x2={frontTip.x}
+          y2={frontTip.y + verticalHeight}
+          stroke={edgeStroke}
+          strokeWidth={strokeWidth}
+        />
       )}
+
+      <path
+        d={roundedPolygonPath([topLeft, topBack, topRight, topFront], radius)}
+        fill={topFill}
+        stroke={edgeStroke}
+        strokeWidth={strokeWidth}
+      />
+
+      {showGrid &&
+        gridLines.map(([a, b], i) => (
+          <line
+            key={i}
+            x1={a.x}
+            y1={a.y}
+            x2={b.x}
+            y2={b.y}
+            stroke={edgeStroke}
+            strokeWidth={strokeWidth}
+            opacity={0.2}
+          />
+        ))}
     </g>
   );
 }

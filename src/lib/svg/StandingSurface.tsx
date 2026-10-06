@@ -8,6 +8,7 @@ import {
 
 type Props = ShapeProps & {
   size?: number;
+  thickness?: number;
   // slope of the top edge in degrees. 30 = true isometric
   angle?: number;
   // corner rounding, in the same units as size
@@ -21,6 +22,7 @@ type Props = ShapeProps & {
 
 export function StandingSurface({
   size = 30,
+  thickness = size,
   x = 0,
   y = 0,
   angle = 30,
@@ -39,8 +41,8 @@ export function StandingSurface({
   const topLeft = { x: 0, y: 0 };
   const topRight = { x: size, y: depth };
 
-  const bottomLeft = { x: 0, y: size };
-  const bottomRight = { x: size, y: size + depth };
+  const bottomLeft = { x: 0, y: thickness };
+  const bottomRight = { x: size, y: thickness + depth };
 
   const points = [topLeft, topRight, bottomRight, bottomLeft];
   const n = points.length;
@@ -78,7 +80,7 @@ export function StandingSurface({
         (() => {
           const iconSize = size * 0.6;
           // middle of the panel = middle of its diagonal
-          const center = { x: size / 2, y: (size + depth) / 2 };
+          const center = { x: size / 2, y: (thickness + depth) / 2 };
 
           return (
             <g

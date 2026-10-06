@@ -1,6 +1,7 @@
 import { centerInParent, diagramLayout } from "@/lib/svg/helpers";
 import { Centerpiece } from "./Centerpiece";
 import { HeroDefs } from "./Defs";
+import { heroLayout } from "./layout";
 import { Orbit } from "./Orbit";
 
 // the hero's camera: A = front-left edges (24°), B = front-right edges (30°)
@@ -63,7 +64,6 @@ export function HeroDiagram() {
 
       {/* everything inside starts at the content box's top-left */}
       <g transform={`translate(${contentX}, ${contentY})`}>
-        cubeFro
         {/* debug: content box (inside the padding) */}
         <rect
           x={0}
@@ -81,6 +81,30 @@ export function HeroDiagram() {
         >
           {(() => {
             const { contentRing, groupWidth, groupHeight } = leftBox;
+            // every position in the hero: use layout.centerpiece / layout.orbit
+            // here to draw anything between them (e.g. connectors)
+            const layout = heroLayout({
+              contentRing,
+              unit,
+              contentHeight,
+              angles: heroAngles,
+            });
+
+            const { orbit, centerpiece } = layout;
+
+            // where each connector leaves the centerpiece
+            const {
+              x: cubeX,
+              y: cubeY,
+              cube: { size, depth, thickness, b },
+            } = centerpiece;
+
+            const connectorStartingPoints = [
+              { x: cubeX, y: cubeY + depth + thickness * 0.8 },
+              { x: cubeX + b.run, y: cubeY },
+              { x: cubeX + size, y: cubeY + depth + thickness / 2 },
+              // { x: cubeX + size, y: cubeY + depth + thickness / 2 },
+            ];
 
             return (
               <>
@@ -104,18 +128,43 @@ export function HeroDiagram() {
                   strokeWidth={0.75}
                 />
 
-                <Centerpiece
-                  contentRing={contentRing}
-                  unit={unit}
-                  angles={heroAngles}
+                <rect
+                  x={0}
+                  y={0}
+                  width={groupWidth}
+                  height={groupHeight}
+                  fill="none"
+                  stroke="#d9c79c" // sand
+                  strokeWidth={0.75}
+                  strokeDasharray="6 4"
                 />
 
-                <Orbit
-                  contentRing={contentRing}
-                  unit={unit}
-                  contentHeight={contentHeight}
-                  angles={heroAngles}
+                {connectorStartingPoints.map((point, i) => (
+                  <circle
+                    key={i}
+                    cx={point.x}
+                    cy={point.y}
+                    r={2.5}
+                    fill="#9cc5a8"
+                    stroke="#9cc5a8" // sage
+                    strokeWidth={0.75}
+                  />
+                ))}
+
+                <rect
+                  x={centerpiece.x}
+                  y={centerpiece.y}
+                  width={centerpiece.cube.size}
+                  height={centerpiece.cube.height}
+                  fill="none"
+                  stroke="var(--accent)" // sand
+                  strokeWidth={0.75}
+                  strokeDasharray="6 4"
                 />
+
+                <Centerpiece {...layout.centerpiece} angles={heroAngles} />
+
+                <Orbit {...layout.orbit} angles={heroAngles} />
               </>
             );
           })()}

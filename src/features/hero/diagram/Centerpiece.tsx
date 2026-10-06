@@ -1,36 +1,29 @@
 import { ISOCube, glassCube } from "@/lib/svg/ISOCube";
-import { isoBottomCenter, isoCubeMetrics, standOn } from "@/lib/svg/helpers";
+import { isoCubeMetrics, type Point } from "@/lib/svg/helpers";
 
-// the big glass cube in the middle, with a small cube floating inside
+type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
+
+// the big glass cube in the middle, with a small cube floating inside.
+// positions come from heroLayout (layout.ts)
 export function Centerpiece({
-  contentRing,
-  unit,
+  x,
+  y,
+  cube,
+  innerCube,
+  innerCubePos,
   angles,
 }: {
-  contentRing: { radius: number; centerX: number; centerY: number };
-  unit: number;
+  x: number;
+  y: number;
+  cube: IsoMetrics;
+  innerCube: IsoMetrics;
+  innerCubePos: Point;
   angles: { angleA: number; angleB: number };
 }) {
-  const { size, height, depth, thickness } = isoCubeMetrics(
-    150,
-    150 * 0.577,
-    angles,
-  );
-
-  // small cube standing in the middle of the big cube's floor,
-  // same as SoftwareDiagram's bottom-left group
-  const innerSize = size / 2;
-  const innerCube = isoCubeMetrics(innerSize, innerSize * 0.577, angles);
-  const innerCubePos = standOn(
-    isoBottomCenter({ size, height, depth }),
-    innerCube,
-  );
+  const { size, height, depth, thickness } = cube;
 
   // how far the small cube floats above the floor
   const floatLift = 12;
-
-  const x = contentRing.centerX - unit;
-  const y = contentRing.centerY - height * 0.5;
 
   // the big cube, drawn in two halves so the small cube can sit inside it
   const bigCube = {
@@ -79,7 +72,7 @@ export function Centerpiece({
             left: "var(--hero-inner-cube-fill)",
             right: "var(--hero-inner-cube-fill)",
           }}
-          strokeWeight={0.32}
+          strokeWeight={0.5}
           showBackEdges
           {...angles}
         />

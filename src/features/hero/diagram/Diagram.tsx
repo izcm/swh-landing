@@ -2,6 +2,10 @@ import {
   centerInParent,
   diagramLayout,
   dropAlongEdge,
+  isoCubePoints,
+  isoTopCenter,
+  pointOnLine,
+  type Point,
 } from "@/lib/svg/helpers";
 import { Centerpiece } from "./Centerpiece";
 import { HeroDefs } from "./Defs";
@@ -9,7 +13,7 @@ import { heroLayout } from "./layout";
 import { Orbit } from "./Orbit";
 
 // the hero's camera: A = front-left edges (24°), B = front-right edges (30°)
-const heroAngles = { angleA: 24, angleB: 30 };
+const heroAngles = { angleA: 22.5, angleB: 30 };
 
 export function HeroDiagram() {
   const viewboxWidth = 800;
@@ -23,7 +27,7 @@ export function HeroDiagram() {
     );
 
   const rightBox = (() => {
-    const groupWidth = contentWidth * 0.4;
+    const groupWidth = contentWidth * 0.42;
     const groupHeight = contentHeight * 0.8;
 
     const translateX = contentWidth - groupWidth;
@@ -96,49 +100,7 @@ export function HeroDiagram() {
 
             const { orbit, centerpiece } = layout;
 
-            // where each connector leaves the centerpiece
-            const {
-              x: cubeX,
-              y: cubeY,
-              cube: { size, depth, thickness, b, a },
-            } = centerpiece;
-
-            const connectorStartingPoints = [
-              // position comments are written as per how I view the cube on screen from my chair :p
-              { x: cubeX, y: cubeY + depth + thickness * 0.8 }, // left edge of front panel
-              {
-                x: cubeX + a.run * 0.7,
-                // walk from the bottom-left corner 70% down the A edge
-                y:
-                  cubeY +
-                  depth +
-                  thickness +
-                  dropAlongEdge({ run: a.run, along: 0.7, angle: a.angle }),
-              }, // bottom edge of front panel
-
-              {
-                x: cubeX,
-                y:
-                  cubeY +
-                  dropAlongEdge({
-                    run: a.run,
-                    along: 0.5,
-                    angle: centerpiece.cube.a.angle,
-                  }) +
-                  thickness / 2,
-              }, // middle of left side panel
-              {
-                x: cubeX + b.run * 0.75,
-                // walk left from the back corner (at cubeY) a quarter of the
-                // way down the B edge
-                y:
-                  cubeY +
-                  dropAlongEdge({ run: b.run, along: 0.25, angle: b.angle }),
-              }, // right edge of left side panel
-
-              // connects to rightbox not orbit
-              { x: cubeX + size, y: cubeY + depth + thickness * 0.65 }, // right edge of right side panel
-            ];
+            const testConnectors = orbit.nodes;
 
             return (
               <>
@@ -186,19 +148,116 @@ export function HeroDiagram() {
 
                 <Centerpiece {...layout.centerpiece} angles={heroAngles} />
 
-                <Orbit {...layout.orbit} angles={heroAngles} />
+                <Orbit
+                  {...layout.orbit}
+                  angles={heroAngles}
+                  platformBoxPoints={layout.orbit.platformPoints}
+                />
 
-                {connectorStartingPoints.map((point, i) => (
-                  <circle
-                    key={i}
-                    cx={point.x}
-                    cy={point.y}
-                    r={2.5}
-                    fill="#9cc5a8"
-                    stroke="#9cc5a8" // sage
-                    strokeWidth={0.75}
-                  />
-                ))}
+                {testConnectors.map((out, i) => {
+                  let color = "#e8a0a8"; // dusty rose
+                  let boxCenterpieceX = centerpiece.x;
+
+                  const platformCenter = orbit.platformCenterPoints[i];
+                  const platformBox = orbit.platformPoints[i];
+
+                  if (out.y > contentRing.centerY) {
+                    color = "#d9c79c"; // sand
+                  }
+
+                  const { platform } = orbit;
+
+                  // if platformBoxPoints.y > centerpiece.y -> lower part of circle
+                  // the connector goes out from topBack - topRight corner middle of edge
+                  // else -> connector goes out from topRight to topFront corner
+                  // and specil cases for angles where no edge suits)
+                  const cubeMiddleY =
+                    centerpiece.y + centerpiece.cube.height / 2;
+                  const isLower = platformCenter.y > cubeMiddleY;
+
+                  // the platform's corners, from isoCubePoints (drawn in a
+                  // 100-wide box) scaled and moved to this platform's spot
+                  const pts = isoCubePoints(
+                    platform.size,
+                    platform.thickness,
+                    platform.a.angle,
+                    platform.b.angle,
+                  );
+                  const at = (p: Point) => ({
+                    x: platformBox.x + p.x * pts.scale,
+                    y: platformBox.y + p.y * pts.scale,
+                  });
+
+                  const topBack = at(pts.topBack);
+                  const topRight = at(pts.topRight);
+                  const topFront = at(pts.topFront);
+
+                  const atTopBackRight = (t: number) =>
+                    pointOnLine(topBack, topRight, t);
+                  const atTopFrontRight = (t: number) =>
+                    pointOnLine(topRight, topFront, t);
+                  const isSpecial = i === 0 || i === orbit.nodes.length - 1;
+
+                  // special (top/bottom platforms): leave from the corner facing
+                  // the cube. the rest: leave from the middle of the right edge
+                  const connectorOut = isSpecial
+                    ? isLower
+                      ? atTopBackRight(0.25)
+                      : atTopBackRight(0.25)
+                    : isLower
+                      ? atTopBackRight(0.5)
+                      : atTopFrontRight(0.5);
+
+                  const dx = boxCenterpieceX - connectorOut.x;
+
+                  // normal: follow the iso angle. lower ones go up (B), upper
+                  // ones go down (A). up is minus in SVG
+                  const angle = isLower ? heroAngles.angleB : heroAngles.angleA;
+                  const drop = dropAlongEdge({ run: dx, angle });
+
+                  const dy = isSpecial
+                    ? cubeMiddleY - connectorOut.y // straight to the cube's middle height
+                    : isLower
+                      ? -drop
+                      : drop;
+
+                  const centerCubeTopBack = {
+                    x: centerpiece.x + centerpiece.cube.b.run,
+                    y: centerpiece.y,
+                  };
+
+                  const centerCubeBottomFront = {
+                    x: centerpiece.x + centerpiece.cube.a.run,
+                    y: centerpiece.y + centerpiece.cube.height,
+                  };
+
+                  return (
+                    <>
+                      <circle
+                        cx={centerCubeTopBack.x}
+                        cy={centerCubeTopBack.y}
+                        r={3}
+                        fill="#9cc5a8"
+                        strokeWidth={0.75}
+                      />
+
+                      <circle
+                        cx={centerCubeBottomFront.x}
+                        cy={centerCubeBottomFront.y}
+                        r={3}
+                        fill="#9cc5a8"
+                        strokeWidth={0.75}
+                      />
+
+                      <path
+                        d={`M ${connectorOut.x} ${connectorOut.y} l ${dx} ${dy}`}
+                        stroke={color}
+                        strokeWidth={0.75}
+                        strokeDasharray="6 4"
+                      />
+                    </>
+                  );
+                })}
               </>
             );
           })()}

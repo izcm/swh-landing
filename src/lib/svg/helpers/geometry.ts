@@ -35,7 +35,7 @@ export const pointOnLine = (A: Point, B: Point, t: number) => ({
 // `angle` degrees. run = the edge's full horizontal length
 export function dropAlongEdge({
   run,
-  along = 0.5,
+  along = 1,
   angle,
 }: {
   run: number;

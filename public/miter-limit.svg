@@ -1,0 +1,61 @@
+<svg width="900" height="500" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- row 1 -->
+  <text x="70" y="30" font-size="18">miter 4</text>
+  <path
+    d="M 40 180 L 150 40 L 260 180"
+    fill="none"
+    stroke="blue"
+    stroke-width="30"
+    stroke-linejoin="miter"
+    stroke-miterlimit="4"
+  />
+
+  <text x="365" y="30" font-size="18">miter 1</text>
+  <path
+    d="M 340 180 L 450 40 L 560 180"
+    fill="none"
+    stroke="gold"
+    stroke-width="30"
+    stroke-linejoin="miter"
+    stroke-miterlimit="1"
+  />
+
+  <text x="670" y="30" font-size="18">bevel</text>
+  <path
+    d="M 640 180 L 750 40 L 860 180"
+    fill="none"
+    stroke="green"
+    stroke-width="30"
+    stroke-linejoin="bevel"
+  />
+
+  <!-- row 2 -->
+  <text x="40" y="260" font-size="18">round</text>
+  <path
+    d="M 40 420 L 150 280 L 260 420"
+    fill="none"
+    stroke="hotpink"
+    stroke-width="30"
+    stroke-linejoin="round"
+  />
+
+  <text x="320" y="260" font-size="18">sharp + miter 10</text>
+  <path
+    d="M 340 420 L 450 230 L 490 420"
+    fill="none"
+    stroke="red"
+    stroke-width="30"
+    stroke-linejoin="miter"
+    stroke-miterlimit="0"
+  />
+
+  <text x="645" y="260" font-size="18">sharp + miter 1</text>
+  <path
+    d="M 640 420 L 750 230 L 790 420"
+    fill="none"
+    stroke="purple"
+    stroke-width="30"
+    stroke-linejoin="miter"
+    stroke-miterlimit="1"
+  />
+</svg>

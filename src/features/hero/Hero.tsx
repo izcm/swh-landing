@@ -10,31 +10,31 @@ export default function Hero() {
     <section
       className={cn(
         "flex flex-col items-center flex-1",
-        "px-2 mt-12 text-center gap-3 xl:gap-6",
-        "xl:flex-row xl:text-start xl:mt-0",
+        "px-2 mt-12 text-center gap-3 2xl:gap-3",
+        "2xl:flex-row 2xl:text-start 2xl:mt-0 2xl:mx-auto 2xl:w-[90vw]",
       )}
     >
-      <div className="flex flex-col items-center gap-3 xl:items-start xl:gap-2 xl:ml-12">
-        <h1 className="text-3xl md:text-4xl xl:text-5xl max-w-xl xl:min-w-md font-medium  leading-tight text-fg">
+      <div className="flex flex-col items-center gap-3 2xl:items-start 2xl:gap-2">
+        <h1 className="text-3xl md:text-4xl 2xl:text-5xl max-w-xl 2xl:min-w-md font-normal leading-tight text-fg">
           Systems that work{" "}
           <span className="text-accent font-semibold">together.</span>
         </h1>
 
-        <p className="text-fg-tinted font-medium md:text-lg xl:text-xl">
+        <p className="text-fg-tinted/80 font-light md:text-lg 2xl:text-xl">
           Discover hidden value through{" "}
-          <span className="xl:block">new connections.</span>
+          <span className="2xl:block">new connections.</span>
         </p>
 
         <IconLink
           href="#story-0"
           icon={<ArrowRight size={16} />}
-          className="btn-menu gap-3 text-lg text-accent xl:px-0 font-light tracking-wide"
+          className="btn-menu gap-3 text-lg text-accent 2xl:px-0 font-light 2xl:mt-3 tracking-wide"
         >
           See how it works
         </IconLink>
       </div>
 
-      <div className="w-full max-w-240 mx-auto">
+      <div className="w-full max-w-220 mx-auto">
         <HeroDiagram />
       </div>
     </section>

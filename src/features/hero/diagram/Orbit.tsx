@@ -11,15 +11,17 @@ export function Orbit({
   platform,
   nodes,
   standingSurface,
-  platformPoints,
-  topCenter,
+  platformCenterPoints,
+  platformBoxPoints,
+  toDiamondCenter,
   angles,
 }: {
   platform: IsoMetrics;
   nodes: Point[];
   standingSurface: { size: number; thickness: number; depth: number };
-  platformPoints: Point[];
-  topCenter: Point;
+  platformBoxPoints: Point[];
+  platformCenterPoints: Point[];
+  toDiamondCenter: Point;
   angles: { angleA: number; angleB: number };
 }) {
   // one standing surface per dot, standing on its platform
@@ -31,7 +33,7 @@ export function Orbit({
     { icon: FileSpreadsheet, iconStroke: "url(#hero-sheet-gradient)" },
   ];
 
-  const standingSurfaces = platformPoints.map((point, i) => ({
+  const standingSurfaces = platformCenterPoints.map((point, i) => ({
     x: point.x - platform.size / 4,
     y: point.y - standingSurface.thickness,
     size: standingSurface.size,
@@ -39,16 +41,38 @@ export function Orbit({
     ...nodeIcons[i],
   }));
 
+  // debug box around each platform + its standing surface. the panel sticks up
+  // above the platform, so the top is whichever of the two reaches higher
+  const platformBoxes = platformCenterPoints.map((point) => {
+    const top = point.y - standingSurface.thickness;
+    const bottom = point.y - toDiamondCenter.y + platform.height;
+
+    return {
+      x: point.x - toDiamondCenter.x,
+      y: top,
+      width: platform.size,
+      height: bottom - top,
+    };
+  });
+
   return (
     <g className="float-bob-adjust-for-less-annoyance-later">
       {nodes.map((node, i) => (
         <>
+          <rect
+            {...platformBoxes[i]}
+            fill="none"
+            stroke="#d9c79c" // sand
+            strokeWidth={0.75}
+            strokeDasharray="6 4"
+          />
+
           <circle key={i} cx={node.x} cy={node.y} r={4} fill="#9cc5a8" />
 
           {/* PLATFORM */}
           <ISOCube
-            x={platformPoints[i].x - topCenter.x}
-            y={platformPoints[i].y - topCenter.y}
+            x={platformBoxPoints[i].x}
+            y={platformBoxPoints[i].y}
             size={platform.size}
             thickness={platform.thickness}
             strokeWeight={0.7}

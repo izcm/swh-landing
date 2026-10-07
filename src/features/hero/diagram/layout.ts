@@ -24,7 +24,7 @@ export function heroLayout({
 }) {
   // the big glass cube in the middle, with a small cube floating inside
   const centerpiece = (() => {
-    const cube = isoCubeMetrics(156, 150 * 0.577, angles);
+    const cube = isoCubeMetrics(156, 156 * 0.577, angles);
 
     // small cube standing in the middle of the big cube's floor,
     // same as SoftwareDiagram's bottom-left group
@@ -37,7 +37,7 @@ export function heroLayout({
     const innerCubePos = standOn(isoBottomCenter(cube), innerCube);
 
     return {
-      x: contentRing.centerX - unit,
+      x: contentRing.centerX - unit * 0.75,
       // y: contentRing.centerY - cube.height * 0.5,
       y: contentRing.centerY - cube.height * 0.5,
       cube,
@@ -48,7 +48,7 @@ export function heroLayout({
 
   // dots on the ring, each with a platform + standing surface
   const orbit = (() => {
-    const platformSize = unit * 3;
+    const platformSize = unit * 2.8;
     const platform = isoCubeMetrics(platformSize, contentHeight / 35, angles);
 
     const pointOnContentRing = (degrees: number) =>
@@ -59,7 +59,7 @@ export function heroLayout({
     // knob: turns all dots around the ring together, in degrees.
     // the gaps between them stay the same
     const orbitRotation = 0;
-    const nodeAngles = [85, 150, 205, 270];
+    const nodeAngles = [85, 145, 205, 270];
     const nodes = nodeAngles.map((degrees) =>
       pointOnContentRing(degrees + orbitRotation),
     );
@@ -93,7 +93,7 @@ export function heroLayout({
 
     // each platform: start at its dot, then step back toward the center by
     // as much as it sticks out past the ring. the dots and ring don't move
-    const platformPoints = nodes.map((node) => {
+    const platformCenterPoints = nodes.map((node) => {
       // direction from the center to the dot, one step long
       const out = {
         x: (node.x - contentRing.centerX) / contentRing.radius,
@@ -111,10 +111,23 @@ export function heroLayout({
       };
     });
 
-    // middle of the platform's top face, from its top-left corner
-    const topCenter = isoTopCenter(platform);
+    // the step from the platform's box top-left corner to the middle of its
+    // top face. not a position on its own: add it to / subtract it from one
+    const toDiamondCenter = isoTopCenter(platform);
 
-    return { platform, nodes, standingSurface, platformPoints, topCenter };
+    const platformPoints = platformCenterPoints.map((centerPoint) => ({
+      x: centerPoint.x - toDiamondCenter.x,
+      y: centerPoint.y - toDiamondCenter.y,
+    }));
+
+    return {
+      platform,
+      nodes,
+      standingSurface,
+      platformCenterPoints,
+      toDiamondCenter,
+      platformPoints,
+    };
   })();
 
   return { centerpiece, orbit };

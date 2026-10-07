@@ -6,6 +6,7 @@ import {
 } from "@/lib/svg/helpers";
 import { diagramLayout, type Point } from "@/lib/svg/helpers";
 import { ISOCube, glassCube } from "@/lib/svg/ISOCube";
+import { IsoCubeShadow } from "@/lib/svg/IsoCubeShadow";
 
 export function SoftwareDiagram() {
   const viewboxWidth = 500;
@@ -343,6 +344,15 @@ export function SoftwareDiagram() {
       <g
         transform={`translate(${bottomRight.positions.x}, ${bottomRight.positions.y})`}
       >
+        {/* shadow under the platform, in step with the bob below */}
+        <IsoCubeShadow
+          {...bottomRight.platform}
+          y={bottomRight.platformY}
+          drop={14}
+          duration="6s"
+          delay="-3s"
+        />
+
         {/* platform + its cubes drift together, slow and small */}
         <g
           className="float-bob"

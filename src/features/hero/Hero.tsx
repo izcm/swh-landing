@@ -34,7 +34,7 @@ export default function Hero() {
         </IconLink>
       </div>
 
-      <div className="w-full max-w-220 mx-auto">
+      <div className="w-full max-w-220 mx-auto 2xl:mt-0 mt-6">
         <HeroDiagram />
       </div>
     </section>

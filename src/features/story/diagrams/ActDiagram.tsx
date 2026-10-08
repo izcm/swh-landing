@@ -1,5 +1,5 @@
 import { Bell, CalendarDays, Lightbulb, SquareCheck, User } from "lucide-react";
-import { centerInParent, diagramLayout, glyphStroke } from "@/lib/svg/helpers";
+import { alignCenter, diagramLayout, glyphStroke } from "@/lib/svg/helpers";
 import { BarChart } from "./visualize/BarChart";
 import { Donut } from "./visualize/Donut";
 
@@ -60,7 +60,7 @@ export function ActDiagram() {
     const width = contentWidth * 0.32;
     const height = contentHeight;
 
-    const { translateY, absoluteCenterY: resolvedCenterY } = centerInParent(
+    const { translateY, absoluteCenterY: resolvedCenterY } = alignCenter(
       contentHeight,
       height,
     );
@@ -78,7 +78,7 @@ export function ActDiagram() {
 
     const startX = contentWidth - width;
 
-    const { translateY, absoluteCenterY: resolvedCenterY } = centerInParent(
+    const { translateY, absoluteCenterY: resolvedCenterY } = alignCenter(
       contentHeight,
       height,
     );

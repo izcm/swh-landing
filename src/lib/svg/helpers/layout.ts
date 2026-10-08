@@ -1,12 +1,21 @@
+// one item's position along a line, for the CSS-like spacing helpers below
+export type SpacingInput = {
+  index: number; // which item (0 = first)
+  itemCount: number;
+  itemSize: number; // every item is the same size
+  start: number; // where the line begins
+  end: number; // where the line ends
+};
+
 // like CSS justify-content: space-between — first item flush with start,
 // last item flush with end, equal gaps in between
-export const spaceBetween = (
-  index: number,
-  itemCount: number,
-  itemSize: number,
-  start: number,
-  end: number,
-) => {
+export const spaceBetween = ({
+  index,
+  itemCount,
+  itemSize,
+  start,
+  end,
+}: SpacingInput) => {
   if (itemCount <= 1) return start;
 
   const contentSize = end - start;
@@ -18,13 +27,13 @@ export const spaceBetween = (
   return start + index * (itemSize + gap);
 };
 
-export const spaceEvenly = (
-  index: number,
-  itemCount: number,
-  itemSize: number,
-  start: number,
-  end: number,
-) => {
+export const spaceEvenly = ({
+  index,
+  itemCount,
+  itemSize,
+  start,
+  end,
+}: SpacingInput) => {
   const contentSize = end - start;
   const itemsSize = itemCount * itemSize;
   const freeSpace = contentSize - itemsSize;
@@ -34,13 +43,13 @@ export const spaceEvenly = (
   return start + gap + index * (itemSize + gap);
 };
 
-export const spaceAround = (
-  index: number,
-  itemCount: number,
-  itemSize: number,
-  start: number,
-  end: number,
-) => {
+export const spaceAround = ({
+  index,
+  itemCount,
+  itemSize,
+  start,
+  end,
+}: SpacingInput) => {
   const contentSize = end - start;
   const itemsSize = itemCount * itemSize;
   const freeSpace = contentSize - itemsSize;
@@ -77,7 +86,7 @@ export function diagramLayout(
 
 // Centers an item's height within a parent, and gives its center point
 // in absolute coordinates — useful as a connector-line anchor point.
-export function centerInParent(
+export function alignCenter(
   parentHeight: number,
   itemHeight: number,
   // typically the same outerPadding used to translate the wrapping <g>,
@@ -89,4 +98,12 @@ export function centerInParent(
   const absoluteCenterY = relativeCenterY + translateY + parentOffset;
 
   return { translateY, relativeCenterY, absoluteCenterY };
+}
+
+// puts an item's bottom on its parent's bottom. same { translateY } as
+// alignCenter, so the two can be swapped
+export function alignBottom(parentHeight: number, itemHeight: number) {
+  const translateY = parentHeight - itemHeight;
+
+  return { translateY };
 }

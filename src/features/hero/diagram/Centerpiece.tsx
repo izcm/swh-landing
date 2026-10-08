@@ -26,20 +26,39 @@ export function Centerpiece({
   const floatLift = 12;
 
   // the big cube, drawn in two halves so the small cube can sit inside it
+  // const bigCube = {
+  //   size,
+  //   thickness,
+  //   showFrontEdge: true,
+  //   faces: {
+  //     top: "var(--hero-center-cube-fill)",
+  //     left: "var(--hero-center-cube-fill)",
+  //     right: "var(--hero-center-cube-fill)",
+  //   },
+  //   showBottom: true,
+  //   stroke: "oklch(from var(--accent) 0.85 0.16 h)",
+  //   strokeWeight: 0.6,
+  //   // accentGlow(blur, strength%): a bit stronger than the default (2, 18)
+  //   glow: { blur: 2, strength: 18 },
+  //   radius: 3,
+  //   ...angles,
+  // };
+  // light electris:
+  // const lightElectric = "oklch(from var(--accent) 0.6 0.2 h / 0.5)";
+
+  const innerFill = "oklch(from var(--accent) 0.6 0.20 h / 0.4)";
+  const cubeFill = "oklch(from var(--accent) 0.25 0.15 h / 0.15)";
+
   const bigCube = {
     size,
     thickness,
     showFrontEdge: true,
-    faces: {
-      top: "var(--hero-center-cube-fill)",
-      left: "var(--hero-center-cube-fill)",
-      right: "var(--hero-center-cube-fill)",
-    },
+    faces: { top: cubeFill, left: cubeFill },
     showBottom: true,
     stroke: "oklch(from var(--accent) 0.85 0.16 h)",
-    strokeWeight: 0.6,
+    strokeWeight: 0.5,
     // accentGlow(blur, strength%): a bit stronger than the default (2, 18)
-    glow: { blur: 2, strength: 18 },
+    // glow: { blur: 2, strength: 18 },
     radius: 3,
     ...angles,
   };
@@ -67,12 +86,8 @@ export function Centerpiece({
           y={innerCubePos.y - floatLift}
           size={innerCube.size}
           thickness={innerCube.thickness}
-          faces={{
-            top: "var(--hero-inner-cube-fill)",
-            left: "var(--hero-inner-cube-fill)",
-            right: "var(--hero-inner-cube-fill)",
-          }}
-          strokeWeight={0.5}
+          faces={{ top: innerFill, left: innerFill }}
+          strokeWeight={0.6}
           showBackEdges
           {...angles}
         />

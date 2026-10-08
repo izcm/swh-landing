@@ -24,7 +24,8 @@ export function heroLayout({
 }) {
   // the big glass cube in the middle, with a small cube floating inside
   const centerpiece = (() => {
-    const cube = isoCubeMetrics(160, 160 * 0.577, angles);
+    const cubeSize = unit * 3.6;
+    const cube = isoCubeMetrics(cubeSize, cubeSize * 0.577, angles);
 
     // small cube standing in the middle of the big cube's floor,
     // same as SoftwareDiagram's bottom-left group
@@ -37,7 +38,7 @@ export function heroLayout({
     const innerCubePos = standOn(isoBottomCenter(cube), innerCube);
 
     return {
-      x: contentRing.centerX - unit,
+      x: contentRing.centerX - unit * 0.75,
       // y: contentRing.centerY - cube.height * 0.5,
       y: contentRing.centerY - cube.height * 0.5,
       cube,
@@ -48,7 +49,7 @@ export function heroLayout({
 
   // dots on the ring, each with a platform + standing surface
   const orbit = (() => {
-    const platformSize = unit * 3.2;
+    const platformSize = unit * 3;
     const platform = isoCubeMetrics(platformSize, contentHeight / 35, angles);
 
     const pointOnContentRing = (degrees: number) =>

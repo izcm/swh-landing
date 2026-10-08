@@ -1,9 +1,21 @@
 import { useEffect, useId, useState } from "react";
 import { spaceBetween } from "@/lib/svg/helpers";
-import { AccentBarGradient, editor } from "./shared";
+import { AccentBarGradient } from "@/lib/svg/window/AccentBarGradient";
 
-// fake code: line numbers + animated bars. meant to be a child of EditorWindow
-export function EditorCode() {
+// fake code: line numbers + animated bars. meant to be a child of AppWindow,
+// given the same viewboxWidth / viewboxHeight as that window
+export function EditorCode({
+  viewboxWidth, // viewbox??? why viewbox this is not an svg its a group
+  viewboxHeight, // ???? why not just heigth / width i dont get it
+  headerHeight, // the window's header strip; code starts below it
+}: {
+  viewboxWidth: number;
+  viewboxHeight: number;
+  headerHeight: number;
+}) {
+  // spacing for the fake code, from the window's height
+  const unit = viewboxHeight / 12;
+  const bottomHeight = unit * 1.5;
   const [animation, setAnimation] = useState(0);
 
   useEffect(() => {
@@ -25,12 +37,11 @@ export function EditorCode() {
 
   const code = (() => {
     const lineCount = 6;
-    const top = editor.headerHeight;
-    const height =
-      editor.contentHeight - editor.headerHeight - editor.bottomHeight;
+    const top = headerHeight * 1 + unit / 2;
+    const height = viewboxHeight - headerHeight - bottomHeight;
 
-    const paddingX = editor.unit;
-    const width = editor.contentWidth - paddingX * 2;
+    const paddingX = unit;
+    const width = viewboxWidth - paddingX * 2;
 
     return {
       lineCount,
@@ -48,7 +59,13 @@ export function EditorCode() {
       </defs>
 
       {Array.from({ length: code.lineCount }).map((_, i) => {
-        const y = spaceBetween(i, code.lineCount, fontSize, 0, code.height);
+        const y = spaceBetween({
+          index: i,
+          itemCount: code.lineCount,
+          itemSize: fontSize,
+          start: 0,
+          end: code.height,
+        });
 
         const maxFillPercent = 35 + ((i * 17) % 46);
         const maxFill = code.width * (maxFillPercent / 100);

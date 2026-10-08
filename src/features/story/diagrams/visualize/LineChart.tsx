@@ -9,12 +9,17 @@ type LineChartProps = {
 // points evenly spread across the width, 0 at the bottom, 1 at the top
 function toPoints(values: number[], width: number, height: number) {
   const step = width / (values.length - 1);
-  return values.map((value, i) => ({ x: i * step, y: height - height * value }));
+  return values.map((value, i) => ({
+    x: i * step,
+    y: height - height * value,
+  }));
 }
 
 export function LineChart({ x, y, width, height, values }: LineChartProps) {
   const points = toPoints(values, width, height);
-  const d = points.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
+  const d = points
+    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
+    .join(" ");
 
   return (
     <g transform={`translate(${x}, ${y})`}>

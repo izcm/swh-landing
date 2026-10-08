@@ -3,7 +3,7 @@ import { DataGrid } from "../DataGrid";
 import { StatCard } from "./StatCard";
 import { Donut } from "./Donut";
 import { BarChart } from "./BarChart";
-import { centerInParent, diagramLayout } from "@/lib/svg/helpers";
+import { alignCenter, diagramLayout } from "@/lib/svg/helpers";
 
 export function VisualizeDiagram() {
   const viewboxWidth = 340;
@@ -32,7 +32,7 @@ export function VisualizeDiagram() {
       translateY,
       relativeCenterY: centerY,
       absoluteCenterY: resolvedCenterY,
-    } = centerInParent(contentHeight, stackHeight);
+    } = alignCenter(contentHeight, stackHeight);
 
     return {
       width,

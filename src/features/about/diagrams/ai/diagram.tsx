@@ -1,23 +1,26 @@
 import { useId } from "react";
 import {
   accentGlow,
-  centerInParent,
+  alignCenter,
   diagramLayout,
   spaceBetween,
 } from "@/lib/svg/helpers";
 import { EditorCode } from "./editor/EditorCode";
-import { EditorWindow } from "./editor/EditorWindow";
-import { AccentBarGradient } from "./editor/shared";
+import { AppWindow, WindowDots } from "@/lib/svg/window/AppWindow";
+import { AccentBarGradient } from "@/lib/svg/window/AccentBarGradient";
 
 export function AISvg() {
   const viewboxWidth = 600;
   const viewboxHeight = 400;
 
-  const { outerPadding, contentWidth, contentHeight } = diagramLayout(
+  const { outerPadding, contentWidth, contentHeight, unit } = diagramLayout(
     viewboxWidth,
     viewboxHeight,
     0.5,
   );
+
+  // header strip at the top of each editor window (dots sit in it, code starts below it)
+  const editorHeaderHeight = unit * 0.8;
 
   // preserve CodeEditor's 300:200 aspect ratio
   const editorBox = (() => {
@@ -39,7 +42,7 @@ export function AISvg() {
     const bottom = itemHeight + (itemCount - 1) * (gapY - gapX * skewSlope);
     const resolvedHeight = topLift + bottom;
 
-    const { translateY, absoluteCenterY: resolvedCenterY } = centerInParent(
+    const { translateY, absoluteCenterY: resolvedCenterY } = alignCenter(
       contentHeight,
       resolvedHeight,
     );
@@ -82,13 +85,13 @@ export function AISvg() {
     const lines = lineShapes.map((shape, i) => ({
       indent: shape.indent,
       width: innerWidth * shape.width,
-      y: spaceBetween(
-        i,
-        lineShapes.length,
-        barHeight,
-        y + padding,
-        y + height - padding,
-      ),
+      y: spaceBetween({
+        index: i,
+        itemCount: lineShapes.length,
+        itemSize: barHeight,
+        start: y + padding,
+        end: y + height - padding,
+      }),
     }));
 
     // dashed wire from the panel's right edge out to a node
@@ -147,15 +150,24 @@ export function AISvg() {
                   filter: isFront ? accentGlow(4, 12) : accentGlow(2, 6),
                 }}
               >
-                <EditorWindow
+                <AppWindow
                   x={i * gapX}
                   y={i * gapY}
                   width={editorBox.item.width}
                   height={editorBox.item.height}
+                  viewboxWidth={300}
+                  viewboxHeight={200}
                   ghost={!isFront}
                 >
-                  {isFront && <EditorCode />}
-                </EditorWindow>
+                  <WindowDots headerHeight={editorHeaderHeight} />
+                  {isFront && (
+                    <EditorCode
+                      viewboxWidth={300}
+                      viewboxHeight={200}
+                      headerHeight={editorHeaderHeight}
+                    />
+                  )}
+                </AppWindow>
               </g>
             );
           })}

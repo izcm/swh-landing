@@ -1,29 +1,38 @@
 import { useId, type ReactNode } from "react";
-import { accentGlow } from "@/lib/svg/helpers";
-import { AccentBarGradient, editor } from "./shared";
+import { accentGlow, glyphStroke } from "@/lib/svg/helpers";
+import { AccentBarGradient } from "./AccentBarGradient";
 
-export type EditorWindowProps = {
+export type AppWindowProps = {
   x?: number;
   y?: number;
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
+  // the inside's own size: what children are drawn in
+  viewboxWidth: number;
+  viewboxHeight: number;
   // see-through, slightly lighter "glass" pane for editors in the background
   ghost?: boolean;
   children?: ReactNode;
 };
 
-// the editor frame: background, border and the three header dots.
-// children are drawn inside it, in the same 300×200 viewBox
-export function EditorWindow({
+// window frame: background and border. add <WindowDots /> as a child for the header dots.
+// takes width × height in the parent; children are drawn in viewboxWidth × viewboxHeight
+export function AppWindow({
   x = 0,
   y = 0,
-  width = 300,
-  height = 200,
+  width,
+  height,
+  viewboxWidth,
+  viewboxHeight,
   ghost = false,
   children,
-}: EditorWindowProps) {
+}: AppWindowProps) {
   const gradientId = useId();
-  const dotGradientId = `${gradientId}-dot`;
+
+  // 1 parent unit thick at any window size (same as a strokeWidth={1} outside)
+  const strokeWidth = glyphStroke(width, 1, viewboxWidth);
+  // strokes are centered on the edge, so pull the rect in by half
+  const inset = strokeWidth / 2;
 
   const nodeStyle = {
     // ghost: tinted toward the accent and mostly transparent, so what's behind shows through
@@ -32,7 +41,7 @@ export function EditorWindow({
       : "var(--node-color-deep)",
     fillOpacity: ghost ? 0.3 : 1,
     stroke: `url(#${gradientId})`,
-    strokeWidth: editor.strokeWidth,
+    strokeWidth,
   };
 
   return (
@@ -41,7 +50,7 @@ export function EditorWindow({
       y={y}
       width={width}
       height={height}
-      viewBox={`0 0 ${editor.viewboxWidth} ${editor.viewboxHeight}`}
+      viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       overflow="visible"
     >
       <defs>
@@ -64,35 +73,47 @@ export function EditorWindow({
           />
           <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.35" />
         </linearGradient>
-
-        <AccentBarGradient id={dotGradientId} />
       </defs>
 
       {/* background */}
       <rect
-        x={editor.inset}
-        y={editor.inset}
-        width={editor.contentWidth}
-        height={editor.contentHeight}
+        x={inset}
+        y={inset}
+        width={viewboxWidth - inset * 2}
+        height={viewboxHeight - inset * 2}
         rx="var(--rx-node-md)"
         // filter="url(#tinyGlow)"
         {...nodeStyle}
       />
 
+      {children}
+    </svg>
+  );
+}
+
+// the three header dots, centered in a header strip `headerHeight` tall.
+// put inside an <AppWindow>
+export function WindowDots({ headerHeight }: { headerHeight: number }) {
+  const dotGradientId = useId();
+
+  return (
+    <>
+      <defs>
+        <AccentBarGradient id={dotGradientId} />
+      </defs>
+
       {[0, 1, 2].map((i) => (
         <circle
           key={i}
           cx={12 + i * 14}
-          cy={editor.contentHeight / 16}
-          r={3}
+          cy={headerHeight / 2}
+          r={3.2}
           fill={`url(#${dotGradientId})`}
           opacity={1 - (i * 0.2 + 0.2)}
-          style={{ filter: accentGlow(2, 45) }}
+          style={{ filter: accentGlow(2, 12) }}
           // filter="drop-shadow(0 0 1px color-mix(in oklab, var(--accent) 35%, transparent))"
         />
       ))}
-
-      {children}
-    </svg>
+    </>
   );
 }

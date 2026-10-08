@@ -1,4 +1,4 @@
-// EditorWindow's border gradient, for glowing accent edges.
+// AppWindow's border gradient, for glowing accent edges.
 // usage: const id = useId(); put <EdgeGradient id={id} ... /> inside <defs>,
 // then stroke={`url(#${id})`} on the shapes.
 // userSpaceOnUse because straight vertical lines have a zero-width bounding box,

@@ -1,7 +1,12 @@
 // stand-in for diagrams that haven't been drawn yet
 export function SvgPlaceholder({ label }: { label: string }) {
   return (
-    <svg viewBox="0 0 480 300" className="w-full h-auto" role="img" aria-label={label}>
+    <svg
+      viewBox="0 0 480 300"
+      className="w-full h-auto"
+      role="img"
+      aria-label={label}
+    >
       <rect
         x="1"
         y="1"

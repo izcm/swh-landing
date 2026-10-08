@@ -1,8 +1,17 @@
+// shared svg helpers
 import {
-  centerInParent,
+  alignBottom,
+  alignCenter,
   diagramLayout,
   dropAlongEdge,
 } from "@/lib/svg/helpers";
+
+// app windows (right box)
+import { WindowDots } from "@/lib/svg/window/AppWindow";
+import { WindowStack } from "@/lib/svg/window/WindowStack";
+import { windowStackLayout } from "@/lib/svg/window/windowStackLayout";
+
+// this diagram's own parts
 import { Centerpiece } from "./Centerpiece";
 import { heroConnectors } from "./connectors";
 import { HeroDefs } from "./Defs";
@@ -14,7 +23,7 @@ const heroAngles = { angleA: 22.5, angleB: 30 };
 
 // debug lines have className="svg-debug". show/hide them in diagram.css
 export function HeroDiagram() {
-  const viewboxWidth = 800;
+  const viewboxWidth = 700;
   const viewboxHeight = 500;
 
   const { contentX, contentY, contentWidth, contentHeight, unit } =
@@ -30,7 +39,7 @@ export function HeroDiagram() {
 
     const translateX = contentWidth - groupWidth;
 
-    const { translateY } = centerInParent(contentHeight, groupHeight);
+    const { translateY } = alignCenter(contentHeight, groupHeight);
 
     return {
       groupWidth,
@@ -40,12 +49,29 @@ export function HeroDiagram() {
     };
   })();
 
+  // three app windows in the right box, tilted along the A edges
+  const windowStack = windowStackLayout({
+    groupWidth: rightBox.groupWidth,
+    groupHeight: rightBox.groupHeight,
+    angle: heroAngles.angleA,
+    count: 3,
+    gapX: 25,
+    gapY: 35,
+    side: "right",
+    heightToWidthRatio: 0.78,
+  });
+
+  const { translateY: stackY } = alignBottom(
+    rightBox.groupHeight,
+    windowStack.stackHeight,
+  );
+
   const leftBox = (() => {
     const groupWidth = contentWidth - rightBox.groupWidth;
     const groupHeight = contentHeight;
 
     const translateX = 0; // flush with the content box's left edge
-    const { translateY } = centerInParent(contentHeight, groupHeight);
+    const { translateY } = alignCenter(contentHeight, groupHeight);
 
     // shared by the orbit and the centerpiece
     const contentRing = {
@@ -98,8 +124,6 @@ export function HeroDiagram() {
             });
 
             const { centerpiece } = layout;
-
-            const endCenterpieceX = centerpiece.x + centerpiece.cube.size;
 
             const centerpieceConnectorOut = {
               x: centerpiece.x + centerpiece.cube.size,
@@ -212,6 +236,11 @@ export function HeroDiagram() {
             stroke="#aab4e6" // lavender
             strokeWidth={0.75}
             strokeDasharray="6 4"
+          />
+          <WindowStack
+            y={stackY}
+            layout={windowStack}
+            frontContent={<WindowDots headerHeight={24} />}
           />
         </g>
       </g>

@@ -46,7 +46,11 @@ type ISOCubeProps = IsoCubeBaseProps & {
 // ISOCube drew every edge twice (face outline + edge line) and its edge
 // gradient is see-through, so the doubled edges were brighter: two layers of
 // 50% / 100% / 35% stack up to 75% / 100% / 58%, which is what edgeOpacity is here
-const glassFill = "oklch(from var(--accent) 0.18 0.06 h / 0.8)";
+const glassFill = "oklch(from var(--accent) 0.18 0.06 h / 0.5)";
+
+// more electric maybe later with some retouches?
+// const glassFill = "oklch(from var(--accent) 0.32 0.2 h / 0.35)";
+
 export const glassCube = {
   radius: 0,
   faces: { top: glassFill, left: glassFill } as ISOCubeFaces,

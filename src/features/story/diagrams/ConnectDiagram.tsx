@@ -54,7 +54,14 @@ export function ConnectDiagram() {
             // keep it for future proofing, but note for self:
             // as is, this will always equal containerHeight / 2
             const center =
-              spaceBetween(1, 3, nodeHeight, 0, contentHeight) + nodeHeight / 2;
+              spaceBetween({
+                index: 1,
+                itemCount: 3,
+                itemSize: nodeHeight,
+                start: 0,
+                end: contentHeight,
+              }) +
+              nodeHeight / 2;
             const destX = mergeX;
             const connectorCurveRadius = unit * 1.2;
 
@@ -62,13 +69,13 @@ export function ConnectDiagram() {
               <>
                 {nodes.map((_, i) => {
                   const y =
-                    spaceBetween(
-                      i,
-                      nodes.length,
-                      nodeHeight,
-                      0,
-                      contentHeight,
-                    ) +
+                    spaceBetween({
+                      index: i,
+                      itemCount: nodes.length,
+                      itemSize: nodeHeight,
+                      start: 0,
+                      end: contentHeight,
+                    }) +
                     nodeHeight / 2;
 
                   const bend = y === center ? 0 : y > center ? -1 : 1;
@@ -110,13 +117,13 @@ export function ConnectDiagram() {
           {nodes.map((system, i) => {
             const itemHeight = nodeHeight;
 
-            const y = spaceBetween(
-              i,
-              nodes.length,
-              itemHeight,
-              0,
-              contentHeight,
-            );
+            const y = spaceBetween({
+              index: i,
+              itemCount: nodes.length,
+              itemSize: itemHeight,
+              start: 0,
+              end: contentHeight,
+            });
 
             const Icon = nodeIcons[system];
 

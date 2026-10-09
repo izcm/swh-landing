@@ -46,27 +46,28 @@ export function Centerpiece({
   // light electris:
   // const lightElectric = "oklch(from var(--accent) 0.6 0.2 h / 0.5)";
 
-  const innerFill = "oklch(from var(--accent) 0.6 0.20 h / 0.4)";
+  const innerFill = "oklch(from var(--accent-ink) 0.1 c h / 1)";
   const cubeFill = "oklch(from var(--accent) 0.25 0.15 h / 0.15)";
 
   const bigCube = {
     size,
     thickness,
     showFrontEdge: true,
+
     faces: { top: cubeFill, left: cubeFill },
-    showBottom: true,
-    stroke: "oklch(from var(--accent) 0.85 0.16 h)",
+    // showBottom: false,
+    stroke: "var(--accent-dim)",
     strokeWeight: 0.5,
     // accentGlow(blur, strength%): a bit stronger than the default (2, 18)
     // glow: { blur: 2, strength: 18 },
-    radius: 3,
+    radius: 2,
     ...angles,
   };
 
   return (
     <g transform={`translate(${x}, ${y})`}>
       {/* big cube, back half: back edges + floor */}
-      <ISOCube {...bigCube} part="back" />
+      <ISOCube {...bigCube} part="back" showBackEdges />
 
       {/* shadow on the floor, under the floating cube. iso-flattened ellipse */}
       <ellipse

@@ -43,9 +43,9 @@ describe("spaceAround", () => {
 describe("alignCenter", () => {
   it("centers the item and reports its center in absolute coordinates", () => {
     expect(alignCenter(100, 40, 10)).toEqual({
-      translateY: 30,
-      relativeCenterY: 20,
-      absoluteCenterY: 60,
+      offset: 30,
+      relativeCenter: 20,
+      absoluteCenter: 60,
     });
   });
 });

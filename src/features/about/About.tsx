@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { AISvg } from "./diagrams/ai/diagram";
+import { AISvg } from "./diagrams/ai/Diagram";
 import { SoftwareDiagram } from "./diagrams/software/Diagram";
 import { IZBLOCKS_URL } from "@/lib/links";
 import { SectionBase } from "@/features/core/SectionBase";

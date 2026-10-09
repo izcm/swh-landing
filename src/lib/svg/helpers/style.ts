@@ -3,6 +3,15 @@
 export const accentGlow = (blur: number, strength: number) =>
   `drop-shadow(0 0 ${blur}px oklch(from var(--accent) 0.55 0.12 h / ${strength}%))`;
 
+// accent colors for things drawn in a row (bars, tubes, chart series).
+// pick with series[i % series.length] so it starts over after the last
+export const accentSeries = [
+  "var(--accent-dim)",
+  "var(--accent-lavender)",
+  "var(--accent)",
+  "var(--accent-teal)",
+];
+
 // Lucide icons are drawn on a fixed 0 0 24 24 viewBox; the `size` prop
 // scales that whole box (and strokeWidth along with it) up to the
 // rendered size. Dividing by 24/size undoes that stretch in advance, so

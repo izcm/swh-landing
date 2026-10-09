@@ -3,14 +3,16 @@ import { DataGrid } from "../DataGrid";
 import { StatCard } from "./StatCard";
 import { Donut } from "./Donut";
 import { BarChart } from "./BarChart";
-import { alignCenter, diagramLayout } from "@/lib/svg/helpers";
+import { alignCenter, paddedBox } from "@/lib/svg/helpers";
 
 export function VisualizeDiagram() {
   const viewboxWidth = 340;
   const viewboxHeight = 100;
 
-  const { unit, contentX, contentY, contentWidth, contentHeight } =
-    diagramLayout(viewboxWidth, viewboxHeight);
+  const { unit, contentX, contentY, contentWidth, contentHeight } = paddedBox(
+    viewboxWidth,
+    viewboxHeight,
+  );
 
   const iconSize = {
     slider: unit * 2.5,
@@ -29,9 +31,9 @@ export function VisualizeDiagram() {
     const endX = width + offset * (count - 1);
 
     const {
-      translateY,
-      relativeCenterY: centerY,
-      absoluteCenterY: resolvedCenterY,
+      offset: translateY,
+      relativeCenter: centerY,
+      absoluteCenter: resolvedCenterY,
     } = alignCenter(contentHeight, stackHeight);
 
     return {

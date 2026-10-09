@@ -36,7 +36,7 @@ function App() {
       />
       {tab === "story" && (
         <>
-          <div className="md:min-h-below-nav-and-dev-banner flex flex-col">
+          <div className="md:min-h-below-nav-and-dev-banner mt-6 md:mt-0 flex flex-col">
             <Hero />
             {/* <Steps /> */}
           </div>

@@ -1,5 +1,5 @@
 import { Bell, CalendarDays, Lightbulb, SquareCheck, User } from "lucide-react";
-import { alignCenter, diagramLayout, glyphStroke } from "@/lib/svg/helpers";
+import { alignCenter, paddedBox, glyphStroke } from "@/lib/svg/helpers";
 import { BarChart } from "./visualize/BarChart";
 import { Donut } from "./visualize/Donut";
 
@@ -20,8 +20,10 @@ const statusRows = [
 export function ActDiagram() {
   const viewboxWidth = 300;
   const viewboxHeight = 100;
-  const { unit, contentX, contentY, contentWidth, contentHeight } =
-    diagramLayout(viewboxWidth, viewboxHeight);
+  const { unit, contentX, contentY, contentWidth, contentHeight } = paddedBox(
+    viewboxWidth,
+    viewboxHeight,
+  );
 
   // act icon — path is drawn in its own coordinate space, so we measure its
   // bbox once and derive center + scale from unit
@@ -60,7 +62,7 @@ export function ActDiagram() {
     const width = contentWidth * 0.32;
     const height = contentHeight;
 
-    const { translateY, absoluteCenterY: resolvedCenterY } = alignCenter(
+    const { offset: translateY, absoluteCenter: resolvedCenterY } = alignCenter(
       contentHeight,
       height,
     );
@@ -78,7 +80,7 @@ export function ActDiagram() {
 
     const startX = contentWidth - width;
 
-    const { translateY, absoluteCenterY: resolvedCenterY } = alignCenter(
+    const { offset: translateY, absoluteCenter: resolvedCenterY } = alignCenter(
       contentHeight,
       height,
     );

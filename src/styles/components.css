@@ -24,7 +24,7 @@
   mask-composite: intersect;
   transform: perspective(800px) rotateX(60deg);
   transform-origin: top;
-  opacity: 0.15;
+  opacity: 0.185;
 }
 
 /* per-section diagram widths (SectionBase sets the id from the eyebrow).

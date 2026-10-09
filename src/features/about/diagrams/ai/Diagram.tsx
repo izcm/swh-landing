@@ -2,7 +2,7 @@ import { useId } from "react";
 import {
   accentGlow,
   alignCenter,
-  diagramLayout,
+  paddedBox,
   spaceBetween,
 } from "@/lib/svg/helpers";
 import { EditorCode } from "./editor/EditorCode";
@@ -13,7 +13,7 @@ export function AISvg() {
   const viewboxWidth = 600;
   const viewboxHeight = 400;
 
-  const { outerPadding, contentWidth, contentHeight, unit } = diagramLayout(
+  const { outerPadding, contentWidth, contentHeight, unit } = paddedBox(
     viewboxWidth,
     viewboxHeight,
     0.5,
@@ -42,7 +42,7 @@ export function AISvg() {
     const bottom = itemHeight + (itemCount - 1) * (gapY - gapX * skewSlope);
     const resolvedHeight = topLift + bottom;
 
-    const { translateY, absoluteCenterY: resolvedCenterY } = alignCenter(
+    const { offset: translateY, absoluteCenter: resolvedCenterY } = alignCenter(
       contentHeight,
       resolvedHeight,
     );
@@ -162,8 +162,8 @@ export function AISvg() {
                   <WindowDots headerHeight={editorHeaderHeight} />
                   {isFront && (
                     <EditorCode
-                      viewboxWidth={300}
-                      viewboxHeight={200}
+                      width={300}
+                      height={200}
                       headerHeight={editorHeaderHeight}
                     />
                   )}

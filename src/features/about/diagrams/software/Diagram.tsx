@@ -4,7 +4,7 @@ import {
   isoTopCenter,
   standOn,
 } from "@/lib/svg/helpers";
-import { diagramLayout, type Point } from "@/lib/svg/helpers";
+import { paddedBox, type Point } from "@/lib/svg/helpers";
 import { ISOCube, glassCube } from "@/lib/svg/ISOCube";
 import { IsoCubeShadow } from "@/lib/svg/IsoCubeShadow";
 
@@ -19,8 +19,11 @@ export function SoftwareDiagram() {
   const half = cube.size / 2;
   const { depth, edgeLength: rise } = isoCubeMetrics(cubeSize);
 
-  const { contentX, contentY, contentWidth, contentHeight, unit } =
-    diagramLayout(viewboxWidth, viewboxHeight, 0.5);
+  const { contentX, contentY, contentWidth, contentHeight, unit } = paddedBox(
+    viewboxWidth,
+    viewboxHeight,
+    0.5,
+  );
 
   const top = (() => {
     const positions = {

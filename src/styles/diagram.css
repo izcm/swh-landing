@@ -28,13 +28,29 @@
 
   --platform-bottom-fill: oklch(from var(--ground) 0.15 0.04 h / 0.72);
 
+  /* https://claude.ai/artifact/VXrcsfxc2pMaoYDg63JeDL */
+  /* accent strengths: same hue as --accent, different lightness / chroma */
+  --accent-electric: oklch(from var(--accent) 0.7 0.21 h);
+  --accent-glow: oklch(from var(--accent) 0.86 0.09 h);
+  --accent-soft: oklch(from var(--accent) 0.7 0.08 h);
+  --accent-dim: oklch(from var(--accent) 0.5 0.11 h);
+  --accent-slate: oklch(from var(--accent) 0.42 0.05 h);
+  --accent-ink: oklch(from var(--accent) 0.17 0.045 h);
+  --accent-faint: oklch(from var(--accent) l c h / 0.15);
+
+  /* accent neighbours: nearby hues for variety */
+  --accent-lavender: oklch(from var(--accent) 0.66 0.16 calc(h + 28));
+  --accent-violet: oklch(from var(--accent) 0.6 0.19 calc(h + 50));
+  --accent-cyan: oklch(from var(--accent) 0.8 0.12 calc(h - 25));
+  --accent-teal: oklch(from var(--accent) 0.74 0.11 calc(h - 40));
+
   /* hero diagram (features/hero/Diagram.tsx) */
   --hero-center-cube-fill: url(#cubeSide);
   --hero-inner-cube-fill: var(--accent);
   /* --hero-inner-cube-fill: oklch(from var(--ground) 0.08 0.04 h / 1); */
   --hero-inner-cube-stroke: oklch(from var(--ground) 0.4 0.2 h / 0.65);
 
-  --hero-standing-surface-fill: oklch(from var(--accent) 0.2 0.075 h / 1);
+  --hero-standing-surface-fill: oklch(from var(--accent) 0.165 0.056 h / 1);
 }
 
 /* traveling pulse: a short glowing streak (12) + gap (396), slid along the
@@ -145,5 +161,10 @@
 /* debug knob: hides the dashed layout boxes / rings / dots (className="svg-debug").
    comment this out to show them */
 .svg-debug {
+  display: none;
+}
+
+/* debug hero app windows*/
+.svg-debug-haw {
   display: none;
 }

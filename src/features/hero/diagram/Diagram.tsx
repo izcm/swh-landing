@@ -1,20 +1,11 @@
 // shared svg helpers
-import {
-  alignBottom,
-  alignCenter,
-  diagramLayout,
-  dropAlongEdge,
-} from "@/lib/svg/helpers";
-
-// app windows (right box)
-import { WindowDots } from "@/lib/svg/window/AppWindow";
-import { WindowStack } from "@/lib/svg/window/WindowStack";
-import { windowStackLayout } from "@/lib/svg/window/windowStackLayout";
+import { alignCenter, paddedBox, dropAlongEdge } from "@/lib/svg/helpers";
 
 // this diagram's own parts
 import { Centerpiece } from "./Centerpiece";
 import { heroConnectors } from "./connectors";
 import { HeroDefs } from "./Defs";
+import { HeroAppWindows } from "./HeroAppWindows";
 import { heroLayout } from "./layout";
 import { Orbit } from "./Orbit";
 
@@ -26,12 +17,11 @@ export function HeroDiagram() {
   const viewboxWidth = 700;
   const viewboxHeight = 500;
 
-  const { contentX, contentY, contentWidth, contentHeight, unit } =
-    diagramLayout(
-      viewboxWidth,
-      viewboxHeight,
-      0, // 0 padding
-    );
+  const { contentX, contentY, contentWidth, contentHeight, unit } = paddedBox(
+    viewboxWidth,
+    viewboxHeight,
+    0, // 0 padding
+  );
 
   const rightBox = (() => {
     const groupWidth = contentWidth * 0.4;
@@ -39,7 +29,7 @@ export function HeroDiagram() {
 
     const translateX = contentWidth - groupWidth;
 
-    const { translateY } = alignCenter(contentHeight, groupHeight);
+    const { offset: translateY } = alignCenter(contentHeight, groupHeight);
 
     return {
       groupWidth,
@@ -49,29 +39,12 @@ export function HeroDiagram() {
     };
   })();
 
-  // three app windows in the right box, tilted along the A edges
-  const windowStack = windowStackLayout({
-    groupWidth: rightBox.groupWidth,
-    groupHeight: rightBox.groupHeight,
-    angle: heroAngles.angleA,
-    count: 3,
-    gapX: 25,
-    gapY: 35,
-    side: "right",
-    heightToWidthRatio: 0.78,
-  });
-
-  const { translateY: stackY } = alignBottom(
-    rightBox.groupHeight,
-    windowStack.stackHeight,
-  );
-
   const leftBox = (() => {
     const groupWidth = contentWidth - rightBox.groupWidth;
     const groupHeight = contentHeight;
 
     const translateX = 0; // flush with the content box's left edge
-    const { translateY } = alignCenter(contentHeight, groupHeight);
+    const { offset: translateY } = alignCenter(contentHeight, groupHeight);
 
     // shared by the orbit and the centerpiece
     const contentRing = {
@@ -223,26 +196,13 @@ export function HeroDiagram() {
           })()}
         </g>
         {/* right box */}
-        <g
-          transform={`translate(${rightBox.translateX}, ${rightBox.translateY})`}
-        >
-          <rect
-            className="svg-debug"
-            x={0}
-            y={0}
-            width={rightBox.groupWidth}
-            height={rightBox.groupHeight}
-            fill="none"
-            stroke="#aab4e6" // lavender
-            strokeWidth={0.75}
-            strokeDasharray="6 4"
-          />
-          <WindowStack
-            y={stackY}
-            layout={windowStack}
-            frontContent={<WindowDots headerHeight={24} />}
-          />
-        </g>
+        <HeroAppWindows
+          x={rightBox.translateX}
+          y={rightBox.translateY}
+          width={rightBox.groupWidth}
+          height={rightBox.groupHeight}
+          angle={heroAngles.angleA}
+        />
       </g>
     </svg>
   );

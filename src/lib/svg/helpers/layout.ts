@@ -59,20 +59,17 @@ export const spaceAround = ({
   return start + gap / 2 + index * (itemSize + gap);
 };
 
-// shared diagram frame: a base unit (1/12 of the viewBox height), padding of
-// `paddingUnits` units on every side, and the content box inside that padding
-export function diagramLayout(
-  viewboxWidth: number,
-  viewboxHeight: number,
-  paddingUnits = 1,
-) {
-  const unit = viewboxHeight / 12;
+// any width × height box (a whole diagram's viewBox, a group, …): a base unit
+// (1/12 of its height), padding of `paddingUnits` units on every side, and
+// the content box inside that padding
+export function paddedBox(width: number, height: number, paddingUnits = 1) {
+  const unit = height / 12;
   const outerPadding = unit * paddingUnits;
 
   const contentX = outerPadding;
   const contentY = outerPadding;
-  const contentWidth = viewboxWidth - outerPadding * 2;
-  const contentHeight = viewboxHeight - outerPadding * 2;
+  const contentWidth = width - outerPadding * 2;
+  const contentHeight = height - outerPadding * 2;
 
   return {
     unit,
@@ -84,26 +81,27 @@ export function diagramLayout(
   };
 }
 
-// Centers an item's height within a parent, and gives its center point
-// in absolute coordinates — useful as a connector-line anchor point.
+// Centers an item inside a parent along one axis (works for heights or
+// widths), and gives its center point in absolute coordinates — useful as a
+// connector-line anchor point. offset = from the parent's start to the item's start
 export function alignCenter(
-  parentHeight: number,
-  itemHeight: number,
+  parentSize: number,
+  itemSize: number,
   // typically the same outerPadding used to translate the wrapping <g>,
   // since that shifts the item's on-screen position by that much too
   parentOffset = 0,
 ) {
-  const translateY = (parentHeight - itemHeight) / 2;
-  const relativeCenterY = itemHeight / 2;
-  const absoluteCenterY = relativeCenterY + translateY + parentOffset;
+  const offset = (parentSize - itemSize) / 2;
+  const relativeCenter = itemSize / 2;
+  const absoluteCenter = relativeCenter + offset + parentOffset;
 
-  return { translateY, relativeCenterY, absoluteCenterY };
+  return { offset, relativeCenter, absoluteCenter };
 }
 
-// puts an item's bottom on its parent's bottom. same { translateY } as
-// alignCenter, so the two can be swapped
-export function alignBottom(parentHeight: number, itemHeight: number) {
-  const translateY = parentHeight - itemHeight;
+// puts an item's end on its parent's end (bottom for heights, right for
+// widths). same { offset } as alignCenter, so the two can be swapped
+export function alignEnd(parentSize: number, itemSize: number) {
+  const offset = parentSize - itemSize;
 
-  return { translateY };
+  return { offset };
 }

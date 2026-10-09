@@ -112,8 +112,8 @@ export function Orbit({
               {...standingSurfaces[i]}
               radius={8}
               angle={angles.angleA}
-              fill="var(--hero-standing-surface-fill)"
-              stroke="var(--node-border-color)"
+              fill="var(--accent-ink)"
+              stroke="var(--accent-dim)"
             />
           </g>
         </g>

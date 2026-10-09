@@ -5,16 +5,16 @@ import { AccentBarGradient } from "@/lib/svg/window/AccentBarGradient";
 // fake code: line numbers + animated bars. meant to be a child of AppWindow,
 // given the same viewboxWidth / viewboxHeight as that window
 export function EditorCode({
-  viewboxWidth, // viewbox??? why viewbox this is not an svg its a group
-  viewboxHeight, // ???? why not just heigth / width i dont get it
+  width, // the area it fills (in an AppWindow: that window's viewbox size)
+  height,
   headerHeight, // the window's header strip; code starts below it
 }: {
-  viewboxWidth: number;
-  viewboxHeight: number;
+  width: number;
+  height: number;
   headerHeight: number;
 }) {
   // spacing for the fake code, from the window's height
-  const unit = viewboxHeight / 12;
+  const unit = height / 12;
   const bottomHeight = unit * 1.5;
   const [animation, setAnimation] = useState(0);
 
@@ -38,16 +38,16 @@ export function EditorCode({
   const code = (() => {
     const lineCount = 6;
     const top = headerHeight * 1 + unit / 2;
-    const height = viewboxHeight - headerHeight - bottomHeight;
+    const linesHeight = height - headerHeight - bottomHeight;
 
     const paddingX = unit;
-    const width = viewboxWidth - paddingX * 2;
+    const linesWidth = width - paddingX * 2;
 
     return {
       lineCount,
-      height,
+      height: linesHeight,
       paddingX,
-      width,
+      width: linesWidth,
       translateY: top,
     };
   })();

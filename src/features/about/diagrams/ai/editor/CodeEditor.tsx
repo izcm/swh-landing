@@ -16,8 +16,8 @@ export function CodeEditor({ headerHeight, ...props }: CodeEditorProps) {
     <AppWindow {...props}>
       <WindowDots headerHeight={headerHeight} />
       <EditorCode
-        viewboxWidth={props.viewboxWidth}
-        viewboxHeight={props.viewboxHeight}
+        width={props.viewboxWidth}
+        height={props.viewboxHeight}
         headerHeight={headerHeight}
       />
     </AppWindow>

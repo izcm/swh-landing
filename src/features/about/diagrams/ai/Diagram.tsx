@@ -13,7 +13,7 @@ export function AISvg() {
   const viewboxWidth = 600;
   const viewboxHeight = 400;
 
-  const { outerPadding, contentWidth, contentHeight, unit } = paddedBox(
+  const { paddingX, paddingY, contentWidth, contentHeight, unit } = paddedBox(
     viewboxWidth,
     viewboxHeight,
     0.5,
@@ -114,7 +114,7 @@ export function AISvg() {
         stroke="red"
       /> */}
 
-      <g transform={`translate(${outerPadding}, ${outerPadding})`}>
+      <g transform={`translate(${paddingX}, ${paddingY})`}>
         {/* debug: editor's skewed bounding box */}
         {/* <rect
           x={0}

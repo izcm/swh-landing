@@ -73,8 +73,8 @@
 
   /* Chromium / Safari */
   *::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
   }
 
   *::-webkit-scrollbar-track {
@@ -82,7 +82,7 @@
   }
 
   *::-webkit-scrollbar-thumb {
-    background: var(--color-line);
+    background: oklch(from var(--color-line) calc(l - 0.15) c h / alpha);
     border-radius: 9999px;
   }
 
@@ -96,7 +96,8 @@
   @supports not selector(::-webkit-scrollbar) {
     * {
       scrollbar-width: thin;
-      scrollbar-color: var(--color-line) transparent;
+      scrollbar-color: oklch(from var(--color-line) calc(l - 0.15) c h / alpha)
+        transparent;
     }
   }
 

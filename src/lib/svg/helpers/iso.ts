@@ -11,7 +11,7 @@ export const isoCubeMetrics = (
   const radA = (angleA * Math.PI) / 180;
   const radB = (angleB * Math.PI) / 180;
 
-  const depth = size / (1 / Math.tan(radA) + 1 / Math.tan(radB));
+  const depth = size / (1 / Math.tan(radA) + 1 / Math.tan(radB)); // see DEPTH.png
 
   const runA = depth / Math.tan(radA);
   const runB = depth / Math.tan(radB);

@@ -1,13 +1,18 @@
 // shared svg helpers
-import { alignCenter, paddedBox, dropAlongEdge } from "@/lib/svg/helpers";
+import {
+  alignCenter,
+  paddedBox,
+  dropAlongEdge,
+  smoothPath,
+} from "@/lib/svg/helpers";
 
 // this diagram's own parts
-import { Centerpiece } from "./Centerpiece";
-import { heroConnectors } from "./connectors";
+import { Centerpiece } from "./left/Centerpiece";
+import { heroConnectors } from "./geometry/connectors";
 import { HeroDefs } from "./Defs";
-import { HeroAppWindows } from "./HeroAppWindows";
-import { heroLayout } from "./layout";
-import { Orbit } from "./Orbit";
+import { HeroAppWindows } from "./right/HeroAppWindows";
+import { heroLayout } from "./geometry/layout";
+import { Orbit } from "./left/Orbit";
 
 // the hero's camera: A = front-left edges (24°), B = front-right edges (30°)
 const heroAngles = { angleA: 22.5, angleB: 30 };
@@ -62,6 +67,13 @@ export function HeroDiagram() {
       contentRing,
     };
   })();
+
+  const connectorRing = {
+    radius: leftBox.groupWidth / 2 - unit,
+    // middle of a square box as tall as the content box
+    centerX: leftBox.groupWidth / 2 + unit,
+    centerY: leftBox.groupHeight / 2,
+  };
 
   return (
     <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`} overflow="visible">
@@ -142,30 +154,6 @@ export function HeroDiagram() {
                   strokeWidth={0.75}
                 />
 
-                <rect
-                  className="svg-debug"
-                  x={0}
-                  y={0}
-                  width={groupWidth}
-                  height={groupHeight}
-                  fill="none"
-                  stroke="#d9c79c" // sand
-                  strokeWidth={0.75}
-                  strokeDasharray="6 4"
-                />
-
-                <rect
-                  className="svg-debug"
-                  x={centerpiece.x}
-                  y={centerpiece.y}
-                  width={centerpiece.cube.size}
-                  height={centerpiece.cube.height}
-                  fill="none"
-                  stroke="var(--accent)" // sand
-                  strokeWidth={0.75}
-                  strokeDasharray="6 4"
-                />
-
                 {heroConnectors(layout, heroAngles).map(({ d }, i) => (
                   <path
                     key={i}
@@ -191,6 +179,28 @@ export function HeroDiagram() {
                   angles={heroAngles}
                   platformBoxPoints={layout.orbit.platformPoints}
                 />
+
+                {layout.orbit.nodes.map((node, i) => (
+                  <circle
+                    key={i}
+                    className="svg-debug-orbit"
+                    cx={node.x}
+                    cy={node.y}
+                    r={4}
+                    fill="#9cc5a8"
+                  />
+                ))}
+
+                {layout.orbit.nodes.map((node, i) => (
+                  <circle
+                    key={i}
+                    className="svg-debug-orbit"
+                    cx={node.x}
+                    cy={node.y + unit}
+                    r={4}
+                    fill="var(--accent-glow)"
+                  />
+                ))}
               </>
             );
           })()}

@@ -47,7 +47,7 @@ export function Centerpiece({
   // const lightElectric = "oklch(from var(--accent) 0.6 0.2 h / 0.5)";
 
   const innerFill = "oklch(from var(--accent-ink) 0.1 c h / 1)";
-  const cubeFill = "oklch(from var(--accent) 0.25 0.15 h / 0.15)";
+  const cubeFill = "oklch(from var(--accent-electric) 0.25 0.15 h / 0.15)";
 
   const bigCube = {
     size,
@@ -56,7 +56,7 @@ export function Centerpiece({
 
     faces: { top: cubeFill, left: cubeFill },
     // showBottom: false,
-    stroke: "var(--accent-dim)",
+    stroke: "var(--accent-electric)",
     strokeWeight: 0.5,
     // accentGlow(blur, strength%): a bit stronger than the default (2, 18)
     // glow: { blur: 2, strength: 18 },

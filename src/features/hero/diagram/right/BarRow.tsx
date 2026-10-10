@@ -20,7 +20,7 @@ export function BarRow({
   const dotRadius = rowHeight * 0.35;
   const gap = rowHeight;
 
-  const labelX = dotRadius * 2 + gap / 2;
+  const labelX = dotRadius * 2 + gap / 4;
   const labelWidth = rowHeight;
   const labelHeight = dotRadius;
 
@@ -40,8 +40,8 @@ export function BarRow({
         width={labelWidth}
         height={labelHeight}
         rx={labelHeight * 0.5}
-        fill="var(--accent-muted)"
-        fillOpacity={0.3}
+        fill="var(--accent-dim)"
+        fillOpacity={0.4}
       />
       <FilledTube
         x={tubeX}

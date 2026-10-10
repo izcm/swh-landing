@@ -60,20 +60,28 @@ export const spaceAround = ({
 };
 
 // any width × height box (a whole diagram's viewBox, a group, …): a base unit
-// (1/12 of its height), padding of `paddingUnits` units on every side, and
-// the content box inside that padding
-export function paddedBox(width: number, height: number, paddingUnits = 1) {
+// (1/12 of its height), padding of `paddingXUnits` units left/right and
+// `paddingYUnits` units top/bottom (same as X if not passed), and the content
+// box inside that padding
+export function paddedBox(
+  width: number,
+  height: number,
+  paddingXUnits = 1,
+  paddingYUnits = paddingXUnits,
+) {
   const unit = height / 12;
-  const outerPadding = unit * paddingUnits;
+  const paddingX = unit * paddingXUnits;
+  const paddingY = unit * paddingYUnits;
 
-  const contentX = outerPadding;
-  const contentY = outerPadding;
-  const contentWidth = width - outerPadding * 2;
-  const contentHeight = height - outerPadding * 2;
+  const contentX = paddingX;
+  const contentY = paddingY;
+  const contentWidth = width - paddingX * 2;
+  const contentHeight = height - paddingY * 2;
 
   return {
     unit,
-    outerPadding,
+    paddingX,
+    paddingY,
     contentX,
     contentY,
     contentWidth,
@@ -87,7 +95,7 @@ export function paddedBox(width: number, height: number, paddingUnits = 1) {
 export function alignCenter(
   parentSize: number,
   itemSize: number,
-  // typically the same outerPadding used to translate the wrapping <g>,
+  // typically the same padding used to translate the wrapping <g>,
   // since that shifts the item's on-screen position by that much too
   parentOffset = 0,
 ) {
@@ -104,4 +112,16 @@ export function alignEnd(parentSize: number, itemSize: number) {
   const offset = parentSize - itemSize;
 
   return { offset };
+}
+
+// puts items one after another along one axis (x or y) with `gap` between
+// neighbours. starts = where each item begins, dividers = the middle of each
+// gap (where a divider line goes). both are plain numbers along that axis
+export function stackWithGaps(sizes: number[], gap: number) {
+  const starts = sizes.map((_, i) =>
+    sizes.slice(0, i).reduce((sum, size) => sum + size + gap, 0),
+  );
+  const dividers = starts.slice(1).map((start) => start - gap / 2);
+
+  return { starts, dividers };
 }

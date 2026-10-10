@@ -1,12 +1,18 @@
 type BarChartProps = {
-  x: number;
-  y: number;
+  x?: number;
+  y?: number;
   width: number;
   height: number;
   values: number[]; // each 0-1, normalized bar height — swap for animated values later
 };
 
-export function BarChart({ x, y, width, height, values }: BarChartProps) {
+export function BarChart({
+  x = 0,
+  y = 0,
+  width,
+  height,
+  values,
+}: BarChartProps) {
   const gap = width * 0.02;
   const rawBarWidth = (width - gap * (values.length - 1)) / values.length;
   const barWidth = rawBarWidth * 0.4; // thin bars, calmer than a packed block

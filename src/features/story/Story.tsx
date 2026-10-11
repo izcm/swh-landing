@@ -1,6 +1,6 @@
 import { SectionBase } from "@/features/core/SectionBase";
 
-import { SvgPlaceholder } from "@/components/SvgPlaceholder";
+import { ConnectDiagram } from "./diagrams/ConnectDiagram";
 
 const sections = [
   {
@@ -11,7 +11,7 @@ const sections = [
       "While each system may work well on its own, there is often significant room for improvement in how data flows between them.",
       // "We have the expertise to bridge this gap by collecting and transforming data across your existing systems.",
     ],
-    diagram: <SvgPlaceholder label="Connect diagram" />,
+    diagram: <ConnectDiagram />,
   },
   {
     eyebrow: "VISUALIZE",
@@ -21,7 +21,7 @@ const sections = [
       "Spreadsheets are excellent tools, but understanding a larger operation can mean moving between several sheets, comparing numbers, and building a picture of what is happening in your head.",
       "We make that process easier by presenting relevant information through interactive dashboards designed to show the bigger picture.",
     ],
-    diagram: <SvgPlaceholder label="Visualize diagram" />,
+    diagram: <ConnectDiagram />,
   },
   {
     eyebrow: "ACT",
@@ -31,7 +31,7 @@ const sections = [
       "We extend your existing systems with tools that let you act directly on that information, rather than moving between systems and completing each step manually.",
       // "This can turn a time-consuming, multi-step process into a much simpler and faster workflow.",
     ],
-    diagram: <SvgPlaceholder label="Act diagram" />,
+    diagram: <ConnectDiagram />,
   },
 ];
 
@@ -70,7 +70,11 @@ function StorySection({
       text={section.paragraphs.map((p) => (
         <p key={p}>{p}</p>
       ))}
-      diagram={<div className="w-full max-w-150">{section.diagram}</div>}
+      children={
+        <div className="relative w-full max-w-4xl mx-auto">
+          {section.diagram}
+        </div>
+      }
     />
   );
 }

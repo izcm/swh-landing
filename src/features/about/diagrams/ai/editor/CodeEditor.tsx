@@ -1,9 +1,5 @@
 import { EditorCode } from "./EditorCode";
-import {
-  AppWindow,
-  WindowDots,
-  type AppWindowProps,
-} from "@/lib/svg/window/AppWindow";
+import { AppWindow, WindowDots, type AppWindowProps } from "@/lib/svg";
 
 type CodeEditorProps = Omit<AppWindowProps, "children"> & {
   // header strip at the top: dots sit in it, code starts below it

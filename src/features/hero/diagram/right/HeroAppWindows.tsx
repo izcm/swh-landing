@@ -1,16 +1,16 @@
 import {
+  BarChart,
+  LineChart,
+  WindowDots,
+  WindowStack,
   accentSeries,
   alignEnd,
   paddedBox,
   spaceBetween,
   stackWithGaps,
-} from "@/lib/svg/helpers";
-import { WindowDots } from "@/lib/svg/window/AppWindow";
-import { WindowStack } from "@/lib/svg/window/WindowStack";
-import { windowStackLayout } from "@/lib/svg/window/windowStackLayout";
+  windowStackLayout,
+} from "@/lib/svg";
 import { BarRow } from "./BarRow";
-import { BarChart } from "@/features/story/diagrams/visualize/BarChart";
-import { LineChart } from "@/features/story/diagrams/visualize/LineChart";
 
 // the right box: three app windows, tilted along the A edges, sitting on the
 // box's bottom. x / y / width / height = the right box, from Diagram.tsx

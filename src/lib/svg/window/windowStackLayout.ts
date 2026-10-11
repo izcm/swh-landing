@@ -1,4 +1,4 @@
-import { dropAlongEdge } from "@/lib/svg/helpers";
+import { dropAlongEdge } from "../logic";
 
 // sizes + positions for WindowStack: `count` app windows stacked back to front,
 // each one gapX right and gapY down from the last, all skewed by skewY(angle).

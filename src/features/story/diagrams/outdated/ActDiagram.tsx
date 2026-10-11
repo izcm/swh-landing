@@ -1,7 +1,7 @@
 import { Bell, CalendarDays, Lightbulb, SquareCheck, User } from "lucide-react";
-import { alignCenter, paddedBox, glyphStroke } from "@/lib/svg/helpers";
-import { BarChart } from "./visualize/BarChart";
-import { Donut } from "./visualize/Donut";
+import { alignCenter, paddedBox, glyphStroke } from "@/lib/svg/logic";
+import { BarChart } from "../../../../lib/svg/analytics/BarChart";
+import { Donut } from "../../../../lib/svg/analytics/Donut";
 
 const actions = [
   { label: "Plan", Icon: CalendarDays },

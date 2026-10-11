@@ -1,9 +1,7 @@
 import { FileSpreadsheet, Cloud, FileText, Settings } from "lucide-react";
-import { ISOCube } from "@/lib/svg/ISOCube";
-import { StandingSurface } from "@/lib/svg/StandingSurface";
 import type { CSSProperties } from "react";
-import { isoCubeMetrics, type Point } from "@/lib/svg/helpers";
-import { IsoCubeShadow } from "@/lib/svg/IsoCubeShadow";
+import { ISOCube, IsoCubeShadow, isoCubeMetrics, type Point } from "@/lib/svg";
+import { StandingSurface } from "./StandingSurface";
 
 type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
 
@@ -104,7 +102,7 @@ export function Orbit({
               size={platform.size}
               thickness={platform.thickness}
               strokeWeight={0.7}
-              showGrid
+              gridDivisions={{ across: 4, along: 4 }}
               {...angles}
             />
 

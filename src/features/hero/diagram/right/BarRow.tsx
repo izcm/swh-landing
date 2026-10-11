@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import { FilledTube } from "@/lib/svg/FilledTube";
+import { FilledTube } from "@/lib/svg";
 
 // the tube's props, minus the ones BarRow works out from rowHeight / width
 type TubeProps = Omit<

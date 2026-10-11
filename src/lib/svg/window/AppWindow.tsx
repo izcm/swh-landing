@@ -1,10 +1,10 @@
 import { useId, type ReactNode } from "react";
-import { accentGlow, glyphStroke } from "@/lib/svg/helpers";
+import { accentGlow, glyphStroke, type ShapeProps } from "../logic";
 import { AccentBarGradient } from "./AccentBarGradient";
 
-export type AppWindowProps = {
-  x?: number;
-  y?: number;
+// fill: background color, defaults to the dark ink (or the ghost tint).
+// stroke: border color, defaults to the accent gradient
+export type AppWindowProps = ShapeProps & {
   width: number;
   height: number;
   // the inside's own size: what children are drawn in
@@ -25,6 +25,8 @@ export function AppWindow({
   viewboxWidth,
   viewboxHeight,
   ghost = false,
+  fill,
+  stroke,
   children,
 }: AppWindowProps) {
   const gradientId = useId();
@@ -36,11 +38,11 @@ export function AppWindow({
 
   const nodeStyle = {
     // ghost: tinted toward the accent and mostly transparent, so what's behind shows through
-    fill: ghost
-      ? "oklch(from var(--accent) 0.18 0.06 h)"
-      : "var(--node-color-deep)",
+    fill:
+      fill ??
+      (ghost ? "oklch(from var(--accent) 0.18 0.06 h)" : "var(--accent-ink)"),
     fillOpacity: ghost ? 0.3 : 1,
-    stroke: `url(#${gradientId})`,
+    stroke: stroke ?? `url(#${gradientId})`,
     strokeWidth,
   };
 

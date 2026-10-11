@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { accentGlow, type Point } from "@/lib/svg/helpers";
+import { accentGlow, type Point } from "../logic";
 import { AppWindow } from "./AppWindow";
 import type { windowStackLayout } from "./windowStackLayout";
 

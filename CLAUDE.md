@@ -11,3 +11,33 @@
   viewBox. Good: the helper takes `height` (or `ratio`) as a required input.
 - Don't copy fixed values from one diagram into a shared component.
 - Always make a plan when extracting a reusable part of an SVG, and consult with me if any knobs seem to better suit being hardcoded.
+
+## SVG components: layout of the svg
+
+- A fresh SVG component should be divided into clear sections, eg: const leftBox = (() => )() that returns layout, widths, heights and other relevant info for that section. Example:
+
+```ts
+const leftBox = (() => {
+  const groupWidth = contentWidth - rightBox.groupWidth;
+  const groupHeight = contentHeight;
+
+  const translateX = 0; // flush with the content box's left edge
+  const { offset: translateY } = alignCenter(contentHeight, groupHeight);
+
+  // shared by the orbit and the centerpiece
+  const contentRing = {
+    radius: groupWidth / 2,
+    // middle of a square box as tall as the content box
+    centerX: groupWidth / 2,
+    centerY: groupHeight / 2,
+  };
+
+  return {
+    groupWidth,
+    groupHeight,
+    translateX,
+    translateY,
+    contentRing,
+  };
+})();
+```

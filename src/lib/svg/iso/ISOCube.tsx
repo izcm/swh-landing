@@ -1,14 +1,14 @@
 import { useId } from "react";
-import { EdgeGradient } from "./EdgeGradient";
+import { EdgeGradient } from "../EdgeGradient";
 import {
   accentGlow,
   glyphStroke,
+  gridLines,
   isoCubePoints,
-  pointOnLine,
   roundCorner,
   roundedPolygonPath,
   type IsoCubeBaseProps,
-} from "./helpers";
+} from "../logic";
 
 // one color per face. right and bottom default to left
 type ISOCubeFaces = {
@@ -32,8 +32,10 @@ type ISOCubeProps = IsoCubeBaseProps & {
   // soft accent glow around the whole cube
   glow?: { blur: number; strength: number };
 
+  // grid on the top face: how many equal parts each direction is split into
+  // ({ across: 4, along: 4 } = a line every 25% both ways). leave out for no grid
+  gridDivisions?: { across: number; along: number };
   // show knobs
-  showGrid?: boolean;
   // false: no floor fill and no hidden back-bottom edges, only the two
   // front-bottom edges. useful when the walls are see-through
   showBottom?: boolean;
@@ -81,8 +83,8 @@ export function ISOCube({
 
   stroke,
   backStroke,
+  gridDivisions,
   // show knobs
-  showGrid = false,
   showFrontEdge = false,
   showBackEdges = false,
   showBottom = true,
@@ -133,12 +135,11 @@ export function ISOCube({
   const leftBottomTip = { x: leftTip.x, y: leftTip.y + verticalHeight };
   const rightBottomTip = { x: rightTip.x, y: rightTip.y + verticalHeight };
 
-  // faint grid on the top face: lines between opposite edges at 1/4, 1/2, 3/4
-  const gridSteps = [0.25, 0.5, 0.75];
-  const gridLines = gridSteps.flatMap((t) => [
-    [pointOnLine(topLeft, topBack, t), pointOnLine(topFront, topRight, t)],
-    [pointOnLine(topLeft, topFront, t), pointOnLine(topBack, topRight, t)],
-  ]);
+  // faint grid on the top face. no gridDivisions → 0 both ways → no lines
+  const topGridLines = gridLines(
+    { left: topLeft, back: topBack, right: topRight, front: topFront },
+    gridDivisions ?? { across: 0, along: 0 },
+  );
 
   return (
     <g
@@ -243,19 +244,18 @@ export function ISOCube({
         strokeWidth={strokeWidth}
       />
 
-      {showGrid &&
-        gridLines.map(([a, b], i) => (
-          <line
-            key={i}
-            x1={a.x}
-            y1={a.y}
-            x2={b.x}
-            y2={b.y}
-            stroke={edgeStroke}
-            strokeWidth={strokeWidth}
-            opacity={0.2}
-          />
-        ))}
+      {topGridLines.map(([a, b], i) => (
+        <line
+          key={i}
+          x1={a.x}
+          y1={a.y}
+          x2={b.x}
+          y2={b.y}
+          stroke={edgeStroke}
+          strokeWidth={strokeWidth}
+          opacity={0.2}
+        />
+      ))}
     </g>
   );
 }

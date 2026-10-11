@@ -1,6 +1,5 @@
 import { useEffect, useId, useState } from "react";
-import { spaceBetween } from "@/lib/svg/helpers";
-import { AccentBarGradient } from "@/lib/svg/window/AccentBarGradient";
+import { AccentBarGradient, spaceBetween } from "@/lib/svg";
 
 // fake code: line numbers + animated bars. meant to be a child of AppWindow,
 // given the same viewboxWidth / viewboxHeight as that window

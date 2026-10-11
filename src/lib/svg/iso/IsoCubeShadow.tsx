@@ -1,4 +1,4 @@
-import { isoCubeMetrics, isoCubePoints, type Point } from "./helpers";
+import { isoCubeMetrics, isoCubePoints, type Point } from "../logic";
 
 type IsoCubeMetrics = ReturnType<typeof isoCubeMetrics>;
 

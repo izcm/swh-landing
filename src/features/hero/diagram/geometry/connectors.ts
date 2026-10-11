@@ -3,14 +3,26 @@ import {
   isoCubePoints,
   pointOnLine,
   type Point,
-} from "@/lib/svg/helpers";
+} from "@/lib/svg";
 import type { heroLayout } from "./layout";
 
 type Layout = ReturnType<typeof heroLayout>;
 type Angles = { angleA: number; angleB: number };
 
+// the platform sits right above/below the cube: its center is within the cube's width
+export function isAboveOrBelowCube(
+  platformCenter: Point,
+  centerpiece: Layout["centerpiece"],
+) {
+  return (
+    platformCenter.x > centerpiece.x &&
+    platformCenter.x < centerpiece.x + centerpiece.cube.size
+  );
+}
+
 // one line per platform, from the platform to the centerpiece.
-// special = the top/bottom platforms (first + last), which go straight up/down
+// isAboveOrBelow = the platform sits right above/below the cube, so none of its
+// edges can reach the cube in a straight iso line: it goes straight up/down instead
 export function heroConnectors({ orbit, centerpiece }: Layout, angles: Angles) {
   const { platform } = orbit;
   const { cube } = centerpiece;
@@ -36,7 +48,7 @@ export function heroConnectors({ orbit, centerpiece }: Layout, angles: Angles) {
   return orbit.platformPoints.map((platformBox, i) => {
     const platformCenter = orbit.platformCenterPoints[i];
     const isLower = platformCenter.y > cubeMiddleY;
-    const isSpecial = i === 0 || i === orbit.nodes.length - 1;
+    const isAboveOrBelow = isAboveOrBelowCube(platformCenter, centerpiece);
 
     // ...this platform's corners: scaled + moved to its spot
     const at = (p: Point) => ({
@@ -52,9 +64,9 @@ export function heroConnectors({ orbit, centerpiece }: Layout, angles: Angles) {
     const atTopFrontRight = (t: number) => pointOnLine(topRight, topFront, t);
     const atTopFrontLeft = (t: number) => pointOnLine(topLeft, topFront, t);
 
-    // special: leave from near the corner facing the cube.
+    // above/below: leave from near the corner facing the cube.
     // the rest: leave from the middle of the right edge
-    const out = isSpecial
+    const out = isAboveOrBelow
       ? isLower
         ? atTopBackRight(0.25)
         : atTopFrontLeft(0.85)
@@ -77,7 +89,7 @@ export function heroConnectors({ orbit, centerpiece }: Layout, angles: Angles) {
       return tip.y + direction * drop;
     };
 
-    const into = isSpecial
+    const into = isAboveOrBelow
       ? {
           x: out.x,
           y: isLower
@@ -94,8 +106,14 @@ export function heroConnectors({ orbit, centerpiece }: Layout, angles: Angles) {
       run: dx,
       angle: isLower ? angles.angleB : angles.angleA,
     });
-    const dy = isSpecial ? into.y - out.y : isLower ? -drop : drop;
+    const dy = isAboveOrBelow ? into.y - out.y : isLower ? -drop : drop;
 
-    return { out, into, isLower, d: `M ${out.x} ${out.y} l ${dx} ${dy}` };
+    return {
+      out,
+      into,
+      isLower,
+      isAboveOrBelow,
+      d: `M ${out.x} ${out.y} l ${dx} ${dy}`,
+    };
   });
 }

@@ -24,12 +24,15 @@ export function SectionBase({
   children?: ReactNode;
 }) {
   return (
-    <section id={id} className="flex flex-col min-h-below-nav scroll-mt-18">
+    <section
+      id={id}
+      className="flex flex-col min-h-below-nav scroll-mt-18 mt-12"
+    >
       <div
         className="
       relative isolate overflow-hidden
       flex flex-col gap-6
-      p-4 w-full mt-6 mx-auto
+      p-4 w-full mx-auto
       sm:p-8 max-w-3xl 
       "
       >
@@ -42,7 +45,7 @@ export function SectionBase({
           </div>
           <div
             id={`diagram-${eyebrow.toLowerCase().replaceAll(" ", "-")}`}
-            className="max-w-120 w-full mt-6 mx-auto"
+            className="w-full mt-6 mx-auto"
           >
             {diagram}
           </div>

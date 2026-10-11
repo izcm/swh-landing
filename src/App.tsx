@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Nav, Footer, Hero, Steps, Story, Demo, About } from "./features";
-import { BezierPractice } from "./features/playground/BezierPractice";
-import { TheodorusSpiral } from "@/lib/svg/spiral/TheodorusSpiral";
+import { Nav, Footer, Hero, Story, Demo, About } from "./features";
+import { ConnectDiagram } from "./features/story/diagrams/ConnectDiagram";
 // import { AISvg } from "./features/about/diagrams/ai/diagram";
 
 function App() {
@@ -53,9 +52,8 @@ function App() {
       )}
 
       {tab === "tmp" && (
-        <div className="w-160 mx-auto">
-          <BezierPractice />
-          <TheodorusSpiral x={0} y={0} count={16} radius={100} />
+        <div className="max-w-7xl w-full mx-auto">
+          <ConnectDiagram />
         </div>
       )}
 

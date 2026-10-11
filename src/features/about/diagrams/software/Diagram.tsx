@@ -1,12 +1,14 @@
 import {
+  ISOCube,
+  IsoCubeShadow,
+  glassCube,
   isoBottomCenter,
   isoCubeMetrics,
   isoTopCenter,
+  paddedBox,
   standOn,
-} from "@/lib/svg/helpers";
-import { paddedBox, type Point } from "@/lib/svg/helpers";
-import { ISOCube, glassCube } from "@/lib/svg/ISOCube";
-import { IsoCubeShadow } from "@/lib/svg/IsoCubeShadow";
+  type Point,
+} from "@/lib/svg";
 
 export function SoftwareDiagram() {
   const viewboxWidth = 500;
@@ -372,7 +374,7 @@ export function SoftwareDiagram() {
             <ISOCube
               size={bottomRight.platform.size}
               thickness={bottomRight.platform.thickness}
-              showGrid
+              gridDivisions={{ across: 4, along: 4 }}
             />
           </g>
 

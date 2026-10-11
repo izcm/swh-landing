@@ -1,13 +1,14 @@
 import { useId } from "react";
 import {
+  AccentBarGradient,
+  AppWindow,
+  WindowDots,
   accentGlow,
   alignCenter,
   paddedBox,
   spaceBetween,
-} from "@/lib/svg/helpers";
+} from "@/lib/svg";
 import { EditorCode } from "./editor/EditorCode";
-import { AppWindow, WindowDots } from "@/lib/svg/window/AppWindow";
-import { AccentBarGradient } from "@/lib/svg/window/AccentBarGradient";
 
 export function AISvg() {
   const viewboxWidth = 600;
@@ -158,6 +159,7 @@ export function AISvg() {
                   viewboxWidth={300}
                   viewboxHeight={200}
                   ghost={!isFront}
+                  fill={isFront ? "var(--node-color-deep)" : undefined}
                 >
                   <WindowDots headerHeight={editorHeaderHeight} />
                   {isFront && (

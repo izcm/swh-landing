@@ -1,4 +1,4 @@
-import type { Point } from "@/lib/svg/helpers";
+import type { Point } from "../logic";
 
 export function EaseOutSpiral({
   x,

@@ -1,10 +1,10 @@
 import type { LucideIcon } from "lucide-react";
 import {
   glyphStroke,
-  roundCorner,
-  type Point,
+  roundedPolygonPath,
+  standingSurfacePoints,
   type ShapeProps,
-} from "./helpers";
+} from "@/lib/svg";
 
 type Props = ShapeProps & {
   size?: number;
@@ -13,7 +13,6 @@ type Props = ShapeProps & {
   angle?: number;
   // corner rounding, in the same units as size
   radius?: number;
-  points?: Point[];
   // drawn in the middle of the panel, skewed to sit flat on it
   icon?: LucideIcon;
   // icon color, e.g. "url(#some-gradient)"
@@ -32,45 +31,18 @@ export function StandingSurface({
   fill = "none",
   stroke = "var(--accent)",
 }: Props) {
-  const radians = (angle * Math.PI) / 180;
-  //   const edgeLength = size / Math.cos(radians);
-  // tan(angle) = opp / adj | opp = depth && adj = size
-  // tan(angle) = depth / size -> tan(angle) * size = depth
-  const depth = Math.tan(radians) * size;
-
-  const topLeft = { x: 0, y: 0 };
-  const topRight = { x: size, y: depth };
-
-  const bottomLeft = { x: 0, y: thickness };
-  const bottomRight = { x: size, y: thickness + depth };
-
-  const points = [topLeft, topRight, bottomRight, bottomLeft];
-  const n = points.length;
-  //   const corners = points ?? [];
-  const corners = points.map((corner, i) =>
-    roundCorner(points[(i - 1 + n) % n], corner, points[(i + 1) % n], radius),
-  );
-  //   const { before, corner, after } = roundCorner(start, { x: 0, y: 0 }, end, 4);
-
-  const path =
-    corners
-      .map(
-        ({ before, corner, after }, i) =>
-          `${i === 0 ? "M" : "L"} ${before.x} ${before.y} Q ${corner.x} ${corner.y} ${after.x} ${after.y}`,
-      )
-      .join(" ") + " Z";
+  const {
+    depth,
+    corners: { topLeft, topRight, bottomRight, bottomLeft },
+  } = standingSurfacePoints({ size, thickness, angle });
 
   return (
     <g transform={`translate(${x}, ${y})`}>
       <path
-        d={
-          corners
-            .map(
-              ({ before, corner, after }, i) =>
-                `${i === 0 ? "M" : "L"} ${before.x} ${before.y} Q ${corner.x} ${corner.y} ${after.x} ${after.y}`,
-            )
-            .join(" ") + " Z"
-        }
+        d={roundedPolygonPath(
+          [topLeft, topRight, bottomRight, bottomLeft],
+          radius,
+        )}
         fill={fill}
         stroke={stroke}
         strokeWidth={0.65}

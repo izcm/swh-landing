@@ -1,9 +1,9 @@
 import { SlidersHorizontal } from "lucide-react";
 import { DataGrid } from "../DataGrid";
-import { StatCard } from "./StatCard";
-import { Donut } from "./Donut";
-import { BarChart } from "./BarChart";
-import { alignCenter, paddedBox } from "@/lib/svg/helpers";
+import { StatCard } from "../../../../../lib/svg/analytics/StatCard";
+import { Donut } from "../../../../../lib/svg/analytics/Donut";
+import { BarChart } from "../../../../../lib/svg/analytics/BarChart";
+import { alignCenter, paddedBox } from "@/lib/svg/logic";
 
 export function VisualizeDiagram() {
   const viewboxWidth = 340;

@@ -27,25 +27,12 @@
   opacity: 0.185;
 }
 
-/* per-section diagram widths (SectionBase sets the id from the eyebrow).
-   default is max-w-120 = 30rem */
-/* story */
-#diagram-connect {
-  max-width: 30rem;
-}
-#diagram-visualize {
-  max-width: 30rem;
-}
-#diagram-act {
-  max-width: 30rem;
-}
-
 /* about */
 #diagram-working-together {
   max-width: 30rem;
 }
 #diagram-ai {
-  max-width: 35rem;
+  max-width: 38rem;
 }
 #diagram-tools {
   max-width: 30rem;

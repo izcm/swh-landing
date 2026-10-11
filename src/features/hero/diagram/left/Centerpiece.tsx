@@ -1,5 +1,4 @@
-import { ISOCube, glassCube } from "@/lib/svg/ISOCube";
-import { isoCubeMetrics, type Point } from "@/lib/svg/helpers";
+import { ISOCube, glassCube, isoCubeMetrics, type Point } from "@/lib/svg";
 
 type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
 
@@ -45,6 +44,8 @@ export function Centerpiece({
   // };
   // light electris:
   // const lightElectric = "oklch(from var(--accent) 0.6 0.2 h / 0.5)";
+
+  // const innerFill = "oklch(from var(--accent-electric) 0.6 0.16 h / 0.6)";
 
   const innerFill = "oklch(from var(--accent-ink) 0.1 c h / 1)";
   const cubeFill = "oklch(from var(--accent-electric) 0.25 0.15 h / 0.15)";

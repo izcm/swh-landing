@@ -1,11 +1,11 @@
 import { useId } from "react";
-import { EdgeGradient } from "./EdgeGradient";
+import { EdgeGradient } from "../EdgeGradient";
 import {
   accentGlow,
   glyphStroke,
   isoCubePoints,
   type IsoCubeBaseProps,
-} from "./helpers";
+} from "../logic";
 
 // the original sharp iso cube: every face outlined, edges drawn again on top.
 // ISOCube (rounded, with the glassCube preset) replaced it in the diagrams

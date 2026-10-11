@@ -4,7 +4,7 @@ import {
   isoTopCenter,
   pointOnCircle,
   standOn,
-} from "@/lib/svg/helpers";
+} from "@/lib/svg";
 
 type Ring = { radius: number; centerX: number; centerY: number };
 type Angles = { angleA: number; angleB: number };
@@ -50,7 +50,7 @@ export function heroLayout({
   // dots on the ring, each with a platform + standing surface
   const orbit = (() => {
     const platformSize = unit * 3;
-    const platform = isoCubeMetrics(platformSize, contentHeight / 35, angles);
+    const platform = isoCubeMetrics(platformSize, unit * 0.28, angles);
 
     const pointOnContentRing = (degrees: number) =>
       pointOnCircle({

@@ -31,6 +31,32 @@ export const pointOnLine = (A: Point, B: Point, t: number) => ({
   y: A.y + (B.y - A.y) * t,
 });
 
+// grid inside a 4-corner shape: joins matching points on opposite sides.
+// `across` splits the left→back / front→right sides, `along` splits the
+// left→front / back→right sides. returns each line's two ends.
+// 4 × 6 → 3 lines one way + 5 the other
+export function gridLines(
+  corners: { left: Point; back: Point; right: Point; front: Point },
+  divisions: { across: number; along: number },
+): [Point, Point][] {
+  const { left, back, right, front } = corners;
+
+  // where the lines go along a side: 4 → [0.25, 0.5, 0.75]
+  const stepsFor = (count: number) =>
+    Array.from({ length: Math.max(0, count - 1) }, (_, i) => (i + 1) / count);
+
+  const acrossLines = stepsFor(divisions.across).map((t): [Point, Point] => [
+    pointOnLine(left, back, t),
+    pointOnLine(front, right, t),
+  ]);
+  const alongLines = stepsFor(divisions.along).map((t): [Point, Point] => [
+    pointOnLine(left, front, t),
+    pointOnLine(back, right, t),
+  ]);
+
+  return [...acrossLines, ...alongLines];
+}
+
 // how far down you go when you walk `along` (0–1) of an edge that slopes at
 // `angle` degrees. run = the edge's full horizontal length
 export function dropAlongEdge({

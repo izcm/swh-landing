@@ -1,6 +1,6 @@
 import { SectionBase } from "@/features/core/SectionBase";
 
-import { ConnectDiagram } from "./diagrams/ConnectDiagram";
+import { ConnectDiagram } from "./diagrams/Connect/Diagram";
 
 const sections = [
   {

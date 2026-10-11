@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Nav, Footer, Hero, Story, Demo, About } from "./features";
-import { ConnectDiagram } from "./features/story/diagrams/ConnectDiagram";
+import { ConnectDiagram } from "./features/story/diagrams/Connect/Diagram";
 // import { AISvg } from "./features/about/diagrams/ai/diagram";
 
 function App() {

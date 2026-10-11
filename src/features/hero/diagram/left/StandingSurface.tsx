@@ -2,7 +2,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   glyphStroke,
   roundedPolygonPath,
-  standingSurfacePoints,
+  panelPoints,
   type ShapeProps,
 } from "@/lib/svg";
 
@@ -34,7 +34,7 @@ export function StandingSurface({
   const {
     depth,
     corners: { topLeft, topRight, bottomRight, bottomLeft },
-  } = standingSurfacePoints({ size, thickness, angle });
+  } = panelPoints({ size, thickness, angle });
 
   return (
     <g transform={`translate(${x}, ${y})`}>

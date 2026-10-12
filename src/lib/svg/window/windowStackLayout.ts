@@ -14,7 +14,6 @@ export function windowStackLayout({
   side,
 }: {
   groupWidth: number;
-  groupHeight: number;
   heightToWidthRatio?: number;
   angle: number;
   count: number;
@@ -32,10 +31,12 @@ export function windowStackLayout({
 
   // every window's corners after the skew: y + x · tan(angle)
   const skewedYs = Array.from({ length: count }).flatMap((_, i) => {
-    const left = windowX(i);
-    const top = i * gapY;
-    return [left, left + itemWidth].flatMap((x) =>
-      [top, top + itemHeight].map((y) => y + dropAlongEdge({ run: x, angle })),
+    const leftX = windowX(i); // left X coordinates
+    const topY = i * gapY;
+    return [leftX, leftX + itemWidth].flatMap((x) =>
+      [topY, topY + itemHeight].map(
+        (y) => y + dropAlongEdge({ run: x, angle }),
+      ),
     );
   });
   const highest = Math.min(...skewedYs);

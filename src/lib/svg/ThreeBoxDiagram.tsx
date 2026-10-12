@@ -52,48 +52,39 @@ export function ThreeBoxDiagram({
 
   return (
     <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`} overflow="visible">
-      {/* debug: the whole viewBox */}
-      <rect
-        className="svg-debug"
-        x={0}
-        y={0}
-        width={viewboxWidth}
-        height={viewboxHeight}
-        fill="none"
-        stroke="#8a8f98" // grey
-        strokeWidth={0.75}
-        strokeDasharray="2 4"
-      />
-
       {/* everything inside starts at the content box's top-left */}
       <g transform={`translate(${contentX}, ${contentY})`}>
-        {/* debug: content box (inside the padding) */}
-        <rect
+        {/* debug: box edges as plain lines, all drawn the same way (verticals
+            top → bottom, horizontals left → right), so where two boxes share
+            an edge their dashes land on the same spots instead of mixing */}
+        <g
           className="svg-debug"
-          x={0}
-          y={0}
-          width={contentWidth}
-          height={contentHeight}
-          fill="none"
-          stroke="#e8a0a8" // dusty rose
+          stroke="#aab4e6" // lavender
           strokeWidth={0.75}
           strokeDasharray="6 4"
-        />
+        >
+          {/* each slot's top and bottom edge */}
+          {starts.map((start, i) => (
+            <g key={i}>
+              <line x1={start} y1={0} x2={start + widths[i]} y2={0} />
+              <line
+                x1={start}
+                y1={contentHeight}
+                x2={start + widths[i]}
+                y2={contentHeight}
+              />
+            </g>
+          ))}
+          {/* each slot's left and right edge */}
+          {starts
+            .flatMap((start, i) => [start, start + widths[i]])
+            .map((x, i) => (
+              <line key={i} x1={x} y1={0} x2={x} y2={contentHeight} />
+            ))}
+        </g>
 
         {slots.map((draw, i) => (
           <g key={i} transform={`translate(${starts[i]}, 0)`}>
-            {/* debug: this slot's box */}
-            <rect
-              className="svg-debug"
-              x={0}
-              y={0}
-              width={widths[i]}
-              height={contentHeight}
-              fill="none"
-              stroke={debugColors[i]}
-              strokeWidth={0.75}
-              strokeDasharray="6 4"
-            />
             {/* debug: this slot's center */}
             <circle
               className="svg-debug"

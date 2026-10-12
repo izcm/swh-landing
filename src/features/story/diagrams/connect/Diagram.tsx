@@ -50,7 +50,7 @@ export function ConnectDiagram() {
   return (
     <ThreeBoxDiagram
       // viewbox
-      viewboxWidth={600}
+      viewboxWidth={650}
       viewboxHeight={250}
       // padding and gaps
       paddingUnits={0}
@@ -75,7 +75,6 @@ export function ConnectDiagram() {
 
         const stackLayout = windowStackLayout({
           groupWidth: width,
-          groupHeight: height,
           heightToWidthRatio: 0.8,
           angle: layout.card.angles.angleA,
           count: 2,
@@ -93,7 +92,7 @@ export function ConnectDiagram() {
           stackLayout.item.width,
           stackLayout.item.height,
           1,
-          1.5,
+          1,
         );
 
         const columnCount = 3;
@@ -105,8 +104,8 @@ export function ConnectDiagram() {
         );
 
         // rows: contentHeight is 10 units, 6 × 0.8 + 5 × 1 = 9.8 fits
-        const rowCount = 6;
-        const pillHeight = contentBox.unit * 0.65;
+        const rowCount = 7;
+        const pillHeight = contentBox.unit * 0.5;
         const rowGap = contentBox.unit;
         const rows = stackWithGaps(
           Array.from({ length: rowCount }, () => pillHeight),
@@ -118,9 +117,9 @@ export function ConnectDiagram() {
         const pillMaxWidth = columnSize - pillInset * 2;
         // how wide each pill is (0..1 of pillMaxWidth), one array per column
         const pillWidths = [
-          [0.6, 0.8, 0.55, 0.7, 0.8, 0.6],
-          [0.65, 0.65, 0.8, 0.6, 0.8, 0.6],
-          [0.6, 0.8, 0.6, 0.65, 0.8, 0.6],
+          [0.6, 0.8, 0.55, 0.7, 0.8, 0.6, 0.75],
+          [0.65, 0.65, 0.8, 0.6, 0.8, 0.6, 0.7],
+          [0.6, 0.8, 0.6, 0.65, 0.8, 0.6, 0.8],
         ];
         // shades of --accent-electric and --accent-deep, brightest first.
         // l = lightness, c = chroma (how colorful), h = hue
@@ -138,9 +137,9 @@ export function ConnectDiagram() {
         ];
         // which pillColors shade each pill gets, one array per column
         const pillShades = [
-          [1, 0, 2, 1, 0, 4],
-          [3, 4, 0, 3, 0, 1],
-          [4, 1, 4, 2, 1, 4],
+          [1, 0, 2, 1, 0, 4, 2],
+          [3, 4, 0, 3, 0, 1, 4],
+          [4, 1, 4, 2, 1, 4, 0],
         ];
 
         return (

@@ -6,19 +6,21 @@ import type { windowStackLayout } from "./windowStackLayout";
 // app windows stacked back to front, skewed. back ones ghosted + faded,
 // front one solid with a glow.
 // frontContent: drawn inside the front window (e.g. <EditorCode />)
-// children: drawn over the stack, in the same skewed coords (use layout.front
-// to place things relative to the front window)
 // x / y: where the stack's top-left goes in the parent
 export function WindowStack({
   x = 0,
   y = 0,
   layout,
   frontContent,
-  children,
+  fill,
+  radius,
 }: Partial<Point> & {
   layout: ReturnType<typeof windowStackLayout>;
   frontContent?: ReactNode;
-  children?: ReactNode;
+  // front window's background. back windows keep their ghost tint
+  fill?: string;
+  // every window's corner radius. defaults to AppWindow's
+  radius?: number;
 }) {
   const { count, gapY, item, angle, windowX, toTop } = layout;
 
@@ -53,14 +55,14 @@ export function WindowStack({
               viewboxWidth={item.width}
               viewboxHeight={item.height}
               ghost={!isFront}
+              fill={isFront ? fill : undefined}
+              radius={radius}
             >
               {isFront && frontContent}
             </AppWindow>
           </g>
         );
       })}
-
-      {children}
     </g>
   );
 }

@@ -12,6 +12,8 @@ export type AppWindowProps = ShapeProps & {
   viewboxHeight: number;
   // see-through, slightly lighter "glass" pane for editors in the background
   ghost?: boolean;
+  // corner radius, in viewbox units. defaults to --rx-node-md
+  radius?: number;
   children?: ReactNode;
 };
 
@@ -27,6 +29,7 @@ export function AppWindow({
   ghost = false,
   fill,
   stroke,
+  radius,
   children,
 }: AppWindowProps) {
   const gradientId = useId();
@@ -83,7 +86,7 @@ export function AppWindow({
         y={inset}
         width={viewboxWidth - inset * 2}
         height={viewboxHeight - inset * 2}
-        rx="var(--rx-node-md)"
+        rx={radius ?? "var(--rx-node-md)"}
         // filter="url(#tinyGlow)"
         {...nodeStyle}
       />

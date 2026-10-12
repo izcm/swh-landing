@@ -36,7 +36,6 @@ export function HeroAppWindows({
 
   const windowStack = windowStackLayout({
     groupWidth: width,
-    groupHeight: height,
     angle,
     count,
     gapX,

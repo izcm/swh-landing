@@ -1,6 +1,7 @@
 import { SectionBase } from "@/features/core/SectionBase";
 
-import { ConnectDiagram } from "./diagrams/Connect/Diagram";
+import { ConnectDiagram } from "./diagrams/connect/Diagram";
+import { ActDiagram } from "./diagrams/act/Diagram";
 
 const sections = [
   {
@@ -21,7 +22,7 @@ const sections = [
       "Spreadsheets are excellent tools, but understanding a larger operation can mean moving between several sheets, comparing numbers, and building a picture of what is happening in your head.",
       "We make that process easier by presenting relevant information through interactive dashboards designed to show the bigger picture.",
     ],
-    diagram: <ConnectDiagram />,
+    diagram: <ActDiagram />,
   },
   {
     eyebrow: "ACT",
@@ -31,7 +32,7 @@ const sections = [
       "We extend your existing systems with tools that let you act directly on that information, rather than moving between systems and completing each step manually.",
       // "This can turn a time-consuming, multi-step process into a much simpler and faster workflow.",
     ],
-    diagram: <ConnectDiagram />,
+    diagram: <ActDiagram />,
   },
 ];
 

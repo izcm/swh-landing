@@ -1,11 +1,11 @@
+import { smoothPath, type Point } from "../logic";
+
 type LineChartProps = {
-  x: number;
-  y: number;
   width: number;
   height: number;
   values: number[]; // each 0-1, normalized — swap for animated values later
   color: string;
-};
+} & Partial<Point>;
 
 // points evenly spread across the width, 0 at the bottom, 1 at the top
 function toPoints(values: number[], width: number, height: number) {
@@ -17,17 +17,15 @@ function toPoints(values: number[], width: number, height: number) {
 }
 
 export function LineChart({
-  x,
-  y,
+  x = 0,
+  y = 0,
   width,
   height,
   values,
   color,
 }: LineChartProps) {
   const points = toPoints(values, width, height);
-  const d = points
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
-    .join(" ");
+  const d = smoothPath(points);
 
   return (
     <g transform={`translate(${x}, ${y})`}>

@@ -1,11 +1,5 @@
 // shared svg helpers
-import {
-  alignCenter,
-  paddedBox,
-  dropAlongEdge,
-  pointOnLine,
-  smoothPath,
-} from "@/lib/svg";
+import { alignCenter, paddedBox, dropAlongEdge, pointOnLine } from "@/lib/svg";
 
 // this diagram's own parts
 import { HeroDefs } from "./Defs";

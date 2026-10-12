@@ -154,18 +154,9 @@
   }
 }
 
-:root {
-  --icon-scale: 1.25;
-}
-
 /* debug knob: hides the dashed layout boxes / rings / dots (className="svg-debug").
    comment this out to show them */
 .svg-debug {
-  display: none;
-}
-
-/* debug hero app windows*/
-.svg-debug-haw {
   display: none;
 }
 

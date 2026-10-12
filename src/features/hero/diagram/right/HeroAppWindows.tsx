@@ -87,7 +87,7 @@ export function HeroAppWindows({
   return (
     <g transform={`translate(${x}, ${y})`}>
       <rect
-        className="svg-debug-haw"
+        className="svg-debug"
         x={0}
         y={0}
         width={width}
@@ -107,7 +107,7 @@ export function HeroAppWindows({
               transform={`translate(${contentBox.contentX}, ${contentBox.contentY + dotsHeaderHeight - contentBox.unit / 4})`}
             >
               <rect
-                className="svg-debug-haw"
+                className="svg-debug"
                 x={0}
                 y={0}
                 width={contentBox.contentWidth}
@@ -132,7 +132,7 @@ export function HeroAppWindows({
                   groupGap={rowGroupGap} // space between the groups
                 />
                 <rect
-                  className="svg-debug-haw"
+                  className="svg-debug"
                   x={0}
                   y={0}
                   width={barsWidth}
@@ -184,7 +184,7 @@ export function HeroAppWindows({
                 />
 
                 <rect
-                  className="svg-debug-haw"
+                  className="svg-debug"
                   x={contentBox.unit / 8}
                   y={0}
                   width={chartWidth - contentBox.unit / 4}

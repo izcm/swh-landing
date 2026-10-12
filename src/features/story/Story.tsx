@@ -71,7 +71,7 @@ function StorySection({
         <p key={p}>{p}</p>
       ))}
       children={
-        <div className="relative w-full max-w-4xl mx-auto">
+        <div className="relative w-full max-w-200 mx-auto px-2">
           {section.diagram}
         </div>
       }

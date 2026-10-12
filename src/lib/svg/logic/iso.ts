@@ -133,7 +133,7 @@ export function platformCardMetrics({
   angles,
   panelSize,
   panelThickness,
-  side,
+  // side,
   towardBack,
   towardFront,
 }: {

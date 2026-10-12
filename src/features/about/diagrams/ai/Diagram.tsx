@@ -17,7 +17,7 @@ export function AISvg() {
   const { paddingX, paddingY, contentWidth, contentHeight, unit } = paddedBox(
     viewboxWidth,
     viewboxHeight,
-    0.5,
+    0,
   );
 
   // header strip at the top of each editor window (dots sit in it, code starts below it)

@@ -21,7 +21,7 @@ export default function Hero() {
     >
       <div
         className={cn(
-          "flex flex-col items-center gap-3",
+          "flex flex-col items-center gap-3 mt-6 mb-3 2xl:my-0",
           "2xl:items-start 2xl:gap-2",
         )}
       >
@@ -61,7 +61,7 @@ export default function Hero() {
         </IconLink>
       </div>
 
-      <div className="w-full max-w-220 mx-auto">
+      <div className="w-full max-w-200 2xl:max-w-220 mx-auto">
         <HeroDiagram />
       </div>
     </section>

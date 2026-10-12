@@ -32,21 +32,7 @@
   max-width: 30rem;
 }
 #diagram-ai {
-  max-width: 38rem;
-}
-#diagram-tools {
-  max-width: 30rem;
-}
-
-/* recharts' <svg> (or something inside it) picks up the browser's default
-   focus ring on click (e.g. clicking a custom XAxis tick) — not a
-   deliberate a11y outline. Covering svg + wrapper + every descendant,
-   both :focus and :focus-visible, since exactly which element gets it
-   varies by browser. */
-.recharts-wrapper,
-.recharts-wrapper *,
-.recharts-surface {
-  outline: none !important;
+  max-width: 32rem;
 }
 
 @layer components {

@@ -21,3 +21,9 @@ export const accentSeries = [
 export function glyphStroke(size: number, weight = 1, box = 24) {
   return weight * (box / size);
 }
+
+// instead of setting default to 24 in glyphstroke
+// callers should use this helper when its lucide icons
+export function glyphStrokeLucide(size: number, weight = 1) {
+  return glyphStroke(size, weight, 24);
+}

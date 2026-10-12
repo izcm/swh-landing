@@ -12,7 +12,7 @@ export function connectLayout({
   // https://claude.ai/artifact/J4CDXe1aHvn32wsqS1Aze9
   const card = (() => {
     const angles = { angleA: 10, angleB: 30 };
-    const platformThickness = unit * 0.28;
+    const platformThickness = unit * 0.35;
     // panel as wide as the platform's a edge
     const panelSize = isoCubeMetrics(width, platformThickness, angles).a
       .edgeLength;
@@ -35,10 +35,10 @@ export function connectLayout({
 
   // -- PANEL CONTENT · icon + label on the panel --------------------
   const content = (() => {
-    const iconSize = card.panelThickness * 0.55; // knob
+    const iconSize = card.panelThickness * 0.5; // knob
     const fontSize = unit * 0.55; // knob
-    const padding = unit * 0.8; // knob: panel's left edge → icon
-    const gap = unit * 0.6; // knob: icon → label
+    const padding = unit * 0.6; // knob: panel's left edge → icon
+    const gap = unit * 0.7; // knob: icon → label
 
     return { iconSize, fontSize, padding, gap };
   })();

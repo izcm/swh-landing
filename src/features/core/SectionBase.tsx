@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 
 import EyebrowRule from "./EyebrowRule";
 
-// a full-height <section>: "01 ──────── EYEBROW" rule, then title + paragraphs
-// with an optional diagram. `children` render below that, still in the section
+// a full-height <section>: "01 ──────── EYEBROW" rule, then title + paragraphs.
+// `diagram` renders below that, still in the section
 export function SectionBase({
   id,
   index,
@@ -12,7 +12,6 @@ export function SectionBase({
   title,
   text,
   diagram,
-  children,
 }: {
   id?: string; // anchor target; scroll-mt keeps it clear of the nav
   index: number; // 0-based
@@ -21,7 +20,6 @@ export function SectionBase({
   title: ReactNode;
   text: ReactNode;
   diagram?: ReactNode;
-  children?: ReactNode;
 }) {
   return (
     <section id={id} className="flex flex-col min-h-below-nav scroll-mt-18">
@@ -40,17 +38,16 @@ export function SectionBase({
           <div className="flex flex-col gap-4 text-fg-tinted/90 text-lg">
             {text}
           </div>
-          {diagram && (
-            <div
-              id={`diagram-${eyebrow.toLowerCase().replaceAll(" ", "-")}`}
-              className="w-full mt-6 mx-auto"
-            >
-              {diagram}
-            </div>
-          )}
         </div>
       </div>
-      {children}
+      {diagram && (
+        <div
+          id={`diagram-${eyebrow.toLowerCase().replaceAll(" ", "-")}`}
+          className="relative w-full max-w-200 mx-auto px-2 mt-8"
+        >
+          {diagram}
+        </div>
+      )}
     </section>
   );
 }

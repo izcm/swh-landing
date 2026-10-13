@@ -48,7 +48,7 @@ function BoxBackground({
 
 export function ActDiagram() {
   const viewboxWidth = 600;
-  const viewboxHeight = 390;
+  const viewboxHeight = 350;
   // same unit ThreeBoxDiagram handed out: 1/12 of the height
   const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
   // the stack's width: same as the old left box

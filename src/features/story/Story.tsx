@@ -76,11 +76,7 @@ function StorySection({
       text={section.paragraphs.map((p) => (
         <p key={p}>{p}</p>
       ))}
-      children={
-        <div className="relative w-full max-w-200 mx-auto px-2 mt-6">
-          {section.diagram}
-        </div>
-      }
+      diagram={section.diagram}
     />
   );
 }

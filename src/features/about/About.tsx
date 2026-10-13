@@ -100,10 +100,9 @@ export function About() {
             text={about.paragraphs.map((p) => (
               <p key={p}>{p}</p>
             ))}
-            diagram={about.diagram}
-          >
-            {about.extra}
-          </SectionBase>
+            // each about has a diagram or an extra, never both
+            diagram={about.diagram ?? about.extra}
+          />
         ))}
       </div>
     </>

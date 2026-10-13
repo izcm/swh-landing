@@ -14,6 +14,8 @@ export type AppWindowProps = ShapeProps & {
   ghost?: boolean;
   // corner radius, in viewbox units. defaults to --rx-node-md
   radius?: number;
+  // border thickness, in parent units. defaults to 1
+  strokeWidth?: number;
   children?: ReactNode;
 };
 
@@ -30,12 +32,14 @@ export function AppWindow({
   fill,
   stroke,
   radius,
+  strokeWidth: strokeWidthProp = 1,
   children,
 }: AppWindowProps) {
   const gradientId = useId();
 
-  // 1 parent unit thick at any window size (same as a strokeWidth={1} outside)
-  const strokeWidth = glyphStroke(width, 1, viewboxWidth);
+  // strokeWidthProp parent units thick at any window size
+  // (same as that strokeWidth outside)
+  const strokeWidth = glyphStroke(width, strokeWidthProp, viewboxWidth);
   // strokes are centered on the edge, so pull the rect in by half
   const inset = strokeWidth / 2;
 
@@ -96,9 +100,17 @@ export function AppWindow({
   );
 }
 
-// the three header dots, centered in a header strip `headerHeight` tall.
-// put inside an <AppWindow>
-export function WindowDots({ headerHeight }: { headerHeight: number }) {
+// three dots in a row, centered in a strip `height` tall.
+// the first dot starts at x = 0; move it sideways with a <g transform>
+export function WindowDots({
+  height,
+  radius,
+  gap,
+}: {
+  height: number; // the strip the dots are centered in
+  radius: number; // each dot's radius
+  gap: number; // space between two dots
+}) {
   const dotGradientId = useId();
 
   return (
@@ -110,11 +122,13 @@ export function WindowDots({ headerHeight }: { headerHeight: number }) {
       {[0, 1, 2].map((i) => (
         <circle
           key={i}
-          cx={12 + i * 14}
-          cy={headerHeight / 2}
-          r={3.2}
+          cx={radius + i * (radius * 2 + gap)}
+          cy={height / 2}
+          r={radius}
           fill={`url(#${dotGradientId})`}
-          opacity={1 - (i * 0.2 + 0.2)}
+          // the old accent gradient, faded less than before
+          // (1, 0.8, 0.6 instead of 0.8, 0.6, 0.4) so it doesn't look grey
+          opacity={1 - i * 0.2}
           style={{ filter: accentGlow(2, 12) }}
           // filter="drop-shadow(0 0 1px color-mix(in oklab, var(--accent) 35%, transparent))"
         />

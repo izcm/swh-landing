@@ -55,7 +55,7 @@ const abouts: {
 export function About() {
   return (
     <>
-      <header className="mx-auto w-full px-6 py-24">
+      <header className="border-b border-faint-accent mx-auto w-full px-6 py-24 mb-12">
         <span className="eyebrow">ABOUT SWH</span>
 
         {/* <h1 className="mt-4 text-4xl text-fg">
@@ -81,7 +81,7 @@ export function About() {
         </p>
       </header>
 
-      <div className="border-t border-faint-accent overflow-clip">
+      <div className="overflow-clip">
         <div
           className="
             sticky top-[calc(100dvh-30rem)]

@@ -1,0 +1,134 @@
+<svg width="980" height="520" viewBox="0 0 980 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="blurGlowSmall" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.2" />
+    </filter>
+
+    <filter id="blurGlowMed" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" />
+    </filter>
+
+    <linearGradient id="panelFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F1C3D" />
+      <stop offset="100%" stop-color="#081120" />
+    </linearGradient>
+
+    <linearGradient id="electricStroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#79B8FF" />
+      <stop offset="60%" stop-color="#3B82FF" />
+      <stop offset="100%" stop-color="#66E0FF" />
+    </linearGradient>
+  </defs>
+
+  <rect width="980" height="520" fill="#050B16"/>
+
+  <text x="36" y="44" fill="#D9E7FF" font-size="20" font-family="Arial, sans-serif">
+    Thin electric border tests
+  </text>
+  <text x="36" y="68" fill="#8EA9D8" font-size="13" font-family="Arial, sans-serif">
+    same dark fill, different border methods
+  </text>
+
+  <!-- sample 1 -->
+  <g transform="translate(40 100)">
+    <text x="0" y="-18" fill="#AFC7F7" font-size="14" font-family="Arial, sans-serif">
+      1. plain 0.5 stroke
+    </text>
+    <rect x="0" y="0" width="260" height="120" rx="16" fill="url(#panelFill)"/>
+    <rect x="0" y="0" width="260" height="120" rx="16" fill="#3B82FF" fill-opacity="0.03"/>
+    <rect x="0" y="0" width="260" height="120" rx="16" stroke="#59A8FF" stroke-width="0.5"/>
+  </g>
+
+  <!-- sample 2 -->
+  <g transform="translate(360 100)">
+    <text x="0" y="-18" fill="#AFC7F7" font-size="14" font-family="Arial, sans-serif">
+      2. plain 0.8 stroke
+    </text>
+    <rect x="0" y="0" width="260" height="120" rx="16" fill="url(#panelFill)"/>
+    <rect x="0" y="0" width="260" height="120" rx="16" fill="#3B82FF" fill-opacity="0.03"/>
+    <rect x="0" y="0" width="260" height="120" rx="16" stroke="#59A8FF" stroke-width="0.8"/>
+  </g>
+
+  <!-- sample 3 -->
+  <g transform="translate(680 100)">
+    <text x="0" y="-18" fill="#AFC7F7" font-size="14" font-family="Arial, sans-serif)">
+      3. 0.8 stroke + low opacity
+    </text>
+    <rect x="0" y="0" width="260" height="120" rx="16" fill="url(#panelFill)"/>
+    <rect x="0" y="0" width="260" height="120" rx="16" fill="#3B82FF" fill-opacity="0.03"/>
+    <rect x="0" y="0" width="260" height="120" rx="16" stroke="#59A8FF" stroke-opacity="0.45" stroke-width="0.8"/>
+  </g>
+
+  <!-- sample 4 -->
+  <g transform="translate(40 300)">
+    <text x="0" y="-18" fill="#AFC7F7" font-size="14" font-family="Arial, sans-serif">
+      4. soft glow behind + crisp 0.8 stroke
+    </text>
+    <rect x="0" y="0" width="260" height="120" rx="16" fill="url(#panelFill)"/>
+    <rect x="0" y="0" width="260" height="120" rx="16" fill="#3B82FF" fill-opacity="0.03"/>
+
+    <rect
+      x="0" y="0" width="260" height="120" rx="16"
+      stroke="#47A3FF"
+      stroke-width="2"
+      stroke-opacity="0.18"
+      filter="url(#blurGlowSmall)"
+    />
+    <rect
+      x="0" y="0" width="260" height="120" rx="16"
+      stroke="#74BCFF"
+      stroke-width="0.8"
+    />
+  </g>
+
+  <!-- sample 5 -->
+  <g transform="translate(360 300)">
+    <text x="0" y="-18" fill="#AFC7F7" font-size="14" font-family="Arial, sans-serif">
+      5. gradient glow + crisp 0.85 stroke
+    </text>
+    <rect x="0" y="0" width="260" height="120" rx="16" fill="url(#panelFill)"/>
+    <rect x="0" y="0" width="260" height="120" rx="16" fill="#3B82FF" fill-opacity="0.035"/>
+
+    <rect
+      x="0" y="0" width="260" height="120" rx="16"
+      stroke="url(#electricStroke)"
+      stroke-width="2.2"
+      stroke-opacity="0.14"
+      filter="url(#blurGlowMed)"
+    />
+    <rect
+      x="0" y="0" width="260" height="120" rx="16"
+      stroke="url(#electricStroke)"
+      stroke-width="0.85"
+    />
+  </g>
+
+  <!-- sample 6 -->
+  <g transform="translate(680 300)">
+    <text x="0" y="-18" fill="#AFC7F7" font-size="14" font-family="Arial, sans-serif">
+      6. best “electric” look
+    </text>
+    <rect x="0" y="0" width="260" height="120" rx="16" fill="url(#panelFill)"/>
+    <rect x="0" y="0" width="260" height="120" rx="16" fill="#5AAEFF" fill-opacity="0.04"/>
+
+    <rect
+      x="0" y="0" width="260" height="120" rx="16"
+      stroke="#52A9FF"
+      stroke-width="1.8"
+      stroke-opacity="0.16"
+      filter="url(#blurGlowSmall)"
+    />
+    <rect
+      x="0" y="0" width="260" height="120" rx="16"
+      stroke="#8ED0FF"
+      stroke-width="0.55"
+      stroke-opacity="0.65"
+    />
+    <rect
+      x="0.5" y="0.5" width="259" height="119" rx="15.5"
+      stroke="#4EA1FF"
+      stroke-width="0.8"
+      stroke-opacity="1"
+    />
+  </g>
+</svg>

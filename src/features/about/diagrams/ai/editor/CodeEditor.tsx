@@ -8,9 +8,23 @@ type CodeEditorProps = Omit<AppWindowProps, "children"> & {
 
 // window + fake code
 export function CodeEditor({ headerHeight, ...props }: CodeEditorProps) {
+  const dots = (() => {
+    const radius = headerHeight * 0.13;
+    const gap = radius * 2.4;
+    // first dot as far in from the left as from the top
+    const translateX = headerHeight / 2 - radius;
+    return { radius, gap, translateX };
+  })();
+
   return (
     <AppWindow {...props}>
-      <WindowDots headerHeight={headerHeight} />
+      <g transform={`translate(${dots.translateX}, 0)`}>
+        <WindowDots
+          height={headerHeight}
+          radius={dots.radius}
+          gap={dots.gap}
+        />
+      </g>
       <EditorCode
         width={props.viewboxWidth}
         height={props.viewboxHeight}

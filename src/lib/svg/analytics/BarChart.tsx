@@ -4,6 +4,7 @@ type BarChartProps = {
   width: number;
   height: number;
   values: number[]; // each 0-1, normalized bar height — swap for animated values later
+  colors?: string[]; // one fill per bar. all var(--accent) if left out
 };
 
 export function BarChart({
@@ -12,11 +13,11 @@ export function BarChart({
   width,
   height,
   values,
+  colors,
 }: BarChartProps) {
-  const gap = width * 0.02;
-  const rawBarWidth = (width - gap * (values.length - 1)) / values.length;
-  const barWidth = rawBarWidth * 0.4; // thin bars, calmer than a packed block
-  const slotWidth = rawBarWidth + gap;
+  const rawBarWidth = width / values.length;
+  const barWidth = rawBarWidth * 0.5; // thin bars, calmer than a packed block
+  const slotWidth = rawBarWidth;
 
   return (
     <g transform={`translate(${x}, ${y})`}>
@@ -30,8 +31,8 @@ export function BarChart({
             y={height - barHeight}
             width={barWidth}
             height={barHeight}
-            rx="1"
-            fill="var(--accent)"
+            rx="3"
+            fill={colors?.[i] ?? "var(--accent)"}
           />
         );
       })}

@@ -1,0 +1,231 @@
+<svg width="980" height="1020" viewBox="0 0 980 1020" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- shared -->
+    <filter id="softBlur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" />
+    </filter>
+
+    <filter id="lineGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" />
+    </filter>
+
+    <!-- electric -->
+    <filter id="electricGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="7" />
+    </filter>
+
+    <linearGradient id="electricFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2055D5" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#020B20" stop-opacity="0.1" />
+    </linearGradient>
+
+    <!-- panel 3 -->
+    <linearGradient id="gradLinear" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2F6CFF" stop-opacity="0.28" />
+      <stop offset="55%" stop-color="#173B85" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#081120" stop-opacity="0.02" />
+    </linearGradient>
+
+    <!-- panel 4 -->
+    <radialGradient id="gradRadial" cx="0" cy="0" r="1" gradientUnits="objectBoundingBox"
+      gradientTransform="translate(0.65 0.28) scale(0.9 0.8)">
+      <stop offset="0%" stop-color="#57A3FF" stop-opacity="0.30" />
+      <stop offset="45%" stop-color="#2F6CFF" stop-opacity="0.14" />
+      <stop offset="100%" stop-color="#2F6CFF" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- panel 5 -->
+    <linearGradient id="gradCombo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2E69FF" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#0A1630" stop-opacity="0.03" />
+    </linearGradient>
+    <radialGradient id="glowCombo" cx="0" cy="0" r="1" gradientUnits="objectBoundingBox"
+      gradientTransform="translate(0.7 0.22) scale(0.8 0.7)">
+      <stop offset="0%" stop-color="#72B7FF" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#72B7FF" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- panel 6 -->
+    <linearGradient id="glassStroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7CC0FF" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#2C67FF" stop-opacity="0.18" />
+    </linearGradient>
+
+    <!-- tiny chart line -->
+    <path id="chartPath" d="M0 90 C25 110, 48 48, 75 62 C96 72, 120 118, 148 88 C172 62, 200 22, 230 34" />
+  </defs>
+
+  <!-- page bg -->
+  <rect width="980" height="1020" fill="#020816" />
+
+  <text x="40" y="42" fill="#D8E8FF" font-size="24" font-family="Inter, Arial, sans-serif">
+    SVG color tricks cheat sheet
+  </text>
+  <text x="40" y="68" fill="#8CA7D8" font-size="13" font-family="Inter, Arial, sans-serif">
+    same panel shape, different paint trick
+  </text>
+
+  <!-- row 1 -->
+  <!-- panel 1 -->
+  <g transform="translate(40 100)">
+    <text x="0" y="0" fill="#DDE9FF" font-size="16" font-family="Inter, Arial, sans-serif">1. Flat fill</text>
+    <text x="0" y="20" fill="#7C95BF" font-size="12" font-family="Inter, Arial, sans-serif">just one color</text>
+
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="#081120" stroke="#3C7FFF" stroke-opacity="0.24"/>
+    <use href="#chartPath" transform="translate(20 75)" stroke="#78B7FF" stroke-width="2" fill="none"/>
+    <circle cx="170" cy="116" r="4" fill="#A8D9FF"/>
+    <circle cx="250" cy="99" r="4" fill="#A8D9FF"/>
+  </g>
+
+  <!-- panel 2 -->
+  <g transform="translate(355 100)">
+    <text x="0" y="0" fill="#DDE9FF" font-size="16" font-family="Inter, Arial, sans-serif">2. Opacity stack</text>
+    <text x="0" y="20" fill="#7C95BF" font-size="12" font-family="Inter, Arial, sans-serif">same rect 3 times</text>
+
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="#081120"/>
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="#2B6CFF" fill-opacity="0.16"/>
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="#58A8FF" fill-opacity="0.08"/>
+    <rect x="0.5" y="40.5" width="269" height="159" rx="15.5" stroke="#4C8FFF" stroke-opacity="0.45"/>
+
+    <use href="#chartPath" transform="translate(20 75)" stroke="#78B7FF" stroke-width="2" fill="none"/>
+    <circle cx="170" cy="116" r="4" fill="#A8D9FF"/>
+    <circle cx="250" cy="99" r="4" fill="#A8D9FF"/>
+  </g>
+
+  <!-- panel 3 -->
+  <g transform="translate(670 100)">
+    <text x="0" y="0" fill="#DDE9FF" font-size="16" font-family="Inter, Arial, sans-serif">3. Linear gradient</text>
+    <text x="0" y="20" fill="#7C95BF" font-size="12" font-family="Inter, Arial, sans-serif">directional tint</text>
+
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="#081120"/>
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="url(#gradLinear)"/>
+    <rect x="0.5" y="40.5" width="269" height="159" rx="15.5" stroke="#4C8FFF" stroke-opacity="0.45"/>
+
+    <use href="#chartPath" transform="translate(20 75)" stroke="#78B7FF" stroke-width="2" fill="none"/>
+    <circle cx="170" cy="116" r="4" fill="#A8D9FF"/>
+    <circle cx="250" cy="99" r="4" fill="#A8D9FF"/>
+  </g>
+
+  <!-- row 2 -->
+  <!-- panel 4 -->
+  <g transform="translate(40 380)">
+    <text x="0" y="0" fill="#DDE9FF" font-size="16" font-family="Inter, Arial, sans-serif">4. Radial glow</text>
+    <text x="0" y="20" fill="#7C95BF" font-size="12" font-family="Inter, Arial, sans-serif">light hotspot inside</text>
+
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="#081120"/>
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="url(#gradRadial)"/>
+    <rect x="0.5" y="40.5" width="269" height="159" rx="15.5" stroke="#4C8FFF" stroke-opacity="0.45"/>
+
+    <use href="#chartPath" transform="translate(20 75)" stroke="#78B7FF" stroke-width="2" fill="none"/>
+    <circle cx="170" cy="116" r="4" fill="#A8D9FF"/>
+    <circle cx="250" cy="99" r="4" fill="#A8D9FF"/>
+  </g>
+
+  <!-- panel 5 -->
+  <g transform="translate(355 380)">
+    <text x="0" y="0" fill="#DDE9FF" font-size="16" font-family="Inter, Arial, sans-serif">5. Gradient + glow</text>
+    <text x="0" y="20" fill="#7C95BF" font-size="12" font-family="Inter, Arial, sans-serif">most useful panel recipe</text>
+
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="#081120"/>
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="url(#gradCombo)"/>
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="url(#glowCombo)"/>
+    <rect x="0.5" y="40.5" width="269" height="159" rx="15.5" stroke="#4C8FFF" stroke-opacity="0.45"/>
+
+    <use href="#chartPath" transform="translate(20 75)" stroke="#78B7FF" stroke-width="2" fill="none"/>
+    <circle cx="170" cy="116" r="4" fill="#A8D9FF"/>
+    <circle cx="250" cy="99" r="4" fill="#A8D9FF"/>
+  </g>
+
+  <!-- panel 6 -->
+  <g transform="translate(670 380)">
+    <text x="0" y="0" fill="#DDE9FF" font-size="16" font-family="Inter, Arial, sans-serif">6. Blur glow on line</text>
+    <text x="0" y="20" fill="#7C95BF" font-size="12" font-family="Inter, Arial, sans-serif">draw line twice</text>
+
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="#081120"/>
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="url(#gradCombo)"/>
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="url(#glowCombo)"/>
+    <rect x="0.5" y="40.5" width="269" height="159" rx="15.5" stroke="url(#glassStroke)"/>
+
+    <!-- blurred line underneath -->
+    <use href="#chartPath"
+         transform="translate(20 75)"
+         stroke="#57A3FF"
+         stroke-opacity="0.55"
+         stroke-width="7"
+         filter="url(#lineGlow)"
+         fill="none"/>
+
+    <!-- sharp line -->
+    <use href="#chartPath"
+         transform="translate(20 75)"
+         stroke="#87C5FF"
+         stroke-width="2"
+         fill="none"/>
+
+    <!-- glowing point -->
+    <circle cx="250" cy="99" r="12" fill="#57A3FF" fill-opacity="0.35" filter="url(#softBlur)"/>
+    <circle cx="250" cy="99" r="4" fill="#C9E6FF"/>
+  </g>
+
+  <!-- row 3 -->
+  <!-- panel 7 -->
+  <g transform="translate(355 660)">
+    <text x="0" y="0" fill="#DDE9FF" font-size="16" font-family="Inter, Arial, sans-serif">7. Electric glow</text>
+    <text x="0" y="20" fill="#7C95BF" font-size="12" font-family="Inter, Arial, sans-serif">neon border + electric line</text>
+
+    <!-- dark base -->
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="#061126"/>
+
+    <!-- electric surface tint -->
+    <rect x="0" y="40" width="270" height="160" rx="16" fill="url(#electricFill)"/>
+
+    <!-- blurred electric border -->
+    <rect
+      x="2"
+      y="42"
+      width="266"
+      height="156"
+      rx="15"
+      fill="none"
+      stroke="#2778FF"
+      stroke-width="5"
+      stroke-opacity="0.8"
+      filter="url(#electricGlow)"
+    />
+
+    <!-- sharp electric border -->
+    <rect
+      x="0.5"
+      y="40.5"
+      width="269"
+      height="159"
+      rx="15.5"
+      fill="none"
+      stroke="#62B0FF"
+      stroke-width="1.5"
+    />
+
+    <!-- blurred chart line -->
+    <use
+      href="#chartPath"
+      transform="translate(20 75)"
+      fill="none"
+      stroke="#1680FF"
+      stroke-width="9"
+      filter="url(#electricGlow)"
+    />
+
+    <!-- sharp chart line -->
+    <use
+      href="#chartPath"
+      transform="translate(20 75)"
+      fill="none"
+      stroke="#A4DCFF"
+      stroke-width="2"
+    />
+
+    <!-- electric point -->
+    <circle cx="250" cy="99" r="12" fill="#1680FF" filter="url(#electricGlow)"/>
+    <circle cx="250" cy="99" r="4" fill="#D4F2FF"/>
+  </g>
+</svg>

@@ -2,6 +2,7 @@ import { SectionBase } from "@/features/core/SectionBase";
 
 import { ConnectDiagram } from "./diagrams/connect/Diagram";
 import { ActDiagram } from "./diagrams/act/Diagram";
+import { SvgPlaceholder } from "@/components/SvgPlaceholder";
 
 const sections = [
   {
@@ -22,7 +23,11 @@ const sections = [
       "Spreadsheets are excellent tools, but understanding a larger operation can mean moving between several sheets, comparing numbers, and building a picture of what is happening in your head.",
       "We make that process easier by presenting relevant information through interactive dashboards designed to show the bigger picture.",
     ],
-    diagram: <ActDiagram />,
+    diagram: (
+      <div className="max-w-xl mx-auto">
+        <SvgPlaceholder label="SVG Placeholder" />
+      </div>
+    ),
   },
   {
     eyebrow: "ACT",
@@ -72,7 +77,7 @@ function StorySection({
         <p key={p}>{p}</p>
       ))}
       children={
-        <div className="relative w-full max-w-200 mx-auto px-2">
+        <div className="relative w-full max-w-200 mx-auto px-2 mt-6">
           {section.diagram}
         </div>
       }

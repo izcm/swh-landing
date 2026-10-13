@@ -24,10 +24,7 @@ export function SectionBase({
   children?: ReactNode;
 }) {
   return (
-    <section
-      id={id}
-      className="flex flex-col min-h-below-nav scroll-mt-18 mt-12"
-    >
+    <section id={id} className="flex flex-col min-h-below-nav scroll-mt-18">
       <div
         className="
       relative isolate overflow-hidden
@@ -39,16 +36,18 @@ export function SectionBase({
         <EyebrowRule index={index} label={eyebrow} maxIndex={maxIndex} />
         <h2 className="text-3xl font-medium text-fg">{title}</h2>
 
-        <div className="flex flex-col gap-6 justify-between">
+        <div className="flex flex-col justify-between">
           <div className="flex flex-col gap-4 text-fg-tinted/90 text-lg">
             {text}
           </div>
-          <div
-            id={`diagram-${eyebrow.toLowerCase().replaceAll(" ", "-")}`}
-            className="w-full mt-6 mx-auto"
-          >
-            {diagram}
-          </div>
+          {diagram && (
+            <div
+              id={`diagram-${eyebrow.toLowerCase().replaceAll(" ", "-")}`}
+              className="w-full mt-6 mx-auto"
+            >
+              {diagram}
+            </div>
+          )}
         </div>
       </div>
       {children}

@@ -5,6 +5,7 @@ import {
   WindowStack,
   accentSeries,
   alignEnd,
+  deepShades,
   paddedBox,
   spaceBetween,
   stackWithGaps,
@@ -33,6 +34,14 @@ export function HeroAppWindows({
   const gapY = 35;
   const heightToWidthRatio = 0.8;
   const dotsHeaderHeight = 24;
+
+  const dots = (() => {
+    const radius = dotsHeaderHeight * 0.13;
+    const gap = radius * 2.4;
+    // first dot as far in from the left as from the top
+    const translateX = dotsHeaderHeight / 2 - radius;
+    return { radius, gap, translateX };
+  })();
 
   const windowStack = windowStackLayout({
     groupWidth: width,
@@ -101,7 +110,13 @@ export function HeroAppWindows({
         layout={windowStack}
         frontContent={
           <>
-            <WindowDots headerHeight={dotsHeaderHeight} />
+            <g transform={`translate(${dots.translateX}, 0)`}>
+              <WindowDots
+                height={dotsHeaderHeight}
+                radius={dots.radius}
+                gap={dots.gap}
+              />
+            </g>
             <g
               transform={`translate(${contentBox.contentX}, ${contentBox.contentY + dotsHeaderHeight - contentBox.unit / 4})`}
             >
@@ -159,6 +174,7 @@ export function HeroAppWindows({
                   x={contentBox.unit / 8}
                   y={charts.starts[0]}
                   values={[0.5, 0.65, 0.4, 0.8]}
+                  colors={deepShades(4)}
                   width={chartWidth - contentBox.unit / 4}
                   height={barChartHeight}
                 />
@@ -266,7 +282,7 @@ function BarGroups({
               trackColor="var(--accent-faint)"
               trackOpacity={1}
               fillColor={accentSeries[i % accentSeries.length]}
-              fillOpacity={0.75}
+              fillOpacity={1}
               radius={2}
             />
           </g>

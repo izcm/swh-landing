@@ -32,7 +32,8 @@ export function BarRow({
         cx={dotRadius}
         cy={rowHeight / 2}
         r={dotRadius}
-        fill="var(--accent-dim)"
+        fill="var(--accent-electric)"
+        fillOpacity={0.8}
       />
       <rect
         x={labelX}
@@ -41,7 +42,7 @@ export function BarRow({
         height={labelHeight}
         rx={labelHeight * 0.5}
         fill="var(--accent-dim)"
-        fillOpacity={0.4}
+        fillOpacity={0.8}
       />
       <FilledTube
         x={tubeX}

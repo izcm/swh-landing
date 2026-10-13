@@ -12,6 +12,15 @@ export const accentSeries = [
   "var(--accent-teal)",
 ];
 
+// `count` shades of --accent-deep for things in a row (bars):
+// a bit more colorful than deep itself, darker on the left, lighter to the right
+export const deepShades = (count: number) =>
+  Array.from(
+    { length: count },
+    (_, i) =>
+      `oklch(from var(--accent-deep) calc(l - 0.12 + ${i * 0.03}) calc(c + 0.03) h)`,
+  );
+
 // Lucide icons are drawn on a fixed 0 0 24 24 viewBox; the `size` prop
 // scales that whole box (and strokeWidth along with it) up to the
 // rendered size. Dividing by 24/size undoes that stretch in advance, so

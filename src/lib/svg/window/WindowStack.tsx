@@ -14,6 +14,8 @@ export function WindowStack({
   frontContent,
   fill,
   radius,
+  stroke,
+  strokeWidth,
 }: Partial<Point> & {
   layout: ReturnType<typeof windowStackLayout>;
   frontContent?: ReactNode;
@@ -21,6 +23,9 @@ export function WindowStack({
   fill?: string;
   // every window's corner radius. defaults to AppWindow's
   radius?: number;
+  // every window's border color + thickness. default to AppWindow's
+  stroke?: string;
+  strokeWidth?: number;
 }) {
   const { count, gapY, item, angle, windowX, toTop } = layout;
 
@@ -57,6 +62,8 @@ export function WindowStack({
               ghost={!isFront}
               fill={isFront ? fill : undefined}
               radius={radius}
+              stroke={stroke}
+              strokeWidth={strokeWidth}
             >
               {isFront && frontContent}
             </AppWindow>

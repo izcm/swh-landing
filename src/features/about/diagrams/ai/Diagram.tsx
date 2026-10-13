@@ -23,6 +23,14 @@ export function AISvg() {
   // header strip at the top of each editor window (dots sit in it, code starts below it)
   const editorHeaderHeight = unit * 0.8;
 
+  const dots = (() => {
+    const radius = editorHeaderHeight * 0.13;
+    const gap = radius * 2.4;
+    // first dot as far in from the left as from the top
+    const translateX = editorHeaderHeight / 2 - radius;
+    return { radius, gap, translateX };
+  })();
+
   // preserve CodeEditor's 300:200 aspect ratio
   const editorBox = (() => {
     const width = contentWidth * 0.8;
@@ -161,7 +169,13 @@ export function AISvg() {
                   ghost={!isFront}
                   fill={isFront ? "var(--node-color-deep)" : undefined}
                 >
-                  <WindowDots headerHeight={editorHeaderHeight} />
+                  <g transform={`translate(${dots.translateX}, 0)`}>
+                    <WindowDots
+                      height={editorHeaderHeight}
+                      radius={dots.radius}
+                      gap={dots.gap}
+                    />
+                  </g>
                   {isFront && (
                     <EditorCode
                       width={300}

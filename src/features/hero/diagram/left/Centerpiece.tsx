@@ -56,11 +56,11 @@ export function Centerpiece({
     showFrontEdge: true,
 
     faces: { top: cubeFill, left: cubeFill },
-    // showBottom: false,
+    // floor + glow: what ISOCube's defaults used to be, before they became glassCube
+    showBottom: true,
     stroke: "var(--accent-electric)",
     strokeWeight: 0.5,
-    // accentGlow(blur, strength%): a bit stronger than the default (2, 18)
-    // glow: { blur: 2, strength: 18 },
+    glow: { blur: 2, strength: 18 },
     radius: 2,
     ...angles,
   };

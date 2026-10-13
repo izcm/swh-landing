@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { type Point } from "../logic";
+import { chartSeparatorStyle, type Point } from "../logic";
 
 type LineChartProps = {
   width: number;
@@ -34,7 +34,7 @@ export function LineChart({
 
   const wave = (x: number) => 0.3 + 0.22 * x + 0.16 * Math.sin(4 * Math.PI * x);
 
-  const valuesTmp = Array.from({ length: 160 }, (_, i) => wave(i / 99));
+  const valuesTmp = Array.from({ length: 85 }, (_, i) => wave(i / 100));
 
   const points = toPoints(valuesTmp, width, height);
 
@@ -70,9 +70,7 @@ export function LineChart({
           x2={s.x2}
           y2={s.y}
           stroke={color}
-          strokeWidth={1}
-          strokeOpacity={0.04}
-          strokeDasharray="6 4"
+          {...chartSeparatorStyle}
         />
       ))}
 

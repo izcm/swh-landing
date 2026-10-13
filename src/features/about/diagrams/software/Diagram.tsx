@@ -1,5 +1,7 @@
 import {
   ISOCube,
+  IsoPlatform,
+  platformStyle,
   IsoCubeShadow,
   glassCube,
   isoBottomCenter,
@@ -304,6 +306,7 @@ export function SoftwareDiagram() {
       >
         <g opacity={1}>
           <ISOCube
+            {...platformStyle}
             size={bottomLeft.bigCube.size}
             thickness={bottomLeft.bigCube.thickness}
             radius={4}
@@ -371,10 +374,10 @@ export function SoftwareDiagram() {
         >
           {/* PLATFORM */}
           <g transform={`translate(0, ${bottomRight.platformY})`}>
-            <ISOCube
+            <IsoPlatform
               size={bottomRight.platform.size}
               thickness={bottomRight.platform.thickness}
-              gridDivisions={{ across: 4, along: 4 }}
+              grid={{ across: 4, along: 4 }}
             />
           </g>
 

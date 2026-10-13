@@ -10,6 +10,7 @@ import {
   spaceBetween,
   stackWithGaps,
   windowStackLayout,
+  accentSeries,
 } from "@/lib/svg";
 import { BarRow } from "./BarRow";
 
@@ -171,6 +172,7 @@ export function HeroAppWindows({
               {/* right column: bar chart on top, line chart below */}
               <g transform={`translate(${columns.starts[1]})`}>
                 <BarChart
+                  barRatio={0.45}
                   x={contentBox.unit / 8}
                   y={charts.starts[0]}
                   values={[0.5, 0.65, 0.4, 0.8]}
@@ -281,7 +283,7 @@ function BarGroups({
               level={amount}
               trackColor="var(--accent-faint)"
               trackOpacity={1}
-              fillColor={deepAccentSeries[i % deepAccentSeries.length]}
+              fillColor={accentSeries[i % accentSeries.length]}
               fillOpacity={1}
               radius={2}
             />

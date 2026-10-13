@@ -186,6 +186,7 @@ export function ActDiagram() {
                 />
 
                 <BarChart
+                  barRatio={0.45}
                   x={boxPadding}
                   y={boxPadding}
                   width={chartBox.width - boxPadding * 2}

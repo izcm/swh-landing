@@ -167,6 +167,7 @@ export function VisualizeDiagram() {
                 />
 
                 <BarChart
+                  barRatio={0.45}
                   x={0}
                   y={0}
                   width={innerWidth}

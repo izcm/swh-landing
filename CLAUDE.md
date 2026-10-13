@@ -2,8 +2,10 @@
 
 - Any number that controls how something looks (size, ratio, gap,
   angle, count, offset, opacity, glow) we might wanna make an input
-  passed by the caller. Before assigning an input a default or a constant inside
-  the component, tell me why you think that is the better choice.
+  passed by the caller. Optional inputs with a neutral default (0, 1, "no
+  change") are fine. Before giving an input an arbitrary default (like
+  count = 3 or gap = 45) or a constant inside the component, tell me why you
+  think that is the better choice.
 - Shared SVG components and layout helpers must not assume anything about
   where they're used. If a value depends on the caller (size, aspect ratio,
   viewBox), the caller passes it in. Bad: a layout helper doing

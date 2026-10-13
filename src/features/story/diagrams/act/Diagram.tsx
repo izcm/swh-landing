@@ -1,16 +1,16 @@
-import { useId, type ComponentProps } from "react";
+import { useId } from "react";
 
 import {
   accentGlow,
   alignCenter,
   AppWindow,
-  deepAccentSeries,
+  deepShades,
   FilledTube,
+  IsoPlatform,
   paddedBox,
   stackWithGaps,
   WindowDots,
   windowStackLayout,
-  type Point,
   type WindowStyle,
 } from "@/lib/svg";
 import { ChartRow } from "./dashboard/ChartRow";
@@ -26,7 +26,7 @@ export function ActDiagram() {
   const stackLayout = windowStackLayout({
     groupWidth: stackWidth,
     // heightToWidthRatio: 0.7,
-    angle: -8,
+    angle: -11.5,
     count: 3,
     gapX: unit * 0.35,
     gapY: unit * 0.35,
@@ -34,7 +34,7 @@ export function ActDiagram() {
   });
 
   // corner radius of the app windows
-  const radius = 8;
+  const radius = 6;
 
   const { offset: translateY } = alignCenter(
     viewboxHeight,
@@ -44,15 +44,16 @@ export function ActDiagram() {
   const contentBox = paddedBox(
     stackLayout.item.width,
     stackLayout.item.height,
-    0.75,
-    0.6,
+    0.5,
+    0.5,
   );
 
   // header: the strip at the window's top that holds the dots
   const header = (() => {
-    const height = unit * 0.6;
-    const dotRadius = unit * 0.135;
-    const dotGap = dotRadius * 2;
+    const height = unit * 0.4;
+    // const height = 0; // just leave it as is wanna play with looks
+    const dotRadius = unit * 0.115;
+    const dotGap = dotRadius * 3;
 
     return { height, dotRadius, dotGap };
   })();
@@ -82,6 +83,8 @@ export function ActDiagram() {
       height={rowSizes[0]}
       gap={rowGap}
       unit={unit}
+      boxRadius={4}
+      boxStrokeWidth={0.4}
     />,
 
     <List
@@ -165,12 +168,12 @@ export function ActDiagram() {
         const windowStyles: WindowStyle[] = [
           {},
           {
-            width: item.width * 0.7,
-            height: item.height * 1.1,
+            width: item.width * 0.875,
+            height: item.height * 1.06,
             x: gapX * 3,
-            y: gapY + item.height - item.height * 1.1,
+            y: gapY + item.height - item.height * 1.06,
           }, // first window
-          { width: item.width * 0.875 }, // front: nudged right
+          // { width: item.width * 0.875 }, // front: nudged right
         ];
 
         return (
@@ -218,11 +221,23 @@ export function ActDiagram() {
           </g>
         );
       })()}
+
+      {(() => {
+        return (
+          <IsoPlatform
+            size={300}
+            thickness={6}
+            angleA={22}
+            angleB={11.5}
+            grid={{ across: 6, along: 6 }}
+          />
+        );
+      })()}
     </svg>
   );
 }
 
-// three list rows filling a width × height box, each a background + dot + tube
+// list rows filling a width × height box, each a background + dot + tube
 function List({
   width,
   height,
@@ -234,82 +249,57 @@ function List({
   unit: number;
   radius: number; // the rows' corner radius, capped so short rows don't turn into pills
 }) {
+  const rowCount = 4;
   const rowWidth = width * 0.75;
-  const rowGap = unit * 0.32;
-  // 3 rows + 2 gaps fill the height
-  const rowHeight = (height - rowGap * 2) / 3;
+  const rowGap = unit * 0.2;
+  // rowCount rows + (rowCount - 1) gaps fill the height
+  const rowHeight = (height - rowGap * (rowCount - 1)) / rowCount;
 
   const rows = stackWithGaps(
-    Array.from({ length: 3 }, () => rowHeight),
+    Array.from({ length: rowCount }, () => rowHeight),
     rowGap,
   );
 
+  // what's inside each row: a dot, then a tube filling the rest
+  const content = (() => {
+    const insetX = unit * 0.25; // from the row's left edge
+    const size = rowHeight * 0.75;
+    const dotRadius = size * 0.25;
+    const gap = size * 0.5; // between the dot and the tube
+
+    const tubeX = insetX + dotRadius * 2 + gap;
+    const tubeHeight = dotRadius * 1.2;
+
+    return { insetX, dotRadius, tubeX, tubeHeight };
+  })();
+
+  const dotColors = deepShades(rowCount);
+
   return rows.starts.map((rowY, i) => (
     <g key={i} transform={`translate(0, ${rowY})`}>
-      {/* the row's background, drawn here since ListRowContent has none */}
+      {/* background */}
       <rect
         width={rowWidth}
         height={rowHeight}
         fill="oklch(from var(--accent) 0.4 0.15 h / 0.1)"
         rx={Math.min(radius, rowHeight / 4)}
       />
-      <ListRowContent
-        x={unit * 0.25}
-        size={rowHeight * 0.875}
-        width={width}
-        dot={{ fill: deepAccentSeries[i] }}
-        tube={{
-          level: 0.4 - 0.1 * i,
-          fillColor: "var(--accent-electric)",
-          trackOpacity: 0,
-        }}
-      />
-    </g>
-  ));
-}
-
-type TubeProps = Omit<
-  ComponentProps<typeof FilledTube>,
-  "x" | "y" | "width" | "height"
->;
-
-// one row: a dot, then a tube filling the rest. no background:
-// the caller draws that behind it. each part gets its own object
-export function ListRowContent({
-  x = 0,
-  y = 0,
-  size,
-  width,
-  dot,
-  tube,
-}: Partial<Point> & {
-  size: number;
-  width: number; // the whole row, dot to tube end
-  dot: { fill: string };
-  tube: TubeProps;
-}) {
-  const dotRadius = size * 0.25;
-  const gap = size * 0.5;
-
-  const tubeX = dotRadius * 2 + gap;
-  const tubeHeight = dotRadius * 1.2;
-
-  return (
-    <g transform={`translate(${x}, ${y})`}>
       <circle
-        cx={dotRadius}
-        cy={size / 2}
-        r={dotRadius}
-        fill={dot.fill}
+        cx={content.insetX + content.dotRadius}
+        cy={rowHeight / 2}
+        r={content.dotRadius}
+        fill={dotColors[i]}
         fillOpacity={0.8}
       />
       <FilledTube
-        x={tubeX}
-        y={(size - tubeHeight) / 2}
-        width={width - tubeX}
-        height={tubeHeight}
-        {...tube}
+        x={content.tubeX}
+        y={(rowHeight - content.tubeHeight) / 2}
+        width={width - content.tubeX}
+        height={content.tubeHeight}
+        level={0.4 - 0.1 * i}
+        fillColor="var(--accent-electric)"
+        trackOpacity={0}
       />
     </g>
-  );
+  ));
 }

@@ -1,6 +1,6 @@
 import {
   glyphStroke,
-  ISOCube,
+  IsoPlatform,
   roundedPolygonPath,
   spaceBetween,
 } from "@/lib/svg";
@@ -34,13 +34,13 @@ export function Nodes({
     return (
       // itemY = the card's top; we draw from the platform's top, sticksUp lower
       <g key={label} transform={`translate(0, ${itemY + sticksUp})`}>
-        <ISOCube
+        <IsoPlatform
           x={0}
           y={0}
           size={platform.size}
           thickness={platform.thickness}
           {...angles}
-          gridDivisions={card.gridDivisions}
+          grid={card.gridDivisions}
           radius={2}
         />
 

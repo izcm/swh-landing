@@ -3,6 +3,13 @@
 export const accentGlow = (blur: number, strength: number) =>
   `drop-shadow(0 0 ${blur}px oklch(from var(--accent) 0.55 0.12 h / ${strength}%))`;
 
+// faint dashed guide lines behind charts (LineChart, BarChart)
+export const chartSeparatorStyle = {
+  strokeWidth: 1,
+  strokeOpacity: 0.04,
+  strokeDasharray: "6 4",
+};
+
 // accent colors for things drawn in a row (bars, tubes, chart series).
 // pick with series[i % series.length] so it starts over after the last
 export const accentSeries = [
@@ -14,16 +21,17 @@ export const accentSeries = [
 
 // accentSeries, each color darker and more colorful (oklch: l down, c up)
 export const deepAccentSeries = accentSeries.map(
-  (color) => `oklch(from ${color} calc(l - 0.12) calc(c + 0.025) h)`,
+  (color) => `oklch(from ${color} l calc(c + 0.05) h)`,
 );
 
 // `count` shades of --accent-deep for things in a row (bars):
-// a bit more colorful than deep itself, darker on the left, lighter to the right
-export const deepShades = (count: number) =>
+// a bit more colorful than deep itself, darker on the left, lighter to the right.
+// start: which step to begin on (0 = darkest), to skip the darkest ones
+export const deepShades = (count: number, start = 0) =>
   Array.from(
     { length: count },
     (_, i) =>
-      `oklch(from var(--accent-deep) calc(l - 0.12 + ${i * 0.03}) calc(c + 0.03) h)`,
+      `oklch(from var(--accent-deep) calc(l - 0.12 + ${(start + i) * 0.03}) calc(c + 0.03) h)`,
   );
 
 // Lucide icons are drawn on a fixed 0 0 24 24 viewBox; the `size` prop

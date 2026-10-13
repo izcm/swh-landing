@@ -7,16 +7,16 @@ export function ChartRow({
   height,
   gap,
   unit,
+  boxRadius,
+  boxStrokeWidth,
 }: {
   width: number;
   height: number;
   gap: number; // space between the two boxes
   unit: number;
+  boxRadius: number; // the two boxes' corner radius
+  boxStrokeWidth: number; // the two boxes' border thickness
 }) {
-  // corner radius + border thickness of the two boxes
-  const boxRadius = 8;
-  const boxStrokeWidth = 0.4;
-
   // the row's width, shared 62 / 38 after the gap
   const columnSpace = width - gap;
   const columnSizes = [columnSpace * 0.62, columnSpace * 0.38];
@@ -27,29 +27,51 @@ export function ChartRow({
     const boxWidth = columnSizes[1];
     const insetX = boxWidth * 0.05; // each side
     const insetY = height * 0.1; // top and bottom
+    const chartWidth = boxWidth - insetX * 2;
+    const chartHeight = height - insetY * 2;
 
-    // bar chart: heights (0..1) + one color per bar
+    // bar chart: heights (0..1), one shade of --accent-deep per bar
     const bars = (() => {
       const values = [0.26, 0.37, 0.44, 0.75, 0.4, 0.53];
-      // which bar looks picked: mint (--accent-teal) instead of blue
-      const selected = 3;
-      // the rest: shades of --accent-deep
-      const colors = deepShades(values.length).map((shade, i) =>
-        i === selected ? "var(--accent-teal)" : shade,
-      );
+      const colors = deepShades(values.length);
+      const barRatio = 0.4; // thin bars, calmer than a packed block
 
-      return { values, colors };
+      return { values, colors, barRatio };
+    })();
+
+    // the picked bar: a faint --accent-glow rect behind its slot.
+    // same slot math as BarChart: each bar gets chartWidth / values.length
+    const highlight = (() => {
+      const selected = 3;
+      const slotWidth = chartWidth / bars.values.length;
+      const width = slotWidth; // a bit wider than the bar, narrower than the slot
+
+      return {
+        x: insetX + selected * slotWidth + (slotWidth - width) / 2,
+        y: insetY,
+        width,
+        height: chartHeight,
+      };
     })();
 
     return (
-      <BarChart
-        x={insetX}
-        y={insetY}
-        width={boxWidth - insetX * 2}
-        height={height - insetY * 2}
-        values={bars.values}
-        colors={bars.colors}
-      />
+      <>
+        <rect
+          {...highlight}
+          rx={2}
+          fill="var(--accent-electric)"
+          fillOpacity={0.12}
+        />
+        <BarChart
+          x={insetX}
+          y={insetY}
+          width={chartWidth}
+          height={chartHeight}
+          values={bars.values}
+          colors={bars.colors}
+          barRatio={bars.barRatio}
+        />
+      </>
     );
   })();
 

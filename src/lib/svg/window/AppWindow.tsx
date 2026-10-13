@@ -4,19 +4,25 @@ import { AccentBarGradient } from "./AccentBarGradient";
 
 // fill: background color, defaults to the dark ink (or the ghost tint).
 // stroke: border color, defaults to the accent gradient
-export type AppWindowProps = ShapeProps & {
+export type AppWindowProps = WindowStyle & {
   width: number;
   height: number;
   // the inside's own size: what children are drawn in
   viewboxWidth: number;
   viewboxHeight: number;
-  // see-through, slightly lighter "glass" pane for editors in the background
-  ghost?: boolean;
-  // corner radius, in viewbox units. defaults to --rx-node-md
-  radius?: number;
+  children?: ReactNode;
+};
+
+// one window's own style. every field is optional
+export type WindowStyle = ShapeProps & {
+  width?: number;
+  height?: number;
   // border thickness, in parent units. defaults to 1
   strokeWidth?: number;
-  children?: ReactNode;
+  // corner radius, in viewbox units. defaults to --rx-node-md
+  radius?: number;
+  // see-through, slightly lighter "glass" pane for editors in the background
+  ghost?: boolean;
 };
 
 // window frame: background and border. add <WindowDots /> as a child for the header dots.

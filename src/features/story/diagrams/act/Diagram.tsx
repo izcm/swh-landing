@@ -1,50 +1,19 @@
-import { useId } from "react";
+import { useId, type ComponentProps } from "react";
 
 import {
+  accentGlow,
   alignCenter,
-  BarChart,
-  deepShades,
-  LineChart,
+  AppWindow,
+  deepAccentSeries,
+  FilledTube,
   paddedBox,
   stackWithGaps,
   WindowDots,
-  WindowStack,
   windowStackLayout,
+  type Point,
+  type WindowStyle,
 } from "@/lib/svg";
-
-// a box's background: faint electric fill + electric border.
-// everything inside starts at (0, 0) = the box's top-left
-function BoxBackground({
-  width,
-  height,
-  radius,
-  strokeWidth,
-}: {
-  width: number;
-  height: number;
-  radius: number; // corner radius
-  strokeWidth: number; // border thickness
-}) {
-  return (
-    <>
-      <rect
-        width={width}
-        height={height}
-        rx={radius}
-        fill="var(--accent-electric)"
-        fillOpacity={0.02}
-      />
-      <rect
-        width={width}
-        height={height}
-        rx={radius}
-        fill="none"
-        stroke="var(--accent-electric)"
-        strokeWidth={strokeWidth}
-      />
-    </>
-  );
-}
+import { ChartRow } from "./dashboard/ChartRow";
 
 export function ActDiagram() {
   const viewboxWidth = 600;
@@ -58,16 +27,14 @@ export function ActDiagram() {
     groupWidth: stackWidth,
     // heightToWidthRatio: 0.7,
     angle: -8,
-    count: 2,
-    gapX: unit * 0.6,
-    gapY: unit * 0.6,
+    count: 3,
+    gapX: unit * 0.35,
+    gapY: unit * 0.35,
     side: "left",
   });
 
   // corner radius of the app windows
-  const windowRadius = 10;
-  // corner radius of the boxes inside the front window (chart background)
-  const boxRadius = 8;
+  const radius = 8;
 
   const { offset: translateY } = alignCenter(
     viewboxHeight,
@@ -95,20 +62,6 @@ export function ActDiagram() {
   const rowSizes = [rowSpace * 0.48, rowSpace * 0.52];
   const rows = stackWithGaps(rowSizes, rowGap);
 
-  const lineValues = [0.2, 0.4, 0.1, 0.6, 0.2, 0.5];
-  // bar chart: heights (0..1) + one color per bar
-  const bars = (() => {
-    const values = [0.26, 0.37, 0.44, 0.49, 0.75, 0.4, 0.53];
-    // which bar looks picked: mint (--accent-teal) instead of blue
-    const selected = 4;
-    // the rest: shades of --accent-deep
-    const colors = deepShades(values.length).map((shade, i) =>
-      i === selected ? "var(--accent-teal)" : shade,
-    );
-
-    return { values, colors };
-  })();
-
   // background for the chart and the boxes: --accent-ink, a bit darker
   const stackFill = "oklch(from var(--accent-ink) calc(l - 0.025) 0.04 h)";
 
@@ -117,76 +70,67 @@ export function ActDiagram() {
     fill: stackFill,
     stroke: "var(--accent-electric)",
     strokeWidth: 0.8,
-    radius: windowRadius,
+    radius: radius,
   };
 
   // chart background: accent at the top, fading to transparent at the bottom
   const chartGradientId = useId();
 
-  const boxStrokeWidth = 0.4;
-
-  // first row: two boxes side by side, line chart in the left one
-  const charts = (() => {
-    const columnGap = rowGap;
-    // the row's width, shared 75 / 25 after the gap
-    const columnSpace = contentBox.contentWidth - columnGap;
-    const columnSizes = [columnSpace * 0.62, columnSpace * 0.38];
-    const columns = stackWithGaps(columnSizes, columnGap);
-    const height = rowSizes[0];
-
-    // right box: bar chart, pulled in a little so the bars don't touch the box
-    const barChart = (() => {
-      const boxWidth = columnSizes[1];
-      const insetX = boxWidth * 0.05; // each side
-      const insetY = height * 0.1; // top and bottom
-
-      return (
-        <BarChart
-          x={insetX}
-          y={insetY}
-          width={boxWidth - insetX * 2}
-          height={height - insetY * 2}
-          values={bars.values}
-          colors={bars.colors}
-        />
-      );
-    })();
-
-    // what goes in each box, left to right
-    const columnContent = [
-      <LineChart
-        width={columnSizes[0]}
-        height={height}
-        values={lineValues}
-        color="var(--accent-electric)"
-        dotRadius={unit * 0.08}
-      />,
-      barChart,
-    ];
-
-    return (
-      <>
-        {columns.starts.map((columnX, i) => (
-          <g key={i} transform={`translate(${columnX}, 0)`}>
-            <BoxBackground
-              width={columnSizes[i]}
-              height={height}
-              radius={boxRadius}
-              strokeWidth={boxStrokeWidth}
-            />
-            {columnContent[i]}
-          </g>
-        ))}
-      </>
-    );
-  })();
-
   const rowContent = [
-    <>
-      {/* chart background: four layers stacked */}
-      {charts}
-    </>,
+    <ChartRow
+      width={contentBox.contentWidth}
+      height={rowSizes[0]}
+      gap={rowGap}
+      unit={unit}
+    />,
+
+    <List
+      width={contentBox.contentWidth}
+      height={rowSizes[1]}
+      unit={unit}
+      radius={radius}
+    />,
   ];
+
+  // drawn inside the front window
+  const frontContent = (
+    <>
+      {/* dots: centered in everything above the chart */}
+      <g transform={`translate(${contentBox.contentX}, 0)`}>
+        <WindowDots
+          height={contentBox.contentY + header.height}
+          radius={header.dotRadius}
+          gap={header.dotGap}
+        />
+      </g>
+
+      {/* padding around the chart, which starts under the header */}
+      <g
+        transform={`translate(${contentBox.contentX}, ${contentBox.contentY})`}
+      >
+        <g transform={`translate(0, ${header.height})`}>
+          {rows.starts.map((rowY, i) => {
+            return (
+              <g transform={`translate(0, ${rowY})`}>
+                <rect
+                  className="svg-debug"
+                  x={0}
+                  y={0}
+                  width={contentBox.contentWidth}
+                  height={rowSizes[i]}
+                  fill="none"
+                  stroke="#aab4e6" // lavender
+                  strokeWidth={0.75}
+                  strokeDasharray="6 4"
+                />
+                {rowContent[i]}
+              </g>
+            );
+          })}
+        </g>
+      </g>
+    </>
+  );
 
   return (
     <svg
@@ -214,82 +158,158 @@ export function ActDiagram() {
         strokeWidth={0.75}
         strokeDasharray="6 4"
       />
-      <WindowStack
-        layout={stackLayout}
-        y={translateY}
-        {...appWindowStyle}
-        frontContent={
-          <>
-            {/* dots: centered in everything above the chart */}
-            <g transform={`translate(${contentBox.contentX}, 0)`}>
-              <WindowDots
-                height={contentBox.contentY + header.height}
-                radius={header.dotRadius}
-                gap={header.dotGap}
-              />
-            </g>
+      {(() => {
+        const { count, gapY, gapX, item, angle, windowX, toTop } = stackLayout;
 
-            {/* padding around the chart, which starts under the header */}
-            <g
-              transform={`translate(${contentBox.contentX}, ${contentBox.contentY})`}
-            >
-              <g transform={`translate(0, ${header.height})`}>
-                {rows.starts.map((rowY, i) => {
-                  return (
-                    <g transform={`translate(0, ${rowY})`}>
-                      <rect
-                        className="svg-debug"
-                        x={0}
-                        y={0}
-                        width={contentBox.contentWidth}
-                        height={rowSizes[i]}
-                        fill="none"
-                        stroke="#aab4e6" // lavender
-                        strokeWidth={0.75}
-                        strokeDasharray="6 4"
-                      />
-                      {rowContent[i]}
-                    </g>
-                  );
-                })}
-              </g>
-            </g>
-          </>
-        }
-      />
+        // front to back
+        const windowStyles: WindowStyle[] = [
+          {},
+          {
+            width: item.width * 0.7,
+            height: item.height * 1.1,
+            x: gapX * 3,
+            y: gapY + item.height - item.height * 1.1,
+          }, // first window
+          { width: item.width * 0.875 }, // front: nudged right
+        ];
+
+        return (
+          <g
+            transform={`translate(0, ${translateY}) skewY(${angle}) translate(0, ${toTop})`}
+          >
+            {Array.from({ length: count }).map((_, i) => {
+              // 0 at the back → 1 at the front
+              const depth = count > 1 ? i / (count - 1) : 1;
+              // ghost panes are already see-through, so fade them less overall
+              // to keep their borders readable
+              const opacity = 0.6 + depth * 0.4;
+              const isFront = i === count - 1;
+              // layout values are the defaults; this window's style wins
+              const window = {
+                x: windowX(i),
+                y: i * gapY,
+                width: item.width,
+                height: item.height,
+                ghost: !isFront,
+                ...appWindowStyle,
+                // drawn back to front, but windowStyles is listed front to back
+                ...windowStyles[count - 1 - i],
+              };
+
+              return (
+                <g
+                  key={i}
+                  opacity={opacity}
+                  // front: quiet halo to lift it off the rest. back: big faint haze
+                  style={{
+                    filter: isFront ? accentGlow(4, 12) : accentGlow(2, 6),
+                  }}
+                >
+                  <AppWindow
+                    {...window}
+                    viewboxWidth={window.width}
+                    viewboxHeight={window.height}
+                  >
+                    {isFront && frontContent}
+                  </AppWindow>
+                </g>
+              );
+            })}
+          </g>
+        );
+      })()}
     </svg>
   );
 }
 
-//  <g transform="translate(40, 40)">
-//         {/* 1. Dark base */}
-//         <rect width={200} height={120} rx={12} fill="#081120" />
+// three list rows filling a width × height box, each a background + dot + tube
+function List({
+  width,
+  height,
+  unit,
+  radius,
+}: {
+  width: number;
+  height: number;
+  unit: number;
+  radius: number; // the rows' corner radius, capped so short rows don't turn into pills
+}) {
+  const rowWidth = width * 0.75;
+  const rowGap = unit * 0.32;
+  // 3 rows + 2 gaps fill the height
+  const rowHeight = (height - rowGap * 2) / 3;
 
-//         {/* 2. Transparent blue */}
-//         <rect
-//           width={200}
-//           height={120}
-//           rx={12}
-//           fill="#2B6CFF"
-//           fillOpacity={0.18}
-//         />
+  const rows = stackWithGaps(
+    Array.from({ length: 3 }, () => rowHeight),
+    rowGap,
+  );
 
-//         {/* 3. Soft blue glow */}
-//         <rect
-//           width={200}
-//           height={120}
-//           rx={12}
-//           fill="#4DA3FF"
-//           fillOpacity={0.12}
-//         />
+  return rows.starts.map((rowY, i) => (
+    <g key={i} transform={`translate(0, ${rowY})`}>
+      {/* the row's background, drawn here since ListRowContent has none */}
+      <rect
+        width={rowWidth}
+        height={rowHeight}
+        fill="oklch(from var(--accent) 0.4 0.15 h / 0.1)"
+        rx={Math.min(radius, rowHeight / 4)}
+      />
+      <ListRowContent
+        x={unit * 0.25}
+        size={rowHeight * 0.875}
+        width={width}
+        dot={{ fill: deepAccentSeries[i] }}
+        tube={{
+          level: 0.4 - 0.1 * i,
+          fillColor: "var(--accent-electric)",
+          trackOpacity: 0,
+        }}
+      />
+    </g>
+  ));
+}
 
-//         {/* 4. Border */}
-//         <rect
-//           width={200}
-//           height={120}
-//           rx={12}
-//           fill="none"
-//           stroke="#4A8DFF"
-//           strokeOpacity={0.45}
-//         />
-//       </g>
+type TubeProps = Omit<
+  ComponentProps<typeof FilledTube>,
+  "x" | "y" | "width" | "height"
+>;
+
+// one row: a dot, then a tube filling the rest. no background:
+// the caller draws that behind it. each part gets its own object
+export function ListRowContent({
+  x = 0,
+  y = 0,
+  size,
+  width,
+  dot,
+  tube,
+}: Partial<Point> & {
+  size: number;
+  width: number; // the whole row, dot to tube end
+  dot: { fill: string };
+  tube: TubeProps;
+}) {
+  const dotRadius = size * 0.25;
+  const gap = size * 0.5;
+
+  const tubeX = dotRadius * 2 + gap;
+  const tubeHeight = dotRadius * 1.2;
+
+  return (
+    <g transform={`translate(${x}, ${y})`}>
+      <circle
+        cx={dotRadius}
+        cy={size / 2}
+        r={dotRadius}
+        fill={dot.fill}
+        fillOpacity={0.8}
+      />
+      <FilledTube
+        x={tubeX}
+        y={(size - tubeHeight) / 2}
+        width={width - tubeX}
+        height={tubeHeight}
+        {...tube}
+      />
+    </g>
+  );
+}

@@ -22,7 +22,10 @@ export function SectionBase({
   diagram?: ReactNode;
 }) {
   return (
-    <section id={id} className="flex flex-col min-h-below-nav scroll-mt-18">
+    <section
+      id={id}
+      className="flex flex-col min-h-below-nav scroll-mt-18 py-6 lg:py-3"
+    >
       <div
         className="
       relative isolate overflow-hidden

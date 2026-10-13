@@ -12,7 +12,7 @@ import {
   windowStackLayout,
 } from "@/lib/svg";
 import { connectLayout } from "./geometry/layout";
-import { Nodes } from "./left/Nodes";
+import { Nodes } from "./nodes/Nodes";
 
 export function ConnectorIcon({
   r,
@@ -205,7 +205,7 @@ export function ConnectDiagram() {
                         y={rowY}
                         width={pillMaxWidth}
                         height={pillHeight}
-                        fill={pillWidths[c][r]}
+                        level={pillWidths[c][r]}
                         trackOpacity={0}
                         fillColor={pillColors[pillShades[c][r]]}
                         fillOpacity={0.75}

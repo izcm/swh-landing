@@ -12,6 +12,11 @@ export const accentSeries = [
   "var(--accent-teal)",
 ];
 
+// accentSeries, each color darker and more colorful (oklch: l down, c up)
+export const deepAccentSeries = accentSeries.map(
+  (color) => `oklch(from ${color} calc(l - 0.12) calc(c + 0.025) h)`,
+);
+
 // `count` shades of --accent-deep for things in a row (bars):
 // a bit more colorful than deep itself, darker on the left, lighter to the right
 export const deepShades = (count: number) =>

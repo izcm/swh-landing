@@ -3,7 +3,7 @@ import {
   LineChart,
   WindowDots,
   WindowStack,
-  accentSeries,
+  deepAccentSeries,
   alignEnd,
   deepShades,
   paddedBox,
@@ -278,10 +278,10 @@ function BarGroups({
             <BarRow
               rowHeight={rowHeight}
               width={width}
-              fill={amount}
+              level={amount}
               trackColor="var(--accent-faint)"
               trackOpacity={1}
-              fillColor={accentSeries[i % accentSeries.length]}
+              fillColor={deepAccentSeries[i % deepAccentSeries.length]}
               fillOpacity={1}
               radius={2}
             />

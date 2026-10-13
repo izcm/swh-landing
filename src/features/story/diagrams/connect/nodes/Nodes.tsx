@@ -5,7 +5,7 @@ import {
   spaceBetween,
 } from "@/lib/svg";
 import type { ConnectLayout } from "../geometry/layout";
-import { connectNodes } from "../nodes";
+import { connectNodes } from "./nodes";
 
 // one card per node, spread top to bottom over the left box's height.
 // each card: a platform with a panel standing on it, icon + label on the panel

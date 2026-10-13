@@ -5,7 +5,7 @@ export function FilledTube({
   y,
   width,
   height,
-  fill,
+  level,
   // defaults: the EditorCode look (faint accent track, solid accent fill)
   trackColor = "var(--accent)",
   trackOpacity = 0.15,
@@ -17,7 +17,7 @@ export function FilledTube({
   y: number;
   width: number;
   height: number;
-  fill: number; // 0–1, how full
+  level: number; // 0–1, how full
   trackColor?: string;
   trackOpacity?: number;
   fillColor?: string;
@@ -27,8 +27,8 @@ export function FilledTube({
   const horizontal = width >= height;
 
   const filled = horizontal
-    ? { x, y, width: width * fill, height }
-    : { x, y: y + height * (1 - fill), width, height: height * fill };
+    ? { x, y, width: width * level, height }
+    : { x, y: y + height * (1 - level), width, height: height * level };
 
   return (
     <g>

@@ -12,6 +12,7 @@ export function SectionBase({
   title,
   text,
   diagram,
+  diagramMaxWidth = "50rem",
 }: {
   id?: string; // anchor target; scroll-mt keeps it clear of the nav
   index: number; // 0-based
@@ -20,11 +21,13 @@ export function SectionBase({
   title: ReactNode;
   text: ReactNode;
   diagram?: ReactNode;
+  // how wide the diagram can get. any CSS length; 50rem = max-w-200
+  diagramMaxWidth?: string;
 }) {
   return (
     <section
       id={id}
-      className="flex flex-col min-h-below-nav scroll-mt-18 py-6 lg:py-3"
+      className="flex flex-col min-h-below-nav scroll-mt-18 py-6 lg:py-"
     >
       <div
         className="
@@ -46,7 +49,8 @@ export function SectionBase({
       {diagram && (
         <div
           id={`diagram-${eyebrow.toLowerCase().replaceAll(" ", "-")}`}
-          className="relative w-full max-w-200 mx-auto px-2 mt-8"
+          className="relative w-full mx-auto px-2 mt-8"
+          style={{ maxWidth: diagramMaxWidth }}
         >
           {diagram}
         </div>

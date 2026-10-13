@@ -27,14 +27,6 @@
   opacity: 0.185;
 }
 
-/* about */
-#diagram-working-together {
-  max-width: 30rem;
-}
-#diagram-ai {
-  max-width: 35rem;
-}
-
 @layer components {
   /* Override a2zb's filled btn-secondary with an outlined accent style:
    * orange border + orange text on a transparent ground (the "Filtre" look). */

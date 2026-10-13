@@ -12,6 +12,7 @@ const abouts: {
   paragraphs: string[];
   diagram?: ReactNode;
   extra?: ReactNode; // rendered below the text + diagram
+  diagramMaxWidth?: string; // how wide the diagram / extra can get
 }[] = [
   {
     eyebrow: "Working together",
@@ -27,6 +28,7 @@ const abouts: {
       "Anything reusable that comes out of the project goes back into the toolbox, making future projects faster to build and easier to maintain.",
     ],
     diagram: <SoftwareDiagram />,
+    diagramMaxWidth: "30rem",
   },
   {
     eyebrow: "AI",
@@ -41,6 +43,7 @@ const abouts: {
       "But the final product is still built and understood by me, not handed over to AI. Knowing how the software actually works is what makes it possible to maintain, debug and improve later, so that stays a core principle at SWH.",
     ],
     diagram: <AISvg />,
+    diagramMaxWidth: "35rem",
   },
   {
     eyebrow: "Tools",
@@ -49,6 +52,7 @@ const abouts: {
       "My toolbox combines the technologies I work with most often with reusable libraries and components I've built across projects.",
     ],
     extra: <ToolboxPanels />,
+    diagramMaxWidth: "64rem", // = max-w-5xl
   },
 ];
 
@@ -102,6 +106,7 @@ export function About() {
             ))}
             // each about has a diagram or an extra, never both
             diagram={about.diagram ?? about.extra}
+            diagramMaxWidth={about.diagramMaxWidth}
           />
         ))}
       </div>

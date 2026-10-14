@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { Nav, Footer, Hero, Story, Demo, About } from "./features";
-import { ConnectDiagram } from "./features/story/diagrams/connect/Diagram";
 import { ActDiagram } from "./features/story/diagrams/act/Diagram";
 // import { AISvg } from "./features/about/diagrams/ai/diagram";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
-    "tmp",
-    // location.hash === "#about" ? "about" : "story",
+    // "tmp",
+    location.hash === "#about" ? "about" : "story",
   );
 
   useEffect(() => {

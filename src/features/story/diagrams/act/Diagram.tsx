@@ -27,7 +27,7 @@ export function ActDiagram() {
   const stackLayout = windowStackLayout({
     groupWidth: stackWidth,
     // heightToWidthRatio: 0.7,
-    angle: -8,
+    angle: -11.5,
     count: 3,
     gapX: unit * 0.35,
     gapY: unit * 0.35,

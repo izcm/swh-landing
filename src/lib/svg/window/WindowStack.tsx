@@ -1,31 +1,30 @@
 import type { ReactNode } from "react";
-import { accentGlow, type Point } from "../logic";
-import { AppWindow } from "./AppWindow";
+import type { Point } from "../logic";
+import type { WindowStyle } from "./AppWindow";
+import { WindowBackground } from "./WindowBackground";
 import type { windowStackLayout } from "./windowStackLayout";
 
-// app windows stacked back to front, skewed. back ones ghosted + faded,
-// front one solid with a glow.
-// frontContent: drawn inside the front window (e.g. <EditorCode />)
+// windows stacked back to front, skewed, fading from backOpacity at the back
+// up to 1 at the front. frontContent is drawn inside the front window.
 // x / y: where the stack's top-left goes in the parent
 export function WindowStack({
   x = 0,
   y = 0,
   layout,
-  frontContent,
-  fill,
   radius,
-  stroke,
   strokeWidth,
+  backOpacity,
+  windowStyles = [],
+  frontContent,
 }: Partial<Point> & {
   layout: ReturnType<typeof windowStackLayout>;
+  radius: number; // every window's corner radius
+  strokeWidth: number; // every window's border thickness
+  backOpacity: number; // the back window's opacity; fades up to 1 at the front
+  // one style per window, front first ([0] = front). overrides x / y / width /
+  // height / radius / strokeWidth. empty = all windows as the layout says
+  windowStyles?: WindowStyle[];
   frontContent?: ReactNode;
-  // front window's background. back windows keep their ghost tint
-  fill?: string;
-  // every window's corner radius. defaults to AppWindow's
-  radius?: number;
-  // every window's border color + thickness. default to AppWindow's
-  stroke?: string;
-  strokeWidth?: number;
 }) {
   const { count, gapY, item, angle, windowX, toTop } = layout;
 
@@ -33,40 +32,35 @@ export function WindowStack({
     <g
       transform={`translate(${x}, ${y}) skewY(${angle}) translate(0, ${toTop})`}
     >
-      {/* transform={`translate(0, ${translateY}) skewY(${angle})`}> */}
-      {/* drawn back to front: i = 0 is the furthest back, the last one is in front */}
       {Array.from({ length: count }).map((_, i) => {
         // 0 at the back → 1 at the front
         const depth = count > 1 ? i / (count - 1) : 1;
-        // ghost panes are already see-through, so fade them less overall
-        // to keep their borders readable
-        const opacity = 0.6 + depth * 0.4;
         const isFront = i === count - 1;
+        // layout values are the defaults; this window's style wins
+        const win = {
+          x: windowX(i),
+          y: i * gapY,
+          width: item.width,
+          height: item.height,
+          radius,
+          strokeWidth,
+          // drawn back to front, but windowStyles is listed front first
+          ...windowStyles[count - 1 - i],
+        };
 
         return (
           <g
             key={i}
-            opacity={opacity}
-            // front: quiet halo to lift it off the rest. back: big faint haze
-            style={{
-              filter: isFront ? accentGlow(4, 12) : accentGlow(2, 6),
-            }}
+            opacity={backOpacity + depth * (1 - backOpacity)}
+            transform={`translate(${win.x}, ${win.y})`}
           >
-            <AppWindow
-              x={windowX(i)}
-              y={i * gapY}
-              width={item.width}
-              height={item.height}
-              viewboxWidth={item.width}
-              viewboxHeight={item.height}
-              ghost={!isFront}
-              fill={isFront ? fill : undefined}
-              radius={radius}
-              stroke={stroke}
-              strokeWidth={strokeWidth}
-            >
-              {isFront && frontContent}
-            </AppWindow>
+            <WindowBackground
+              width={win.width}
+              height={win.height}
+              radius={win.radius}
+              strokeWidth={win.strokeWidth}
+            />
+            {isFront && frontContent}
           </g>
         );
       })}

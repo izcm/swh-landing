@@ -1,4 +1,5 @@
 import { isoCubeMetrics, isoCubePoints, type Point } from "../logic";
+import { BoxShadow } from "./BoxShadow";
 
 type IsoCubeMetrics = ReturnType<typeof isoCubeMetrics>;
 
@@ -24,26 +25,15 @@ export function IsoCubeShadow({
   }) {
   const pts = isoCubePoints(size, thickness, a.angle, b.angle);
 
-  const points = [
-    pts.bottomLeft,
-    pts.bottomBack,
-    pts.bottomRight,
-    pts.bottomFront,
-  ]
-    .map((p) => `${x + p.x * pts.scale},${y + p.y * pts.scale + drop}`)
-    .join(" ");
-
   return (
-    <polygon
-      className="float-shadow"
-      points={points}
-      fill="black"
-      fillOpacity={0.4}
-      style={{
-        filter: "blur(4px)",
-        animationDuration: duration,
-        animationDelay: delay,
-      }}
+    <BoxShadow
+      x={x}
+      y={y}
+      corners={[pts.bottomLeft, pts.bottomBack, pts.bottomRight, pts.bottomFront]}
+      scale={pts.scale}
+      drop={drop}
+      duration={duration}
+      delay={delay}
     />
   );
 }

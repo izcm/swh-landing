@@ -6,8 +6,8 @@ import { ActDiagram } from "./features/story/diagrams/act/Diagram";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
-    // "tmp",
-    location.hash === "#about" ? "about" : "story",
+    "tmp",
+    // location.hash === "#about" ? "about" : "story",
   );
 
   useEffect(() => {

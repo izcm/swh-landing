@@ -2,7 +2,6 @@ import { Shuffle, type LucideIcon } from "lucide-react";
 
 import {
   alignCenter,
-  AppWindow,
   FilledTube,
   glyphStrokeLucide,
   paddedBox,
@@ -105,7 +104,7 @@ export function ConnectDiagram() {
 
         // rows: contentHeight is 10 units, 6 × 0.8 + 5 × 1 = 9.8 fits
         const rowCount = 7;
-        const pillHeight = contentBox.unit * 0.5;
+        const pillHeight = contentBox.unit * 0.45;
         const rowGap = contentBox.unit;
         const rows = stackWithGaps(
           Array.from({ length: rowCount }, () => pillHeight),
@@ -142,79 +141,85 @@ export function ConnectDiagram() {
           [4, 1, 4, 2, 1, 4, 0],
         ];
 
+        // drawn inside the front window
+        const frontContent = (
+          <>
+            <g
+              transform={`translate(${contentBox.contentX}, ${contentBox.contentY})`}
+            >
+              {columns.starts.map((start, i) => {
+                return (
+                  <rect
+                    key={i}
+                    className="svg-debug"
+                    x={start}
+                    y={0}
+                    width={columnSize}
+                    height={contentBox.contentHeight}
+                    fill="none"
+                    stroke="purple" // lavender
+                    strokeWidth={0.75}
+                    strokeDasharray="6 4"
+                  />
+                );
+              })}
+
+              {/* row borders, in the middle of the gaps (none after the last row) */}
+              {rows.dividers.map((y, i) => (
+                <line
+                  key={i}
+                  x1={0}
+                  y1={y}
+                  x2={contentBox.contentWidth}
+                  y2={y}
+                  stroke="var(--accent-faint)"
+                  opacity={0.2}
+                  strokeWidth={1}
+                />
+              ))}
+
+              {/* column borders, between the columns (none on the outer edges) */}
+              {columns.dividers.map((x, i) => (
+                <line
+                  key={i}
+                  x1={x}
+                  y1={0}
+                  x2={x}
+                  y2={contentBox.contentHeight}
+                  stroke="var(--accent-faint)"
+                  opacity={0.2}
+                  strokeWidth={1}
+                />
+              ))}
+
+              {/* pills: x from the column, y from the row */}
+              {columns.starts.map((columnX, c) =>
+                rows.starts.map((rowY, r) => (
+                  <FilledTube
+                    key={`${c}-${r}`}
+                    x={columnX + pillInset}
+                    y={rowY}
+                    width={pillMaxWidth}
+                    height={pillHeight}
+                    level={pillWidths[c][r]}
+                    trackOpacity={0}
+                    fillColor={pillColors[pillShades[c][r]]}
+                    fillOpacity={0.75}
+                  />
+                )),
+              )}
+            </g>
+          </>
+        );
+
         return (
           <WindowStack
             layout={stackLayout}
             y={translateY}
-            frontContent={
-              <>
-                <g
-                  transform={`translate(${contentBox.contentX}, ${contentBox.contentY})`}
-                >
-                  {columns.starts.map((start, i) => {
-                    return (
-                      <rect
-                        key={i}
-                        className="svg-debug"
-                        x={start}
-                        y={0}
-                        width={columnSize}
-                        height={contentBox.contentHeight}
-                        fill="none"
-                        stroke="purple" // lavender
-                        strokeWidth={0.75}
-                        strokeDasharray="6 4"
-                      />
-                    );
-                  })}
-
-                  {/* row borders, in the middle of the gaps (none after the last row) */}
-                  {rows.dividers.map((y, i) => (
-                    <line
-                      key={i}
-                      x1={0}
-                      y1={y}
-                      x2={contentBox.contentWidth}
-                      y2={y}
-                      stroke="var(--accent-faint)"
-                      opacity={0.2}
-                      strokeWidth={1}
-                    />
-                  ))}
-
-                  {/* column borders, between the columns (none on the outer edges) */}
-                  {columns.dividers.map((x, i) => (
-                    <line
-                      key={i}
-                      x1={x}
-                      y1={0}
-                      x2={x}
-                      y2={contentBox.contentHeight}
-                      stroke="var(--accent-faint)"
-                      opacity={0.2}
-                      strokeWidth={1}
-                    />
-                  ))}
-
-                  {/* pills: x from the column, y from the row */}
-                  {columns.starts.map((columnX, c) =>
-                    rows.starts.map((rowY, r) => (
-                      <FilledTube
-                        key={`${c}-${r}`}
-                        x={columnX + pillInset}
-                        y={rowY}
-                        width={pillMaxWidth}
-                        height={pillHeight}
-                        level={pillWidths[c][r]}
-                        trackOpacity={0}
-                        fillColor={pillColors[pillShades[c][r]]}
-                        fillOpacity={0.75}
-                      />
-                    )),
-                  )}
-                </g>
-              </>
-            }
+            radius={3}
+            strokeWidth={0.8}
+            backOpacity={0.6}
+            frontContent={frontContent}
           />
         );
       }}

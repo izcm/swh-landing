@@ -21,7 +21,7 @@ const heroAngles = { angleA: 22.5, angleB: 30 };
 
 // debug lines have className="svg-debug". show/hide them in diagram.css
 export function HeroDiagram() {
-  const viewboxWidth = 720;
+  const viewboxWidth = 650; // or 720 ?? hard choice
   const viewboxHeight = 500;
 
   const { contentX, contentY, contentWidth, contentHeight, unit } = paddedBox(

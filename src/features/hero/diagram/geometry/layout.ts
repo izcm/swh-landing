@@ -49,7 +49,7 @@ export function heroLayout({
 
   // dots on the ring, each with a platform + standing surface
   const orbit = (() => {
-    const platformSize = unit * 2.875;
+    const platformSize = unit * 2.8;
     const platform = isoCubeMetrics(platformSize, unit * 0.2, angles);
 
     const pointOnContentRing = (degrees: number) =>

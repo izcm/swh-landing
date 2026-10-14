@@ -25,8 +25,12 @@ export function HeroAppWindows({
 }) {
   // knobs
   const count = 3;
-  const gapX = 25;
+  const gapX = 25; // unsure these or ones below
   const gapY = 35;
+
+  // const gapX = 20; // unsure these or ones below
+  // const gapY = 25;
+
   const heightToWidthRatio = 0.8;
 
   const windowStack = windowStackLayout({
@@ -49,8 +53,8 @@ export function HeroAppWindows({
     const box = paddedBox(
       windowStack.item.width,
       windowStack.item.height,
-      0.5,
-      0.5,
+      0.65,
+      1,
     );
     const rowGap = unit * 0.4;
     const rowSpace = box.contentHeight - rowGap;

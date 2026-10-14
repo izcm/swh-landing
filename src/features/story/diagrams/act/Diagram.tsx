@@ -59,7 +59,7 @@ export function ActDiagram() {
   const contentBox = paddedBox(
     stackLayout.item.width,
     stackLayout.item.height,
-    0.5,
+    0.65,
     1,
   );
 
@@ -196,7 +196,11 @@ export function ActDiagram() {
                 corners={[bottom.left, bottom.back, bottom.right, bottom.front]}
                 drop={40}
               />
-              <Platform {...shape} grid={{ across: 5, along: 5 }} />
+              {/* bobs up and down; the shadow stays put and shrinks in step
+                  (both default to 4s, no delay) */}
+              <g className="float-bob">
+                <Platform {...shape} grid={{ across: 5, along: 5 }} />
+              </g>
             </g>
           </>
         );

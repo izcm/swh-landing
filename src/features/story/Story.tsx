@@ -19,9 +19,9 @@ const sections = [
     eyebrow: "VISUALIZE",
     title: "See the bigger picture",
     paragraphs: [
-      "Collecting data cross systems makes it possible to see more than any individual system or spreadsheet can show on its own.",
-      "Spreadsheets are excellent tools, but understanding a larger operation can mean moving between several sheets, comparing numbers, and building a picture of what is happening in your head.",
-      "We make that process easier by presenting relevant information through interactive dashboards designed to show the bigger picture.",
+      "Connecting data across systems makes it possible to see more than any individual system can show on its own.",
+      "We build interactive dashboards that continuously bring together, transform, and organize information according to your business needs.",
+      "From simple lists and charts to detailed operational overviews, you can explore information at different levels, spot patterns, and drill down into the details that matter.",
     ],
     diagram: (
       <div className="max-w-xl mx-auto">
@@ -34,8 +34,7 @@ const sections = [
     title: "Turn insight into action",
     paragraphs: [
       "Connected data and better visibility make it easier to identify what needs attention and decide what to do next.",
-      "We extend your existing systems with tools that let you act directly on that information, rather than moving between systems and completing each step manually.",
-      // "This can turn a time-consuming, multi-step process into a much simpler and faster workflow.",
+      "We build tools that bring your key actions into one place, allowing you to work directly with the information in front of you rather than switching between systems to get things done.",
     ],
     diagram: <ActDiagram />,
   },

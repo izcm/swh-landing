@@ -44,6 +44,7 @@ export function DashboardContent({
       radius={radius}
       rowCount={4}
       rowGap={rowGap * 0.5}
+      selectedIdx={drilldown ? 1 : undefined} // the picked row, or none without drilldown
     />,
   ];
 

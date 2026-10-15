@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { chartSeparatorStyle, type Point } from "../logic";
+import { chartSeparatorStyle, toPoints, type Point } from "../logic";
 
 type LineChartProps = {
   width: number;
@@ -9,27 +9,20 @@ type LineChartProps = {
   dotRadius?: number; // a dot on each point. no dots if left out
   areaOpacity?: number; // fill under the line: this opacity at the top, 0 at the bottom. no fill if left out
   areaRadius?: number; // the fill's corners, rounded off by a clip the size of the chart
+  selectedIdx?: number; // the picked point: a line from it down to the bottom. none if left out
 } & Partial<Point>;
-
-// points evenly spread across the width, 0 at the bottom, 1 at the top
-function toPoints(values: number[], width: number, height: number) {
-  const step = width / (values.length - 1);
-  return values.map((value, i) => ({
-    x: i * step,
-    y: height - height * value,
-  }));
-}
 
 export function LineChart({
   x = 0,
   y = 0,
   width,
   height,
-  values: valuesNotUsedRightNowFixLater,
+  values,
   color,
   dotRadius,
   areaOpacity,
   areaRadius = 0,
+  selectedIdx,
 }: LineChartProps) {
   const glowId = useId();
   const areaId = useId();
@@ -38,11 +31,9 @@ export function LineChart({
   const glowRadius = (dotRadius ?? 0) * 2;
   const glowBlur = glowRadius * 0.5;
 
-  const wave = (x: number) => 0.3 + 0.22 * x + 0.16 * Math.sin(4 * Math.PI * x);
-
-  const values = Array.from({ length: 85 }, (_, i) => wave(i / 100));
-
   const points = toPoints(values, width, height);
+  // the picked point, if there is one
+  const selected = selectedIdx !== undefined ? points[selectedIdx] : undefined;
 
   const lineD = points
     .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
@@ -103,6 +94,20 @@ export function LineChart({
           {...chartSeparatorStyle}
         />
       ))}
+
+      {/* the picked point: a thin line down to the bottom, under the curve and the dots */}
+      {selected && (
+        <line
+          x1={selected.x}
+          y1={selected.y}
+          x2={selected.x}
+          y2={height}
+          stroke="var(--accent-electric)"
+          strokeOpacity={0.5}
+          strokeWidth={1}
+          vectorEffect="non-scaling-stroke"
+        />
+      )}
 
       <path
         d={lineD}

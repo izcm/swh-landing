@@ -27,6 +27,7 @@ export function List({
   radius,
   rowCount,
   rowGap,
+  selectedIdx,
 }: {
   width: number;
   height: number;
@@ -34,6 +35,7 @@ export function List({
   radius: number; // the rows' corner radius, capped so short rows don't turn into pills
   rowCount: number;
   rowGap: number; // space between rows
+  selectedIdx?: number; // the highlighted row. none if left out
 }) {
   // rowCount rows + (rowCount - 1) gaps fill the height
   const rowHeight = (height - rowGap * (rowCount - 1)) / rowCount;
@@ -92,6 +94,19 @@ export function List({
         radius={Math.min(radius, rowHeight / 4)}
         strokeWidth={0.1}
       />
+      {/* the selected row: a faint electric fill and a bright 1px border */}
+      {i === selectedIdx && (
+        <rect
+          width={width}
+          height={rowHeight}
+          rx={Math.min(radius, rowHeight / 4)}
+          fill="var(--accent-electric)"
+          fillOpacity={0.08}
+          stroke="var(--accent-electric)"
+          strokeWidth={1}
+          vectorEffect="non-scaling-stroke"
+        />
+      )}
 
       <circle
         cx={dot.cx}
@@ -102,45 +117,57 @@ export function List({
       />
 
       {/* text box: everything inside starts at its top-left */}
-      <g transform={`translate(${text.x}, ${text.y})`}>
-        {/* label: bright, shorter */}
-        <Tube
-          x={0}
-          y={text.lineStarts[0]}
-          width={text.width}
-          height={text.lineHeights[0]}
-          level={labelLength(i)}
-          fill="var(--accent-electric)"
-        />
-        {/* subtitle: dim, longer */}
-        <Tube
-          x={0}
-          y={text.lineStarts[1]}
-          width={text.width}
-          height={text.lineHeights[1]}
-          level={Math.min(1, labelLength(i + 7) + 0.25)}
-          fill="var(--accent-electric)"
-          fillOpacity={0.3}
-        />
-      </g>
+      {(() => {
+        const { x, y, width, lineHeights, lineStarts } = text;
+        return (
+          <g transform={`translate(${x}, ${y})`}>
+            {/* label: bright, shorter */}
+            <Tube
+              x={0}
+              y={lineStarts[0]}
+              width={width}
+              height={lineHeights[0]}
+              level={labelLength(i)}
+              fill="var(--accent-electric)"
+            />
+            {/* subtitle: dim, longer */}
+            <Tube
+              x={0}
+              y={lineStarts[1]}
+              width={width}
+              height={lineHeights[1]}
+              level={Math.min(1, labelLength(i + 7) + 0.25)}
+              fill="var(--accent-electric)"
+              fillOpacity={0.3}
+            />
+          </g>
+        );
+      })()}
 
       {/* button: slightly rounded square with an arrow */}
-      <rect
-        x={button.x}
-        y={button.y}
-        width={button.size}
-        height={button.size}
-        rx={button.radius}
-        fill="oklch(from var(--accent) 0.4 0.15 h / 0.15)"
-      />
-      <ArrowRight
-        x={button.x + (button.size - button.iconSize) / 2}
-        y={button.y + (button.size - button.iconSize) / 2}
-        size={button.iconSize}
-        stroke="var(--accent-electric)"
-        strokeOpacity={0.8}
-        strokeWidth={glyphStrokeLucide(button.iconSize, 0.875)}
-      />
+      {(() => {
+        const { x, y, size, radius: r, iconSize } = button;
+        return (
+          <>
+            <rect
+              x={x}
+              y={y}
+              width={size}
+              height={size}
+              rx={r}
+              fill="oklch(from var(--accent) 0.4 0.15 h / 0.15)"
+            />
+            <ArrowRight
+              x={x + (size - iconSize) / 2}
+              y={y + (size - iconSize) / 2}
+              size={iconSize}
+              stroke="var(--accent-electric)"
+              strokeOpacity={0.8}
+              strokeWidth={glyphStrokeLucide(iconSize, 0.875)}
+            />
+          </>
+        );
+      })()}
     </g>
   ));
 }

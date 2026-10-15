@@ -32,24 +32,8 @@ export function ChartRow({
     const chartWidth = boxWidth - insetX * 2;
     const chartHeight = height - insetY * 2;
 
-    // bar chart: heights (0..1), the picked bar bright, the rest muted
-    const bars = (() => {
-      const values = [0.42, 0.58, 0.47, 1, 0.66, 0.79].map((v) => v * 0.65);
-      const selected = drilldown ? 3 : undefined; // the picked bar, or none without drilldown
-      const colors = drilldown
-        ? values.map((_, i) =>
-            i === selected
-              ? "var(--accent-electric)"
-              : "oklch(from var(--accent-deep) l c h / 0.45)",
-          )
-        : Array.from(
-            { length: values.length },
-            () => "oklch(from var(--accent-deep) l c h / 0.70)",
-          );
-      const barRatio = 0.45;
-
-      return { values, colors, barRatio };
-    })();
+    // bar heights (0..1)
+    const values = [0.42, 0.58, 0.47, 1, 0.66, 0.79].map((v) => v * 0.65);
 
     return (
       <BarChart
@@ -57,14 +41,35 @@ export function ChartRow({
         y={insetY}
         width={chartWidth}
         height={chartHeight}
-        values={bars.values}
-        colors={bars.colors}
-        barRatio={bars.barRatio}
+        values={values}
+        color="var(--accent-deep)"
+        opacity={0.7}
+        selectedIdx={drilldown ? 3 : undefined} // the picked bar, or none without drilldown
+        barRatio={0.45}
       />
     );
   })();
 
-  const lineValues = [0.2, 0.4, 0.1, 0.6, 0.2, 0.5];
+  // left box: line chart
+  const lineChart = (() => {
+    // the curve: a gentle rise with two bumps
+    const wave = (x: number) =>
+      0.3 + 0.22 * x + 0.16 * Math.sin(4 * Math.PI * x);
+    const values = Array.from({ length: 85 }, (_, i) => wave(i / 100));
+
+    return (
+      <LineChart
+        width={columnSizes[0]}
+        height={height}
+        values={values}
+        color="var(--accent-deep)"
+        dotRadius={unit * 0.1}
+        areaOpacity={0.04}
+        areaRadius={boxRadius} // same corners as the box behind it
+        selectedIdx={drilldown ? 63 : undefined} // 63 = the highest bump (placeholder), or none without drilldown
+      />
+    );
+  })();
 
   // title + subtitle lines in the top-left corner of each chart box.
   // only the layout: each box decides how long and full its lines are
@@ -81,15 +86,7 @@ export function ChartRow({
   // what goes in each box, left to right
   const columnContent = [
     <>
-      <LineChart
-        width={columnSizes[0]}
-        height={height}
-        values={lineValues}
-        color="var(--accent-deep)"
-        dotRadius={unit * 0.1}
-        areaOpacity={0.04}
-        areaRadius={boxRadius} // same corners as the box behind it
-      />
+      {lineChart}
       {/* title + subtitle */}
       {(() => {
         const { inset, width, lineHeights, lineStarts } = chartLabelsLayout;

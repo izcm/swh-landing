@@ -40,6 +40,15 @@ export function boundingBox(points: Point[]) {
   return { x, y, width: Math.max(...xs) - x, height: Math.max(...ys) - y };
 }
 
+// points evenly spread across the width, 0 at the bottom, 1 at the top
+export function toPoints(values: number[], width: number, height: number) {
+  const step = width / (values.length - 1);
+  return values.map((value, i) => ({
+    x: i * step,
+    y: height - height * value,
+  }));
+}
+
 // grid inside a 4-corner shape: joins matching points on opposite sides.
 // `across` splits the left→back / front→right sides, `along` splits the
 // left→front / back→right sides. returns each line's two ends.

@@ -62,7 +62,7 @@ export function StandingSurface({
                 x={-iconSize / 2}
                 y={-iconSize / 2}
                 size={iconSize}
-                strokeWidth={glyphStroke(iconSize, 2)}
+                strokeWidth={glyphStroke(iconSize, 1.5)}
                 stroke={iconStroke}
               />
             </g>

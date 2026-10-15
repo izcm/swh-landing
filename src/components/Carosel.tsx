@@ -15,6 +15,9 @@ type Props = {
   onChange?: (i: number) => void;
 };
 
+// https://www.youtube.com/watch?v=HXIHpDnsizk&list=PLZlA0Gpn_vH8mpXIUHjWoMAAgoCEinL0R&index=67
+// have a look at carosel animations
+
 export function Carosel({
   items,
   index: indexProp,

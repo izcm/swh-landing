@@ -31,6 +31,15 @@ export const pointOnLine = (A: Point, B: Point, t: number) => ({
   y: A.y + (B.y - A.y) * t,
 });
 
+// the smallest axis-aligned box around some points: its top-left + size
+export function boundingBox(points: Point[]) {
+  const xs = points.map((p) => p.x);
+  const ys = points.map((p) => p.y);
+  const x = Math.min(...xs);
+  const y = Math.min(...ys);
+  return { x, y, width: Math.max(...xs) - x, height: Math.max(...ys) - y };
+}
+
 // grid inside a 4-corner shape: joins matching points on opposite sides.
 // `across` splits the left→back / front→right sides, `along` splits the
 // left→front / back→right sides. returns each line's two ends.

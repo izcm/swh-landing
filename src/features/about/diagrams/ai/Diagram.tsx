@@ -5,9 +5,11 @@ import {
   WindowDots,
   accentGlow,
   alignCenter,
+  glyphStroke,
   paddedBox,
   spaceBetween,
 } from "@/lib/svg";
+import { BoxBackground } from "@/features/story/diagrams/act/dashboard/BoxBackground";
 import { EditorCode } from "./editor/EditorCode";
 
 export function AISvg() {
@@ -169,6 +171,18 @@ export function AISvg() {
                   ghost={!isFront}
                   fill={isFront ? "var(--node-color-deep)" : undefined}
                 >
+                  {/* preview: act's BoxBackground as the front editor's background,
+                      over AppWindow's own. AppWindow draws in a 300-wide box, so
+                      glyphStroke turns parent units into that box's units */}
+                  {isFront && (
+                    <BoxBackground
+                      width={300}
+                      height={200}
+                      // same as AppWindow's own corners: --rx-node-md (8), in its 300-wide box
+                      radius={8}
+                      strokeWidth={glyphStroke(editorBox.item.width, 0.8, 300)}
+                    />
+                  )}
                   <g transform={`translate(${dots.translateX}, 0)`}>
                     <WindowDots
                       height={editorHeaderHeight}

@@ -17,8 +17,22 @@ export function BoxBackground({
         width={width}
         height={height}
         rx={radius}
+        fill="black"
+        fillOpacity={1}
+      />
+      <rect
+        width={width}
+        height={height}
+        rx={radius}
+        fill="var(--accent-ink)"
+        fillOpacity={0.65}
+      />
+      <rect
+        width={width}
+        height={height}
+        rx={radius}
         fill="var(--accent-electric)"
-        fillOpacity={0.02}
+        fillOpacity={0.025}
       />
       <rect
         width={width}

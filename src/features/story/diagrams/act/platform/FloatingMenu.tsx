@@ -14,6 +14,8 @@ import { ElectricGlass } from "../ElectricGlass";
 
 // one row per `act` action: email, assign, track
 const actions: LucideIcon[] = [Mail, User, Eye];
+// each row's label, in the same order as actions
+const labels = ["NOTIFY", "ASSIGN", "TRACK"];
 
 // the act's floating menu: a platform with a glass card standing on it,
 // one row per action, the first one picked. drawn with the bounding box's
@@ -97,7 +99,10 @@ export function FloatingMenu({
 
       const { offset: y } = alignCenter(h, linesHeight);
 
-      return { x, y, width, lineHeights, lineStarts: lines.starts };
+      // the label text, used instead of the two lines for now
+      const fontSize = h * 0.2;
+
+      return { x, y, width, lineHeights, lineStarts: lines.starts, fontSize };
     })();
 
     return { icon, chevron, text };
@@ -146,12 +151,13 @@ export function FloatingMenu({
             </>
           );
         })()}
-        {/* label + subtitle: everything inside starts at the text box's top-left */}
+        {/* old look, kept to switch back: label + subtitle as two bars
+            (bright longer label, dim shorter subtitle) instead of the text.
+            to use it again, uncomment it and remove the <text> below
         {(() => {
           const { x, y, width, lineHeights, lineStarts } = text;
           return (
             <g transform={`translate(${x}, ${y})`}>
-              {/* label: bright, longer */}
               <Tube
                 y={lineStarts[0]}
                 width={width}
@@ -160,7 +166,6 @@ export function FloatingMenu({
                 fill="var(--accent-electric)"
                 fillOpacity={0.9}
               />
-              {/* subtitle: dim, shorter */}
               <Tube
                 y={lineStarts[1]}
                 width={width}
@@ -172,6 +177,20 @@ export function FloatingMenu({
             </g>
           );
         })()}
+        */}
+        {/* label: the action's name in capitals, centered in the row */}
+        <text
+          x={text.x}
+          y={rows.rowHeight / 2}
+          dominantBaseline="central"
+          fontSize={text.fontSize}
+          fontWeight={500}
+          letterSpacing={text.fontSize * 0.12}
+          fill="var(--accent-glow)"
+          fillOpacity={0.9}
+        >
+          {labels[i]}
+        </text>
         {/* chevron at the end */}
         <ChevronRight
           x={chevron.x}
@@ -204,11 +223,10 @@ export function FloatingMenu({
         <BoxShadow
           corners={[bottom.left, bottom.back, bottom.right, bottom.front]}
           drop={40}
-          still
         />
         {/* bobs up and down; the shadow stays put and shrinks in step
             (both default to 4s, no delay) */}
-        <g>
+        <g className="float-bob">
           <Platform {...platform} grid={{ across: 4, along: 6 }} />
           {/* the card: glass, slanted by skewY */}
           <g transform={`translate(${card.x}, ${card.y}) skewY(${card.angle})`}>

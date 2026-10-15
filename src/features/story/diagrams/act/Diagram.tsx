@@ -79,14 +79,17 @@ export function ActDiagram() {
 
   // right: the platform with the card, placed by its real bounding box
   const floatingMenu = (() => {
+    const angleA = 22; // the platform's side edge
     const layout = cardPlatformLayout({
       size: viewboxWidth * 0.25,
-      angleA: 22,
+      angleA,
       // same tilt as the windows: the platform's front edge runs parallel to them
       angleB: -dashboard.stackLayout.angle,
       thickness: 6,
       cardSize: { width: 1, height: 1.3 },
       spanBToARatio: 0.85,
+      cardAngle: angleA - 5, // a bit flatter than the A edge, so the card faces us more
+      // cardAt: { alongA: 0.5, alongB: 0.5 + 1 / 4 }, // one gridline further in the B direction
     });
 
     const translateX = viewboxWidth - layout.groupWidth; // flush with the right edge

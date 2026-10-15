@@ -284,7 +284,7 @@ export function ActDiagram() {
                     y={y + rowHeight / 2 - iconSize / 2}
                     size={iconSize}
                     strokeWidth={glyphStroke(iconSize, 0.5)}
-                    stroke="var(--node-text-color)"
+                    stroke="var(--color-fg-tinted)"
                   />
 
                   <text
@@ -292,7 +292,7 @@ export function ActDiagram() {
                     y={y + rowHeight / 2}
                     dominantBaseline="middle"
                     textAnchor="start"
-                    fill="var(--node-text-color)"
+                    fill="var(--color-fg-tinted)"
                     fontSize={fontSize}
                     fontFamily="inherit"
                   >
@@ -346,7 +346,7 @@ export function ActDiagram() {
             y={centerIcon.skullCenterY - centerIcon.bulbSize / 2}
             size={centerIcon.bulbSize}
             strokeWidth={1}
-            stroke="var(--node-text-color)"
+            stroke="var(--color-fg-tinted)"
             opacity={0.8}
           />
         </g>

@@ -59,3 +59,29 @@ const leftBox = (() => {
   };
 })();
 ```
+
+## SVG components: inline destructuring in the JSX
+
+- When a part of the JSX repeats one section's name a lot (around 5 or more, e.g.
+  `icon.cx`, `icon.cy`, `icon.size`) across more than one element, and those elements
+  belong to the same visual group, wrap that group in an inline block that destructures
+  the section first, so the elements read plain names:
+
+```tsx
+{/* icon in a circle */}
+{(() => {
+  const { cx, cy, radius: r, size } = icon;
+  return (
+    <>
+      <circle cx={cx} cy={cy} r={r} />
+      <Icon x={cx - size / 2} y={cy - size / 2} size={size} />
+    </>
+  );
+})()}
+```
+
+- Don't bother for a single element with only a couple of fields
+  (`<circle cx={dot.cx} r={dot.radius} />` is fine as it is).
+- One block per visible part (icon, text, chevron), with its comment above it.
+- If a field's name clashes with a prop or an outer variable, rename it while
+  destructuring (`radius: r`).

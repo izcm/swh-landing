@@ -3,10 +3,11 @@ import { ArrowRight } from "lucide-react";
 import {
   alignCenter,
   deepShades,
-  FilledTube,
+  Tube,
   glyphStrokeLucide,
   stackWithGaps,
 } from "@/lib/svg";
+import { BoxBackground } from "./BoxBackground";
 
 // how much of the row a label takes, like a word or two of text: somewhere
 // between 25% and 60%. looks random but is the same number for the same row
@@ -44,7 +45,7 @@ export function List({
 
   // left: the dot, from the row's left edge
   const dot = (() => {
-    const insetX = unit * 0.25;
+    const insetX = unit * 0.45;
     const radius = rowHeight * 0.75 * 0.25;
 
     return { cx: insetX + radius, radius, insetX };
@@ -85,11 +86,11 @@ export function List({
   return rows.starts.map((rowY, i) => (
     <g key={i} transform={`translate(0, ${rowY})`}>
       {/* background */}
-      <rect
+      <BoxBackground
         width={width}
         height={rowHeight}
-        fill="oklch(from var(--accent) 0.4 0.15 h / 0.1)"
-        rx={Math.min(radius, rowHeight / 4)}
+        radius={Math.min(radius, rowHeight / 4)}
+        strokeWidth={0.1}
       />
 
       <circle
@@ -103,25 +104,23 @@ export function List({
       {/* text box: everything inside starts at its top-left */}
       <g transform={`translate(${text.x}, ${text.y})`}>
         {/* label: bright, shorter */}
-        <FilledTube
+        <Tube
           x={0}
           y={text.lineStarts[0]}
           width={text.width}
           height={text.lineHeights[0]}
           level={labelLength(i)}
-          fillColor="var(--accent-electric)"
-          trackOpacity={0}
+          fill="var(--accent-electric)"
         />
         {/* subtitle: dim, longer */}
-        <FilledTube
+        <Tube
           x={0}
           y={text.lineStarts[1]}
           width={text.width}
           height={text.lineHeights[1]}
           level={Math.min(1, labelLength(i + 7) + 0.25)}
-          fillColor="var(--accent-electric)"
+          fill="var(--accent-electric)"
           fillOpacity={0.3}
-          trackOpacity={0}
         />
       </g>
 

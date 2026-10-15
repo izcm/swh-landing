@@ -1,4 +1,4 @@
-import { BarChart, deepShades, LineChart, stackWithGaps } from "@/lib/svg";
+import { BarChart, Tube, LineChart, stackWithGaps } from "@/lib/svg";
 import { BoxBackground } from "./BoxBackground";
 
 // first row: two boxes side by side, line chart in the left one, bar chart in the right
@@ -9,6 +9,7 @@ export function ChartRow({
   unit,
   boxRadius,
   boxStrokeWidth,
+  drilldown,
 }: {
   width: number;
   height: number;
@@ -16,6 +17,7 @@ export function ChartRow({
   unit: number;
   boxRadius: number; // the two boxes' corner radius
   boxStrokeWidth: number; // the two boxes' border thickness
+  drilldown?: boolean; // consumer decides if dashboard displays highlighted areas on graphs for the "drilldown" look
 }) {
   // the row's width, shared 62 / 38 after the gap
   const columnSpace = width - gap;
@@ -25,16 +27,26 @@ export function ChartRow({
   // right box: bar chart, pulled in a little so the bars don't touch the box
   const barChart = (() => {
     const boxWidth = columnSizes[1];
-    const insetX = boxWidth * 0.05; // each side
-    const insetY = height * 0.1; // top and bottom
+    const insetX = boxWidth * 0.06; // each side
+    const insetY = height * 0.12; // top and bottom
     const chartWidth = boxWidth - insetX * 2;
     const chartHeight = height - insetY * 2;
 
-    // bar chart: heights (0..1), one shade of --accent-deep per bar
+    // bar chart: heights (0..1), the picked bar bright, the rest muted
     const bars = (() => {
-      const values = [0.26, 0.37, 0.44, 0.75, 0.4, 0.53];
-      const colors = deepShades(values.length);
-      const barRatio = 0.4; // thin bars, calmer than a packed block
+      const values = [0.42, 0.58, 0.47, 1, 0.66, 0.79].map((v) => v * 0.65);
+      const selected = drilldown ? 3 : undefined; // the picked bar, or none without drilldown
+      const colors = drilldown
+        ? values.map((_, i) =>
+            i === selected
+              ? "var(--accent-electric)"
+              : "oklch(from var(--accent-deep) l c h / 0.45)",
+          )
+        : Array.from(
+            { length: values.length },
+            () => "oklch(from var(--accent-deep) l c h / 0.70)",
+          );
+      const barRatio = 0.45;
 
       return { values, colors, barRatio };
     })();
@@ -54,18 +66,53 @@ export function ChartRow({
 
   const lineValues = [0.2, 0.4, 0.1, 0.6, 0.2, 0.5];
 
+  // title + subtitle lines in the top-left corner of each chart box.
+  // only the layout: each box decides how long and full its lines are
+  const chartLabelsLayout = (() => {
+    const inset = unit * 0.6; // from the box's top and left edges
+    const width = unit * 2.5; // the title's width, the same in both boxes
+    const lineHeight = unit * 0.15;
+    const lineHeights = [lineHeight, lineHeight]; // title, subtitle
+    const lines = stackWithGaps(lineHeights, lineHeight);
+
+    return { inset, width, lineHeights, lineStarts: lines.starts };
+  })();
+
   // what goes in each box, left to right
   const columnContent = [
-    <LineChart
-      width={columnSizes[0]}
-      height={height}
-      values={lineValues}
-      color="var(--accent-deep)"
-      dotRadius={unit * 0.08}
-      areaOpacity={0.04}
-      areaRadius={boxRadius} // same corners as the box behind it
-    />,
-    barChart,
+    <>
+      <LineChart
+        width={columnSizes[0]}
+        height={height}
+        values={lineValues}
+        color="var(--accent-deep)"
+        dotRadius={unit * 0.1}
+        areaOpacity={0.04}
+        areaRadius={boxRadius} // same corners as the box behind it
+      />
+      {/* title + subtitle */}
+      {(() => {
+        const { inset, width, lineHeights, lineStarts } = chartLabelsLayout;
+        return (
+          <g transform={`translate(${inset}, ${inset})`}>
+            <Tube
+              y={lineStarts[0]}
+              width={width}
+              height={lineHeights[0]}
+              fill="var(--accent)"
+              fillOpacity={0.5}
+            />
+            <Tube
+              y={lineStarts[1]}
+              width={width * 0.5}
+              height={lineHeights[1]}
+              fill="var(--accent-faint)"
+            />
+          </g>
+        );
+      })()}
+    </>,
+    <>{barChart}</>,
   ];
 
   return (

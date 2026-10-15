@@ -59,6 +59,9 @@ export const spaceAround = ({
   return start + gap / 2 + index * (itemSize + gap);
 };
 
+// the shared ruler: 1/12 of a box's height
+export const layoutUnit = (height: number) => height / 12;
+
 // any width × height box (a whole diagram's viewBox, a group, …): a base unit
 // (1/12 of its height), padding of `paddingXUnits` units left/right and
 // `paddingYUnits` units top/bottom (same as X if not passed), and the content
@@ -69,7 +72,7 @@ export function paddedBox(
   paddingXUnits = 1,
   paddingYUnits = paddingXUnits,
 ) {
-  const unit = height / 12;
+  const unit = layoutUnit(height);
   const paddingX = unit * paddingXUnits;
   const paddingY = unit * paddingYUnits;
 

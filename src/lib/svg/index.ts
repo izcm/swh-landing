@@ -8,5 +8,5 @@ export * from "./platform";
 export * from "./spiral";
 export * from "./window";
 export * from "./EdgeGradient";
-export * from "./FilledTube";
+export * from "./Tube";
 export * from "./ThreeBoxDiagram";

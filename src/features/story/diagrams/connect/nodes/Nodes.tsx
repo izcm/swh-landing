@@ -73,7 +73,7 @@ export function Nodes({
             y={0}
             dominantBaseline="central"
             fontSize={content.fontSize}
-            fill="var(--node-text-color)"
+            fill="var(--color-fg-tinted)"
           >
             {label}
           </text>

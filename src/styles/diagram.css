@@ -2,19 +2,10 @@
    to any node+connector diagram, regardless of that diagram's own style.
    Diagram-specific stuff (sizing, unique colors) stays in its own file. */
 :root {
-  --rx-center: 12;
-  --rx-node-lg: 12;
   --rx-node-md: 8;
-  --rx-node-sm: 6;
-  --rx-node-xs: 4;
   --rx-node-xxs: 2;
 
-  --node-stroke-width: 0.4;
-
-  --connector-weight: 0.5;
   --connector-color: color-mix(in oklab, var(--muted), var(--accent) 60%);
-
-  --node-text-color: color-mix(in oklab, var(--fg), var(--accent) 32%);
 
   /* --node-color: var(--ground); */
   --node-color: color-mix(in oklab, var(--raised), var(--ground) 40%);
@@ -32,60 +23,14 @@
   /* accent strengths: same hue as --accent, different lightness / chroma */
   --accent-electric: oklch(from var(--accent) 0.7 0.21 h);
   --accent-glow: oklch(from var(--accent) 0.86 0.09 h);
-  --accent-soft: oklch(from var(--accent) 0.7 0.08 h);
   --accent-dim: oklch(from var(--accent) 0.5 0.11 h);
-  --accent-slate: oklch(from var(--accent) 0.42 0.05 h);
   --accent-ink: oklch(from var(--accent) 0.17 0.045 h);
   --accent-faint: oklch(from var(--accent) l c h / 0.15);
 
   /* accent neighbours: nearby hues for variety */
   --accent-lavender: oklch(from var(--accent) 0.66 0.16 calc(h + 28));
-  --accent-violet: oklch(from var(--accent) 0.6 0.19 calc(h + 50));
   --accent-cyan: oklch(from var(--accent) 0.8 0.12 calc(h - 25));
   --accent-teal: oklch(from var(--accent) 0.74 0.11 calc(h - 40));
-
-  /* hero diagram (features/hero/Diagram.tsx) */
-  --hero-center-cube-fill: url(#cubeSide);
-  --hero-inner-cube-fill: var(--accent);
-  /* --hero-inner-cube-fill: oklch(from var(--ground) 0.08 0.04 h / 1); */
-  --hero-inner-cube-stroke: oklch(from var(--ground) 0.4 0.2 h / 0.65);
-
-  --hero-standing-surface-fill: oklch(from var(--accent) 0.165 0.056 h / 1);
-}
-
-/* traveling pulse: a short glowing streak (12) + gap (396), slid along the
-   path with stroke-dashoffset; each node's animation-delay is staggered so
-   they don't all fire at once */
-.pulse {
-  stroke-dasharray: 12 396;
-  opacity: 0.7;
-  filter: drop-shadow(0 0 2px var(--accent));
-  animation: diagram-travel 5s linear infinite;
-}
-
-@keyframes diagram-travel {
-  to {
-    stroke-dashoffset: -408;
-  }
-}
-
-/* accent dot: a gentle breathing scale+fade, not the traveling .pulse above */
-.accent-dot {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: dot-pulse 2s ease-in-out infinite;
-}
-
-@keyframes dot-pulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.7;
-    transform: scale(1.08);
-  }
 }
 
 /* floating cube: bobs up and down; its floor shadow shrinks + fades as it rises.
@@ -141,12 +86,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pulse {
-    animation: none;
-    opacity: 0;
-  }
-
-  .accent-dot,
   .float-bob,
   .float-shadow,
   .path-dot {

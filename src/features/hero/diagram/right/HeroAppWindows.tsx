@@ -50,7 +50,6 @@ export function HeroAppWindows({
         <DashboardContent
           width={box.contentWidth}
           height={box.contentHeight}
-          unit={height / 8} // about 1/8 of the window's height
           radius={3}
         />
       </g>

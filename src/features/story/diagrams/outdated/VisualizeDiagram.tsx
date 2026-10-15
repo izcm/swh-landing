@@ -107,7 +107,7 @@ export function VisualizeDiagram() {
           <SlidersHorizontal
             size={iconSize.slider}
             strokeWidth={1}
-            stroke="var(--node-text-color)"
+            stroke="var(--color-fg-tinted)"
           />
         </g>
 

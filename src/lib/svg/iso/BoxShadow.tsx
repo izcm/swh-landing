@@ -14,12 +14,14 @@ export function BoxShadow({
   drop,
   duration,
   delay,
+  still = false, // true = a still shadow that doesn't bob with a float-bob box
 }: Partial<Point> & {
   corners: Point[];
   scale?: number;
   drop: number; // how far below the box the shadow sits
   duration?: string; // match the box's --float-duration
   delay?: string; // match the box's --float-delay
+  still?: boolean;
 }) {
   const points = corners
     .map((p) => `${x + p.x * scale},${y + p.y * scale + drop}`)
@@ -27,7 +29,7 @@ export function BoxShadow({
 
   return (
     <polygon
-      className="float-shadow"
+      className={still ? undefined : "float-shadow"}
       points={points}
       fill="black"
       fillOpacity={0.4}

@@ -2,7 +2,7 @@ import { Shuffle, type LucideIcon } from "lucide-react";
 
 import {
   alignCenter,
-  FilledTube,
+  Tube,
   glyphStrokeLucide,
   paddedBox,
   stackWithGaps,
@@ -195,15 +195,14 @@ export function ConnectDiagram() {
               {/* pills: x from the column, y from the row */}
               {columns.starts.map((columnX, c) =>
                 rows.starts.map((rowY, r) => (
-                  <FilledTube
+                  <Tube
                     key={`${c}-${r}`}
                     x={columnX + pillInset}
                     y={rowY}
                     width={pillMaxWidth}
                     height={pillHeight}
                     level={pillWidths[c][r]}
-                    trackOpacity={0}
-                    fillColor={pillColors[pillShades[c][r]]}
+                    fill={pillColors[pillShades[c][r]]}
                     fillOpacity={0.75}
                   />
                 )),

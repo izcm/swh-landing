@@ -1,4 +1,4 @@
-import { stackWithGaps } from "@/lib/svg";
+import { layoutUnit, stackWithGaps } from "@/lib/svg";
 import { ChartRow } from "./ChartRow";
 import { List } from "./List";
 
@@ -8,27 +8,34 @@ import { List } from "./List";
 export function DashboardContent({
   width,
   height,
-  unit,
   radius,
+  drilldown,
 }: {
   width: number; // the area to fill
   height: number;
-  unit: number; // gaps and dot sizes
-  radius: number; // the list rows' corner radius
+  radius: number; // corner radius of the chart boxes and the list rows
+  drilldown?: boolean; // consumer decides if dashboard displays highlighted areas on graphs for the "drilldown" look
 }) {
-  const rowGap = unit * 0.3;
+  // the dashboard's own ruler for gaps and dot sizes, from its own height.
+  // shared by the charts row and the list so their sizes match
+  const unit = layoutUnit(height);
+
+  const rowGap = unit * 0.5;
   const rowSpace = height - rowGap;
   const rowSizes = [rowSpace * 0.45, rowSpace * 0.55];
   const rows = stackWithGaps(rowSizes, rowGap);
+
+  const columnGap = unit * 0.75;
 
   const rowContent = [
     <ChartRow
       width={width}
       height={rowSizes[0]}
-      gap={rowGap}
+      gap={columnGap}
       unit={unit}
       boxRadius={radius}
       boxStrokeWidth={1}
+      drilldown={drilldown}
     />,
     <List
       width={width * 0.65}

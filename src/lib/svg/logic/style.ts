@@ -31,7 +31,7 @@ export const deepShades = (count: number, start = 0) =>
   Array.from(
     { length: count },
     (_, i) =>
-      `oklch(from var(--accent-deep) calc(l - 0.12 + ${(start + i) * 0.03}) calc(c + 0.03) h)`,
+      `oklch(from var(--accent) calc(l - 0.12 + ${(start + i) * 0.03}) calc(c + 0.03) h)`,
   );
 
 // Lucide icons are drawn on a fixed 0 0 24 24 viewBox; the `size` prop

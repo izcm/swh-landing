@@ -147,7 +147,7 @@ export function ConnectDiagram() {
                   y={y + itemHeight / 2 - nodeIconSize / 2}
                   size={nodeIconSize}
                   strokeWidth={glyphStroke(nodeIconSize, 0.5)}
-                  stroke="var(--node-text-color)"
+                  stroke="var(--color-fg-tinted)"
                 />
 
                 <text
@@ -155,7 +155,7 @@ export function ConnectDiagram() {
                   y={y + itemHeight / 2}
                   dominantBaseline="middle"
                   textAnchor="start"
-                  fill="var(--node-text-color)"
+                  fill="var(--color-fg-tinted)"
                   fontSize={fontSize}
                   fontFamily="inherit"
                   letterSpacing="0em"
@@ -185,7 +185,7 @@ export function ConnectDiagram() {
           <Shuffle
             size={iconSize.shuffle}
             strokeWidth={1}
-            stroke="var(--node-text-color)"
+            stroke="var(--color-fg-tinted)"
           />
         </g>
 

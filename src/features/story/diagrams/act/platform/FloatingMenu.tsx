@@ -1,11 +1,13 @@
 import { ChevronRight, Eye, Mail, User, type LucideIcon } from "lucide-react";
 
 import {
+  alignCenter,
   BoxShadow,
   paddedBox,
   Platform,
   glyphStrokeLucide,
   stackWithGaps,
+  Tube,
   type cardPlatformLayout,
 } from "@/lib/svg";
 import { ElectricGlass } from "../ElectricGlass";
@@ -66,33 +68,36 @@ export function FloatingMenu({
   // inside one row: icon in a circle, label + subtitle bars, chevron at the end
   const row = (() => {
     const h = rows.rowHeight;
-    const insetX = h * 0.25; // from the row's left and right edges
-    const gap = h * 0.25; // between icon, text and chevron
+    const insetX = h * 0.15; // from the row's left and right edges
+    const gap = h * 0.2; // between icon, text and chevron
 
     const icon = (() => {
-      const radius = h * 0.28;
-      const size = radius * 1.1; // the lucide icon inside the circle
+      const radius = h * 0.3;
+      const size = radius * 1.2; // the lucide icon inside the circle
       return { cx: insetX + radius, cy: h / 2, radius, size };
     })();
 
     const chevron = (() => {
-      const size = h * 0.3;
+      const size = h * 0.4;
       return { x: rows.width - insetX - size, y: (h - size) / 2, size };
     })();
 
-    // two bars stacked and centered: a longer label, a shorter subtitle
+    // two lines stacked and centered: a longer label, a shorter subtitle
     const text = (() => {
       const x = icon.cx + icon.radius + gap;
       const width = chevron.x - gap - x;
-      const barHeight = h * 0.09;
+
+      // the two lines
+      const lineHeight = h * 0.09;
+      const lineHeights = [lineHeight, lineHeight]; // label, subtitle
       const lineGap = h * 0.1;
-      const top = (h - (barHeight * 2 + lineGap)) / 2;
-      return {
-        x,
-        barHeight,
-        label: { y: top, width: width * 0.55 },
-        subtitle: { y: top + barHeight + lineGap, width: width * 0.4 },
-      };
+
+      const lines = stackWithGaps(lineHeights, lineGap);
+      const linesHeight = lineHeights[0] + lineGap + lineHeights[1];
+
+      const { offset: y } = alignCenter(h, linesHeight);
+
+      return { x, y, width, lineHeights, lineStarts: lines.starts };
     })();
 
     return { icon, chevron, text };
@@ -120,39 +125,53 @@ export function FloatingMenu({
           />
         )}
         {/* icon in a circle */}
-        <circle
-          cx={icon.cx}
-          cy={icon.cy}
-          r={icon.radius}
-          fill="oklch(from var(--accent) 0.35 0.12 h)"
-          fillOpacity={0.5}
-        />
-        <Icon
-          x={icon.cx - icon.size / 2}
-          y={icon.cy - icon.size / 2}
-          size={icon.size}
-          stroke="var(--accent-electric)"
-          strokeWidth={glyphStrokeLucide(icon.size, 1)}
-        />
-        {/* label + subtitle */}
-        <rect
-          x={text.x}
-          y={text.label.y}
-          width={text.label.width}
-          height={text.barHeight}
-          rx={text.barHeight / 2}
-          fill="var(--accent-electric)"
-          fillOpacity={0.9}
-        />
-        <rect
-          x={text.x}
-          y={text.subtitle.y}
-          width={text.subtitle.width}
-          height={text.barHeight}
-          rx={text.barHeight / 2}
-          fill="var(--accent-electric)"
-          fillOpacity={0.35}
-        />
+        {(() => {
+          const { cx, cy, radius: r, size } = icon;
+          return (
+            <>
+              <circle
+                cx={cx}
+                cy={cy}
+                r={r}
+                fill="oklch(from var(--accent) 0.35 0.12 h)"
+                fillOpacity={0.5}
+              />
+              <Icon
+                x={cx - size / 2}
+                y={cy - size / 2}
+                size={size}
+                stroke="var(--accent-electric)"
+                strokeWidth={glyphStrokeLucide(size, 1)}
+              />
+            </>
+          );
+        })()}
+        {/* label + subtitle: everything inside starts at the text box's top-left */}
+        {(() => {
+          const { x, y, width, lineHeights, lineStarts } = text;
+          return (
+            <g transform={`translate(${x}, ${y})`}>
+              {/* label: bright, longer */}
+              <Tube
+                y={lineStarts[0]}
+                width={width}
+                height={lineHeights[0]}
+                level={0.75}
+                fill="var(--accent-electric)"
+                fillOpacity={0.9}
+              />
+              {/* subtitle: dim, shorter */}
+              <Tube
+                y={lineStarts[1]}
+                width={width}
+                height={lineHeights[1]}
+                level={0.5}
+                fill="var(--accent-electric)"
+                fillOpacity={0.35}
+              />
+            </g>
+          );
+        })()}
         {/* chevron at the end */}
         <ChevronRight
           x={chevron.x}
@@ -185,10 +204,11 @@ export function FloatingMenu({
         <BoxShadow
           corners={[bottom.left, bottom.back, bottom.right, bottom.front]}
           drop={40}
+          still
         />
         {/* bobs up and down; the shadow stays put and shrinks in step
             (both default to 4s, no delay) */}
-        <g className="float-bob">
+        <g>
           <Platform {...platform} grid={{ across: 4, along: 6 }} />
           {/* the card: glass, slanted by skewY */}
           <g transform={`translate(${card.x}, ${card.y}) skewY(${card.angle})`}>
@@ -210,7 +230,7 @@ export function FloatingMenu({
               height={card.height}
               rx={radius}
               fill="var(--accent-ink)"
-              fillOpacity={0.5}
+              fillOpacity={0.55}
             />
             {/* the selected row, above the ink, with an extra layer of glass */}
             <g transform={`translate(${rows.translateX}, ${rows.translateY})`}>

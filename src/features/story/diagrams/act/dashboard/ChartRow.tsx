@@ -1,5 +1,5 @@
 import { BarChart, Tube, LineChart, stackWithGaps } from "@/lib/svg";
-import { BoxBackground } from "./BoxBackground";
+import { RecessedPanel } from "./BoxBackground";
 
 // first row: two boxes side by side, line chart in the left one, bar chart in the right
 export function ChartRow({
@@ -116,7 +116,7 @@ export function ChartRow({
     <>
       {columns.starts.map((columnX, i) => (
         <g key={i} transform={`translate(${columnX}, 0)`}>
-          <BoxBackground
+          <RecessedPanel
             width={columnSizes[i]}
             height={height}
             radius={boxRadius}

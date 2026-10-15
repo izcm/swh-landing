@@ -1,8 +1,8 @@
 import { useId } from "react";
 
-// a box's background: faint electric fill + electric border.
+// faint electric fill + electric border.
 // everything inside starts at (0, 0) = the box's top-left
-export function BoxBackground({
+export function RecessedPanel({
   width,
   height,
   radius,
@@ -36,7 +36,7 @@ export function BoxBackground({
         width={width}
         height={height}
         rx={radius}
-        fill="black"
+        fill="oklch(from var(--accent) 0.08 0.025 h)"
         fillOpacity={1}
       />
       <rect

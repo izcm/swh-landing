@@ -7,7 +7,7 @@ import {
   glyphStrokeLucide,
   stackWithGaps,
 } from "@/lib/svg";
-import { BoxBackground } from "./BoxBackground";
+import { RecessedPanel } from "./BoxBackground";
 
 // how much of the row a label takes, like a word or two of text: somewhere
 // between 25% and 60%. looks random but is the same number for the same row
@@ -88,7 +88,7 @@ export function List({
   return rows.starts.map((rowY, i) => (
     <g key={i} transform={`translate(0, ${rowY})`}>
       {/* background */}
-      <BoxBackground
+      <RecessedPanel
         width={width}
         height={rowHeight}
         radius={Math.min(radius, rowHeight / 4)}

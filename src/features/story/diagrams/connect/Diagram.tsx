@@ -7,8 +7,8 @@ import {
   paddedBox,
   stackWithGaps,
   ThreeBoxDiagram,
-  WindowStack,
-  windowStackLayout,
+  WindowPane,
+  cascadeLayout,
 } from "@/lib/svg";
 import { connectLayout } from "./geometry/layout";
 import { Nodes } from "./nodes/Nodes";
@@ -72,7 +72,7 @@ export function ConnectDiagram() {
       right={({ width, height, unit }) => {
         const layout = connectLayout({ width, unit });
 
-        const stackLayout = windowStackLayout({
+        const stackLayout = cascadeLayout({
           groupWidth: width,
           heightToWidthRatio: 0.8,
           angle: layout.card.angles.angleA,
@@ -212,14 +212,18 @@ export function ConnectDiagram() {
         );
 
         return (
-          <WindowStack
-            layout={stackLayout}
-            y={translateY}
-            radius={3}
-            strokeWidth={0.8}
-            backOpacity={0.6}
-            frontContent={frontContent}
-          />
+          <g transform={`translate(0, ${translateY}) ${stackLayout.transform}`}>
+            {stackLayout.items.map((win, i) => (
+              <g
+                key={i}
+                transform={`translate(${win.x}, ${win.y})`}
+                opacity={0.6 + win.depth * 0.4}
+              >
+                <WindowPane width={win.width} height={win.height} radius={3} strokeWidth={0.8} />
+                {win.isFront && frontContent}
+              </g>
+            ))}
+          </g>
         );
       }}
     />

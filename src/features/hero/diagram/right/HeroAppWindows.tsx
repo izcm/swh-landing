@@ -1,4 +1,4 @@
-import { alignEnd, paddedBox, WindowStack, windowStackLayout } from "@/lib/svg";
+import { alignEnd, cascadeLayout, paddedBox, WindowPane } from "@/lib/svg";
 import { DashboardContent } from "@/features/story/diagrams/act/dashboard/DashboardContent";
 
 // the right box: three app windows, tilted along the A edges, sitting on the
@@ -26,7 +26,7 @@ export function HeroAppWindows({
 
   const heightToWidthRatio = 0.8;
 
-  const windowStack = windowStackLayout({
+  const windowStack = cascadeLayout({
     groupWidth: width,
     angle,
     count,
@@ -69,14 +69,19 @@ export function HeroAppWindows({
         strokeWidth={0.75}
         strokeDasharray="6 4"
       />
-      <WindowStack
-        layout={windowStack}
-        y={stackY}
-        radius={3}
-        strokeWidth={0.8}
-        backOpacity={0.6}
-        frontContent={frontContent}
-      />
+      {/* the windows: back to front, fading from 0.6 at the back */}
+      <g transform={`translate(0, ${stackY}) ${windowStack.transform}`}>
+        {windowStack.items.map((win, i) => (
+          <g
+            key={i}
+            transform={`translate(${win.x}, ${win.y})`}
+            opacity={0.6 + win.depth * 0.4}
+          >
+            <WindowPane width={win.width} height={win.height} radius={3} strokeWidth={0.8} />
+            {win.isFront && frontContent}
+          </g>
+        ))}
+      </g>
     </g>
   );
 }

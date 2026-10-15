@@ -1,9 +1,9 @@
 import { useId } from "react";
 
-// a window's background: dark surface with a soft gradient, faint electric
-// tint, border, and an electric line along the top edge.
-// everything inside starts at (0, 0) = the window's top-left
-export function WindowBackground({
+// one window's pane, the look hero and connect use: a dark surface with a soft
+// gradient, a faint electric tint, a border and an electric line along the top
+// edge. everything inside starts at (0, 0) = the window's top-left
+export function WindowPane({
   width,
   height,
   radius,

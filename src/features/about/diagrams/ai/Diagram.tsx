@@ -9,7 +9,6 @@ import {
   paddedBox,
   spaceBetween,
 } from "@/lib/svg";
-import { BoxBackground } from "@/features/story/diagrams/act/dashboard/BoxBackground";
 import { EditorCode } from "./editor/EditorCode";
 
 export function AISvg() {
@@ -70,6 +69,11 @@ export function AISvg() {
       item: { width: itemWidth, height: itemHeight },
     };
   })();
+
+  // the front editor's background: the ink fade from its top
+  const editorBgId = useId();
+  // the front editor's border: bright at the top, fading toward the bottom
+  const editorBorderId = useId();
 
   // AI suggestion panel, placed relative to the front editor (in the tilted group's coords)
   const suggestionGradientId = useId();
@@ -158,7 +162,7 @@ export function AISvg() {
                 opacity={opacity}
                 // front: quiet halo to lift it off the rest. back: big faint haze, a bit out of focus
                 style={{
-                  filter: isFront ? accentGlow(4, 12) : accentGlow(2, 6),
+                  filter: accentGlow(4, 12),
                 }}
               >
                 <AppWindow
@@ -170,18 +174,88 @@ export function AISvg() {
                   viewboxHeight={200}
                   ghost={!isFront}
                   fill={isFront ? "var(--node-color-deep)" : undefined}
+                  strokeWidth={isFront ? 0 : undefined} // trying: no border on the front editor
                 >
-                  {/* preview: act's BoxBackground as the front editor's background,
-                      over AppWindow's own. AppWindow draws in a 300-wide box, so
-                      glyphStroke turns parent units into that box's units */}
+                  {/* the front editor's background, layered inline: dark ground, a soft
+                      ink fade from the top, and a faint highlight along the top edge.
+                      AppWindow draws in a 300 × 200 box with --rx-node-md (8) corners,
+                      and glyphStroke turns parent units into that box's units */}
                   {isFront && (
-                    <BoxBackground
-                      width={300}
-                      height={200}
-                      // same as AppWindow's own corners: --rx-node-md (8), in its 300-wide box
-                      radius={8}
-                      strokeWidth={glyphStroke(editorBox.item.width, 0.8, 300)}
-                    />
+                    <>
+                      <defs>
+                        <linearGradient
+                          id={editorBgId}
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="var(--accent-ink)"
+                            stopOpacity={0.9}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="var(--accent-ink)"
+                            stopOpacity={0}
+                          />
+                        </linearGradient>
+                        <linearGradient
+                          id={editorBorderId}
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="var(--accent-electric)"
+                            stopOpacity={0.6}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="var(--accent-electric)"
+                            stopOpacity={0.15}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <rect
+                        width={300}
+                        height={200}
+                        rx={8}
+                        fill="var(--ground)"
+                      />
+                      <rect
+                        width={300}
+                        height={200}
+                        rx={8}
+                        fill={`url(#${editorBgId})`}
+                      />
+                      <line
+                        x1={8}
+                        y1={1.5}
+                        x2={292}
+                        y2={1.5}
+                        stroke="var(--accent-electric)"
+                        strokeOpacity={0.25}
+                        strokeWidth={glyphStroke(
+                          editorBox.item.width,
+                          0.6,
+                          300,
+                        )}
+                      />
+                      {/* lit edge: a 1px hairline, bright at the top and fading down */}
+                      <rect
+                        width={300}
+                        height={200}
+                        rx={8}
+                        fill="none"
+                        stroke={`url(#${editorBorderId})`}
+                        strokeWidth={1}
+                        vectorEffect="non-scaling-stroke"
+                      />
+                    </>
                   )}
                   <g transform={`translate(${dots.translateX}, 0)`}>
                     <WindowDots

@@ -4,10 +4,8 @@ import {
   alignCenter,
   alignEnd,
   cardPlatformLayout,
+  cascadeLayout,
   paddedBox,
-  WindowStack,
-  windowStackLayout,
-  type WindowStyle,
 } from "@/lib/svg";
 import { DashboardContent } from "./dashboard/DashboardContent";
 import { FloatingMenu } from "./platform/FloatingMenu";
@@ -24,10 +22,14 @@ export function ActDiagram() {
 
   // chart background: accent at the top, fading to transparent at the bottom
   const chartGradientId = useId();
+  // the dashboard windows' look: an ink fade from the top, and a border that's
+  // bright at the top and fades down
+  const paneInkId = useId();
+  const paneEdgeId = useId();
 
   // left: the dashboard, a stack of tilted windows
   const dashboard = (() => {
-    const stackLayout = windowStackLayout({
+    const stackLayout = cascadeLayout({
       // the stack's width: same as the old left box
       groupWidth: viewboxWidth * 0.68,
       heightToWidthRatio: 0.72,
@@ -38,18 +40,21 @@ export function ActDiagram() {
       side: "left",
     });
 
-    // per-window tweaks on top of the layout, front first ([0] = front)
-    const windowStyles: WindowStyle[] = (() => {
+    // the windows to draw, back to front: the cascade's, with the middle one
+    // ([1]) a bit narrower and taller
+    const windows = (() => {
       const { gapX, gapY, item } = stackLayout;
-      return [
-        {},
-        {
-          width: item.width * 0.875,
-          height: item.height * 1.06,
-          x: gapX * 3,
-          y: gapY + item.height - item.height * 1.06,
-        }, // middle window
-      ];
+      return stackLayout.items.map((win, i) =>
+        i === 1
+          ? {
+              ...win,
+              width: item.width * 0.875,
+              height: item.height * 1.06,
+              x: gapX * 3,
+              y: gapY + item.height - item.height * 1.06,
+            }
+          : win,
+      );
     })();
 
     const { offset: translateY } = alignCenter(
@@ -74,7 +79,7 @@ export function ActDiagram() {
       );
     })();
 
-    return { stackLayout, windowStyles, translateY, frontContent };
+    return { stackLayout, windows, translateY, frontContent };
   })();
 
   // right: the platform with the card, placed by its real bounding box
@@ -87,9 +92,9 @@ export function ActDiagram() {
       angleB: -dashboard.stackLayout.angle,
       thickness: 6,
       cardSize: { width: 1, height: 1.3 },
-      spanBToARatio: 0.85,
-      cardAngle: angleA - 5, // a bit flatter than the A edge, so the card faces us more
-      // cardAt: { alongA: 0.5, alongB: 0.5 + 1 / 4 }, // one gridline further in the B direction
+      spanBToARatio: 0.75,
+      cardAngle: angleA - 8, // a bit flatter than the A edge, so the card faces us more
+      cardAt: { alongA: 0.5 + 0.15, alongB: 0.5 + 0.15 }, // one gridline further in the B direction
     });
 
     const translateX = viewboxWidth - layout.groupWidth; // flush with the right edge
@@ -113,6 +118,16 @@ export function ActDiagram() {
           <stop offset="0%" stopColor="var(--accent)" stopOpacity={1} />
           <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
         </linearGradient>
+        {/* window fill: ink at the top, fading out toward the bottom */}
+        <linearGradient id={paneInkId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="var(--accent-ink)" stopOpacity={0.9} />
+          <stop offset="100%" stopColor="var(--accent-ink)" stopOpacity={0} />
+        </linearGradient>
+        {/* window border: electric, bright at the top and fading down */}
+        <linearGradient id={paneEdgeId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="var(--accent-electric)" stopOpacity={0.6} />
+          <stop offset="100%" stopColor="var(--accent-electric)" stopOpacity={0.15} />
+        </linearGradient>
       </defs>
 
       <rect
@@ -127,15 +142,40 @@ export function ActDiagram() {
         strokeDasharray="6 4"
       />
 
-      <WindowStack
-        layout={dashboard.stackLayout}
-        y={dashboard.translateY}
-        radius={radius}
-        strokeWidth={0.8}
-        backOpacity={0.6}
-        windowStyles={dashboard.windowStyles}
-        frontContent={dashboard.frontContent}
-      />
+      {/* the dashboard: tilted windows, back to front, fading from 0.6 at the back */}
+      <g transform={`translate(0, ${dashboard.translateY}) ${dashboard.stackLayout.transform}`}>
+        {dashboard.windows.map((win, i) => (
+          <g
+            key={i}
+            transform={`translate(${win.x}, ${win.y})`}
+            opacity={0.6 + win.depth * 0.4}
+          >
+            {/* dark ground, the ink fade, a faint highlight along the top edge */}
+            <rect width={win.width} height={win.height} rx={radius} fill="var(--ground)" />
+            <rect width={win.width} height={win.height} rx={radius} fill={`url(#${paneInkId})`} />
+            <line
+              x1={radius}
+              y1={1}
+              x2={win.width - radius}
+              y2={1}
+              stroke="var(--accent-electric)"
+              strokeOpacity={0.25}
+              strokeWidth={0.6}
+            />
+            {/* lit edge: a 1px hairline, bright at the top and fading down */}
+            <rect
+              width={win.width}
+              height={win.height}
+              rx={radius}
+              fill="none"
+              stroke={`url(#${paneEdgeId})`}
+              strokeWidth={1}
+              vectorEffect="non-scaling-stroke"
+            />
+            {win.isFront && dashboard.frontContent}
+          </g>
+        ))}
+      </g>
 
       <g
         transform={`translate(${floatingMenu.translateX}, ${floatingMenu.translateY})`}

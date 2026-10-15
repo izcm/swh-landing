@@ -1,4 +1,4 @@
-import { ChevronRight, Eye, Mail, User, type LucideIcon } from "lucide-react";
+import { ChevronRight, Eye, Plus, User, type LucideIcon } from "lucide-react";
 
 import {
   alignCenter,
@@ -7,15 +7,14 @@ import {
   Platform,
   glyphStrokeLucide,
   stackWithGaps,
-  Tube,
   type cardPlatformLayout,
 } from "@/lib/svg";
 import { ElectricGlass } from "../ElectricGlass";
 
-// one row per `act` action: email, assign, track
-const actions: LucideIcon[] = [Mail, User, Eye];
+// one row per `act` action: task, assign, track
+const actions: LucideIcon[] = [Plus, User, Eye];
 // each row's label, in the same order as actions
-const labels = ["NOTIFY", "ASSIGN", "TRACK"];
+const labels = ["TASK", "ASSIGN", "TRACK"];
 
 // the act's floating menu: a platform with a glass card standing on it,
 // one row per action, the first one picked. drawn with the bounding box's
@@ -227,7 +226,7 @@ export function FloatingMenu({
         {/* bobs up and down; the shadow stays put and shrinks in step
             (both default to 4s, no delay) */}
         <g className="float-bob">
-          <Platform {...platform} grid={{ across: 4, along: 6 }} />
+          <Platform {...platform} grid={{ across: 5, along: 6 }} />
           {/* the card: glass, slanted by skewY */}
           <g transform={`translate(${card.x}, ${card.y}) skewY(${card.angle})`}>
             <ElectricGlass
@@ -248,7 +247,7 @@ export function FloatingMenu({
               height={card.height}
               rx={radius}
               fill="var(--accent-ink)"
-              fillOpacity={0.55}
+              fillOpacity={0.4}
             />
             {/* the selected row, above the ink, with an extra layer of glass */}
             <g transform={`translate(${rows.translateX}, ${rows.translateY})`}>

@@ -75,7 +75,6 @@ export function ElectricGlass({
         height={height}
         rx={radius}
         fill={`url(#${sheenId})`}
-        fillOpacity={0.22}
       />
       {/* 3. border */}
       <rect

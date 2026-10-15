@@ -1,3 +1,4 @@
+export * from "./cardPlatformLayout";
 export * from "./IsoPlatform";
 export * from "./Platform";
 export * from "./platformCardMetrics";

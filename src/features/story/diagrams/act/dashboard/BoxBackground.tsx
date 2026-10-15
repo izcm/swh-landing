@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 // a box's background: faint electric fill + electric border.
 // everything inside starts at (0, 0) = the box's top-left
 export function BoxBackground({
@@ -11,8 +13,25 @@ export function BoxBackground({
   radius: number; // corner radius
   strokeWidth: number; // border thickness
 }) {
+  const borderId = useId();
+
   return (
     <>
+      <defs>
+        {/* border: bright at the top, fading toward the bottom */}
+        <linearGradient id={borderId} x1="0" y1="0" x2="0" y2="1">
+          <stop
+            offset="0%"
+            stopColor="var(--accent-electric)"
+            stopOpacity={0.9}
+          />
+          <stop
+            offset="100%"
+            stopColor="var(--accent-electric)"
+            stopOpacity={0.25}
+          />
+        </linearGradient>
+      </defs>
       <rect
         width={width}
         height={height}
@@ -32,15 +51,16 @@ export function BoxBackground({
         height={height}
         rx={radius}
         fill="var(--accent-electric)"
-        fillOpacity={0.025}
+        fillOpacity={0.05}
       />
       <rect
         width={width}
         height={height}
         rx={radius}
         fill="none"
-        stroke="var(--accent-electric)"
+        stroke={`url(#${borderId})`}
         strokeWidth={strokeWidth}
+        vectorEffect="non-scaling-stroke"
       />
     </>
   );

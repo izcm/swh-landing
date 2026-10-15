@@ -7,6 +7,8 @@ type LineChartProps = {
   values: number[]; // each 0-1, normalized — swap for animated values later
   color: string;
   dotRadius?: number; // a dot on each point. no dots if left out
+  areaOpacity?: number; // fill under the line: this opacity at the top, 0 at the bottom. no fill if left out
+  areaRadius?: number; // the fill's corners, rounded off by a clip the size of the chart
 } & Partial<Point>;
 
 // points evenly spread across the width, 0 at the bottom, 1 at the top
@@ -23,24 +25,33 @@ export function LineChart({
   y = 0,
   width,
   height,
-  values,
+  values: valuesNotUsedRightNowFixLater,
   color,
   dotRadius,
+  areaOpacity,
+  areaRadius = 0,
 }: LineChartProps) {
   const glowId = useId();
+  const areaId = useId();
+  const areaClipId = useId();
   // the glow behind peak dots: its own circle, blurred as far as its radius
   const glowRadius = (dotRadius ?? 0) * 2;
   const glowBlur = glowRadius * 0.5;
 
   const wave = (x: number) => 0.3 + 0.22 * x + 0.16 * Math.sin(4 * Math.PI * x);
 
-  const valuesTmp = Array.from({ length: 85 }, (_, i) => wave(i / 100));
+  const values = Array.from({ length: 85 }, (_, i) => wave(i / 100));
 
-  const points = toPoints(valuesTmp, width, height);
+  const points = toPoints(values, width, height);
 
-  const d = points
+  const lineD = points
     .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
     .join(" ");
+
+  // the area under the line: the line, then down to the bottom, back along
+  // the bottom to the first point's x, and closed
+  const last = points[points.length - 1];
+  const areaD = `${lineD} L ${last.x} ${height} L ${points[0].x} ${height} Z`;
 
   const separatorCount = 3;
   const separators = Array.from({ length: separatorCount }).map((_, i) => ({
@@ -59,8 +70,27 @@ export function LineChart({
         <filter id={glowId} x="-150%" y="-150%" width="400%" height="400%">
           <feGaussianBlur stdDeviation={glowBlur} />
         </filter>
+        {/* area: areaOpacity at the top, fully transparent at the bottom */}
+        <linearGradient id={areaId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity={areaOpacity} />
+          <stop offset="100%" stopColor={color} stopOpacity={0} />
+        </linearGradient>
+        {/* the area is only shown inside this: the chart's box, corners rounded */}
+        <clipPath id={areaClipId}>
+          <rect width={width} height={height} rx={areaRadius} />
+        </clipPath>
       </defs>
       {/* 2. Transparent blue */}
+      {areaOpacity !== undefined && (
+        <path
+          d={areaD}
+          fill={`url(#${areaId})`}
+          // fill={"var(--accent)"}
+          // fillOpacity={0.25}
+          stroke="none"
+          clipPath={`url(#${areaClipId})`}
+        />
+      )}
 
       {separators.map((s, i) => (
         <line
@@ -75,18 +105,19 @@ export function LineChart({
       ))}
 
       <path
-        d={d}
+        d={lineD}
         fill="none"
         stroke={color}
         strokeWidth={0.5}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+
       {/* dots on the turning points: red on a peak, blue in a dip */}
       {dotRadius !== undefined &&
-        valuesTmp.map((value, i) => {
-          const prev = valuesTmp[i - 1];
-          const next = valuesTmp[i + 1];
+        values.map((value, i) => {
+          const prev = values[i - 1];
+          const next = values[i + 1];
           // the first and last point have no neighbor on one side
           if (prev === undefined || next === undefined) return null;
 

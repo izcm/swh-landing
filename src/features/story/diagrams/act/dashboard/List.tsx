@@ -25,14 +25,15 @@ export function List({
   unit,
   radius,
   rowCount,
+  rowGap,
 }: {
   width: number;
   height: number;
   unit: number;
   radius: number; // the rows' corner radius, capped so short rows don't turn into pills
   rowCount: number;
+  rowGap: number; // space between rows
 }) {
-  const rowGap = unit * 0.2;
   // rowCount rows + (rowCount - 1) gaps fill the height
   const rowHeight = (height - rowGap * (rowCount - 1)) / rowCount;
 

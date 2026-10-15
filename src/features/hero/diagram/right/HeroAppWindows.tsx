@@ -1,12 +1,5 @@
-import {
-  alignEnd,
-  paddedBox,
-  stackWithGaps,
-  WindowStack,
-  windowStackLayout,
-} from "@/lib/svg";
-import { ChartRow } from "@/features/story/diagrams/act/dashboard/ChartRow";
-import { List } from "@/features/story/diagrams/act/dashboard/List";
+import { alignEnd, paddedBox, WindowStack, windowStackLayout } from "@/lib/svg";
+import { DashboardContent } from "@/features/story/diagrams/act/dashboard/DashboardContent";
 
 // the right box: three app windows, tilted along the A edges, sitting on the
 // box's bottom. x / y / width / height = the right box, from Diagram.tsx
@@ -46,46 +39,20 @@ export function HeroAppWindows({
   // stack's bottom on the box's bottom
   const { offset: stackY } = alignEnd(height, windowStack.stackHeight);
 
-  // act's dashboard (ChartRow + List) in the front window.
-  // sized like act's: its unit is ~1/8.5 of its window's height
+  // act's dashboard in the front window, sized from the window itself
   const frontContent = (() => {
-    const unit = windowStack.item.height / 8.5;
-    const box = paddedBox(
-      windowStack.item.width,
-      windowStack.item.height,
-      0.65,
-      1,
-    );
-    const rowGap = unit * 0.4;
-    const rowSpace = box.contentHeight - rowGap;
-    const rowSizes = [rowSpace * 0.48, rowSpace * 0.52];
-    const rows = stackWithGaps(rowSizes, rowGap);
-
-    const rowContent = [
-      <ChartRow
-        width={box.contentWidth}
-        height={rowSizes[0]}
-        gap={rowGap}
-        unit={unit}
-        boxRadius={4}
-        boxStrokeWidth={0.4}
-      />,
-      <List
-        width={box.contentWidth * 0.6}
-        height={rowSizes[1]}
-        unit={unit}
-        radius={6}
-        rowCount={4}
-      />,
-    ];
+    const { width, height } = windowStack.item;
+    const box = paddedBox(width, height, 0.65, 1);
 
     return (
-      <g transform={`translate(${box.contentX}, ${box.contentY})`}>
-        {rows.starts.map((rowY, i) => (
-          <g key={i} transform={`translate(0, ${rowY})`}>
-            {rowContent[i]}
-          </g>
-        ))}
+      // doing 1.25 looks nicer with padding being top heavy
+      <g transform={`translate(${box.contentX}, ${box.contentY * 1.25})`}>
+        <DashboardContent
+          width={box.contentWidth}
+          height={box.contentHeight}
+          unit={height / 8} // about 1/8 of the window's height
+          radius={3}
+        />
       </g>
     );
   })();

@@ -19,7 +19,7 @@ export function ChartRow({
 }) {
   // the row's width, shared 62 / 38 after the gap
   const columnSpace = width - gap;
-  const columnSizes = [columnSpace * 0.62, columnSpace * 0.38];
+  const columnSizes = [columnSpace * 0.65, columnSpace * 0.35];
   const columns = stackWithGaps(columnSizes, gap);
 
   // right box: bar chart, pulled in a little so the bars don't touch the box
@@ -39,39 +39,16 @@ export function ChartRow({
       return { values, colors, barRatio };
     })();
 
-    // the picked bar: a faint --accent-glow rect behind its slot.
-    // same slot math as BarChart: each bar gets chartWidth / values.length
-    const highlight = (() => {
-      const selected = 3;
-      const slotWidth = chartWidth / bars.values.length;
-      const width = slotWidth; // a bit wider than the bar, narrower than the slot
-
-      return {
-        x: insetX + selected * slotWidth + (slotWidth - width) / 2,
-        y: insetY,
-        width,
-        height: chartHeight,
-      };
-    })();
-
     return (
-      <>
-        <rect
-          {...highlight}
-          rx={2}
-          fill="var(--accent-electric)"
-          fillOpacity={0.12}
-        />
-        <BarChart
-          x={insetX}
-          y={insetY}
-          width={chartWidth}
-          height={chartHeight}
-          values={bars.values}
-          colors={bars.colors}
-          barRatio={bars.barRatio}
-        />
-      </>
+      <BarChart
+        x={insetX}
+        y={insetY}
+        width={chartWidth}
+        height={chartHeight}
+        values={bars.values}
+        colors={bars.colors}
+        barRatio={bars.barRatio}
+      />
     );
   })();
 
@@ -83,8 +60,10 @@ export function ChartRow({
       width={columnSizes[0]}
       height={height}
       values={lineValues}
-      color="var(--accent-electric)"
+      color="var(--accent-deep)"
       dotRadius={unit * 0.08}
+      areaOpacity={0.04}
+      areaRadius={boxRadius} // same corners as the box behind it
     />,
     barChart,
   ];

@@ -56,7 +56,7 @@ export function BarChart({
             y={height - barHeight}
             width={barWidth}
             height={barHeight}
-            rx="2"
+            rx="1"
             fill={colors?.[i] ?? "var(--accent)"}
           />
         );

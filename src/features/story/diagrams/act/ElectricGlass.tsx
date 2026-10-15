@@ -66,7 +66,7 @@ export function ElectricGlass({
         width={width}
         height={height}
         rx={radius}
-        fill="oklch(from var(--accent) 0.18 0.065 h)"
+        fill="oklch(from var(--accent) 0.18 0.072 h)"
         fillOpacity={0.55}
       />
       {/* 2. sheen */}

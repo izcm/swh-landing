@@ -1,3 +1,19 @@
+## SVG components: share the layout, not the drawing
+
+- When a part of a diagram should be reusable, share the **layout function**
+  (the geometry: positions, sizes, bounding box) in `lib/svg`. The component
+  that draws it stays in its diagram's folder and draws its own look (glass,
+  rows, ink). Example: `cardPlatformLayout` lives in `lib/svg/platform/` and
+  is shared, while `FloatingMenu` lives in `act/platform/` and belongs only to
+  the act diagram.
+- Don't add content slots or extra props (like `cardContent` or an `ink` box)
+  just to make a drawing component generic.
+- Don't extract a reusable menu, row or other part until a second caller
+  actually needs it. Then pull it out of working code.
+- Name the drawing component after what it shows in the diagram
+  (`FloatingMenu`), and give the caller's section the same name
+  (`const floatingMenu = (() => …)()`).
+
 ## SVG components: no hardcoded knobs
 
 - Any number that controls how something looks (size, ratio, gap,

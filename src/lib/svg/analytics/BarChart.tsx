@@ -43,7 +43,7 @@ export function BarChart({
     if (selectedIdx === undefined) return { fill: color, fillOpacity: opacity };
     return i === selectedIdx
       ? {
-          fill: `oklch(from ${color} calc(l + 0.15) calc(c + 0.05) h / 0.75)`,
+          fill: `oklch(from ${color} calc(l + 0.1) calc(c + 0.05) h / 0.75)`,
           fillOpacity: 1,
         }
       : { fill: color, fillOpacity: opacity * 0.65 };

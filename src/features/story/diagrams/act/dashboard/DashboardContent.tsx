@@ -1,4 +1,5 @@
 import { alignCenter, layoutUnit, stackWithGaps } from "@/lib/svg";
+import { RecessedPanel } from "./BoxBackground";
 import { ChartRow } from "./ChartRow";
 import { DonutWithLegend } from "./DonutWithLegend";
 import { List } from "./List";
@@ -28,19 +29,60 @@ export function DashboardContent({
 
   const columnGap = unit * 0.75;
 
-  // the list takes the left 65% of the second row
-  const listWidth = width * 0.65;
-
-  // right of the list: the donut and its legend, in a box as tall as the
-  // ring, centered on the row's height
-  const donut = (() => {
-    const boxHeight = unit * 2; // the ring's diameter (radius = unit, as now)
-    const translateX = listWidth + columnGap;
-    const boxWidth = width - translateX; // to the row's right edge
-    const { offset: translateY } = alignCenter(rowSizes[1], boxHeight);
-
-    return { boxWidth, boxHeight, translateX, translateY };
+  // second row: two columns like the chart row, the list on the left and
+  // the donut on the right, shared 65 / 35 after the gap
+  const bottomColumns = (() => {
+    const space = width - columnGap;
+    const sizes = [space * 0.65, space * 0.35];
+    const { starts } = stackWithGaps(sizes, columnGap);
+    return { sizes, starts };
   })();
+
+  // right column: a box like the chart boxes, the donut and its legend on it,
+  // centered on the box's height
+  const donut = (() => {
+    const panelWidth = bottomColumns.sizes[1];
+    const panelHeight = rowSizes[1] * 0.5;
+
+    // the donut, pulled in from the box's sides like the bar chart
+    const insetX = panelWidth * 0.1; // each side
+    const boxWidth = panelWidth - insetX * 2;
+    const boxHeight = unit * 2; // the ring's diameter (radius = unit, as now)
+    const { offset: boxY } = alignCenter(panelHeight, boxHeight);
+
+    return { panelWidth, panelHeight, insetX, boxWidth, boxHeight, boxY };
+  })();
+
+  // what goes in each column of the second row, left to right
+  const bottomContent = [
+    <List
+      width={bottomColumns.sizes[0]}
+      height={rowSizes[1]}
+      unit={unit}
+      radius={radius}
+      rowCount={4}
+      rowGap={rowGap * 0.5}
+      selectedIdx={drilldown ? 1 : undefined} // the picked row, or none without drilldown
+    />,
+    <>
+      <RecessedPanel
+        width={donut.panelWidth}
+        height={donut.panelHeight}
+        radius={radius}
+        strokeWidth={1}
+      />
+      <g
+        transform={`translate(${donut.insetX}, ${donut.boxY})`}
+        opacity={0.65} // same as the bar chart
+      >
+        <DonutWithLegend
+          width={donut.boxWidth}
+          height={donut.boxHeight}
+          unit={unit}
+        />
+      </g>
+    </>,
+  ];
 
   const rowContent = [
     <ChartRow
@@ -53,22 +95,11 @@ export function DashboardContent({
       drilldown={drilldown}
     />,
     <>
-      <List
-        width={listWidth}
-        height={rowSizes[1]}
-        unit={unit}
-        radius={radius}
-        rowCount={4}
-        rowGap={rowGap * 0.5}
-        selectedIdx={drilldown ? 1 : undefined} // the picked row, or none without drilldown
-      />
-      <g transform={`translate(${donut.translateX}, ${donut.translateY})`}>
-        <DonutWithLegend
-          width={donut.boxWidth}
-          height={donut.boxHeight}
-          unit={unit}
-        />
-      </g>
+      {bottomColumns.starts.map((columnX, i) => (
+        <g key={i} transform={`translate(${columnX}, 0)`}>
+          {bottomContent[i]}
+        </g>
+      ))}
     </>,
   ];
 

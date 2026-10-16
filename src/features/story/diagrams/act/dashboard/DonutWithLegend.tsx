@@ -7,7 +7,7 @@ const placeholders = [
   { value: 3, color: "var(--accent-electric)", tubeLength: 0.75 },
   {
     value: 2,
-    color: "oklch(from var(--accent-deep) calc(l - 0.25) c h)", // deep, darker
+    color: "oklch(from var(--accent-deep) l c h)",
     tubeLength: 0.65,
   },
 ];
@@ -27,7 +27,7 @@ export function DonutWithLegend({
   // left: the ring, as tall as the box
   const ring = (() => {
     const radius = height / 2;
-    const thickness = unit * 0.25;
+    const thickness = unit * 0.2;
     return { radius, thickness };
   })();
 
@@ -67,15 +67,12 @@ export function DonutWithLegend({
 
   return (
     <>
-      <g opacity={0.7}>
-        {/* same as the bar chart */}
-        <DonutChart
-          slices={slices}
-          radius={ring.radius}
-          thickness={ring.thickness}
-          gapAngle={0.05}
-        />
-      </g>
+      <DonutChart
+        slices={slices}
+        radius={ring.radius}
+        thickness={ring.thickness}
+        gapAngle={0.085}
+      />
       <g transform={`translate(${legend.translateX}, 0)`}>
         <Legend layout={legend.layout} items={slices} />
       </g>

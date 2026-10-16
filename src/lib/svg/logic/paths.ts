@@ -1,3 +1,4 @@
+import { pointOnCircle } from "./geometry";
 import type { Point } from "./types";
 
 // smooth curve through every point, as an svg path `d` string.
@@ -25,4 +26,27 @@ export function smoothPath(points: Point[]) {
   }
 
   return d;
+}
+
+// a piece of a circle from startAngle to endAngle (radians, clockwise), as an
+// svg path `d` string. stroke it to draw a piece of a ring
+export function arcPath(
+  circle: { centerX: number; centerY: number; radius: number },
+  startAngle: number,
+  endAngle: number,
+): string {
+  // a whole turn ends on its own start point, and svg draws nothing for that:
+  // draw it as two half turns instead
+  if (endAngle - startAngle >= 2 * Math.PI) {
+    const middle = (startAngle + endAngle) / 2;
+    return `${arcPath(circle, startAngle, middle)} ${arcPath(circle, middle, endAngle)}`;
+  }
+
+  const start = pointOnCircle({ angle: startAngle, circle });
+  const end = pointOnCircle({ angle: endAngle, circle });
+  // more than half a turn: tell svg to go the long way round
+  const largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
+  const { radius } = circle;
+
+  return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y}`;
 }

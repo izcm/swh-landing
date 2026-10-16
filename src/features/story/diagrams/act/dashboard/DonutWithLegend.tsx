@@ -1,0 +1,84 @@
+import { DonutChart, Legend, legendLayout, Tube } from "@/lib/svg";
+
+// placeholder slices: value, color, and how long its legend tube is
+// (share of the legend's label width)
+const placeholders = [
+  { value: 5, color: "var(--accent)", tubeLength: 1 },
+  { value: 3, color: "var(--accent-electric)", tubeLength: 0.75 },
+  {
+    value: 2,
+    color: "oklch(from var(--accent-deep) calc(l - 0.25) c h)", // deep, darker
+    tubeLength: 0.65,
+  },
+];
+
+// a donut with its legend to its right, filling width × height: the ring as
+// tall as the box, the legend's rows spread over the same height.
+// a plain <g> drawn from (0, 0)
+export function DonutWithLegend({
+  width,
+  height,
+  unit,
+}: {
+  width: number; // the area to fill
+  height: number; // also the ring's diameter
+  unit: number; // the dashboard's ruler: ring thickness and the legend's sizes
+}) {
+  // left: the ring, as tall as the box
+  const ring = (() => {
+    const radius = height / 2;
+    const thickness = unit * 0.25;
+    return { radius, thickness };
+  })();
+
+  // right: the legend, spread over the ring's height
+  const legend = (() => {
+    const rowHeight = unit * 0.5;
+    const tubeHeight = rowHeight * 0.5;
+    const layout = legendLayout({
+      count: placeholders.length,
+      height,
+      rowHeight,
+      dotScale: 0.6, // leave out for a dot as tall as the row
+      labelGap: 1, // leave out for a gap of one row
+    });
+
+    const translateX = ring.radius * 2 + unit * 0.5; // right of the ring
+    // what's left for each label, after the ring, the gap and the dot
+    const labelWidth = width - translateX - layout.labelX;
+
+    return { rowHeight, tubeHeight, layout, translateX, labelWidth };
+  })();
+
+  // each legend label is a filled tube, centered in its row
+  const slices = placeholders.map(({ value, color, tubeLength }) => ({
+    value,
+    color,
+    label: (
+      <Tube
+        y={(legend.rowHeight - legend.tubeHeight) * 0.5}
+        width={legend.labelWidth * tubeLength}
+        height={legend.tubeHeight}
+        fill="var(--accent-electric)"
+        fillOpacity={0.3} // same as the subtitle in the List rows
+      />
+    ),
+  }));
+
+  return (
+    <>
+      <g opacity={0.7}>
+        {/* same as the bar chart */}
+        <DonutChart
+          slices={slices}
+          radius={ring.radius}
+          thickness={ring.thickness}
+          gapAngle={0.05}
+        />
+      </g>
+      <g transform={`translate(${legend.translateX}, 0)`}>
+        <Legend layout={legend.layout} items={slices} />
+      </g>
+    </>
+  );
+}

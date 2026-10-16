@@ -8,7 +8,7 @@ import {
   paddedBox,
 } from "@/lib/svg";
 import { DashboardContent } from "./dashboard/DashboardContent";
-import { FloatingMenu } from "./platform/FloatingMenu";
+import { FloatingMenu } from "./floating-menu/FloatingMenu";
 
 export function ActDiagram() {
   // Connect's scale (784px / 650 units) at our 672px: 672 × 650 / 784 ≈ 557 units,
@@ -92,7 +92,7 @@ export function ActDiagram() {
       angleB: -dashboard.stackLayout.angle,
       thickness: 6,
       cardSize: { width: 1, height: 1.3 },
-      spanBToARatio: 0.75,
+      spanBToARatio: 0.8,
       cardAngle: angleA - 8, // a bit flatter than the A edge, so the card faces us more
       cardAt: { alongA: 0.5 + 0.15, alongB: 0.5 + 0.15 }, // one gridline further in the B direction
     });
@@ -125,8 +125,16 @@ export function ActDiagram() {
         </linearGradient>
         {/* window border: electric, bright at the top and fading down */}
         <linearGradient id={paneEdgeId} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--accent-electric)" stopOpacity={0.6} />
-          <stop offset="100%" stopColor="var(--accent-electric)" stopOpacity={0.15} />
+          <stop
+            offset="0%"
+            stopColor="var(--accent-electric)"
+            stopOpacity={0.6}
+          />
+          <stop
+            offset="100%"
+            stopColor="var(--accent-electric)"
+            stopOpacity={0.15}
+          />
         </linearGradient>
       </defs>
 
@@ -143,7 +151,9 @@ export function ActDiagram() {
       />
 
       {/* the dashboard: tilted windows, back to front, fading from 0.6 at the back */}
-      <g transform={`translate(0, ${dashboard.translateY}) ${dashboard.stackLayout.transform}`}>
+      <g
+        transform={`translate(0, ${dashboard.translateY}) ${dashboard.stackLayout.transform}`}
+      >
         {dashboard.windows.map((win, i) => (
           <g
             key={i}
@@ -151,8 +161,18 @@ export function ActDiagram() {
             opacity={0.6 + win.depth * 0.4}
           >
             {/* dark ground, the ink fade, a faint highlight along the top edge */}
-            <rect width={win.width} height={win.height} rx={radius} fill="var(--ground)" />
-            <rect width={win.width} height={win.height} rx={radius} fill={`url(#${paneInkId})`} />
+            <rect
+              width={win.width}
+              height={win.height}
+              rx={radius}
+              fill="var(--ground)"
+            />
+            <rect
+              width={win.width}
+              height={win.height}
+              rx={radius}
+              fill={`url(#${paneInkId})`}
+            />
             <line
               x1={radius}
               y1={1}

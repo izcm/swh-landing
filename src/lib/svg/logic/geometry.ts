@@ -1,3 +1,4 @@
+import { stackWithGaps } from "./layout";
 import type { Point } from "./types";
 
 // const K = 0.5522847498;
@@ -130,4 +131,20 @@ export function roundedPolygonPath(points: Point[], radius: number) {
       )
       .join(" ") + " Z"
   );
+}
+
+// each value's slice of a full turn (2π radians): its share of the total,
+// placed one after another so each starts where the previous one ends.
+// radians, 0 = 3 o'clock, growing clockwise (svg's y points down).
+// gapAngle: empty turn between slices; the slices shrink so all still fit in 2π
+export function donutArcs(values: number[], startAngle = 0, gapAngle = 0) {
+  const total = values.reduce((sum, value) => sum + value, 0);
+  const turn = 2 * Math.PI - gapAngle * values.length;
+  const sweeps = values.map((value) => (value / total) * turn);
+  const { starts } = stackWithGaps(sweeps, gapAngle);
+
+  return sweeps.map((sweep, i) => ({
+    startAngle: startAngle + starts[i],
+    endAngle: startAngle + starts[i] + sweep,
+  }));
 }

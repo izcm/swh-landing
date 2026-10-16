@@ -1,5 +1,6 @@
-import { layoutUnit, stackWithGaps } from "@/lib/svg";
+import { alignCenter, layoutUnit, stackWithGaps } from "@/lib/svg";
 import { ChartRow } from "./ChartRow";
+import { DonutWithLegend } from "./DonutWithLegend";
 import { List } from "./List";
 
 // what's inside the dashboard window: charts on top, a list below.
@@ -27,6 +28,20 @@ export function DashboardContent({
 
   const columnGap = unit * 0.75;
 
+  // the list takes the left 65% of the second row
+  const listWidth = width * 0.65;
+
+  // right of the list: the donut and its legend, in a box as tall as the
+  // ring, centered on the row's height
+  const donut = (() => {
+    const boxHeight = unit * 2; // the ring's diameter (radius = unit, as now)
+    const translateX = listWidth + columnGap;
+    const boxWidth = width - translateX; // to the row's right edge
+    const { offset: translateY } = alignCenter(rowSizes[1], boxHeight);
+
+    return { boxWidth, boxHeight, translateX, translateY };
+  })();
+
   const rowContent = [
     <ChartRow
       width={width}
@@ -37,15 +52,24 @@ export function DashboardContent({
       boxStrokeWidth={1}
       drilldown={drilldown}
     />,
-    <List
-      width={width * 0.65}
-      height={rowSizes[1]}
-      unit={unit}
-      radius={radius}
-      rowCount={4}
-      rowGap={rowGap * 0.5}
-      selectedIdx={drilldown ? 1 : undefined} // the picked row, or none without drilldown
-    />,
+    <>
+      <List
+        width={listWidth}
+        height={rowSizes[1]}
+        unit={unit}
+        radius={radius}
+        rowCount={4}
+        rowGap={rowGap * 0.5}
+        selectedIdx={drilldown ? 1 : undefined} // the picked row, or none without drilldown
+      />
+      <g transform={`translate(${donut.translateX}, ${donut.translateY})`}>
+        <DonutWithLegend
+          width={donut.boxWidth}
+          height={donut.boxHeight}
+          unit={unit}
+        />
+      </g>
+    </>,
   ];
 
   return (

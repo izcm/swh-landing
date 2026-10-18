@@ -11,8 +11,8 @@ import { DashboardContent } from "./dashboard/DashboardContent";
 import { FloatingMenu } from "./floating-menu/FloatingMenu";
 
 export function ActDiagram() {
-  // Connect's scale (784px / 650 units) at our 672px: 672 × 650 / 784 ≈ 557 units,
-  // so strokes and radii come out as thick as Connect's. height keeps the 400 × 250 shape
+  // 540 units at our 672px ≈ 1.24px per unit, close to Connect's 784px / 650 units
+  // ≈ 1.2px per unit, so strokes and radii come out about as thick as Connect's
   const viewboxWidth = 540;
   const viewboxHeight = 370;
   // same unit ThreeBoxDiagram handed out: 1/12 of the height
@@ -108,9 +108,9 @@ export function ActDiagram() {
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
-      overflow="visible"
-      // 557 units at up to 672px ≈ 1.2px per unit, same as Connect. centered
-      className="block max-w-2xl mx-auto"
+      // 540 units at up to 672px ≈ 1.24px per unit, close to Connect. centered
+      // overflow={"visible"}
+      className="block max-w-2xl w-full mx-auto"
     >
       <defs>
         {/* top to bottom */}
@@ -190,7 +190,6 @@ export function ActDiagram() {
               fill="none"
               stroke={`url(#${paneEdgeId})`}
               strokeWidth={1}
-              vectorEffect="non-scaling-stroke"
             />
             {win.isFront && dashboard.frontContent}
           </g>

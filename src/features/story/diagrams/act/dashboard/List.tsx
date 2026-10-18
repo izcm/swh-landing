@@ -104,7 +104,6 @@ export function List({
           fillOpacity={0.08}
           stroke="var(--accent-electric)"
           strokeWidth={1}
-          vectorEffect="non-scaling-stroke"
         />
       )}
 

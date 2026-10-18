@@ -60,7 +60,6 @@ export function RecessedPanel({
         fill="none"
         stroke={`url(#${borderId})`}
         strokeWidth={strokeWidth}
-        vectorEffect="non-scaling-stroke"
       />
     </>
   );

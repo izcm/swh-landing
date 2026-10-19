@@ -25,10 +25,10 @@ const abouts: {
       "I start by understanding how your process works today and where the friction is. From there, we map out the smallest useful solution.",
       "Next, I look through my existing toolbox for integrations, components and patterns that can be reused before writing anything custom.",
       "The custom pieces are then built around your exact needs and connected into the finished solution.",
-      "Anything reusable that comes out of the project goes back into the toolbox, making future projects faster to build and easier to maintain.",
+      // "Anything reusable that comes out of the project goes back into the toolbox, making future projects faster to build and easier to maintain.",
     ],
     diagram: <SoftwareDiagram />,
-    diagramMaxWidth: "30rem",
+    diagramMaxWidth: "32rem",
   },
   {
     eyebrow: "AI",
@@ -43,7 +43,7 @@ const abouts: {
       "But the final product is still built and understood by me, not handed over to AI. Knowing how the software actually works is what makes it possible to maintain, debug and improve later, so that stays a core principle at SWH.",
     ],
     diagram: <AISvg />,
-    diagramMaxWidth: "35rem",
+    diagramMaxWidth: "37rem",
   },
   {
     eyebrow: "Tools",

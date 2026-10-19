@@ -24,7 +24,7 @@ export function connectLayout({
 
   // left: the nodes, one box per node, top to bottom
   const nodes = (() => {
-    const groupWidth = viewboxWidth * 0.25;
+    const groupWidth = viewboxWidth * 0.28;
     const groupHeight = viewboxHeight;
 
     // -- BOX · one shape, used for every node, as wide as groupWidth --
@@ -61,8 +61,8 @@ export function connectLayout({
 
     // -- RIGHT FACE CONTENT · icon + label on the right wall ----------
     const content = (() => {
-      const iconSize = unit * 1.2; // knob
-      const fontSize = unit * 0.55; // knob
+      const iconSize = unit * 1; // knob
+      const fontSize = unit * 0.65; // knob
       const padding = unit * 0.6; // knob: the right face's left edge (roof.bottom → floor.bottom) → icon
       const gap = unit * 0.7; // knob: icon → label
 
@@ -74,7 +74,7 @@ export function connectLayout({
 
   // right: the data grid, two tilted windows flush with the right edge
   const dataGrid = (() => {
-    const groupWidth = viewboxWidth * 0.36;
+    const groupWidth = viewboxWidth * 0.35;
 
     const stackLayout = cascadeLayout({
       groupWidth,

@@ -136,7 +136,7 @@ export function VisualizeDiagram() {
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       // 615 units at up to 768px ≈ 1.25px per unit, close to Connect. centered
 
-      className="block w-full max-w-2xl mx-auto"
+      className="block w-full max-w-[700px] mx-auto"
     >
       <defs>
         {/* act's window fill: ink at the top, fading out toward the bottom */}

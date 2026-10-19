@@ -4,9 +4,9 @@ import {
   BoxBody,
   LitEdgeGradient,
   paddedBox,
+  parallelogramMatrix,
   pointOnLine,
   roundedPolygonPath,
-  type BoxRoof,
   type Point,
 } from "@/lib/svg";
 import { UpperLeft } from "./dashboard/UpperLeft";
@@ -14,7 +14,7 @@ import { UpperLeft } from "./dashboard/UpperLeft";
 export function VisualizeDiagram() {
   const viewboxWidth = 540;
   const viewboxHeight = 360;
-  // same unit ThreeBoxDiagram handed out: 1/12 of the height
+  // same unit as Connect: 1/12 of the height
   const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
 
   // the screens' fill: same ink fade as act's dashboard windows
@@ -127,36 +127,6 @@ export function VisualizeDiagram() {
     };
   })();
 
-  const dashboardMatrix = ({ top, left, bottom }: BoxRoof) => {
-    // the edge vectors, starting from leftmost point
-    const u = { x: top.x - left.x, y: top.y - left.y }; // horizontal movement
-    const v = { x: bottom.x - left.x, y: bottom.y - left.y }; // vertical movement
-
-    const width = Math.hypot(u.x, u.y);
-    const height = Math.hypot(v.x, v.y);
-
-    // matrix transformation needs the unit vectorx
-    // a = x unit vector's x coordinate
-    const a = u.x / width;
-    // b = x unit vector's y coordinate
-    const b = u.y / width;
-
-    // c = y unit vector's x coordinate
-    const c = v.x / height;
-    // d = y unit vector
-    const d = v.y / height;
-
-    // e, f = the origin of the transformed coordinate system
-    const e = left.x;
-    const f = left.y;
-
-    return {
-      width,
-      height,
-      transform: `matrix(${a} ${b} ${c} ${d} ${e} ${f})`,
-    };
-  };
-
   // what's drawn on each dashboard, in the same order as the list below.
   // null = empty for now
   const dashboardContents = [UpperLeft, null, null, null, null];
@@ -217,7 +187,11 @@ export function VisualizeDiagram() {
           {(() => {
             const Content = dashboardContents[i];
             if (!Content) return null;
-            const { transform, width, height } = dashboardMatrix(roof);
+            const { transform, width, height } = parallelogramMatrix({
+              origin: roof.left,
+              xEnd: roof.top,
+              yEnd: roof.bottom,
+            });
             return (
               <g transform={transform}>
                 <Content
@@ -244,7 +218,7 @@ export function VisualizeDiagram() {
 
       {/* debug: upper dashboards */}
       <circle
-        className="svg-debug-visualize"
+        className="svg-debug"
         cx={viewboxWidth}
         cy={edgeA.drop}
         r={6}
@@ -253,7 +227,7 @@ export function VisualizeDiagram() {
       />
 
       <circle
-        className="svg-debug-visualize"
+        className="svg-debug"
         cx={edgeB.run}
         cy={0}
         r={6}
@@ -262,7 +236,7 @@ export function VisualizeDiagram() {
       />
 
       <circle
-        className="svg-debug-visualize"
+        className="svg-debug"
         cx={0}
         cy={edgeB.rise}
         r={6}
@@ -271,7 +245,7 @@ export function VisualizeDiagram() {
       />
 
       <line
-        className="svg-debug-visualize"
+        className="svg-debug"
         x1={edgeB.run}
         y1={0}
         x2={0}
@@ -281,7 +255,7 @@ export function VisualizeDiagram() {
       />
 
       <line
-        className="svg-debug-visualize"
+        className="svg-debug"
         x1={viewboxWidth - edgeA.run}
         y1={0}
         x2={viewboxWidth}
@@ -292,7 +266,7 @@ export function VisualizeDiagram() {
 
       {/* debug: lower dashboards */}
       <circle
-        className="svg-debug-visualize"
+        className="svg-debug"
         cx={0}
         cy={dashboards.lowerLine.left.y}
         r={6}
@@ -301,7 +275,7 @@ export function VisualizeDiagram() {
       />
 
       <circle
-        className="svg-debug-visualize"
+        className="svg-debug"
         cx={dashboards.lowerLine.top.x}
         cy={dashboards.lowerLine.top.y}
         r={6}
@@ -311,7 +285,7 @@ export function VisualizeDiagram() {
 
       {/* the pink line moved down: same run and rise, from lowerLine.left to lowerLine.top */}
       <line
-        className="svg-debug-visualize"
+        className="svg-debug"
         x1={dashboards.lowerLine.left.x}
         y1={dashboards.lowerLine.left.y}
         x2={dashboards.lowerLine.top.x}
@@ -322,7 +296,7 @@ export function VisualizeDiagram() {
 
       {/* debug: the box */}
       <rect
-        className="svg-debug-visualize"
+        className="svg-debug"
         x={0.375}
         y={0.375}
         width={viewboxWidth - 0.75}

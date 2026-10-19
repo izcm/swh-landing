@@ -6,7 +6,7 @@ export const accentGlow = (blur: number, strength: number) =>
 // faint dashed guide lines behind charts (LineChart, BarChart)
 export const chartSeparatorStyle = {
   strokeWidth: 1,
-  strokeOpacity: 0.04,
+  strokeOpacity: 0.06,
   strokeDasharray: "6 4",
 };
 

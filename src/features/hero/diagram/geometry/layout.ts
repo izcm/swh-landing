@@ -1,10 +1,5 @@
-import {
-  isoFloorCenter,
-  isoCubeMetrics,
-  isoRoofCenter,
-  pointOnCircle,
-  standOn,
-} from "@/lib/svg";
+import { isoCubeMetrics, isoRoofCenter, pointOnCircle } from "@/lib/svg";
+import { centerpieceLayout } from "@/features/diagrams/shared/centerpieceLayout";
 
 type Ring = { radius: number; centerX: number; centerY: number };
 type Angles = { angleA: number; angleB: number };
@@ -25,17 +20,10 @@ export function heroLayout({
   // the big glass cube in the middle, with a small cube floating inside
   const centerpiece = (() => {
     const cubeSize = unit * 3.6;
-    const cube = isoCubeMetrics(cubeSize, cubeSize * 0.577, angles);
-
-    // small cube standing in the middle of the big cube's floor,
-    // same as SoftwareDiagram's bottom-left group
-    const innerCubeSize = cube.size / 2;
-    const innerCube = isoCubeMetrics(
-      innerCubeSize,
-      innerCubeSize * 0.577,
+    const { cube, innerCube, innerCubePos } = centerpieceLayout({
+      size: cubeSize,
       angles,
-    );
-    const innerCubePos = standOn(isoFloorCenter(cube), innerCube);
+    });
 
     return {
       x: contentRing.centerX - unit * 0.75,
@@ -50,7 +38,7 @@ export function heroLayout({
   // dots on the ring, each with a platform + standing surface
   const orbit = (() => {
     const platformSize = unit * 2.8;
-    const platform = isoCubeMetrics(platformSize, unit * 0.2, angles);
+    const platform = isoCubeMetrics(platformSize, unit * 0.1875, angles);
 
     const pointOnContentRing = (degrees: number) =>
       pointOnCircle({

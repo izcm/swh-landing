@@ -23,7 +23,12 @@ export function isAboveOrBelowCube(
 // one line per platform, from the platform to the centerpiece.
 // isAboveOrBelow = the platform sits right above/below the cube, so none of its
 // edges can reach the cube in a straight iso line: it goes straight up/down instead
-export function heroConnectors({ orbit, centerpiece }: Layout, angles: Angles) {
+// endGap = space left between an above/below line's end and the cube's edge
+export function heroConnectors(
+  { orbit, centerpiece }: Layout,
+  angles: Angles,
+  endGap = 0,
+) {
   const { platform } = orbit;
   const { cube } = centerpiece;
 
@@ -93,8 +98,8 @@ export function heroConnectors({ orbit, centerpiece }: Layout, angles: Angles) {
       ? {
           x: out.x,
           y: isLower
-            ? yOnOutline(cubeBottom, cube.a.angle, cube.b.angle, -1)
-            : yOnOutline(cubeTop, cube.b.angle, cube.a.angle, 1),
+            ? yOnOutline(cubeBottom, cube.a.angle, cube.b.angle, -1) + endGap
+            : yOnOutline(cubeTop, cube.b.angle, cube.a.angle, 1) - endGap,
         }
       : cubeLeftMiddle;
 

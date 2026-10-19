@@ -1,84 +1,102 @@
+import { useId } from "react";
+
 import {
+  BoxBody,
   glyphStroke,
-  IsoPlatform,
+  LitEdgeGradient,
   roundedPolygonPath,
   spaceBetween,
 } from "@/lib/svg";
-import type { ConnectLayout } from "../geometry/layout";
+import type { ConnectLayout } from "../layout";
 import { connectNodes } from "./nodes";
 
-// one card per node, spread top to bottom over the left box's height.
-// each card: a platform with a panel standing on it, icon + label on the panel
+// one box per node, spread top to bottom over the left box's height.
+// each box: icon + label bent onto its right wall
 export function Nodes({
   height,
   layout,
 }: {
   height: number;
-  layout: ConnectLayout;
+  layout: ConnectLayout["nodes"];
 }) {
-  const { card, content } = layout;
-  const { platform, panel, panelStart, panelThickness, angles, sticksUp } =
-    card;
-  const { topLeft, topRight, bottomRight, bottomLeft } = panel.corners;
+  const { box, content } = layout;
+  const { roof, radius, rightFace } = box;
+  // the roof's border: bright at the top and fading down
+  const litEdgeId = useId();
 
-  return connectNodes.map(({ label, icon: Icon, color }, i) => {
-    // top of the whole card (the panel's top)
-    const itemY = spaceBetween({
-      index: i,
-      itemCount: connectNodes.length,
-      itemSize: card.height, // the whole card, panel included
-      start: 0,
-      end: height,
-    });
+  return (
+    <>
+      <defs>
+        <LitEdgeGradient id={litEdgeId} />
+      </defs>
 
-    return (
-      // itemY = the card's top; we draw from the platform's top, sticksUp lower
-      <g key={label} transform={`translate(0, ${itemY + sticksUp})`}>
-        <IsoPlatform
-          x={0}
-          y={0}
-          size={platform.size}
-          thickness={platform.thickness}
-          {...angles}
-          grid={card.gridDivisions}
-          radius={2}
-        />
+      {connectNodes.map(({ label, icon: Icon, color }, i) => {
+        // top of the whole box (the roof's top corner)
+        const itemY = spaceBetween({
+          index: i,
+          itemCount: connectNodes.length,
+          itemSize: box.height, // the whole box, floor included
+          start: 0,
+          end: height,
+        });
 
-        {/* panel: its bottom-left stands on panelStart */}
-        <path
-          transform={`translate(${panelStart.x}, ${panelStart.y - panelThickness})`}
-          d={roundedPolygonPath(
-            [topLeft, topRight, bottomRight, bottomLeft],
-            10, // radius standing panel
-          )}
-          fill="var(--accent-ink)"
-          stroke="var(--accent)"
-          strokeWidth={0.4}
-        />
+        return (
+          <g key={label} transform={`translate(0, ${itemY})`}>
+            <BoxBody
+              roof={roof}
+              height={box.thickness}
+              strokeWidth={1}
+              fills={{
+                roof: "var(--accent-ink)",
+                right: "oklch(from var(--accent) 0.18 0.072 h)",
+                left: "var(--ground)",
+                floor: "oklch(from var(--accent) 0.22 0.08 h)",
+              }}
+              radius={radius}
+              stroke="oklch(from var(--accent-electric) l c h / 0.35)"
+              showMiddleEdge // the line from roof.bottom down to floor.bottom
+              showFloor
+            />
+            {/* lit edge: one outline around the roof */}
+            <path
+              d={roundedPolygonPath(
+                [roof.left, roof.top, roof.right, roof.bottom],
+                radius,
+              )}
+              fill="none"
+              stroke={`url(#${litEdgeId})`}
+              strokeWidth={1}
+            />
 
-        {/* icon + label: start at the panel's left edge, halfway up,
-            then skew so everything follows the panel's slope */}
-        <g
-          transform={`translate(${panelStart.x + content.padding}, ${panelStart.y - panelThickness / 2}) skewY(${card.panelAngle})`}
-        >
-          <Icon
-            x={0}
-            y={-content.iconSize / 2}
-            size={content.iconSize}
-            stroke={color}
-            strokeWidth={glyphStroke(content.iconSize, 1.5)}
-          />
-          <text
-            x={content.iconSize + content.gap}
-            y={0}
-            dominantBaseline="central"
-            fontSize={content.fontSize}
-            fill="var(--color-fg-tinted)"
-          >
-            {label}
-          </text>
-        </g>
-      </g>
-    );
-  });
+            {/* icon + label: padding in from roof.bottom, halfway down the
+                right wall, bent onto it */}
+            {(() => {
+              const { iconSize, fontSize, padding, gap } = content;
+              return (
+                <g transform={rightFace.transform}>
+                  <Icon
+                    x={padding}
+                    y={rightFace.height / 2 - iconSize / 2}
+                    size={iconSize}
+                    stroke={color}
+                    strokeWidth={glyphStroke(iconSize, 1.5)}
+                  />
+                  <text
+                    x={padding + iconSize + gap}
+                    y={rightFace.height / 2}
+                    dominantBaseline="central"
+                    fontSize={fontSize}
+                    fill="var(--accent-glow)"
+                    fillOpacity={0.9}
+                  >
+                    {label}
+                  </text>
+                </g>
+              );
+            })()}
+          </g>
+        );
+      })}
+    </>
+  );
 }

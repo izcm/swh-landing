@@ -10,7 +10,7 @@ import { heroConnectors } from "./geometry/connectors";
 import { heroSnailPoints } from "./geometry/snail";
 
 // left box
-import { Centerpiece } from "./left/Centerpiece";
+import { Centerpiece } from "@/features/diagrams/shared/Centerpiece";
 import { Orbit } from "./left/Orbit";
 
 // right box
@@ -162,7 +162,7 @@ export function HeroDiagram() {
                   strokeWidth={0.75}
                 />
 
-                {heroConnectors(layout, heroAngles).map(({ d }, i) => (
+                {heroConnectors(layout, heroAngles, unit * 0.05).map(({ d }, i) => (
                   <path
                     key={i}
                     d={d}

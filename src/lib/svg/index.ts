@@ -10,4 +10,3 @@ export * from "./window";
 export * from "./EdgeGradient";
 export * from "./LitEdgeGradient";
 export * from "./Tube";
-export * from "./ThreeBoxDiagram";

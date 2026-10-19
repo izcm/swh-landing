@@ -2,8 +2,9 @@ import { ISOCube, glassCube, isoCubeMetrics, type Point } from "@/lib/svg";
 
 type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
 
-// the big glass cube in the middle, with a small cube floating inside.
-// positions come from heroLayout (layout.ts)
+// the big glass cube with a small cube floating inside. shared by every diagram
+// that draws it, so it looks the same everywhere. sizes come from
+// centerpieceLayout, the caller places it at x, y
 export function Centerpiece({
   x,
   y,
@@ -21,34 +22,13 @@ export function Centerpiece({
 }) {
   const { size, height, depth, thickness } = cube;
 
-  // how far the small cube floats above the floor
-  const floatLift = 12;
-
-  // the big cube, drawn in two halves so the small cube can sit inside it
-  // const bigCube = {
-  //   size,
-  //   thickness,
-  //   showMiddleEdge: true,
-  //   faces: {
-  //     roof: "var(--hero-center-cube-fill)",
-  //     left: "var(--hero-center-cube-fill)",
-  //     right: "var(--hero-center-cube-fill)",
-  //   },
-  //   showFloor: true,
-  //   stroke: "oklch(from var(--accent) 0.85 0.16 h)",
-  //   strokeWeight: 0.6,
-  //   // accentGlow(blur, strength%): a bit stronger than the default (2, 18)
-  //   glow: { blur: 2, strength: 18 },
-  //   radius: 3,
-  //   ...angles,
-  // };
-  // light electris:
-  // const lightElectric = "oklch(from var(--accent) 0.6 0.2 h / 0.5)";
+  // how far the small cube floats above the floor, as a share of its size
+  const floatLift = innerCube.size * 0.16;
 
   // const innerFill = "oklch(from var(--accent-electric) 0.6 0.16 h / 0.6)";
-
-  const innerFill = "oklch(from var(--accent-ink) 0.1 c h / 1)";
-  const cubeFill = "oklch(from var(--accent-electric) 0.25 0.15 h / 0.15)";
+  // const innerFill = "oklch(from var(--accent) 0.1 c h / 1)";
+  const innerFill = "oklch(from var(--accent-electric) l c h / 0.25)";
+  const cubeFill = "oklch(from var(--accent-ink) l c h / 0.2)";
 
   const bigCube = {
     size,
@@ -59,7 +39,7 @@ export function Centerpiece({
     // floor + glow: what ISOCube's defaults used to be, before they became glassCube
     showFloor: true,
     stroke: "var(--accent-electric)",
-    strokeWeight: 0.5,
+    strokeWeight: 0.6,
     glow: { blur: 2, strength: 18 },
     radius: 2,
     ...angles,
@@ -89,7 +69,7 @@ export function Centerpiece({
           size={innerCube.size}
           thickness={innerCube.thickness}
           faces={{ roof: innerFill, left: innerFill }}
-          strokeWeight={0.6}
+          strokeWeight={1}
           showFloorTopEdges
           {...angles}
         />

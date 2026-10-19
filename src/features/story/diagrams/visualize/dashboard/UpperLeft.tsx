@@ -93,7 +93,7 @@ export function UpperLeft({
 
       {/* debug: the area to fill */}
       <rect
-        className="svg-debug-visualize"
+        className="svg-debug"
         width={width}
         height={height}
         rx={radius}
@@ -104,7 +104,7 @@ export function UpperLeft({
       />
       {/* debug: the side panel's area */}
       <rect
-        className="svg-debug-visualize"
+        className="svg-debug"
         width={sidePanel.groupWidth}
         height={sidePanel.groupHeight}
         fill="none"

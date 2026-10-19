@@ -1,6 +1,11 @@
 import { useId } from "react";
 import { EdgeGradient } from "../EdgeGradient";
-import { roundCorner, roundedPolygonPath, type Point } from "../logic";
+import {
+  pointOnLine,
+  roundCorner,
+  roundedPolygonPath,
+  type Point,
+} from "../logic";
 
 // the 4 corners of a box's roof (its top face). left is at x = 0
 export type BoxRoof = { left: Point; top: Point; right: Point; bottom: Point };
@@ -88,16 +93,28 @@ export function BoxBody({
     top: curveMiddle(roof.right, roof.top, roof.left, radius),
   };
 
-  // the floor's two lower edges only (left tip → bottom → right tip), same rounded
-  // bottom corner as the full floor would have
+  // the curve at floor.bottom: its 3 points (before, corner, after), for the over path
+  // (floor.left → floor.bottom → floor.right). made with the same radius as the floor's
+  // color shape (roundedPolygonPath), so the line's curve lands on that shape's edge
   const floorBottom = roundCorner(
     floor.left,
     floor.bottom,
     floor.right,
     radius,
   );
+  // same for the floor's other 3 corners
+  const floorTop = roundCorner(floor.left, floor.top, floor.right, radius);
+  const floorLeft = roundCorner(floor.bottom, floor.left, floor.top, radius);
+  const floorRight = roundCorner(floor.top, floor.right, floor.bottom, radius);
   const leftFloorTip = down(tip.left);
   const rightFloorTip = down(tip.right);
+  // the tips sit in the middle of the left / right corner's curve. each path
+  // draws its half of that curve: the under path the half toward floor.top,
+  // the over path the half toward floor.bottom. these are the halves' bend points
+  const leftHalfTop = pointOnLine(floorLeft.corner, floorLeft.after, 0.5);
+  const leftHalfBottom = pointOnLine(floorLeft.before, floorLeft.corner, 0.5);
+  const rightHalfTop = pointOnLine(floorRight.before, floorRight.corner, 0.5);
+  const rightHalfBottom = pointOnLine(floorRight.corner, floorRight.after, 0.5);
 
   return (
     <>
@@ -121,15 +138,6 @@ export function BoxBody({
           strokeWidth={strokeWidth}
         />
       )}
-      {/* without the floor, the floor's two upper edges still show through the glass */}
-      {drawUnder && showFloorTopEdges && !showFloor && (
-        <path
-          d={`M ${floor.left.x} ${floor.left.y} L ${floor.top.x} ${floor.top.y} L ${floor.right.x} ${floor.right.y}`}
-          fill="none"
-          stroke={floorTopEdgeStroke}
-          strokeWidth={strokeWidth}
-        />
-      )}
       {drawUnder && showFloor && (
         <path
           d={roundedPolygonPath(
@@ -137,7 +145,23 @@ export function BoxBody({
             radius,
           )}
           fill={fills.floor}
-          stroke={edgeStroke}
+          stroke={part === "under" ? "none" : edgeStroke}
+          strokeWidth={strokeWidth}
+        />
+      )}
+      {/* the floor's lines floor.left → floor.top → floor.right. a whole cube with `showFloor` 
+          gets them from the floor's outline. with showFloor false (no floor at all) or for the under half (its
+          outline is turned off) there's no outline, so they're drawn here */}
+      {drawUnder && showFloorTopEdges && (!showFloor || part === "under") && (
+        <path
+          d={`M ${leftFloorTip.x} ${leftFloorTip.y}
+              Q ${leftHalfTop.x} ${leftHalfTop.y} ${floorLeft.after.x} ${floorLeft.after.y}
+              L ${floorTop.before.x} ${floorTop.before.y}
+              Q ${floorTop.corner.x} ${floorTop.corner.y} ${floorTop.after.x} ${floorTop.after.y}
+              L ${floorRight.before.x} ${floorRight.before.y}
+              Q ${rightHalfTop.x} ${rightHalfTop.y} ${rightFloorTip.x} ${rightFloorTip.y}`}
+          fill="none"
+          stroke={floorTopEdgeStroke}
           strokeWidth={strokeWidth}
         />
       )}
@@ -146,9 +170,11 @@ export function BoxBody({
       {drawOver && (!showFloor || part === "over") && (
         <path
           d={`M ${leftFloorTip.x} ${leftFloorTip.y}
+              Q ${leftHalfBottom.x} ${leftHalfBottom.y} ${floorLeft.before.x} ${floorLeft.before.y}
               L ${floorBottom.before.x} ${floorBottom.before.y}
               Q ${floorBottom.corner.x} ${floorBottom.corner.y} ${floorBottom.after.x} ${floorBottom.after.y}
-              L ${rightFloorTip.x} ${rightFloorTip.y}`}
+              L ${floorRight.after.x} ${floorRight.after.y}
+              Q ${rightHalfBottom.x} ${rightHalfBottom.y} ${rightFloorTip.x} ${rightFloorTip.y}`}
           fill="none"
           stroke={edgeStroke}
           strokeWidth={strokeWidth}

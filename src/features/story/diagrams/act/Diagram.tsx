@@ -16,7 +16,7 @@ export function ActDiagram() {
   // ≈ 1.2px per unit, so strokes and radii come out about as thick as Connect's
   const viewboxWidth = 540;
   const viewboxHeight = 360;
-  // same unit ThreeBoxDiagram handed out: 1/12 of the height
+  // same unit as Connect: 1/12 of the height
   const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
   // corner radius of the windows
   const radius = 3;

@@ -19,7 +19,7 @@ export function VisualizeDiagram() {
 
   const screenRadius = 8;
 
-  const thickness = unit * 0.25;
+  const thickness = unit * 0.1;
 
   const angleA = 60;
   const angleB = 11.25;
@@ -72,16 +72,34 @@ export function VisualizeDiagram() {
       line: { left: Point; top: Point },
       t0: number,
       t1: number,
-      height?: number, // 0..1
+      dropAlongA: number = 0, // for lower middle dashboard
+      spanA: number = 1, // 0..1
     ) => {
-      const left = pointOnLine(line.left, line.top, t0);
-      const top = pointOnLine(line.left, line.top, t1);
+      const k = dropAlongA / alongA.y;
+
+      const drop = (p: Point) => ({
+        x: p.x + alongA.x * k,
+        y: p.y + alongA.y * k,
+      });
+      const left = drop(pointOnLine(line.left, line.top, t0));
+      const top = drop(pointOnLine(line.left, line.top, t1));
+
+      const sideA = {
+        x: alongA.x * spanA,
+        y: alongA.y * spanA,
+      };
 
       return {
         left,
         top,
-        right: { x: top.x + alongA.x, y: top.y + alongA.y },
-        bottom: { x: left.x + alongA.x, y: left.y + alongA.y },
+        right: {
+          x: top.x + sideA.x,
+          y: top.y + sideA.y,
+        },
+        bottom: {
+          x: left.x + sideA.x,
+          y: left.y + sideA.y,
+        },
       };
     };
 
@@ -94,9 +112,9 @@ export function VisualizeDiagram() {
         right: between(upperLine, splitUpper, 1),
       },
       lower: {
-        left: between(lowerLine, 0, splitLower[0] - gap),
-        middle: between(lowerLine, splitLower[0], splitLower[1] - gap),
-        right: between(lowerLine, splitLower[1], 1),
+        left: between(lowerLine, 0, splitLower[0] - gap, 0, 0.75),
+        middle: between(lowerLine, splitLower[0], splitLower[1] - gap, 12),
+        right: between(lowerLine, splitLower[1], 1, 0, 0.6),
       },
       lowerLine,
     };

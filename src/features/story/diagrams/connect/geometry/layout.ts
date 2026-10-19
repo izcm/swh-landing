@@ -26,8 +26,8 @@ export function connectLayout({
       angles,
       panelSize,
       panelThickness: unit * 2.4,
-      towardBack: 0.25,
-      towardFront: 0.125,
+      towardTop: 0.25,
+      towardBottom: 0.125,
     });
 
     return { ...metrics, gridDivisions };

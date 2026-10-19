@@ -88,7 +88,7 @@ export function ActDiagram() {
     const layout = cardPlatformLayout({
       size: viewboxWidth * 0.25,
       angleA,
-      // same tilt as the windows: the platform's front edge runs parallel to them
+      // same tilt as the windows: the platform's bottom→right edge runs parallel to them
       angleB: -dashboard.stackLayout.angle,
       thickness: 6,
       cardSize: { width: 1, height: 1.3 },

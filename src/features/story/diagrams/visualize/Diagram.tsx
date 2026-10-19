@@ -1,11 +1,9 @@
-import { useId } from "react";
-
 import {
   BoxBody,
   paddedBox,
   platformStyle,
   pointOnLine,
-  roundedPolygonPath,
+  type Point,
 } from "@/lib/svg";
 
 export function VisualizeDiagram() {
@@ -16,7 +14,7 @@ export function VisualizeDiagram() {
 
   // the screens' fill: same ink fade as act's dashboard windows
   //   const screenInkId = useId();
-  // cuts each screen's fill to its dashboard's rounded top face
+  // cuts each screen's fill to its dashboard's rounded roof
   //   const screenClipId = useId();
 
   const screenRadius = 8;
@@ -45,54 +43,62 @@ export function VisualizeDiagram() {
     return { run, rise, edgeLength };
   })();
 
-  // the two upper dashboards: side by side along edge B,
-  // both as deep as edge A
-  const upperDashboards = (() => {
-    const groupBack = { x: edgeB.run, y: 0 }; // where edge A and edge B meet, on the top of the box
-    const groupLeft = { x: 0, y: edgeB.rise }; // where edge B meets the left side of the box
-    // edge A as a vector: from groupBack down to the right side of the box
-    const alongA = { x: edgeA.run, y: edgeA.drop };
-
-    // a dashboard whose back edge runs from t0 to t1 along edge B
-    // (0 = groupBack, 1 = groupLeft), pushed down along edge A
-    const between = (t0: number, t1: number) => {
-      const back = pointOnLine(groupBack, groupLeft, t0);
-      const left = pointOnLine(groupBack, groupLeft, t1);
-      return {
-        left,
-        back,
-        right: { x: back.x + alongA.x, y: back.y + alongA.y },
-        front: { x: left.x + alongA.x, y: left.y + alongA.y },
-      };
-    };
-
-    const split = 0.35; // the right dashboard takes this part of edge B
-    const gap = unit / edgeB.edgeLength; // one unit of space between the two, as a part of edge B
-
-    return {
-      left: between(split + gap, 1),
-      right: between(0, split),
-    };
-  })();
+  //   const dashboardGap = unit / edgeB.edgeLength; // one unit of space between the two, as a part of edge B
 
   const dashboardGroupsGap = unit * 0.75;
 
-  const lowerDashboards = (() => {
-    // the upper dashboards' bottom edge ends edgeA.run in from the left side.
-    // followed back to the left side it keeps tilting down (edge B's slope):
-    // a small right triangle, sideways edgeA.run, down = edgeA.run × slope
-    const missing = edgeA.run * (edgeB.rise / edgeB.run);
+  // two dashboards on edge B, three on a parallel line below
+  const dashboards = (() => {
+    const alongA = { x: edgeA.run, y: edgeA.drop };
+    const gap = unit / edgeB.edgeLength; // one unit, as a part of edge B
 
-    const groupBack = {
+    const upperLine = {
+      left: { x: 0, y: edgeB.rise },
+      top: { x: edgeB.run, y: 0 },
+    };
+
+    const missing = edgeA.run * Math.tan(radB);
+    const lowerLeft = {
       x: 0,
       y: edgeB.rise + edgeA.drop + missing + dashboardGroupsGap + thickness,
     };
-    // the back edge's other end: the same run and rise as edge B, so it's parallel to it
-    const backRight = { x: edgeB.run, y: groupBack.y - edgeB.rise };
+    const lowerLine = {
+      left: lowerLeft,
+      top: { x: edgeB.run, y: lowerLeft.y - edgeB.rise },
+    };
+
+    // 0 = line.left, 1 = line.top
+    const between = (
+      line: { left: Point; top: Point },
+      t0: number,
+      t1: number,
+      height?: number, // 0..1
+    ) => {
+      const left = pointOnLine(line.left, line.top, t0);
+      const top = pointOnLine(line.left, line.top, t1);
+
+      return {
+        left,
+        top,
+        right: { x: top.x + alongA.x, y: top.y + alongA.y },
+        bottom: { x: left.x + alongA.x, y: left.y + alongA.y },
+      };
+    };
+
+    const splitUpper = 0.65;
+    const splitLower = [0.35, 0.8] as const;
 
     return {
-      groupBack,
-      backRight,
+      upper: {
+        left: between(upperLine, 0, splitUpper - gap),
+        right: between(upperLine, splitUpper, 1),
+      },
+      lower: {
+        left: between(lowerLine, 0, splitLower[0] - gap),
+        middle: between(lowerLine, splitLower[0], splitLower[1] - gap),
+        right: between(lowerLine, splitLower[1], 1),
+      },
+      lowerLine,
     };
   })();
 
@@ -111,28 +117,34 @@ export function VisualizeDiagram() {
         </linearGradient> */}
       </defs>
 
-      {/* the two upper dashboards: dark ground + act's ink fade, Platform's edge gradient */}
-      {[upperDashboards.left, upperDashboards.right].map((top, i) => (
+      {/* all five dashboards: dark ground + act's ink fade, Platform's edge gradient */}
+      {[
+        dashboards.upper.left,
+        dashboards.upper.right,
+        dashboards.lower.left,
+        dashboards.lower.middle,
+        dashboards.lower.right,
+      ].map((roof, i) => (
         <g key={i}>
           <BoxBody
-            top={top}
+            roof={roof}
             height={thickness}
             strokeWidth={1}
             fills={{
-              //   top: "none",
-              top: "oklch(from var(--accent) 0.22 0.08 h)",
+              //   roof: "none",
+              roof: "var(--accent-ink)",
               right: "none",
               left: "none",
-              //   bottom: "oklch(from var(--accent) 0.4 0.1 h)",
-              bottom: "none",
+              floor: "oklch(from var(--accent) 0.22 0.08 h)",
+              //   floor: "oklch(from var(--accent) 0.22 0.08 h)",
             }}
             radius={screenRadius}
             edgeOpacity={platformStyle.edgeOpacity}
-            showBottom
+            showFloor
           />
           {/* <path
             d={roundedPolygonPath(
-              [top.left, top.back, top.right, top.front],
+              [roof.left, roof.top, roof.right, roof.bottom],
               screenRadius,
             )}
             fill={`url(#${screenInkId})`}
@@ -192,19 +204,28 @@ export function VisualizeDiagram() {
       <circle
         className="svg-debug-visualize"
         cx={0}
-        cy={lowerDashboards.groupBack.y}
+        cy={dashboards.lowerLine.left.y}
         r={6}
         fill="#ffffff" // white: where edge A and edge B meet
         strokeWidth={0.75}
       />
 
-      {/* the pink line moved down: same run and rise, starting at groupBack */}
+      <circle
+        className="svg-debug-visualize"
+        cx={dashboards.lowerLine.top.x}
+        cy={dashboards.lowerLine.top.y}
+        r={6}
+        fill="#ffffff" // white: where edge A and edge B meet
+        strokeWidth={0.75}
+      />
+
+      {/* the pink line moved down: same run and rise, from lowerLine.left to lowerLine.top */}
       <line
         className="svg-debug-visualize"
-        x1={lowerDashboards.groupBack.x}
-        y1={lowerDashboards.groupBack.y}
-        x2={lowerDashboards.backRight.x}
-        y2={lowerDashboards.backRight.y}
+        x1={dashboards.lowerLine.left.x}
+        y1={dashboards.lowerLine.left.y}
+        x2={dashboards.lowerLine.top.x}
+        y2={dashboards.lowerLine.top.y}
         stroke="#ff4fa3" // pink: edge B
         strokeWidth={0.75}
       />

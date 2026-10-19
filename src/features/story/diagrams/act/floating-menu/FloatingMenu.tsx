@@ -37,7 +37,7 @@ export function FloatingMenu({
     center,
     card,
   } = layout;
-  const { bottom } = corners;
+  const { floor } = corners;
 
   // which row looks picked: drawn above the ink, with an extra glass layer
   const selected = 0;
@@ -96,7 +96,7 @@ export function FloatingMenu({
       <g transform={`translate(${originX}, ${originY})`}>
         {/* drawn first, so the platform sits on top of it */}
         <BoxShadow
-          corners={[bottom.left, bottom.back, bottom.right, bottom.front]}
+          corners={[floor.left, floor.top, floor.right, floor.bottom]}
           drop={40}
         />
         {/* bobs up and down; the shadow stays put and shrinks in step

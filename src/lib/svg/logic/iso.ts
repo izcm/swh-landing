@@ -1,11 +1,11 @@
 import type { IsoBox, Point } from "./types";
 
-// angle = how steep the top edges slope from horizontal, in degrees.
-// 30 is true isometric; smaller = flatter top, bigger = steeper top
+// angle = how steep the roof edges slope from horizontal, in degrees.
+// 30 is true isometric; smaller = flatter roof, bigger = steeper roof
 export const isoCubeMetrics = (
   size: number,
   thickness?: number,
-  // left / right top-edge slopes. angleB defaults to angleA (a true iso cube)
+  // left / right roof-edge slopes. angleB defaults to angleA (a true iso cube)
   { angleA = 30, angleB = angleA }: { angleA?: number; angleB?: number } = {},
 ) => {
   const radA = (angleA * Math.PI) / 180;
@@ -16,12 +16,12 @@ export const isoCubeMetrics = (
   const runA = depth / Math.tan(radA);
   const runB = depth / Math.tan(radB);
 
-  // const depth = half * Math.tan(radA); // how far a top edge drops (opposite side)
-  // const edgeLength = half / Math.cos(radA); // the top edge itself (hypotenuse)
+  // const depth = half * Math.tan(radA); // how far a roof edge drops (opposite side)
+  // const edgeLength = half / Math.cos(radA); // the roof edge itself (hypotenuse)
   const edgeLengthA = runA / Math.cos(radA);
   const edgeLengthB = runB / Math.cos(radB);
 
-  const height = depth * 2 + (thickness ?? edgeLengthA); // top diamond + walls
+  const height = depth * 2 + (thickness ?? edgeLengthA); // roof diamond + walls
 
   // return for convenience
   const finalThickness = thickness ?? size;
@@ -31,28 +31,28 @@ export const isoCubeMetrics = (
     depth,
     height,
     thickness: finalThickness,
-    // each top edge: how far it goes sideways (run) and how long it is
+    // each roof edge: how far it goes sideways (run) and how long it is
     a: { run: runA, edgeLength: edgeLengthA, angle: angleA },
     b: { run: runB, edgeLength: edgeLengthB, angle: angleB },
     edgeLength: edgeLengthA, // existing code still reads this
   };
 };
 
-// centers of the top and bottom diamonds, measured from the box's top-left (its x/y)
-export const isoTopCenter = (box: IsoBox): Point => ({
+// centers of the roof and floor diamonds, measured from the box's top-left (its x/y)
+export const isoRoofCenter = (box: IsoBox): Point => ({
   x: box.size / 2,
   y: box.depth,
 });
 
-export const isoBottomCenter = (box: IsoBox): Point => ({
+export const isoFloorCenter = (box: IsoBox): Point => ({
   x: box.size / 2,
   y: box.height - box.depth,
 });
 
-// the x/y to give `box` so its bottom center stands on `point`
+// the x/y to give `box` so its floor center stands on `point`
 export const standOn = (point: Point, box: IsoBox): Point => {
-  const bottom = isoBottomCenter(box);
-  return { x: point.x - bottom.x, y: point.y - bottom.y };
+  const floor = isoFloorCenter(box);
+  return { x: point.x - floor.x, y: point.y - floor.y };
 };
 
 // the 8 corners of an iso box, in the 100-wide box it's drawn in (scaled to size afterwards)
@@ -72,10 +72,10 @@ export function isoCubePoints(
   const verticalHeight =
     thickness !== undefined ? thickness / scale : edgeLength;
 
-  const topBack = { x: b.run, y: 0 };
-  const topLeft = { x: 0, y: depth };
-  const topRight = { x: 100, y: depth };
-  const topFront = { x: a.run, y: depth * 2 };
+  const roofTop = { x: b.run, y: 0 };
+  const roofLeft = { x: 0, y: depth };
+  const roofRight = { x: 100, y: depth };
+  const roofBottom = { x: a.run, y: depth * 2 };
 
   const down = (p: Point) => ({ x: p.x, y: p.y + verticalHeight });
 
@@ -83,15 +83,15 @@ export function isoCubePoints(
     scale,
     depth,
     verticalHeight,
-    topBack,
-    topLeft,
-    topRight,
-    topFront,
-    // bottomBack is the hidden corner, straight below topBack
-    bottomBack: down(topBack),
-    bottomLeft: down(topLeft),
-    bottomRight: down(topRight),
-    bottomFront: down(topFront),
+    roofTop,
+    roofLeft,
+    roofRight,
+    roofBottom,
+    // floorTop is straight below roofTop
+    floorTop: down(roofTop),
+    floorLeft: down(roofLeft),
+    floorRight: down(roofRight),
+    floorBottom: down(roofBottom),
   };
 }
 

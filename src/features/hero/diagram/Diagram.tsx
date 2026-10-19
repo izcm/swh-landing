@@ -16,7 +16,7 @@ import { Orbit } from "./left/Orbit";
 // right box
 import { HeroAppWindows } from "./right/HeroAppWindows";
 
-// the hero's camera: A = front-left edges (24°), B = front-right edges (30°)
+// the hero's camera: A = left→bottom edges (24°), B = bottom→right edges (30°)
 const heroAngles = { angleA: 24, angleB: 30 };
 
 // debug lines have className="svg-debug". show/hide them in diagram.css

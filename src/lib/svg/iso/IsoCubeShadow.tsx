@@ -3,7 +3,7 @@ import { BoxShadow } from "./BoxShadow";
 
 type IsoCubeMetrics = ReturnType<typeof isoCubeMetrics>;
 
-// soft shadow under an iso cube / platform: its bottom diamond, moved `drop`
+// soft shadow under an iso cube / platform: its floor, moved `drop`
 // lower and blurred. stays put while the cube bobs (float-bob), and shrinks +
 // fades in step with it when given the same duration / delay.
 // pass the cube's metrics + the same x / y as its <ISOCube>
@@ -29,7 +29,7 @@ export function IsoCubeShadow({
     <BoxShadow
       x={x}
       y={y}
-      corners={[pts.bottomLeft, pts.bottomBack, pts.bottomRight, pts.bottomFront]}
+      corners={[pts.floorLeft, pts.floorTop, pts.floorRight, pts.floorBottom]}
       scale={pts.scale}
       drop={drop}
       duration={duration}

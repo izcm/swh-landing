@@ -8,7 +8,7 @@ const rad = (deg: number) => (deg * Math.PI) / 180;
 // translate by (originX, originY)
 export function cardPlatformLayout({
   size,
-  angleA, // left to bottom corner (bottom corner is top.front)
+  angleA, // left to bottom corner (roof.bottom)
   angleB,
   thickness,
   cardSize,
@@ -18,42 +18,42 @@ export function cardPlatformLayout({
 }: {
   size: number; // the platform's side edge (lengthA)
   angleA: number; // the side edges' angle
-  angleB: number; // the front edge's angle
+  angleB: number; // edge B's angle
   thickness: number; // the platform's thickness
   cardSize: { width: number; height: number }; // the card, as parts of the side edge
-  spanBToARatio?: number; // edge B's x-width ÷ edge A's x-width. 1 = front tip halfway across
+  spanBToARatio?: number; // edge B's x-width ÷ edge A's x-width. 1 = bottom corner halfway across
   cardAngle?: number; // the card's slant (its bottom edge's angle). angleA if left out = parallel to the A edge
   cardAt?: { alongA: number; alongB: number }; // where the card's bottom middle stands, 0..1 along each edge. the center if left out
 }) {
-  // the platform: side edge first, then a front edge whose x-width is a part of the side edge's
+  // the platform: side edge first, then edge B, whose x-width is a part of the side edge's
   const platform = (() => {
     const lengthA = size;
     // how far the side edge goes in x
     const sideX = lengthA * Math.cos(rad(angleA));
-    // how far the front edge should go in x
-    const frontX = sideX * spanBToARatio;
-    // make the front edge long enough to go that far in x
-    const lengthB = frontX / Math.cos(rad(angleB));
+    // how far edge B should go in x
+    const edgeBX = sideX * spanBToARatio;
+    // make edge B long enough to go that far in x
+    const lengthB = edgeBX / Math.cos(rad(angleB));
 
     return { lengthA, lengthB, angleA, angleB, thickness };
   })();
   const corners = platformCorners(platform);
-  const center = pointOnLine(corners.top.left, corners.top.right, 0.5);
+  const center = pointOnLine(corners.roof.left, corners.roof.right, 0.5);
 
   // the spot on the platform where the card's bottom middle goes.
-  // vectors: u = top.front - top.left (edge A), v = top.back - top.left (edge B)
-  // stand = top.left + alongA × u + alongB × v
+  // vectors: u = roof.bottom - roof.left (edge A), v = roof.top - roof.left (edge B)
+  // stand = roof.left + alongA × u + alongB × v
   const stand = (() => {
-    const { left, front, back } = corners.top;
+    const { left, bottom, top } = corners.roof;
     return {
       x:
         left.x +
-        (front.x - left.x) * cardAt.alongA +
-        (back.x - left.x) * cardAt.alongB,
+        (bottom.x - left.x) * cardAt.alongA +
+        (top.x - left.x) * cardAt.alongB,
       y:
         left.y +
-        (front.y - left.y) * cardAt.alongA +
-        (back.y - left.y) * cardAt.alongB,
+        (bottom.y - left.y) * cardAt.alongA +
+        (top.y - left.y) * cardAt.alongB,
     };
   })();
 
@@ -85,8 +85,8 @@ export function cardPlatformLayout({
 
   // the real box around platform + card (a soft shadow stays outside it)
   const bounds = boundingBox([
-    ...Object.values(corners.top),
-    ...Object.values(corners.bottom),
+    ...Object.values(corners.roof),
+    ...Object.values(corners.floor),
     ...card.outline,
   ]);
 

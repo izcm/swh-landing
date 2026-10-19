@@ -5,12 +5,12 @@ import { accentGlow, glyphStroke, gridLines, isoCubePoints } from "../logic";
 import { platformGridStyle, platformStyle } from "./platformStyle";
 
 type IsoPlatformProps = ComponentProps<typeof ISOCube> & {
-  // grid on the top face: how many equal parts each direction is split into
+  // grid on the roof: how many equal parts each direction is split into
   // ({ across: 4, along: 4 } = a line every 25% both ways)
   grid: { across: number; along: number };
 };
 
-// an ISOCube with the platform look, and a grid drawn on its top face.
+// an ISOCube with the platform look, and a grid drawn on its roof.
 // any ISOCube prop still works as an override (e.g. strokeWeight, radius)
 export function IsoPlatform({ grid, ...cube }: IsoPlatformProps) {
   const style = { ...platformStyle, ...cube };
@@ -28,10 +28,10 @@ export function IsoPlatform({ grid, ...cube }: IsoPlatformProps) {
   } = style;
 
   // the same corners ISOCube draws with: a 100-wide box, scaled to size
-  const { scale, verticalHeight, topLeft, topBack, topRight, topFront } =
+  const { scale, verticalHeight, roofLeft, roofTop, roofRight, roofBottom } =
     isoCubePoints(size, thickness, angleA, angleB);
   const lines = gridLines(
-    { left: topLeft, back: topBack, right: topRight, front: topFront },
+    { left: roofLeft, top: roofTop, right: roofRight, bottom: roofBottom },
     grid,
   );
 
@@ -41,7 +41,7 @@ export function IsoPlatform({ grid, ...cube }: IsoPlatformProps) {
     <>
       <ISOCube {...style} />
 
-      {/* same transform as ISOCube, so the grid lands on its top face */}
+      {/* same transform as ISOCube, so the grid lands on its roof */}
       <g
         transform={`translate(${x}, ${y}) scale(${scale})`}
         style={{ filter: accentGlow(glow.blur, glow.strength) }}
@@ -50,7 +50,7 @@ export function IsoPlatform({ grid, ...cube }: IsoPlatformProps) {
           <EdgeGradient
             id={gradientId}
             width={100}
-            height={topFront.y + verticalHeight}
+            height={roofBottom.y + verticalHeight}
             opacity={edgeOpacity}
           />
         </defs>

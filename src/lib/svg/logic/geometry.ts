@@ -51,26 +51,26 @@ export function toPoints(values: number[], width: number, height: number) {
 }
 
 // grid inside a 4-corner shape: joins matching points on opposite sides.
-// `across` splits the left→back / front→right sides, `along` splits the
-// left→front / back→right sides. returns each line's two ends.
+// `across` splits the left→top / bottom→right sides, `along` splits the
+// left→bottom / top→right sides. returns each line's two ends.
 // 4 × 6 → 3 lines one way + 5 the other
 export function gridLines(
-  corners: { left: Point; back: Point; right: Point; front: Point },
+  corners: { left: Point; top: Point; right: Point; bottom: Point },
   divisions: { across: number; along: number },
 ): [Point, Point][] {
-  const { left, back, right, front } = corners;
+  const { left, top, right, bottom } = corners;
 
   // where the lines go along a side: 4 → [0.25, 0.5, 0.75]
   const stepsFor = (count: number) =>
     Array.from({ length: Math.max(0, count - 1) }, (_, i) => (i + 1) / count);
 
   const acrossLines = stepsFor(divisions.across).map((t): [Point, Point] => [
-    pointOnLine(left, back, t),
-    pointOnLine(front, right, t),
+    pointOnLine(left, top, t),
+    pointOnLine(bottom, right, t),
   ]);
   const alongLines = stepsFor(divisions.along).map((t): [Point, Point] => [
-    pointOnLine(left, front, t),
-    pointOnLine(back, right, t),
+    pointOnLine(left, bottom, t),
+    pointOnLine(top, right, t),
   ]);
 
   return [...acrossLines, ...alongLines];

@@ -2,7 +2,7 @@ import { SectionBase } from "@/features/core/SectionBase";
 
 import { ConnectDiagram } from "./diagrams/connect/Diagram";
 import { ActDiagram } from "./diagrams/act/Diagram";
-import { SvgPlaceholder } from "@/components/SvgPlaceholder";
+import { VisualizeDiagram } from "./diagrams/visualize/Diagram";
 
 const sections = [
   {
@@ -21,13 +21,9 @@ const sections = [
     paragraphs: [
       "Connecting data across systems makes it possible to see more than any individual system can show on its own.",
       "We build interactive dashboards that present up-to-date information in formats tailored to your business needs.",
-      "From simple lists and charts to detailed operational overviews, you can explore information at different levels, spot patterns, and drill down into the details that matter.",
+      "Explore information at different levels, spot patterns, and drill down into the details that matter.",
     ],
-    diagram: (
-      <div className="max-w-xl mx-auto">
-        <SvgPlaceholder label="SVG Placeholder" />
-      </div>
-    ),
+    diagram: <VisualizeDiagram />,
   },
   {
     eyebrow: "ACT",

@@ -253,7 +253,6 @@ export function AISvg() {
                         fill="none"
                         stroke={`url(#${editorBorderId})`}
                         strokeWidth={1}
-                        vectorEffect="non-scaling-stroke"
                       />
                     </>
                   )}

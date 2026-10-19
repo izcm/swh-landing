@@ -5,8 +5,8 @@ import { accentGlow, gridLines, type Point } from "../logic";
 import { platformGridStyle, platformStyle } from "./platformStyle";
 
 type PlatformShape = {
-  lengthA: number; // front-left edge, going down to the right at angleA
-  lengthB: number; // front-right edge, going up to the right at angleB
+  lengthA: number; // left→bottom edge, going down to the right at angleA
+  lengthB: number; // bottom→right edge, going up to the right at angleB
   angleA: number;
   angleB: number;
   thickness: number;
@@ -14,12 +14,12 @@ type PlatformShape = {
 
 type PlatformProps = Partial<Point> &
   PlatformShape & {
-    // grid on the top face: how many equal parts each direction is split into
+    // grid on the roof: how many equal parts each direction is split into
     grid: { across: number; along: number };
   };
 
 // a Platform's corners, measured from its own top-left (the x / y you give it).
-// top: the top face. bottom: the same corners moved down by thickness
+// roof: the top face. floor: the same corners moved down by thickness
 export function platformCorners({
   lengthA,
   lengthB,
@@ -40,25 +40,25 @@ export function platformCorners({
 
   // corners = sums of u and v, moved down by v's rise so nothing is above y = 0
   const lift = -v.y;
-  const top = {
+  const roof = {
     left: { x: 0, y: lift },
-    front: { x: u.x, y: lift + u.y },
+    bottom: { x: u.x, y: lift + u.y },
     right: { x: u.x + v.x, y: lift + u.y + v.y },
-    back: { x: v.x, y: lift + v.y },
+    top: { x: v.x, y: lift + v.y },
   };
 
   const down = (p: Point) => ({ x: p.x, y: p.y + thickness });
-  const bottom = {
-    left: down(top.left),
-    front: down(top.front),
-    right: down(top.right),
-    back: down(top.back),
+  const floor = {
+    left: down(roof.left),
+    bottom: down(roof.bottom),
+    right: down(roof.right),
+    top: down(roof.top),
   };
 
-  return { top, bottom };
+  return { roof, floor };
 }
 
-// a platform like IsoPlatform, but each top edge has its own length.
+// a platform like IsoPlatform, but each roof edge has its own length.
 // drawn in real units (no 100-wide box, no scale)
 export function Platform({
   x = 0,
@@ -67,12 +67,12 @@ export function Platform({
   ...shape
 }: PlatformProps) {
   const { thickness } = shape;
-  const { top } = platformCorners(shape);
+  const { roof } = platformCorners(shape);
 
   // faces / strokeWeight / glow are handled here; the rest goes to BoxBody as is
   const { faces, strokeWeight, glow, ...boxLook } = platformStyle;
   const gradientId = useId();
-  const lines = gridLines(top, grid);
+  const lines = gridLines(roof, grid);
 
   return (
     <g
@@ -80,14 +80,14 @@ export function Platform({
       style={{ filter: accentGlow(glow.blur, glow.strength) }}
     >
       <BoxBody
-        top={top}
+        roof={roof}
         height={thickness}
         strokeWidth={strokeWeight}
         fills={{
-          top: faces.top,
+          roof: faces.roof,
           left: faces.left,
           right: faces.left,
-          bottom: faces.left,
+          floor: faces.left,
         }}
         {...boxLook}
       />
@@ -95,8 +95,8 @@ export function Platform({
       <defs>
         <EdgeGradient
           id={gradientId}
-          width={top.right.x}
-          height={top.front.y + thickness}
+          width={roof.right.x}
+          height={roof.bottom.y + thickness}
           opacity={platformStyle.edgeOpacity}
         />
       </defs>

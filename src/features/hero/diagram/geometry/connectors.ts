@@ -30,7 +30,7 @@ export function heroConnectors({ orbit, centerpiece }: Layout, angles: Angles) {
   const cubeMiddleY = centerpiece.y + cube.height / 2;
   const cubeLeftMiddle = { x: centerpiece.x, y: cubeMiddleY };
 
-  // the cube's top-back and bottom-front corners
+  // the cube's topmost and bottommost corners
   const cubeTop = { x: centerpiece.x + cube.b.run, y: centerpiece.y };
   const cubeBottom = {
     x: centerpiece.x + cube.a.run,
@@ -55,24 +55,24 @@ export function heroConnectors({ orbit, centerpiece }: Layout, angles: Angles) {
       x: platformBox.x + p.x * pts.scale,
       y: platformBox.y + p.y * pts.scale,
     });
-    const topBack = at(pts.topBack);
-    const topRight = at(pts.topRight);
-    const topLeft = at(pts.topLeft);
-    const topFront = at(pts.topFront);
+    const roofTop = at(pts.roofTop);
+    const roofRight = at(pts.roofRight);
+    const roofLeft = at(pts.roofLeft);
+    const roofBottom = at(pts.roofBottom);
 
-    const atTopBackRight = (t: number) => pointOnLine(topBack, topRight, t);
-    const atTopFrontRight = (t: number) => pointOnLine(topRight, topFront, t);
-    const atTopFrontLeft = (t: number) => pointOnLine(topLeft, topFront, t);
+    const atTopRight = (t: number) => pointOnLine(roofTop, roofRight, t);
+    const atBottomRight = (t: number) => pointOnLine(roofRight, roofBottom, t);
+    const atBottomLeft = (t: number) => pointOnLine(roofLeft, roofBottom, t);
 
     // above/below: leave from near the corner facing the cube.
     // the rest: leave from the middle of the right edge
     const out = isAboveOrBelow
       ? isLower
-        ? atTopBackRight(0.25)
-        : atTopFrontLeft(0.85)
+        ? atTopRight(0.25)
+        : atBottomLeft(0.85)
       : isLower
-        ? atTopBackRight(0.5)
-        : atTopFrontRight(0.5);
+        ? atTopRight(0.5)
+        : atBottomRight(0.5);
 
     // the cube outline's y straight above/below out.x, walking from `tip`
     const yOnOutline = (

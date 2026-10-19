@@ -28,13 +28,13 @@ export function Centerpiece({
   // const bigCube = {
   //   size,
   //   thickness,
-  //   showFrontEdge: true,
+  //   showMiddleEdge: true,
   //   faces: {
-  //     top: "var(--hero-center-cube-fill)",
+  //     roof: "var(--hero-center-cube-fill)",
   //     left: "var(--hero-center-cube-fill)",
   //     right: "var(--hero-center-cube-fill)",
   //   },
-  //   showBottom: true,
+  //   showFloor: true,
   //   stroke: "oklch(from var(--accent) 0.85 0.16 h)",
   //   strokeWeight: 0.6,
   //   // accentGlow(blur, strength%): a bit stronger than the default (2, 18)
@@ -53,11 +53,11 @@ export function Centerpiece({
   const bigCube = {
     size,
     thickness,
-    showFrontEdge: true,
+    showMiddleEdge: true,
 
-    faces: { top: cubeFill, left: cubeFill },
+    faces: { roof: cubeFill, left: cubeFill },
     // floor + glow: what ISOCube's defaults used to be, before they became glassCube
-    showBottom: true,
+    showFloor: true,
     stroke: "var(--accent-electric)",
     strokeWeight: 0.5,
     glow: { blur: 2, strength: 18 },
@@ -67,8 +67,8 @@ export function Centerpiece({
 
   return (
     <g transform={`translate(${x}, ${y})`}>
-      {/* big cube, back half: back edges + floor */}
-      <ISOCube {...bigCube} part="back" showBackEdges />
+      {/* big cube, under half: floor-top edges + floor */}
+      <ISOCube {...bigCube} part="under" showFloorTopEdges />
 
       {/* shadow on the floor, under the floating cube. iso-flattened ellipse */}
       <ellipse
@@ -88,15 +88,15 @@ export function Centerpiece({
           y={innerCubePos.y - floatLift}
           size={innerCube.size}
           thickness={innerCube.thickness}
-          faces={{ top: innerFill, left: innerFill }}
+          faces={{ roof: innerFill, left: innerFill }}
           strokeWeight={0.6}
-          showBackEdges
+          showFloorTopEdges
           {...angles}
         />
       </g>
 
-      {/* big cube, front half: walls + edges + top, over the small cube */}
-      <ISOCube {...bigCube} part="front" />
+      {/* big cube, over half: walls + edges + roof, over the small cube */}
+      <ISOCube {...bigCube} part="over" />
     </g>
   );
 }

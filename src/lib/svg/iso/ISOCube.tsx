@@ -6,12 +6,12 @@ import {
 } from "../logic";
 import { BoxBody } from "./BoxBody";
 
-// one color per face. right and bottom default to left
+// one color per face. right and floor default to left
 type ISOCubeFaces = {
-  top?: string;
+  roof?: string;
   left?: string;
   right?: string;
-  bottom?: string;
+  floor?: string;
 };
 
 type ISOCubeProps = IsoCubeBaseProps & {
@@ -21,23 +21,23 @@ type ISOCubeProps = IsoCubeBaseProps & {
   strokeWeight?: number;
   radius?: number;
 
-  // color of the back edges (showBackEdges). defaults to the normal edge color
-  backStroke?: string;
+  // color of the floor-top edges (showFloorTopEdges). defaults to the normal edge color
+  floorTopStroke?: string;
   // edge gradient stop opacities (start, middle, end). see EdgeGradient
   edgeOpacity?: [number, number, number];
   // soft accent glow around the whole cube
   glow?: { blur: number; strength: number };
 
   // show knobs
-  // false: no floor fill and no hidden back-bottom edges, only the two
-  // front-bottom edges. useful when the walls are see-through
-  showBottom?: boolean;
+  // false: no floor fill and no floor-top edges, only the floor's two
+  // lower edges. useful when the walls are see-through
+  showFloor?: boolean;
   // draw only half the cube, so something can sit inside it:
-  // "back" = back edges + floor, "front" = walls + edges + top. leave out = whole cube
-  part?: "back" | "front";
+  // "under" = floor-top edges + floor, "over" = walls + edges + roof. leave out = whole cube
+  part?: "under" | "over";
 };
 
-// the look of the old ISOCube: sharp dark glass at 80%, front edge on.
+// the look of the old ISOCube: sharp dark glass at 80%, middle edge on.
 // ISOCube drew every edge twice (face outline + edge line) and its edge
 // gradient is see-through, so the doubled edges were brighter: two layers of
 // 50% / 100% / 35% stack up to 75% / 100% / 58%, which is what edgeOpacity is here
@@ -48,9 +48,9 @@ const glassFill = "oklch(from var(--accent) 0.18 0.06 h / 0.5)";
 
 export const glassCube = {
   radius: 0,
-  faces: { top: glassFill, left: glassFill } as ISOCubeFaces,
-  showBottom: false,
-  showFrontEdge: true,
+  faces: { roof: glassFill, left: glassFill } as ISOCubeFaces,
+  showFloor: false,
+  showMiddleEdge: true,
   strokeWeight: 0.85,
   edgeOpacity: [1, 1, 1] as [number, number, number],
   glow: { blur: 4, strength: 12 },
@@ -75,23 +75,23 @@ export function ISOCube({
   glow = glassCube.glow,
 
   stroke,
-  backStroke,
+  floorTopStroke,
   // show knobs
-  showFrontEdge = glassCube.showFrontEdge,
-  showBackEdges = false,
-  showBottom = glassCube.showBottom,
+  showMiddleEdge = glassCube.showMiddleEdge,
+  showFloorTopEdges = false,
+  showFloor = glassCube.showFloor,
   part,
 }: ISOCubeProps) {
   const {
-    top: topFill = glassFill,
+    roof: roofFill = glassFill,
     left: leftFill = glassFill,
     right: rightFill = leftFill,
-    bottom: bottomFill = leftFill,
+    floor: floorFill = leftFill,
   } = faces;
 
-  const { scale, verticalHeight, topBack, topLeft, topRight, topFront } =
+  const { scale, verticalHeight, roofTop, roofLeft, roofRight, roofBottom } =
     isoCubePoints(size, thickness, angleA, angleB);
-  const top = { left: topLeft, back: topBack, right: topRight, front: topFront };
+  const roof = { left: roofLeft, top: roofTop, right: roofRight, bottom: roofBottom };
 
   // in real units (undo the scale) so edges match ISOCube's at any size
   const strokeWidth = glyphStroke(size, strokeWeight, 100);
@@ -102,22 +102,22 @@ export function ISOCube({
       style={{ filter: accentGlow(glow.blur, glow.strength) }}
     >
       <BoxBody
-        top={top}
+        roof={roof}
         height={verticalHeight}
         strokeWidth={strokeWidth}
         fills={{
-          top: topFill,
+          roof: roofFill,
           left: leftFill,
           right: rightFill,
-          bottom: bottomFill,
+          floor: floorFill,
         }}
         radius={radius}
         stroke={stroke}
-        backStroke={backStroke}
+        floorTopStroke={floorTopStroke}
         edgeOpacity={edgeOpacity}
-        showFrontEdge={showFrontEdge}
-        showBackEdges={showBackEdges}
-        showBottom={showBottom}
+        showMiddleEdge={showMiddleEdge}
+        showFloorTopEdges={showFloorTopEdges}
+        showFloor={showFloor}
         part={part}
       />
     </g>

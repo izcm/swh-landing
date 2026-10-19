@@ -4,9 +4,9 @@ import {
   platformStyle,
   IsoCubeShadow,
   glassCube,
-  isoBottomCenter,
+  isoFloorCenter,
   isoCubeMetrics,
-  isoTopCenter,
+  isoRoofCenter,
   paddedBox,
   standOn,
   type Point,
@@ -35,7 +35,7 @@ export function SoftwareDiagram() {
       y: contentY,
     };
     // width = 2 cubes across. each cube's width is the long side of the
-    // triangle you get by splitting its bottom diamond in half — that's cubeSize
+    // triangle you get by splitting its floor diamond in half — that's cubeSize
     const groupWidth = cubeSize * 2;
     const groupHeight = cube.height * 2 - cube.depth / 2;
 
@@ -48,7 +48,7 @@ export function SoftwareDiagram() {
   })();
 
   const bottomLeft = (() => {
-    // one lg cube: width = size, height = top diamond + walls
+    // one lg cube: width = size, height = roof diamond + walls
     const bigCubeDim = {
       size: 160,
       thickness: 100,
@@ -64,7 +64,7 @@ export function SoftwareDiagram() {
 
     const smallCube = isoCubeMetrics(encapsulatedCubeSize);
     // small cube stands in the middle of the big cube's floor
-    const smallCubePos = standOn(isoBottomCenter(bigCube), smallCube);
+    const smallCubePos = standOn(isoFloorCenter(bigCube), smallCube);
 
     // now we have to find teh point to place the encapsulated cube's top left corner
     // that is its container which is 90 size
@@ -96,9 +96,9 @@ export function SoftwareDiagram() {
 
     const platform = isoCubeMetrics(cubeGroup.size * 1.5, unit / 2);
 
-    // cube group stands in the middle of the platform's top. we keep the cubes at
+    // cube group stands in the middle of the platform's roof. we keep the cubes at
     // y = 0 and shift the platform down instead, so the group box starts at the cubes
-    const cubesOnPlatform = standOn(isoTopCenter(platform), cubeGroup);
+    const cubesOnPlatform = standOn(isoRoofCenter(platform), cubeGroup);
     const cubeOffsetX = cubesOnPlatform.x;
     const platformY = -cubesOnPlatform.y;
 
@@ -193,7 +193,7 @@ export function SoftwareDiagram() {
 
   // 2. bottom-right → bottom-left
 
-  // halfway along bottom-right platform's front-left bottom edge
+  // halfway along bottom-right platform's floor.left → floor.bottom edge
   const bottomRightOut = {
     x: bottomRight.positions.x + (bottomRight.platform.size / 2) * 0.5,
     y:
@@ -203,7 +203,7 @@ export function SoftwareDiagram() {
       bottomRight.platform.thickness,
   };
 
-  // halfway along bottom-left cube's front-right bottom edge
+  // halfway along bottom-left cube's floor.bottom → floor.right edge
   const bottomLeftIn = {
     x: bottomLeft.positions.x + bottomLeft.bigCube.size * 0.75,
     y:
@@ -217,7 +217,7 @@ export function SoftwareDiagram() {
 
   // 3. bottom-left → top
 
-  // halfway along bottom-left cube's back-left top edge
+  // halfway along bottom-left cube's roof.left → roof.top edge
   const bottomLeftOut = {
     x: bottomLeft.positions.x + bottomLeft.groupWidth * 0.25,
     y: bottomLeft.positions.y + bottomLeft.bigCube.depth / 2,
@@ -285,7 +285,7 @@ export function SoftwareDiagram() {
       <g transform={`translate(${top.positions.x}, ${top.positions.y})`}>
         <CubeBase size={cubeSize} y={cube.edgeLength - cube.depth / 2} />
 
-        {/* TOP CUBE — straddles the back seam, lifts a little off the base */}
+        {/* TOP CUBE — straddles the top seam, lifts a little off the base */}
         <g
           className="float-bob"
           style={
@@ -311,12 +311,12 @@ export function SoftwareDiagram() {
             thickness={bottomLeft.bigCube.thickness}
             radius={4}
             faces={{
-              top: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
+              roof: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
               left: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
               right: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
-              bottom: "oklch(from var(--accent) 0.2 0.06 h)",
+              floor: "oklch(from var(--accent) 0.2 0.06 h)",
             }}
-            showFrontEdge
+            showMiddleEdge
           />
         </g>
         {/* shadow on the floor, under the floating cube. iso-flattened ellipse */}
@@ -337,13 +337,13 @@ export function SoftwareDiagram() {
             y={bottomLeft.smallCubePos.y - bottomLeft.floatLift}
             size={cube.size}
             faces={{
-              top: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
+              roof: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
               left: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
               right: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
             }}
             // was / 0.8 drawn twice; one layer at 0.96 looks the same
             stroke="oklch(from var(--accent) 0.85 0.12 h / 0.96)"
-            showBackEdges
+            showFloorTopEdges
           />
         </g>
       </g>
@@ -385,7 +385,7 @@ export function SoftwareDiagram() {
           <g transform={`translate(${bottomRight.cubeOffsetX})`}>
             <CubeBase size={cubeSize} y={rise} />
 
-            {/* TOP ROW — two cubes on the back cells */}
+            {/* TOP ROW — two cubes on the top cells */}
             <ISOCube {...glassCube} size={cubeSize} x={half} y={0} />
             <ISOCube {...glassCube} size={cubeSize} x={cubeSize} y={depth} />
           </g>
@@ -395,7 +395,7 @@ export function SoftwareDiagram() {
   );
 }
 
-// the shared 2x2 base, drawn back to front. y = where the back cube sits
+// the shared 2x2 base, drawn top to bottom. y = where the top cube sits
 function CubeBase({ size, y = 0 }: { size: number; y?: number }) {
   const { depth } = isoCubeMetrics(size);
   const half = size / 2;
@@ -408,7 +408,7 @@ function CubeBase({ size, y = 0 }: { size: number; y?: number }) {
         x={half}
         y={y}
         faces={{
-          top: "oklch(from var(--accent) 0.18 0.06 h)",
+          roof: "oklch(from var(--accent) 0.18 0.06 h)",
           left: "oklch(from var(--accent) 0.18 0.06 h)",
           right: "oklch(from var(--accent) 0.18 0.06 h)",
         }}

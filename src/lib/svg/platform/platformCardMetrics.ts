@@ -1,7 +1,7 @@
 import { isoCubeMetrics, panelPoints } from "../logic";
 
-// a platform with a panel standing on its top face. the panel stands
-// `towardBack` along the left→back edge (which grid line), then `towardFront`
+// a platform with a panel standing on its roof. the panel stands
+// `towardTop` along the left→top edge (which grid line), then `towardBottom`
 // along that grid line. positions are measured from the platform's top-left;
 // `sticksUp` is how far the panel reaches above that, `height` is the whole card
 export function platformCardMetrics({
@@ -11,8 +11,8 @@ export function platformCardMetrics({
   panelSize,
   panelThickness,
   // side,
-  towardBack,
-  towardFront,
+  towardTop,
+  towardBottom,
 }: {
   platformSize: number;
   platformThickness: number;
@@ -22,8 +22,8 @@ export function platformCardMetrics({
   // which edge direction the panel stands along:
   // "a" = slopes DOWN at angle A, "b" = slopes UP at angle B
   // side: "a" | "b";
-  towardBack: number; // 0..1 along the left→back edge (which grid line)
-  towardFront: number; // 0..1 along that grid line toward the front
+  towardTop: number; // 0..1 along the left→top edge (which grid line)
+  towardBottom: number; // 0..1 along that grid line toward the bottom
 }) {
   const platform = isoCubeMetrics(platformSize, platformThickness, angles);
   // the panel's slope. also the skew for anything drawn on it
@@ -39,8 +39,8 @@ export function platformCardMetrics({
   // where the panel's bottom-left stands, from the platform's top-left
   const { depth, a, b } = platform;
   const panelStart = {
-    x: b.run * towardBack + a.run * towardFront,
-    y: depth - depth * towardBack + depth * towardFront,
+    x: b.run * towardTop + a.run * towardBottom,
+    y: depth - depth * towardTop + depth * towardBottom,
   };
 
   // how far the panel reaches above the platform's top. if its top edge slopes

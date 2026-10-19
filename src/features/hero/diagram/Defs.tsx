@@ -2,7 +2,7 @@
 export function HeroDefs() {
   return (
     <defs>
-      {/* center cube glass: lighter front/top, darker sides */}
+      {/* center cube glass: lighter toward the top-left, darker toward the bottom-right */}
       <linearGradient id="cubeSide" x1="0" y1="0" x2="1" y2="1">
         <stop
           offset="0%"

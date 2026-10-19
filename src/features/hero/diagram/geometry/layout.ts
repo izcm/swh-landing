@@ -1,7 +1,7 @@
 import {
-  isoBottomCenter,
+  isoFloorCenter,
   isoCubeMetrics,
-  isoTopCenter,
+  isoRoofCenter,
   pointOnCircle,
   standOn,
 } from "@/lib/svg";
@@ -35,7 +35,7 @@ export function heroLayout({
       innerCubeSize * 0.577,
       angles,
     );
-    const innerCubePos = standOn(isoBottomCenter(cube), innerCube);
+    const innerCubePos = standOn(isoFloorCenter(cube), innerCube);
 
     return {
       x: contentRing.centerX - unit * 0.75,
@@ -65,7 +65,7 @@ export function heroLayout({
       pointOnContentRing(degrees + orbitRotation),
     );
 
-    // stands along the platform's front-left edge, so it uses angle A
+    // stands along the platform's left→bottom edge, so it uses angle A
     // const surfaceSize = platform.b.edgeLength;
     const surfaceSize = platform.b.edgeLength;
     const surfaceThickness = surfaceSize * 1.1;
@@ -77,14 +77,14 @@ export function heroLayout({
     };
 
     // corners of the platform's outline, measured from the point it's pinned
-    // by (the middle of its top face)
+    // by (the middle of its roof)
     const corners = [
       { x: 0, y: -platform.depth }, // top tipop
       { x: -platform.size / 2, y: 0 }, // left
       { x: platform.size / 2, y: 0 }, // right
-      { x: -platform.size / 2, y: platform.thickness }, // left, bottom
-      { x: platform.size / 2, y: platform.thickness }, // right, bottom
-      { x: 0, y: platform.depth + platform.thickness }, // front tip, bottom
+      { x: -platform.size / 2, y: platform.thickness }, // floor left
+      { x: platform.size / 2, y: platform.thickness }, // floor right
+      { x: 0, y: platform.depth + platform.thickness }, // floor bottom
       { x: -platform.size / 4, y: -standingSurface.thickness }, // surface top-left
       {
         x: -platform.size / 4 + standingSurface.size,
@@ -113,8 +113,8 @@ export function heroLayout({
     });
 
     // the step from the platform's box top-left corner to the middle of its
-    // top face. not a position on its own: add it to / subtract it from one
-    const toDiamondCenter = isoTopCenter(platform);
+    // roof. not a position on its own: add it to / subtract it from one
+    const toDiamondCenter = isoRoofCenter(platform);
 
     const platformPoints = platformCenterPoints.map((centerPoint) => ({
       x: centerPoint.x - toDiamondCenter.x,

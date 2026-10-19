@@ -17,7 +17,7 @@
     transparent 80%
   );
 
-  --platform-bottom-fill: oklch(from var(--ground) 0.15 0.04 h / 0.72);
+  --platform-wall-fill: oklch(from var(--ground) 0.15 0.04 h / 0.72);
 
   /* https://claude.ai/artifact/VXrcsfxc2pMaoYDg63JeDL */
   /* accent strengths: same hue as --accent, different lightness / chroma */
@@ -96,6 +96,10 @@
 /* debug knob: hides the dashed layout boxes / rings / dots (className="svg-debug").
    comment this out to show them */
 .svg-debug {
+  display: none;
+}
+
+.svg-debug-visualize {
   display: none;
 }
 

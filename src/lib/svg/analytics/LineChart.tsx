@@ -105,7 +105,6 @@ export function LineChart({
           stroke="var(--accent-electric)"
           strokeOpacity={0.5}
           strokeWidth={1}
-          vectorEffect="non-scaling-stroke"
         />
       )}
 

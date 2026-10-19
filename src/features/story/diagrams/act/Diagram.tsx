@@ -14,7 +14,7 @@ export function ActDiagram() {
   // 540 units at our 672px ≈ 1.24px per unit, close to Connect's 784px / 650 units
   // ≈ 1.2px per unit, so strokes and radii come out about as thick as Connect's
   const viewboxWidth = 540;
-  const viewboxHeight = 370;
+  const viewboxHeight = 360;
   // same unit ThreeBoxDiagram handed out: 1/12 of the height
   const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
   // corner radius of the windows
@@ -109,7 +109,6 @@ export function ActDiagram() {
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       // 540 units at up to 672px ≈ 1.24px per unit, close to Connect. centered
-      // overflow={"visible"}
       className="block max-w-2xl w-full mx-auto"
     >
       <defs>

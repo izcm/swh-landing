@@ -5,9 +5,9 @@ import {
   deepShades,
   Tube,
   glyphStrokeLucide,
+  RecessedPanel,
   stackWithGaps,
 } from "@/lib/svg";
-import { RecessedPanel } from "./BoxBackground";
 
 // how much of the row a label takes, like a word or two of text: somewhere
 // between 25% and 60%. looks random but is the same number for the same row

@@ -1,5 +1,9 @@
-import { alignCenter, layoutUnit, stackWithGaps } from "@/lib/svg";
-import { RecessedPanel } from "./BoxBackground";
+import {
+  alignCenter,
+  layoutUnit,
+  RecessedPanel,
+  stackWithGaps,
+} from "@/lib/svg";
 import { ChartRow } from "./ChartRow";
 import { DonutWithLegend } from "./DonutWithLegend";
 import { List } from "./List";

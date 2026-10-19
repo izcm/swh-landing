@@ -5,6 +5,7 @@ import {
   alignEnd,
   cardPlatformLayout,
   cascadeLayout,
+  LitEdgeGradient,
   paddedBox,
 } from "@/lib/svg";
 import { DashboardContent } from "./dashboard/DashboardContent";
@@ -123,18 +124,7 @@ export function ActDiagram() {
           <stop offset="100%" stopColor="var(--accent-ink)" stopOpacity={0} />
         </linearGradient>
         {/* window border: electric, bright at the top and fading down */}
-        <linearGradient id={paneEdgeId} x1="0" y1="0" x2="0" y2="1">
-          <stop
-            offset="0%"
-            stopColor="var(--accent-electric)"
-            stopOpacity={0.6}
-          />
-          <stop
-            offset="100%"
-            stopColor="var(--accent-electric)"
-            stopOpacity={0.15}
-          />
-        </linearGradient>
+        <LitEdgeGradient id={paneEdgeId} />
       </defs>
 
       <rect

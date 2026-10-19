@@ -1,7 +1,7 @@
 import { useId } from "react";
 
-// faint electric fill + electric border.
-// everything inside starts at (0, 0) = the box's top-left
+// a box sunk into a window (act's chart boxes and list): faint electric fill +
+// electric border. everything inside starts at (0, 0) = the box's top-left
 export function RecessedPanel({
   width,
   height,

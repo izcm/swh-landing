@@ -1,10 +1,15 @@
+import { useId } from "react";
+
 import {
   BoxBody,
+  LitEdgeGradient,
   paddedBox,
-  platformStyle,
   pointOnLine,
+  roundedPolygonPath,
+  type BoxRoof,
   type Point,
 } from "@/lib/svg";
+import { UpperLeft } from "./dashboard/UpperLeft";
 
 export function VisualizeDiagram() {
   const viewboxWidth = 540;
@@ -16,10 +21,12 @@ export function VisualizeDiagram() {
   //   const screenInkId = useId();
   // cuts each screen's fill to its dashboard's rounded roof
   //   const screenClipId = useId();
+  // the dashboards' border: same as act's windows, bright at the top and fading down
+  const paneEdgeId = useId();
 
-  const screenRadius = 8;
+  const screenRadius = 5;
 
-  const thickness = unit * 0.1;
+  const thickness = unit * 0.15;
 
   const angleA = 60;
   const angleB = 11.25;
@@ -120,6 +127,40 @@ export function VisualizeDiagram() {
     };
   })();
 
+  const dashboardMatrix = ({ top, left, bottom }: BoxRoof) => {
+    // the edge vectors, starting from leftmost point
+    const u = { x: top.x - left.x, y: top.y - left.y }; // horizontal movement
+    const v = { x: bottom.x - left.x, y: bottom.y - left.y }; // vertical movement
+
+    const width = Math.hypot(u.x, u.y);
+    const height = Math.hypot(v.x, v.y);
+
+    // matrix transformation needs the unit vectorx
+    // a = x unit vector's x coordinate
+    const a = u.x / width;
+    // b = x unit vector's y coordinate
+    const b = u.y / width;
+
+    // c = y unit vector's x coordinate
+    const c = v.x / height;
+    // d = y unit vector
+    const d = v.y / height;
+
+    // e, f = the origin of the transformed coordinate system
+    const e = left.x;
+    const f = left.y;
+
+    return {
+      width,
+      height,
+      transform: `matrix(${a} ${b} ${c} ${d} ${e} ${f})`,
+    };
+  };
+
+  // what's drawn on each dashboard, in the same order as the list below.
+  // null = empty for now
+  const dashboardContents = [UpperLeft, null, null, null, null];
+
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
@@ -133,9 +174,11 @@ export function VisualizeDiagram() {
           <stop offset="0%" stopColor="var(--accent-ink)" stopOpacity={0.9} />
           <stop offset="100%" stopColor="var(--accent-ink)" stopOpacity={0} />
         </linearGradient> */}
+        {/* act's window border: electric, bright at the top and fading down */}
+        <LitEdgeGradient id={paneEdgeId} />
       </defs>
 
-      {/* all five dashboards: dark ground + act's ink fade, Platform's edge gradient */}
+      {/* all five dashboards: dark ground + act's ink fade, act's border */}
       {[
         dashboards.upper.left,
         dashboards.upper.right,
@@ -157,9 +200,38 @@ export function VisualizeDiagram() {
               //   floor: "oklch(from var(--accent) 0.22 0.08 h)",
             }}
             radius={screenRadius}
-            edgeOpacity={platformStyle.edgeOpacity}
+            edgeOpacity={[0, 0, 0]}
             showFloor
           />
+          {/* lit edge: one outline around the roof, like act's window rect */}
+          <path
+            d={roundedPolygonPath(
+              [roof.left, roof.top, roof.right, roof.bottom],
+              screenRadius,
+            )}
+            fill="none"
+            stroke={`url(#${paneEdgeId})`}
+            strokeWidth={1}
+          />
+          {/* the content, bent onto the roof */}
+          {(() => {
+            const Content = dashboardContents[i];
+            if (!Content) return null;
+            const { transform, width, height } = dashboardMatrix(roof);
+            return (
+              <g transform={transform}>
+                <Content
+                  width={width}
+                  height={height}
+                  radius={screenRadius}
+                  unit={unit}
+                  strokeWidth={1}
+                  paddingX={unit * 0.35}
+                  paddingY={unit * 0.35}
+                />
+              </g>
+            );
+          })()}
           {/* <path
             d={roundedPolygonPath(
               [roof.left, roof.top, roof.right, roof.bottom],

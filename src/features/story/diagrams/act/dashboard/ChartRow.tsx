@@ -1,5 +1,10 @@
-import { BarChart, Tube, LineChart, stackWithGaps } from "@/lib/svg";
-import { RecessedPanel } from "./BoxBackground";
+import {
+  BarChart,
+  Tube,
+  LineChart,
+  RecessedPanel,
+  stackWithGaps,
+} from "@/lib/svg";
 
 // first row: two boxes side by side, line chart in the left one, bar chart in the right
 export function ChartRow({

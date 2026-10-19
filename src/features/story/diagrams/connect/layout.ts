@@ -1,4 +1,10 @@
-import { paddedBox, parallelogramMatrix, platformCorners } from "@/lib/svg";
+import {
+  alignCenter,
+  cascadeLayout,
+  paddedBox,
+  parallelogramMatrix,
+  platformCorners,
+} from "@/lib/svg";
 import { centerpieceLayout } from "@/features/diagrams/shared/centerpieceLayout";
 
 type Angles = { angleA: number; angleB: number };
@@ -66,14 +72,25 @@ export function connectLayout({
     return { groupWidth, groupHeight, box, content };
   })();
 
-  // right: the data grid, flush with the right edge
+  // right: the data grid, two tilted windows flush with the right edge
   const dataGrid = (() => {
-    const groupWidth = viewboxWidth * 0.4;
-    const groupHeight = viewboxHeight;
-    const translateX = viewboxWidth - groupWidth;
-    const translateY = 0;
+    const groupWidth = viewboxWidth * 0.36;
 
-    return { groupWidth, groupHeight, translateX, translateY };
+    const stackLayout = cascadeLayout({
+      groupWidth,
+      heightToWidthRatio: 0.85,
+      angle: angles.angleA,
+      count: 2,
+      gapX: 15,
+      gapY: 15,
+      side: "right",
+    });
+    const groupHeight = stackLayout.stackHeight;
+
+    const translateX = viewboxWidth - groupWidth; // flush with the right edge
+    const { offset: translateY } = alignCenter(viewboxHeight, groupHeight);
+
+    return { groupWidth, groupHeight, translateX, translateY, stackLayout };
   })();
 
   // middle: the centerpiece, in the space left between the nodes and the windows

@@ -7,7 +7,7 @@ export function ConnectDiagram() {
   const viewboxWidth = 617;
   const viewboxHeight = 270;
   // edge slopes in degrees: A down to the right, B up to the right
-  const angles = { angleA: 30, angleB: 10 };
+  const angles = { angleA: 15, angleB: 10 };
 
   const { nodes, dataGrid, centerpiece } = connectLayout({
     viewboxWidth,
@@ -72,13 +72,7 @@ export function ConnectDiagram() {
       />
 
       {/* right: the data grid */}
-      <DataGrid
-        x={dataGrid.translateX}
-        y={dataGrid.translateY}
-        width={dataGrid.groupWidth}
-        height={dataGrid.groupHeight}
-        angle={angles.angleB}
-      />
+      <DataGrid layout={dataGrid} />
     </svg>
   );
 }

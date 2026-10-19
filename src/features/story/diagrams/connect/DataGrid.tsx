@@ -1,39 +1,10 @@
-import {
-  alignCenter,
-  cascadeLayout,
-  paddedBox,
-  stackWithGaps,
-  Tube,
-  WindowPane,
-} from "@/lib/svg";
+import { paddedBox, stackWithGaps, Tube, WindowPane } from "@/lib/svg";
+import type { ConnectLayout } from "./layout";
 
 // the right box: two tilted windows, the front one holding a table of pills.
-// x / y / width / height = the right box, from connectLayout
-export function DataGrid({
-  x,
-  y,
-  width,
-  height,
-  angle,
-}: {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  angle: number;
-}) {
-  const stackLayout = cascadeLayout({
-    groupWidth: width,
-    heightToWidthRatio: 0.8,
-    angle,
-    count: 2,
-    gapX: 15,
-    gapY: 15,
-    side: "right",
-  });
-
-  // the stack in the middle of the box, top to bottom
-  const { offset: stackY } = alignCenter(height, stackLayout.stackHeight);
+// the windows' stack and position come from connectLayout
+export function DataGrid({ layout }: { layout: ConnectLayout["dataGrid"] }) {
+  const { translateX, translateY, stackLayout } = layout;
 
   const contentBox = paddedBox(
     stackLayout.item.width,
@@ -160,25 +131,25 @@ export function DataGrid({
   );
 
   return (
-    <g transform={`translate(${x}, ${y})`}>
-      {/* the windows, back to front, fading from 0.6 at the back */}
-      <g transform={`translate(0, ${stackY}) ${stackLayout.transform}`}>
-        {stackLayout.items.map((win, i) => (
-          <g
-            key={i}
-            transform={`translate(${win.x}, ${win.y})`}
-            opacity={0.6 + win.depth * 0.4}
-          >
-            <WindowPane
-              width={win.width}
-              height={win.height}
-              radius={3}
-              strokeWidth={0.8}
-            />
-            {win.isFront && frontContent}
-          </g>
-        ))}
-      </g>
+    // the windows, back to front, fading from 0.6 at the back
+    <g
+      transform={`translate(${translateX}, ${translateY}) ${stackLayout.transform}`}
+    >
+      {stackLayout.items.map((win, i) => (
+        <g
+          key={i}
+          transform={`translate(${win.x}, ${win.y})`}
+          opacity={0.6 + win.depth * 0.4}
+        >
+          <WindowPane
+            width={win.width}
+            height={win.height}
+            radius={3}
+            strokeWidth={0.8}
+          />
+          {win.isFront && frontContent}
+        </g>
+      ))}
     </g>
   );
 }

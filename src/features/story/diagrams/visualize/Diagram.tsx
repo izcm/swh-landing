@@ -170,7 +170,7 @@ export function VisualizeDiagram() {
               //   floor: "oklch(from var(--accent) 0.22 0.08 h)",
             }}
             radius={screenRadius}
-            edgeOpacity={[0, 0, 0]}
+            edgeOpacity={[0.2, 0.35, 0.1]}
             showFloor
           />
           {/* lit edge: one outline around the roof, like act's window rect */}

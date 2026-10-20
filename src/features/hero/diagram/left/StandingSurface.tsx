@@ -6,7 +6,7 @@ import {
   type ShapeProps,
 } from "@/lib/svg";
 
-type Props = ShapeProps & {
+type Props = Omit<ShapeProps, "fill" | "stroke"> & {
   size?: number;
   thickness?: number;
   // slope of the top edge in degrees. 30 = true isometric
@@ -28,8 +28,6 @@ export function StandingSurface({
   radius = 4,
   icon: Icon,
   iconStroke = "var(--accent)",
-  fill = "none",
-  stroke = "var(--accent)",
 }: Props) {
   const {
     depth,
@@ -43,9 +41,9 @@ export function StandingSurface({
           [topLeft, topRight, bottomRight, bottomLeft],
           radius,
         )}
-        fill={fill}
-        stroke={stroke}
-        strokeWidth={0.65}
+        fill="var(--accent-ink)"
+        stroke="var(--accent-dim)"
+        strokeWidth={1}
       />
 
       {Icon &&
@@ -62,7 +60,7 @@ export function StandingSurface({
                 x={-iconSize / 2}
                 y={-iconSize / 2}
                 size={iconSize}
-                strokeWidth={glyphStroke(iconSize, 1.5)}
+                strokeWidth={glyphStroke(iconSize, 1.25)}
                 stroke={iconStroke}
               />
             </g>

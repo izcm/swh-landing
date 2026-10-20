@@ -72,7 +72,7 @@ export function About() {
 
         <p className="mt-6 max-w-150 text-subtle">
           I'm an independent developer focused on integrations, automation and
-          data. I also build Web3 software at{" "}
+          data. <br /> I also build Web3 software at{" "}
           <a
             href={IZBLOCKS_URL}
             target="_blank"

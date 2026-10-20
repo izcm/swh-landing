@@ -25,3 +25,10 @@ export function centerpieceLayout({
 
   return { cube, innerCube, innerCubePos };
 }
+
+// the hero will use isoshape since it does a lot of placement using
+// iso-dependent stuff, like assuming depth etc. are calculated in a certain way
+
+// size decidesdiagonal of top
+// unlike ISOCube, an angle other than 30 degrees will not produce different aLength and bLength
+export function centerpieceLayoutNonISO() {}

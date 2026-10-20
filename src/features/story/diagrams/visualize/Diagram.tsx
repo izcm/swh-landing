@@ -24,7 +24,7 @@ export function VisualizeDiagram() {
   // the dashboards' border: same as act's windows, bright at the top and fading down
   const paneEdgeId = useId();
 
-  const screenRadius = 5;
+  const screenRadius = 3;
 
   const thickness = unit * 0.15;
 
@@ -164,8 +164,8 @@ export function VisualizeDiagram() {
             fills={{
               //   roof: "none",
               roof: "var(--accent-ink)",
-              right: "none",
-              left: "none",
+              right: "var(--platform-wall-fill)",
+              left: "var(--platform-wall-fill)",
               floor: "oklch(from var(--accent) 0.22 0.08 h)",
               //   floor: "oklch(from var(--accent) 0.22 0.08 h)",
             }}

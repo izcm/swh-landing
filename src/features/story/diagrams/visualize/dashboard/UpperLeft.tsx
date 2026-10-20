@@ -24,7 +24,7 @@ export function UpperLeft({
   // only its left corners are rounded: they sit on the dashboard's own rounded
   // corners. its right side meets the rest of the dashboard, so it stays sharp
   const sidePanel = (() => {
-    const groupWidth = width * 0.25;
+    const groupWidth = width * 0.22;
     const groupHeight = height;
     const r = radius;
     // clockwise from the top edge, the same curve as roundedPolygonPath's corners
@@ -79,7 +79,8 @@ export function UpperLeft({
           0.17 lightness), and a faint electric line where it meets the rest */}
       <path
         d={sidePanel.outlinePath}
-        fill="oklch(from var(--accent) 0.15 0.04 h)"
+        // fill="oklch(from var(--accent) 0.16 0.05 h)"
+        fill="oklch(from var(--accent) 0.15 0.048 h)"
       />
       <line
         x1={sidePanel.groupWidth}
@@ -87,7 +88,7 @@ export function UpperLeft({
         x2={sidePanel.groupWidth}
         y2={sidePanel.groupHeight}
         stroke="var(--accent-electric)"
-        strokeOpacity={0.2}
+        strokeOpacity={0.5}
         strokeWidth={strokeWidth}
       />
 

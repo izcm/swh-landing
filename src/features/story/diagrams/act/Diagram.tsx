@@ -168,8 +168,8 @@ export function ActDiagram() {
               x2={win.width - radius}
               y2={1}
               stroke="var(--accent-electric)"
-              strokeOpacity={0.25}
-              strokeWidth={0.6}
+              strokeOpacity={1}
+              strokeWidth={0.5}
             />
             {/* lit edge: a 1px hairline, bright at the top and fading down */}
             <rect

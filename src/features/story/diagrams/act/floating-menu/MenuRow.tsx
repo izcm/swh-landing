@@ -1,6 +1,6 @@
 import { ChevronRight, type LucideIcon } from "lucide-react";
 
-import { alignCenter, glyphStrokeLucide, stackWithGaps } from "@/lib/svg";
+import { glyphStrokeLucide, listItemLayout } from "@/lib/svg";
 import { ElectricGlass } from "../ElectricGlass";
 
 // one row of the floating menu: glass, icon in a circle, label, chevron at
@@ -26,10 +26,21 @@ export function MenuRow({
     const insetX = h * 0.15; // from the row's left and right edges
     const gap = h * 0.2; // between icon, text and chevron
 
+    // the icon's circle, then two lines stacked and centered: a longer
+    // label, a shorter subtitle
+    const lineHeight = h * 0.09;
+    const item = listItemLayout({
+      height: h,
+      leadingInset: insetX,
+      leadingRadius: h * 0.3,
+      gap,
+      lineHeights: [lineHeight, lineHeight], // label, subtitle
+      lineGap: h * 0.1,
+    });
+
     const icon = (() => {
-      const radius = h * 0.3;
-      const size = radius * 1.2; // the lucide icon inside the circle
-      return { cx: insetX + radius, cy: h / 2, radius, size };
+      const size = item.leading.radius * 1.2; // the lucide icon inside the circle
+      return { ...item.leading, size };
     })();
 
     const chevron = (() => {
@@ -37,25 +48,13 @@ export function MenuRow({
       return { x: width - insetX - size, y: (h - size) / 2, size };
     })();
 
-    // two lines stacked and centered: a longer label, a shorter subtitle
     const text = (() => {
-      const x = icon.cx + icon.radius + gap;
-      const width = chevron.x - gap - x;
-
-      // the two lines
-      const lineHeight = h * 0.09;
-      const lineHeights = [lineHeight, lineHeight]; // label, subtitle
-      const lineGap = h * 0.1;
-
-      const lines = stackWithGaps(lineHeights, lineGap);
-      const linesHeight = lineHeights[0] + lineGap + lineHeights[1];
-
-      const { offset: y } = alignCenter(h, linesHeight);
+      const width = chevron.x - gap - item.text.x;
 
       // the label text, used instead of the two lines for now
       const fontSize = h * 0.2;
 
-      return { x, y, width, lineHeights, lineStarts: lines.starts, fontSize };
+      return { ...item.text, width, fontSize };
     })();
 
     return { icon, chevron, text };

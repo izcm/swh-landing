@@ -1,8 +1,8 @@
 import { useId, type ComponentProps } from "react";
-import { EdgeGradient } from "../EdgeGradient";
+import { EdgeGradient } from "../../styles";
 import { ISOCube } from "../iso";
-import { accentGlow, glyphStroke, gridLines, isoCubePoints } from "../logic";
-import { platformGridStyle, platformStyle } from "./platformStyle";
+import { accentGlow, glyphStroke, gridLines, isoCubePoints } from "../../logic";
+import { platformGridStyle, platformStyle } from "../../styles";
 
 type IsoPlatformProps = ComponentProps<typeof ISOCube> & {
   // grid on the roof: how many equal parts each direction is split into

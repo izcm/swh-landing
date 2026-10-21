@@ -1,6 +1,6 @@
 // a rounded track, optionally with a filled part, like a progress bar.
 
-import type { ShapeProps } from "./logic";
+import type { ShapeProps } from "../logic";
 
 // wider than tall: fills from the left. taller than wide: fills from the bottom
 export function Tube({

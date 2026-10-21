@@ -1,6 +1,6 @@
-import type { Point } from "../logic";
+import type { Point } from "../../logic";
 
-export function EaseOutSpiral({
+export function TheodorusSpiral({
   x,
   y,
   count,
@@ -11,29 +11,27 @@ export function EaseOutSpiral({
   count: number;
   radius: number;
 }) {
-  const unit = radius / 30;
+  const viewBoxSize = radius * 2;
+  const unit = radius / Math.sqrt(count + 1);
 
-  // 1) Generate spiral points
-  const points: Point[] = [];
-  const startRadius = radius * 0.5;
+  // 1) Generate Theodorus spiral points
+  const points: Point[] = [{ x: 1, y: 0 }];
 
-  for (let i = 0; i <= count; i++) {
-    const t = i / count;
-
-    const angle = t * Math.PI * 2;
-
-    // Expands quickly, then follows the outer circle
-    const growth = 1 - Math.pow(1 - t, 4);
-    const r = startRadius + (radius - startRadius) * growth;
+  for (let i = 1; i <= count; i++) {
+    const p = points[i - 1];
+    const length = Math.hypot(p.x, p.y);
 
     points.push({
-      x: Math.cos(angle) * r,
-      y: -Math.sin(angle) * r,
+      x: p.x - p.y / length,
+      y: p.y + p.x / length,
     });
   }
 
-  // 2) Points are already in SVG coordinates
-  const svg = points;
+  // 2) Convert math coords -> SVG coords
+  const svg = points.map((p) => ({
+    x: p.x * unit,
+    y: -p.y * unit,
+  }));
 
   // 3) Old straight outer edge
   const edgeLine = svg
@@ -63,10 +61,9 @@ export function EaseOutSpiral({
   }
 
   return (
+    // origo in the middle
     <svg
-      viewBox={`${-radius} ${-radius} ${radius * 2} ${radius * 2}`}
-      width="100%"
-      overflow="visible"
+      viewBox={`${-viewBoxSize / 2} ${-viewBoxSize / 2} ${viewBoxSize} ${viewBoxSize}`}
     >
       <g transform={`translate(${x}, ${y})`}>
         {/* spokes */}
@@ -82,14 +79,14 @@ export function EaseOutSpiral({
           />
         ))}
 
-        {/* straight shell */}
-        {/* <path
+        {/* old straight shell */}
+        <path
           d={edgeLine}
           fill="none"
           stroke="var(--accent-faint)"
           strokeWidth={unit * 0.18}
           strokeLinejoin="round"
-        /> */}
+        />
 
         {/* smooth shell */}
         {/* dashed like the hero connectors: dash 8× the width, gap 12× */}
@@ -104,7 +101,7 @@ export function EaseOutSpiral({
         {/* origin */}
         <circle cx={0} cy={0} r={unit * 0.15} fill="var(--accent)" />
 
-        {/* endpoint */}
+        {/* debug: the last corner (points[points.length - 1]) */}
         <circle
           cx={svg[svg.length - 1].x}
           cy={svg[svg.length - 1].y}

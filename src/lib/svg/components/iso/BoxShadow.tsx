@@ -1,4 +1,4 @@
-import type { Point } from "../logic";
+import type { Point } from "../../logic";
 
 // soft shadow under a box: its bottom outline, moved `drop` lower and blurred.
 // stays put while the box bobs (float-bob), and shrinks + fades in step with it

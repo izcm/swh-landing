@@ -1,4 +1,4 @@
-import { chartSeparatorStyle } from "../logic";
+import { chartSeparatorStyle } from "../../logic";
 
 type BarChartProps = {
   x?: number;

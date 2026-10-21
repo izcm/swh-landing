@@ -1,11 +1,11 @@
 import { useId } from "react";
-import { EdgeGradient } from "../EdgeGradient";
+import { EdgeGradient } from "../../styles";
 import {
   pointOnLine,
   roundCorner,
   roundedPolygonPath,
   type Point,
-} from "../logic";
+} from "../../logic";
 
 // the 4 corners of a box's roof (its top face). left is at x = 0
 export type BoxRoof = { left: Point; top: Point; right: Point; bottom: Point };

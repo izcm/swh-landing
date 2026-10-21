@@ -1,4 +1,4 @@
-import { arcPath, donutArcs } from "../logic";
+import { arcPath, donutArcs } from "../../logic";
 import type { LegendItem } from "./Legend";
 
 // one piece of the donut: a legend item (color, label) plus its value, so the

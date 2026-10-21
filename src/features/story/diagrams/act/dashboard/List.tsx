@@ -1,10 +1,10 @@
 import { ArrowRight } from "lucide-react";
 
 import {
-  alignCenter,
   deepShades,
   Tube,
   glyphStrokeLucide,
+  listItemLayout,
   RecessedPanel,
   stackWithGaps,
 } from "@/lib/svg";
@@ -45,12 +45,20 @@ export function List({
     rowGap,
   );
 
-  // left: the dot, from the row's left edge
-  const dot = (() => {
-    const insetX = unit * 0.45;
-    const radius = rowHeight * 0.75 * 0.25;
+  // left to middle: the dot, then the label with the subtitle under it,
+  // both centered in the row's height
+  const item = (() => {
+    const dotRadius = rowHeight * 0.75 * 0.25;
+    const lineHeight = dotRadius * 0.75;
 
-    return { cx: insetX + radius, radius, insetX };
+    return listItemLayout({
+      height: rowHeight,
+      leadingInset: unit * 0.45,
+      leadingRadius: dotRadius,
+      gap: rowHeight * 0.375,
+      lineHeights: [lineHeight, lineHeight], // label, subtitle
+      lineGap: dotRadius * 0.8,
+    });
   })();
 
   // right: a square button, as far in from the right edge as the dot is from the left
@@ -63,25 +71,8 @@ export function List({
     return { size, x, y, radius: size * 0.15, iconSize };
   })();
 
-  // middle: a box between the dot and the button, holding the label with the
-  // subtitle under it, centered in the row's height
-  const text = (() => {
-    // the box: its own space after the dot and before the button
-    const x = dot.cx + dot.radius + rowHeight * 0.375;
-    const width = button.x - rowHeight * 0.25 - x;
-
-    // the two lines inside it
-    const lineHeight = dot.radius * 0.75;
-    const lineHeights = [lineHeight, lineHeight]; // label, subtitle
-    const lineGap = dot.radius * 0.8;
-
-    const lines = stackWithGaps(lineHeights, lineGap);
-    const linesHeight = lineHeights[0] + lineGap + lineHeights[1];
-
-    const { offset: y } = alignCenter(rowHeight, linesHeight);
-
-    return { x, y, width, lineHeights, lineStarts: lines.starts };
-  })();
+  // the text's width: from where it starts to a little before the button
+  const textWidth = button.x - rowHeight * 0.25 - item.text.x;
 
   const dotColors = deepShades(rowCount);
 
@@ -108,16 +99,17 @@ export function List({
       )}
 
       <circle
-        cx={dot.cx}
-        cy={rowHeight / 2}
-        r={dot.radius}
+        cx={item.leading.cx}
+        cy={item.leading.cy}
+        r={item.leading.radius}
         fill={dotColors[i]}
         fillOpacity={0.8}
       />
 
       {/* text box: everything inside starts at its top-left */}
       {(() => {
-        const { x, y, width, lineHeights, lineStarts } = text;
+        const { x, y, lineHeights, lineStarts } = item.text;
+        const width = textWidth;
         return (
           <g transform={`translate(${x}, ${y})`}>
             {/* label: bright, shorter */}

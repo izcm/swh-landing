@@ -1,5 +1,5 @@
 import { boundingBox, pointOnLine } from "../logic";
-import { platformCorners } from "./Platform";
+import { platformCorners } from "./platformCorners";
 
 const rad = (deg: number) => (deg * Math.PI) / 180;
 

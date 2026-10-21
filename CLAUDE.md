@@ -3,7 +3,7 @@
 - When a part of a diagram should be reusable, share the **layout function**
   (the geometry: positions, sizes, bounding box) in `lib/svg`. The component
   that draws it stays in its diagram's folder and draws its own look (glass,
-  rows, ink). Example: `cardPlatformLayout` lives in `lib/svg/platform/` and
+  rows, ink). Example: `cardPlatformLayout` lives in `lib/svg/layouts/` and
   is shared, while `FloatingMenu` lives in `act/platform/` and belongs only to
   the act diagram.
 - Don't add content slots or extra props (like `cardContent` or an `ink` box)

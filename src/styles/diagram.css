@@ -23,7 +23,7 @@
   /* accent strengths: same hue as --accent, different lightness / chroma */
   --accent-electric: oklch(from var(--accent) 0.7 0.21 h);
   --accent-dim: oklch(from var(--accent) 0.5 0.125 h);
-  --accent-ink: oklch(from var(--accent) 0.17 0.055 h);
+  --accent-ink: oklch(from var(--accent) 0.17 0.052 h);
   --accent-faint: oklch(from var(--accent) l c h / 0.15);
   --accent-glow: oklch(from var(--accent) 0.86 0.09 h);
 

@@ -1,6 +1,6 @@
-import type { Point } from "../logic";
+import type { Point } from "../../logic";
 
-export function TheodorusSpiral({
+export function EaseOutSpiral({
   x,
   y,
   count,
@@ -11,27 +11,29 @@ export function TheodorusSpiral({
   count: number;
   radius: number;
 }) {
-  const viewBoxSize = radius * 2;
-  const unit = radius / Math.sqrt(count + 1);
+  const unit = radius / 30;
 
-  // 1) Generate Theodorus spiral points
-  const points: Point[] = [{ x: 1, y: 0 }];
+  // 1) Generate spiral points
+  const points: Point[] = [];
+  const startRadius = radius * 0.5;
 
-  for (let i = 1; i <= count; i++) {
-    const p = points[i - 1];
-    const length = Math.hypot(p.x, p.y);
+  for (let i = 0; i <= count; i++) {
+    const t = i / count;
+
+    const angle = t * Math.PI * 2;
+
+    // Expands quickly, then follows the outer circle
+    const growth = 1 - Math.pow(1 - t, 4);
+    const r = startRadius + (radius - startRadius) * growth;
 
     points.push({
-      x: p.x - p.y / length,
-      y: p.y + p.x / length,
+      x: Math.cos(angle) * r,
+      y: -Math.sin(angle) * r,
     });
   }
 
-  // 2) Convert math coords -> SVG coords
-  const svg = points.map((p) => ({
-    x: p.x * unit,
-    y: -p.y * unit,
-  }));
+  // 2) Points are already in SVG coordinates
+  const svg = points;
 
   // 3) Old straight outer edge
   const edgeLine = svg
@@ -61,9 +63,10 @@ export function TheodorusSpiral({
   }
 
   return (
-    // origo in the middle
     <svg
-      viewBox={`${-viewBoxSize / 2} ${-viewBoxSize / 2} ${viewBoxSize} ${viewBoxSize}`}
+      viewBox={`${-radius} ${-radius} ${radius * 2} ${radius * 2}`}
+      width="100%"
+      overflow="visible"
     >
       <g transform={`translate(${x}, ${y})`}>
         {/* spokes */}
@@ -79,14 +82,14 @@ export function TheodorusSpiral({
           />
         ))}
 
-        {/* old straight shell */}
-        <path
+        {/* straight shell */}
+        {/* <path
           d={edgeLine}
           fill="none"
           stroke="var(--accent-faint)"
           strokeWidth={unit * 0.18}
           strokeLinejoin="round"
-        />
+        /> */}
 
         {/* smooth shell */}
         {/* dashed like the hero connectors: dash 8× the width, gap 12× */}
@@ -101,7 +104,7 @@ export function TheodorusSpiral({
         {/* origin */}
         <circle cx={0} cy={0} r={unit * 0.15} fill="var(--accent)" />
 
-        {/* debug: the last corner (points[points.length - 1]) */}
+        {/* endpoint */}
         <circle
           cx={svg[svg.length - 1].x}
           cy={svg[svg.length - 1].y}

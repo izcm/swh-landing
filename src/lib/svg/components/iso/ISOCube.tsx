@@ -3,7 +3,7 @@ import {
   glyphStroke,
   isoCubePoints,
   type IsoCubeBaseProps,
-} from "../logic";
+} from "../../logic";
 import { BoxBody } from "./BoxBody";
 
 // one color per face. right and floor default to left

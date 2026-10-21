@@ -63,7 +63,8 @@ export const spaceAround = ({
 export const layoutUnit = (height: number) => height / 12;
 
 // any width × height box (a whole diagram's viewBox, a group, …): a base unit
-// (1/12 of its height), padding of `paddingXUnits` units left/right and
+// (1/12 of its height, or the `unit` passed in, so boxes of different heights
+// can share one ruler), padding of `paddingXUnits` units left/right and
 // `paddingYUnits` units top/bottom (same as X if not passed), and the content
 // box inside that padding
 export function paddedBox(
@@ -71,8 +72,8 @@ export function paddedBox(
   height: number,
   paddingXUnits = 1,
   paddingYUnits = paddingXUnits,
+  unit = layoutUnit(height),
 ) {
-  const unit = layoutUnit(height);
   const paddingX = unit * paddingXUnits;
   const paddingY = unit * paddingYUnits;
 

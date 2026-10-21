@@ -99,7 +99,7 @@ export function connectLayout({
     const translateX = nodes.groupWidth; // right after the nodes
 
     const angles = { angleA: 15, angleB: 15 };
-    const layout = centerpieceLayout({ size: unit * 5, angles });
+    const layout = centerpieceLayout({ size: unit * 5.25, angles });
 
     const centerX = translateX + groupWidth * 0.55;
     const centerY = viewboxHeight * 0.5;

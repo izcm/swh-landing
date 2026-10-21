@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { chartSeparatorStyle, toPoints, type Point } from "../logic";
+import { chartSeparatorStyle, toPoints, type Point } from "../../logic";
 
 type LineChartProps = {
   width: number;

@@ -1,4 +1,4 @@
-import { isoCubeMetrics, isoCubePoints, type Point } from "../logic";
+import { isoCubeMetrics, isoCubePoints, type Point } from "../../logic";
 import { BoxShadow } from "./BoxShadow";
 
 type IsoCubeMetrics = ReturnType<typeof isoCubeMetrics>;

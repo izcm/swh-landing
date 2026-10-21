@@ -10,6 +10,7 @@ import {
   type Point,
 } from "@/lib/svg";
 import { UpperLeft } from "./dashboard/UpperLeft";
+import { UpperRight } from "./dashboard/UpperRight";
 
 export function VisualizeDiagram() {
   const viewboxWidth = 540;
@@ -17,16 +18,17 @@ export function VisualizeDiagram() {
   // same unit as Connect: 1/12 of the height
   const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
 
-  // the screens' fill: same ink fade as act's dashboard windows
-  //   const screenInkId = useId();
-  // cuts each screen's fill to its dashboard's rounded roof
-  //   const screenClipId = useId();
   // the dashboards' border: same as act's windows, bright at the top and fading down
   const paneEdgeId = useId();
 
   const screenRadius = 3;
 
-  const thickness = unit * 0.15;
+  // colors the dashboards pick from, in order
+  const colorSelection = [
+    "var(--advisory)",
+    "var(--caution)",
+    "var(--critical)",
+  ];
 
   const angleA = 60;
   const angleB = 11.25;
@@ -40,7 +42,6 @@ export function VisualizeDiagram() {
     const edgeLength = drop / Math.sin(radA);
     return { run, drop, edgeLength };
   })();
-  //   const lengthB = viewboxWidth
 
   // edge B: from the left side up to the top, across the rest of the width
   const edgeB = (() => {
@@ -50,12 +51,11 @@ export function VisualizeDiagram() {
     return { run, rise, edgeLength };
   })();
 
-  //   const dashboardGap = unit / edgeB.edgeLength; // one unit of space between the two, as a part of edge B
-
-  const dashboardGroupsGap = unit * 0.75;
-
   // two dashboards on edge B, three on a parallel line below
   const dashboards = (() => {
+    const thickness = unit * 0.15; // how tall each dashboard's sides are
+    const dashboardGroupsGap = unit * 0.75; // between the upper and the lower row
+
     const alongA = { x: edgeA.run, y: edgeA.drop };
     const gap = unit / edgeB.edgeLength; // one unit, as a part of edge B
 
@@ -124,26 +124,22 @@ export function VisualizeDiagram() {
         right: between(lowerLine, splitLower[1], 1, 0, 0.6),
       },
       lowerLine,
+      thickness,
     };
   })();
 
   // what's drawn on each dashboard, in the same order as the list below.
   // null = empty for now
-  const dashboardContents = [UpperLeft, null, null, null, null];
+  const dashboardContents = [UpperLeft, UpperRight, null, null, null];
 
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       // 615 units at up to 768px ≈ 1.25px per unit, close to Connect. centered
 
-      className="block w-full max-w-[700px] mx-auto"
+      className="block w-full max-w-175 mx-auto"
     >
       <defs>
-        {/* act's window fill: ink at the top, fading out toward the bottom */}
-        {/* <linearGradient id={screenInkId} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--accent-ink)" stopOpacity={0.9} />
-          <stop offset="100%" stopColor="var(--accent-ink)" stopOpacity={0} />
-        </linearGradient> */}
         {/* act's window border: electric, bright at the top and fading down */}
         <LitEdgeGradient id={paneEdgeId} />
       </defs>
@@ -159,7 +155,7 @@ export function VisualizeDiagram() {
         <g key={i}>
           <BoxBody
             roof={roof}
-            height={thickness}
+            height={dashboards.thickness}
             strokeWidth={1}
             fills={{
               //   roof: "none",
@@ -200,112 +196,15 @@ export function VisualizeDiagram() {
                   radius={screenRadius}
                   unit={unit}
                   strokeWidth={1}
-                  paddingX={unit * 0.35}
-                  paddingY={unit * 0.35}
+                  paddingXUnits={0.3}
+                  paddingYUnits={0.25}
+                  colorSelection={colorSelection}
                 />
               </g>
             );
           })()}
-          {/* <path
-            d={roundedPolygonPath(
-              [roof.left, roof.top, roof.right, roof.bottom],
-              screenRadius,
-            )}
-            fill={`url(#${screenInkId})`}
-          /> */}
         </g>
       ))}
-
-      {/* debug: upper dashboards */}
-      <circle
-        className="svg-debug"
-        cx={viewboxWidth}
-        cy={edgeA.drop}
-        r={6}
-        fill="#ffb547" // amber: edge A
-        strokeWidth={0.75}
-      />
-
-      <circle
-        className="svg-debug"
-        cx={edgeB.run}
-        cy={0}
-        r={6}
-        fill="#ffffff" // white: where edge A and edge B meet
-        strokeWidth={0.75}
-      />
-
-      <circle
-        className="svg-debug"
-        cx={0}
-        cy={edgeB.rise}
-        r={6}
-        fill="#ff4fa3" // pink: edge B
-        strokeWidth={0.75}
-      />
-
-      <line
-        className="svg-debug"
-        x1={edgeB.run}
-        y1={0}
-        x2={0}
-        y2={edgeB.rise}
-        stroke="#ff4fa3" // pink: edge B
-        strokeWidth={0.75}
-      />
-
-      <line
-        className="svg-debug"
-        x1={viewboxWidth - edgeA.run}
-        y1={0}
-        x2={viewboxWidth}
-        y2={edgeA.drop}
-        stroke="#ffb547" // amber: edge A
-        strokeWidth={0.75}
-      />
-
-      {/* debug: lower dashboards */}
-      <circle
-        className="svg-debug"
-        cx={0}
-        cy={dashboards.lowerLine.left.y}
-        r={6}
-        fill="#ffffff" // white: where edge A and edge B meet
-        strokeWidth={0.75}
-      />
-
-      <circle
-        className="svg-debug"
-        cx={dashboards.lowerLine.top.x}
-        cy={dashboards.lowerLine.top.y}
-        r={6}
-        fill="#ffffff" // white: where edge A and edge B meet
-        strokeWidth={0.75}
-      />
-
-      {/* the pink line moved down: same run and rise, from lowerLine.left to lowerLine.top */}
-      <line
-        className="svg-debug"
-        x1={dashboards.lowerLine.left.x}
-        y1={dashboards.lowerLine.left.y}
-        x2={dashboards.lowerLine.top.x}
-        y2={dashboards.lowerLine.top.y}
-        stroke="#ff4fa3" // pink: edge B
-        strokeWidth={0.75}
-      />
-
-      {/* debug: the box */}
-      <rect
-        className="svg-debug"
-        x={0.375}
-        y={0.375}
-        width={viewboxWidth - 0.75}
-        height={viewboxHeight - 0.75}
-        fill="none"
-        stroke="#aab4e6" // lavender
-        strokeWidth={0.75}
-        strokeDasharray="6 4"
-      />
     </svg>
   );
 }

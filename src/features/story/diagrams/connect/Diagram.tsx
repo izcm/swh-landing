@@ -25,7 +25,7 @@ export function ConnectDiagram() {
 
   return (
     <svg
-      viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
+      viewBox={`0 d ${viewboxWidth} ${viewboxHeight}`}
       overflow="visible"
       className="block max-w-3xl w-full mx-auto"
     >

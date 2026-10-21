@@ -1,6 +1,6 @@
 import { useId, type ReactNode } from "react";
-import { accentGlow, glyphStroke, type ShapeProps } from "../logic";
-import { AccentBarGradient } from "./AccentBarGradient";
+import { accentGlow, glyphStroke, type ShapeProps } from "../../logic";
+import { AccentBarGradient } from "../../styles";
 
 // fill: background color, defaults to the dark ink (or the ghost tint).
 // stroke: border color, defaults to the accent gradient

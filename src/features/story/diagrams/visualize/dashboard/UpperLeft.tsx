@@ -9,6 +9,7 @@ import {
   Tube,
 } from "@/lib/svg";
 import { CardBackground } from "./CardBackground";
+import { OutlineButton, TitleTube } from "./header-elements";
 
 // what's on the upper-left dashboard: a side panel on the left, a line chart on
 // the right. fills exactly the width × height it's given (no padding around the
@@ -227,21 +228,8 @@ function Header({
 
   return (
     <g>
-      <rect
-        width={titleWidth}
-        height={height}
-        rx={height / 2}
-        fill="var(--accent-electric)"
-        fillOpacity={0.4}
-      />
-      <rect
-        x={buttonX}
-        width={buttonWidth}
-        height={height}
-        rx={height / 2}
-        stroke="var(--accent)"
-        strokeWidth={0.5}
-      />
+      <TitleTube width={titleWidth} height={height} />
+      <OutlineButton x={buttonX} width={buttonWidth} height={height} />
     </g>
   );
 }

@@ -9,6 +9,7 @@ import {
   WindowDots,
 } from "@/lib/svg";
 import { CardBackground } from "./CardBackground";
+import { TitleTube } from "./header-elements";
 
 // what's on the upper-right dashboard: a header, then two rows of chart cards,
 // one card per color in colorSelection. fills exactly the width × height it's
@@ -128,13 +129,7 @@ function Header({
 
   return (
     <g>
-      <rect
-        width={titleWidth}
-        height={height}
-        rx={height / 2}
-        fill="var(--accent-electric)"
-        fillOpacity={0.4}
-      />
+      <TitleTube width={titleWidth} height={height} />
       <g transform={`translate(${dots.translateX}, 0)`}>
         <WindowDots height={height} radius={dots.radius} gap={dots.gap} />
       </g>

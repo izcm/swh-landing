@@ -9,6 +9,9 @@ import {
   roundedPolygonPath,
   type Point,
 } from "@/lib/svg";
+import { BottomCenter } from "./dashboard/BottomCenter";
+import { BottomLeft } from "./dashboard/BottomLeft";
+import { BottomRight } from "./dashboard/BottomRight";
 import { UpperLeft } from "./dashboard/UpperLeft";
 import { UpperRight } from "./dashboard/UpperRight";
 
@@ -131,7 +134,13 @@ export function VisualizeDiagram() {
 
   // what's drawn on each dashboard, in the same order as the list below.
   // null = empty for now
-  const dashboardContents = [UpperLeft, UpperRight, null, null, null];
+  const dashboardContents = [
+    UpperLeft,
+    UpperRight,
+    BottomLeft,
+    BottomCenter,
+    BottomRight,
+  ];
 
   return (
     <svg

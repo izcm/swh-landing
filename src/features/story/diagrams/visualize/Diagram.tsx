@@ -25,9 +25,10 @@ export function VisualizeDiagram() {
 
   // colors the dashboards pick from, in order
   const colorSelection = [
-    "var(--advisory)",
-    "var(--caution)",
-    "var(--critical)",
+    "var(--accent)",
+    "var(--accent-lavender)",
+    "var(--accent-cyan)",
+    "var(--accent-teal)",
   ];
 
   const angleA = 60;

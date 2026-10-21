@@ -8,6 +8,7 @@ import {
   stackWithGaps,
   Tube,
 } from "@/lib/svg";
+import { CardBackground } from "./CardBackground";
 
 // what's on the upper-left dashboard: a side panel on the left, a line chart on
 // the right. fills exactly the width × height it's given (no padding around the
@@ -378,19 +379,11 @@ function KpiCards({
 
   return columns.starts.map((start, i) => (
     <g key={i} transform={`translate(${start}, 0)`}>
-      <RecessedPanel
+      <CardBackground
         width={cardWidth}
         height={height}
         radius={radius}
         strokeWidth={strokeWidth * 0.5}
-      />
-
-      <rect
-        width={cardWidth}
-        height={height}
-        rx={radius}
-        fill="oklch(from var(--accent-electric) l c h / 0.01)"
-        fillOpacity={1}
       />
 
       {/* dot, title and subtitle, inside the card's padding */}

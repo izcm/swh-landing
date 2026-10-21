@@ -28,9 +28,9 @@
   --accent-glow: oklch(from var(--accent) 0.86 0.09 h);
 
   /* accent neighbours: nearby hues for variety */
-  --accent-lavender: oklch(from var(--accent) 0.66 0.16 calc(h + 28));
-  --accent-cyan: oklch(from var(--accent) 0.8 0.12 calc(h - 25));
-  --accent-teal: oklch(from var(--accent) 0.74 0.11 calc(h - 40));
+  --accent-lavender: oklch(from var(--accent) 0.66 0.21 calc(h + 28));
+  --accent-cyan: oklch(from var(--accent) 0.8 0.17 calc(h - 25));
+  --accent-teal: oklch(from var(--accent) 0.74 0.16 calc(h - 40));
 }
 
 /* floating cube: bobs up and down; its floor shadow shrinks + fades as it rises.

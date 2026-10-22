@@ -87,7 +87,7 @@ function Header({
   // the window dots: 1.5 × as tall as the row, so they stick out the same
   // amount above and below it. two radii apart, flush right
   const dots = (() => {
-    const scale = 1.5; // the dots' height against the row's
+    const scale = 1.8; // the dots' height against the row's
     const radius = (height / 2) * scale;
     const gap = radius * 2;
     const dotsWidth = radius * 2 * 3 + gap * 2; // WindowDots draws three

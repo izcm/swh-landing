@@ -1,3 +1,4 @@
+import { equalizerLayout } from "../../layouts";
 import { chartSeparatorStyle } from "../../logic";
 
 type BarChartProps = {
@@ -24,17 +25,20 @@ export function BarChart({
   selectedIdx,
   barRatio,
 }: BarChartProps) {
-  const slotWidth = width / values.length;
-  const barWidth = slotWidth * barRatio;
+  // where each bar goes
+  const { columns: bars } = equalizerLayout({
+    width,
+    height,
+    values,
+    columnRatio: barRatio,
+  });
 
-  // same faint dashed lines as LineChart, behind the bars
+  // the faint guide lines: evenly spaced, 1/4, 2/4, 3/4 of the height
   const separatorCount = 3;
-  const separators = Array.from({ length: separatorCount }).map((_, i) => ({
-    x1: width * 0.04,
-    x2: width * 0.96,
-    // evenly spaced: 1/4, 2/4, 3/4 of the height
-    y: (height * (i + 1)) / (separatorCount + 1),
-  }));
+  const separatorYs = Array.from(
+    { length: separatorCount },
+    (_, i) => (height * (i + 1)) / (separatorCount + 1),
+  );
 
   // a bar's fill and opacity, all made from `color`: the picked one brighter
   // (more light, a bit more chroma) and fully opaque, the others dimmed while
@@ -51,33 +55,22 @@ export function BarChart({
 
   return (
     <g transform={`translate(${x}, ${y})`}>
-      {separators.map((s, i) => (
+      {/* same faint dashed lines as LineChart, behind the bars */}
+      {separatorYs.map((separatorY, i) => (
         <line
           key={i}
-          x1={s.x1}
-          y1={s.y}
-          x2={s.x2}
-          y2={s.y}
+          x1={width * 0.04}
+          y1={separatorY}
+          x2={width * 0.96}
+          y2={separatorY}
           stroke="var(--accent)"
           {...chartSeparatorStyle}
         />
       ))}
 
-      {values.map((value, i) => {
-        const barHeight = height * value;
-
-        return (
-          <rect
-            key={i}
-            x={i * slotWidth + (slotWidth - barWidth) / 2}
-            y={height - barHeight}
-            width={barWidth}
-            height={barHeight}
-            rx="1"
-            {...barStyle(i)}
-          />
-        );
-      })}
+      {bars.map((bar, i) => (
+        <rect key={i} {...bar} rx="1" {...barStyle(i)} />
+      ))}
     </g>
   );
 }

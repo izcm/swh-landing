@@ -1,11 +1,11 @@
 // My pick: radialLayout, with startAngle and endAngle so you can create full circles, semicircles, or partial arcs.
 export function radialLayout({
-  startAngle,
-  endAngle,
+  startAngle = 0,
+  endAngle = 2 * Math.PI,
   values,
 }: {
-  startAngle: number;
-  endAngle: number;
+  startAngle?: number;
+  endAngle?: number;
   values: number[];
 }) {
   const total = values.reduce((sum, value) => sum + value, 0);

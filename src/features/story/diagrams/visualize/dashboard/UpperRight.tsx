@@ -8,11 +8,12 @@ import {
   Tube,
   WindowDots,
 } from "@/lib/svg";
+import type { ChartData } from "../data";
 import { CardBackground } from "./CardBackground";
 import { TitleTube } from "./header-elements";
 
 // what's on the upper-right dashboard: a header, then two rows of chart cards,
-// one card per color in colorSelection. fills exactly the width × height it's
+// one card per series in chartData. fills exactly the width × height it's
 // given (no padding around the outside). a plain <g> drawn from (0, 0); the
 // diagram bends it onto the roof
 export function UpperRight({
@@ -23,7 +24,7 @@ export function UpperRight({
   strokeWidth,
   paddingXUnits,
   paddingYUnits,
-  colorSelection,
+  chartData,
 }: {
   width: number; // the area to fill
   height: number;
@@ -33,6 +34,7 @@ export function UpperRight({
   paddingXUnits: number; // around the content, left and right, in units
   paddingYUnits: number; // around the content, top and bottom, in units
   colorSelection: string[]; // colors to pick from, in order
+  chartData: ChartData; // what the charts draw
 }) {
   // the whole width, split into rows: the header, then two rows of chart cards
   const contentBox = contentBoxLayout({
@@ -47,7 +49,7 @@ export function UpperRight({
   const { content, rows, paddingX } = contentBox;
 
   // the chart cards' grid: the two card rows from contentBox, each split into
-  // two columns of equal width, paddingX apart. one card per color, left to
+  // two columns of equal width, paddingX apart. one card per series, left to
   // right, then the next row
   const cardGrid = (() => {
     const columnCount = 2;
@@ -59,10 +61,11 @@ export function UpperRight({
       gap,
     );
 
-    const cards = colorSelection.map((color, i) => {
+    const cards = chartData.series.map(({ color, values }, i) => {
       const row = 1 + Math.floor(i / columnCount); // row 0 is the header
       return {
         color,
+        values,
         x: columns.starts[i % columnCount],
         y: rows.starts[row],
         width: cardWidth,
@@ -144,9 +147,10 @@ function ChartCards({
   radius,
   strokeWidth,
 }: {
-  // where each card goes, how big it is, and its color
+  // where each card goes, how big it is, its color and its chart's points
   cards: {
     color: string;
+    values: number[];
     x: number;
     y: number;
     width: number;
@@ -183,15 +187,7 @@ function ChartCards({
     return { inner, icon, text, titleWidth };
   };
 
-  // each card's curve: the same wave, with its own frequency and phase per
-  // card so no two charts look alike. stays between 0.25 and 0.75
-  const curve = (i: number) =>
-    Array.from({ length: 40 }, (_, j) => {
-      const x = j / 39;
-      return 0.5 + 0.25 * Math.sin(2 * Math.PI * x * (1.5 + i * 0.5) + i);
-    });
-
-  return cards.map(({ color, x, y, width, height }, i) => {
+  return cards.map(({ color, values, x, y, width, height }, i) => {
     const { inner, icon, text, titleWidth } = cardInside(width, height);
 
     return (
@@ -232,7 +228,7 @@ function ChartCards({
             y={inner.rows.starts[1]}
             width={inner.content.width}
             height={inner.rows.sizes[1]}
-            values={curve(i)}
+            values={values}
             color={color}
             areaOpacity={0.08}
             areaRadius={radius}

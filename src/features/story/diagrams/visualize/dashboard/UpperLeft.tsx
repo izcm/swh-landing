@@ -8,6 +8,7 @@ import {
   stackWithGaps,
   Tube,
 } from "@/lib/svg";
+import type { ChartData } from "../data";
 import { CardBackground } from "./CardBackground";
 import { OutlineButton, TitleTube } from "./header-elements";
 
@@ -23,6 +24,7 @@ export function UpperLeft({
   paddingXUnits,
   paddingYUnits,
   colorSelection,
+  chartData,
 }: {
   width: number; // the area to fill
   height: number;
@@ -32,6 +34,7 @@ export function UpperLeft({
   paddingXUnits: number; // around the content, left and right, in units
   paddingYUnits: number; // around the content, top and bottom, in units
   colorSelection: string[]; // colors to pick from, in order
+  chartData: ChartData; // what the charts draw
 }) {
   // left: the side panel, flush with the edges
   const sidePanel = (() => {
@@ -78,6 +81,7 @@ export function UpperLeft({
             radius={radius}
             unit={unit}
             strokeWidth={strokeWidth}
+            values={chartData.trend}
           />,
           <KpiCards
             width={content.width}
@@ -242,12 +246,14 @@ function LineChartBox({
   radius,
   unit,
   strokeWidth,
+  values,
 }: {
   width: number; // the box's width
   height: number;
   radius: number; // the box's corner radius
   unit: number; // the diagram's ruler, for the dots and the labels
   strokeWidth: number; // the box's border thickness
+  values: number[]; // the line's points, each 0-1
 }) {
   // title + subtitle lines in the box's top-left corner, like act's ChartRow.
   // sized from this diagram's unit
@@ -260,12 +266,6 @@ function LineChartBox({
 
     return { inset, titleWidth, lineHeights, lineStarts: lines.starts };
   })();
-
-  // the curve: a steady climb with three round waves that grow a little from
-  // left to right, so they aren't all the same. stays between about 0.2 and 0.8
-  const climb = (x: number) =>
-    0.18 + 0.55 * x + 0.1 * (0.7 + 0.6 * x) * Math.sin(6 * Math.PI * x + 0.4);
-  const values = Array.from({ length: 85 }, (_, i) => climb(i / 84));
 
   return (
     <g>

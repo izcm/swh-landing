@@ -118,6 +118,26 @@ export function alignEnd(parentSize: number, itemSize: number) {
   return { offset };
 }
 
+// centers an item inside a parent on both axes: alignCenter across the width
+// and down the height. offsetX / offsetY = from the parent's top-left to the
+// item's top-left
+export function placeItemCenter({
+  parentWidth,
+  parentHeight,
+  itemWidth,
+  itemHeight,
+}: {
+  parentWidth: number;
+  parentHeight: number;
+  itemWidth: number;
+  itemHeight: number;
+}) {
+  const { offset: offsetX } = alignCenter(parentWidth, itemWidth);
+  const { offset: offsetY } = alignCenter(parentHeight, itemHeight);
+
+  return { offsetX, offsetY };
+}
+
 // puts items one after another along one axis (x or y) with `gap` between
 // neighbours. starts = where each item begins, dividers = the middle of each
 // gap (where a divider line goes). both are plain numbers along that axis

@@ -5,7 +5,7 @@ import type { legendLayout } from "../../layouts";
 // one legend row: a dot in `color`, then `label`
 export type LegendItem = {
   color: string; // the dot (and, in a chart, the thing it names)
-  label: ReactNode; // drawn after the dot
+  label?: ReactNode; // drawn after the dot
 };
 
 // one row per item: a dot in the item's color, then its label, drawn with

@@ -21,7 +21,7 @@ const sections = [
     paragraphs: [
       "Connecting data across systems makes it possible to see more than any individual system can show on its own.",
       "We build interactive dashboards that present up-to-date information in formats tailored to your business needs.",
-      "Explore information at different levels, spot patterns, and drill down into the details that matter.",
+      // "Explore information at different levels, spot patterns, and drill down into the details that matter.",
     ],
     diagram: <VisualizeDiagram />,
   },

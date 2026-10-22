@@ -1,4 +1,5 @@
 import { alignEnd, contentBoxLayout, WindowDots } from "@/lib/svg";
+import type { ChartData } from "../data";
 import { CardBackground } from "./CardBackground";
 import { TitleTube } from "./header-elements";
 
@@ -22,6 +23,7 @@ export function BottomLeft({
   paddingXUnits: number; // around the content, left and right, in units
   paddingYUnits: number; // around the content, top and bottom, in units
   colorSelection: string[]; // colors to pick from, in order
+  chartData: ChartData; // what the charts draw
 }) {
   // the whole width, split into rows: the header, then the card
   const contentBox = contentBoxLayout({

@@ -1,4 +1,5 @@
 import { alignEnd, contentBoxLayout, WindowDots } from "@/lib/svg";
+import type { ChartData } from "../data";
 import { CardBackground } from "./CardBackground";
 import { TitleTube } from "./header-elements";
 
@@ -22,6 +23,7 @@ export function BottomRight({
   paddingXUnits: number; // around the content, left and right, in units
   paddingYUnits: number; // around the content, top and bottom, in units
   colorSelection: string[]; // colors to pick from, in order
+  chartData: ChartData; // what the charts draw
 }) {
   // the whole width, split into rows: the header, then the card
   const contentBox = contentBoxLayout({
@@ -85,7 +87,7 @@ function Header({
   // the window dots: 1.5 × as tall as the row, so they stick out the same
   // amount above and below it. two radii apart, flush right
   const dots = (() => {
-    const scale = 1.5; // the dots' height against the row's
+    const scale = 2; // the dots' height against the row's
     const radius = (height / 2) * scale;
     const gap = radius * 2;
     const dotsWidth = radius * 2 * 3 + gap * 2; // WindowDots draws three
@@ -96,7 +98,7 @@ function Header({
 
   return (
     <g>
-      <TitleTube width={titleWidth} height={height} />
+      <TitleTube width={titleWidth} height={height * 1.5} />
       <g transform={`translate(${dots.translateX}, 0)`}>
         <WindowDots height={height} radius={dots.radius} gap={dots.gap} />
       </g>

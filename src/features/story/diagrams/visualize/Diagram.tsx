@@ -14,10 +14,11 @@ import { BottomLeft } from "./dashboard/BottomLeft";
 import { BottomRight } from "./dashboard/BottomRight";
 import { UpperLeft } from "./dashboard/UpperLeft";
 import { UpperRight } from "./dashboard/UpperRight";
+import { chartData } from "./data";
 
 export function VisualizeDiagram() {
   const viewboxWidth = 540;
-  const viewboxHeight = 360;
+  const viewboxHeight = 350;
   // same unit as Connect: 1/12 of the height
   const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
 
@@ -26,13 +27,8 @@ export function VisualizeDiagram() {
 
   const screenRadius = 3;
 
-  // colors the dashboards pick from, in order
-  const colorSelection = [
-    "var(--accent)",
-    "var(--accent-lavender)",
-    "var(--accent-cyan)",
-    "var(--accent-teal)",
-  ];
+  // colors the dashboards pick from, in order: the chart series' colors
+  const colorSelection = chartData.series.map((s) => s.color);
 
   const angleA = 60;
   const angleB = 11.25;
@@ -41,7 +37,7 @@ export function VisualizeDiagram() {
 
   // edge A: from the top of the box down to the right side
   const edgeA = (() => {
-    const drop = viewboxHeight * 0.32; // how far it goes down
+    const drop = viewboxHeight * 0.325; // how far it goes down
     const run = drop / Math.tan(radA); // how far it goes sideways
     const edgeLength = drop / Math.sin(radA);
     return { run, drop, edgeLength };
@@ -115,7 +111,7 @@ export function VisualizeDiagram() {
     };
 
     const splitUpper = 0.65;
-    const splitLower = [0.35, 0.8] as const;
+    const splitLower = [0.35, 0.78] as const;
 
     return {
       upper: {
@@ -125,8 +121,9 @@ export function VisualizeDiagram() {
       lower: {
         left: between(lowerLine, 0, splitLower[0] - gap, 0, 0.75),
         middle: between(lowerLine, splitLower[0], splitLower[1] - gap, 12),
-        right: between(lowerLine, splitLower[1], 1, 0, 0.6),
+        right: between(lowerLine, splitLower[1], 1, 0, 0.65),
       },
+      upperLine,
       lowerLine,
       thickness,
     };
@@ -209,12 +206,42 @@ export function VisualizeDiagram() {
                   paddingXUnits={0.3}
                   paddingYUnits={0.25}
                   colorSelection={colorSelection}
+                  chartData={chartData}
                 />
               </g>
             );
           })()}
         </g>
       ))}
+
+      {/* debug: the upper and the lower line the dashboards sit on, from
+          line.left to line.top */}
+      {[dashboards.upperLine, dashboards.lowerLine].map((line, i) => (
+        <line
+          key={i}
+          className="svg-debug"
+          x1={line.left.x}
+          y1={line.left.y}
+          x2={line.top.x}
+          y2={line.top.y}
+          stroke="#ff4fa3" // pink: edge B's direction
+          strokeWidth={0.75}
+        />
+      ))}
+
+      {/* debug: the whole box. inset by half the stroke, so the whole line
+          shows inside the viewBox */}
+      <rect
+        className="svg-debug"
+        x={0.375}
+        y={0.375}
+        width={viewboxWidth - 0.75}
+        height={viewboxHeight - 0.75}
+        fill="none"
+        stroke="#aab4e6" // lavender
+        strokeWidth={0.75}
+        strokeDasharray="6 4"
+      />
     </svg>
   );
 }

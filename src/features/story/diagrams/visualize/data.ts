@@ -39,6 +39,9 @@ export const chartData = {
     { value: 3, color: "var(--accent-electric)" },
     { value: 2, color: "oklch(from var(--accent-deep) l c h)" },
   ],
+
+  // BottomRight's gauge: the segments (one tick where each starts) and how full it is, out of their total
+  gauge: { values: [1, 1, 1, 1, 1, 1], value: 4 },
 };
 
 export type ChartData = typeof chartData;

@@ -48,7 +48,7 @@ export function List({
   // left to middle: the dot, then the label with the subtitle under it,
   // both centered in the row's height
   const item = (() => {
-    const dotRadius = rowHeight * 0.75 * 0.25;
+    const dotRadius = rowHeight * 0.1875;
     const lineHeight = dotRadius * 0.75;
 
     return listItemLayout({

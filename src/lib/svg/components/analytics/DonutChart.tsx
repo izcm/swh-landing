@@ -1,11 +1,5 @@
 import { arcPath, donutArcs } from "../../logic";
-import type { LegendItem } from "./Legend";
-
-// one piece of the donut: a legend item (color, label) plus its value, so the
-// same array goes to DonutChart and Legend
-export type DonutSlice = LegendItem & {
-  value: number; // any size: the slice is value / total of the ring
-};
+import type { Slice } from "./types";
 
 // a ring cut into slices, each starting where the previous one ends.
 // fills a 2·radius × 2·radius box with its top-left at (x, y)
@@ -20,7 +14,7 @@ export function DonutChart({
 }: {
   x?: number;
   y?: number;
-  slices: DonutSlice[];
+  slices: Slice[];
   radius: number; // the ring's outer radius
   thickness: number; // the ring's width
   startAngle?: number; // radians, where the first slice starts. 12 o'clock if left out (0 = 3 o'clock)

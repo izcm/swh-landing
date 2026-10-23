@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Nav, Footer, Hero, Story, Demo, About } from "./features";
-import { ActDiagram } from "./features/story/diagrams/act/Diagram";
-// import { AISvg } from "./features/about/diagrams/ai/diagram";
+import { RadialGauge } from "./lib/svg/components/analytics/RadialGauge";
+import { deepShades, Tube } from "./lib/svg";
 
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
@@ -51,11 +51,7 @@ function App() {
         </>
       )}
 
-      {tab === "tmp" && (
-        <div className="max-w-7xl w-full mx-auto">
-          <ActDiagram />
-        </div>
-      )}
+      {tab === "tmp" && <div className="max-w-7xl w-full mx-auto"></div>}
 
       <div className="mt-auto">
         <Footer />

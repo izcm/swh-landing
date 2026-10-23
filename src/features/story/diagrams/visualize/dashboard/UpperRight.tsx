@@ -24,6 +24,7 @@ export function UpperRight({
   strokeWidth,
   paddingXUnits,
   paddingYUnits,
+  colorSelection,
   chartData,
 }: {
   width: number; // the area to fill
@@ -61,10 +62,10 @@ export function UpperRight({
       gap,
     );
 
-    const cards = chartData.series.map(({ color, values }, i) => {
+    const cards = chartData.series.map(({ values }, i) => {
       const row = 1 + Math.floor(i / columnCount); // row 0 is the header
       return {
-        color,
+        color: colorSelection[i % colorSelection.length],
         values,
         x: columns.starts[i % columnCount],
         y: rows.starts[row],

@@ -2,6 +2,7 @@ import { useId } from "react";
 
 import {
   BoxBody,
+  deepShades,
   LitEdgeGradient,
   paddedBox,
   parallelogramMatrix,
@@ -27,11 +28,11 @@ export function VisualizeDiagram() {
 
   const screenRadius = 3;
 
-  // colors the dashboards pick from, in order: the chart series' colors
-  const colorSelection = chartData.series.map((s) => s.color);
+  // colors the dashboards pick from, in order: three deep accent shades, darkest first
+  const colorSelection = deepShades(3);
 
   const angleA = 60;
-  const angleB = 11.25;
+  const angleB = 11.5;
   const radA = (angleA * Math.PI) / 180;
   const radB = (angleB * Math.PI) / 180;
 
@@ -144,7 +145,7 @@ export function VisualizeDiagram() {
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       // 615 units at up to 768px ≈ 1.25px per unit, close to Connect. centered
 
-      className="block w-full max-w-175 mx-auto"
+      className="block w-full max-w-2xl mx-auto"
     >
       <defs>
         {/* act's window border: electric, bright at the top and fading down */}

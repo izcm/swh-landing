@@ -89,7 +89,7 @@ export function RadialGauge({
               x2={outer.x}
               y2={outer.y}
               stroke="var(--accent-glow)"
-              strokeWidth={0.25}
+              strokeWidth={1}
               opacity={0.25}
             />
           );

@@ -15,20 +15,23 @@ export const chartData = {
       0.18 + 0.55 * x + 0.1 * (0.7 + 0.6 * x) * Math.sin(6 * Math.PI * x + 0.4),
   ),
 
-  // UpperRight's chart cards, one per series: the same wave with its own
-  // frequency and phase, so no two look alike. stays between 0.25 and 0.75
+  // UpperRight's trend chart, one line per series: strictly falling from 0.78
+  // to 0.18, slowly at first and steeply at the end. the drop is 0.3·x (a
+  // steady slope) plus 0.7·x⁴ (the steep end), with a small wobble too gentle
+  // to ever turn it around (its slope, at most 0.25, stays under the steady 0.3)
   series: [
-    "var(--accent)",
-    "var(--accent-lavender)",
-    "var(--accent-cyan)",
-    "var(--accent-teal)",
-  ].map((color, i) => ({
-    color,
-    values: sample(
-      60,
-      (x) => 0.5 + 0.25 * Math.sin(2 * Math.PI * x * (1.5 + i * 0.5) + i),
-    ),
-  })),
+    {
+      values: sample(
+        60,
+        (x) =>
+          0.78 -
+          0.6 *
+            (0.3 * x +
+              0.7 * x ** 4 +
+              (0.25 * Math.sin(6 * Math.PI * x)) / (6 * Math.PI)),
+      ),
+    },
+  ],
 
   // BottomCenter's bar chart: each bar's height
   bars: [0.42, 0.58, 0.47, 1, 0.66, 0.79, 0.6].map((v) => v * 0.65),

@@ -1,5 +1,4 @@
 import { equalizerLayout } from "../../layouts";
-import { chartSeparatorStyle } from "../../logic";
 
 type BarChartProps = {
   x?: number;
@@ -33,13 +32,6 @@ export function BarChart({
     columnRatio: barRatio,
   });
 
-  // the faint guide lines: evenly spaced, 1/4, 2/4, 3/4 of the height
-  const separatorCount = 3;
-  const separatorYs = Array.from(
-    { length: separatorCount },
-    (_, i) => (height * (i + 1)) / (separatorCount + 1),
-  );
-
   // a bar's fill and opacity, all made from `color`: the picked one brighter
   // (more light, a bit more chroma) and fully opaque, the others dimmed while
   // one is picked, all the same when nothing is
@@ -55,19 +47,6 @@ export function BarChart({
 
   return (
     <g transform={`translate(${x}, ${y})`}>
-      {/* same faint dashed lines as LineChart, behind the bars */}
-      {separatorYs.map((separatorY, i) => (
-        <line
-          key={i}
-          x1={width * 0.04}
-          y1={separatorY}
-          x2={width * 0.96}
-          y2={separatorY}
-          stroke="var(--accent)"
-          {...chartSeparatorStyle}
-        />
-      ))}
-
       {bars.map((bar, i) => (
         <rect key={i} {...bar} rx="1" {...barStyle(i)} />
       ))}

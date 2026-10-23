@@ -12,6 +12,7 @@ import {
 import type { ChartData } from "../data";
 import { CardBackground } from "./CardBackground";
 import { TitleTube } from "./header-elements";
+import { Label } from "./Label";
 import { RadialGauge } from "@/lib/svg/components/analytics/RadialGauge";
 
 // what's on the lower-right dashboard: a header, then one card filling the
@@ -49,14 +50,15 @@ export function BottomRight({
 
   const { content, rows } = contentBox;
 
-  // the card: padded 1 card unit left and right, split into two columns one
-  // padding apart. the left column is split into the label row and the gauge row
+  // the card: padded 1 card unit left and right and half a unit top and bottom,
+  // split into two columns one padding apart. the left column is split into
+  // the label row and the gauge row
   const card = (() => {
     const width = content.width;
     const height = rows.sizes[1];
     const unit = layoutUnit(height);
 
-    const box = paddedBox(width, height, 1, 0, unit);
+    const box = paddedBox(width, height, 1, 0.5, unit);
 
     // the two columns, side by side inside the padding
     const columns = (() => {
@@ -66,21 +68,44 @@ export function BottomRight({
       const { starts } = stackWithGaps(sizes, gap);
       return sizes.map((size, i) => ({
         x: box.contentX + starts[i],
+        y: box.contentY,
         width: size,
+        height: box.contentHeight,
       }));
     })();
 
     // the left column: the label row, then the gauge row
     const left = contentBoxLayout({
       width: columns[0].width,
-      height,
+      height: columns[0].height,
       unit,
       paddingXUnits: 0,
-      paddingYUnits: 0.5,
+      paddingYUnits: 0,
       rowShares: [0.2, 0.8], // the label, the gauge
     });
 
     return { width, height, columns, left };
+  })();
+
+  // the right column: six rows, each a dot and one line, as tall as the left
+  // column's content
+  const list = (() => {
+    const rowCount = 5;
+    const rowHeight = card.columns[1].height / rowCount;
+    const translateX = card.columns[1].x;
+    const translateY = card.columns[1].y;
+
+    // each row: a small dot, then one line, centered in the row's height
+    const item = listItemLayout({
+      height: rowHeight,
+      leadingInset: 4,
+      leadingRadius: rowHeight * 0.15,
+      gap: rowHeight * 0.3,
+      lineHeights: [rowHeight * 0.15],
+    });
+    const lineWidth = card.columns[1].width - item.text.x;
+
+    return { rowCount, rowHeight, translateX, translateY, item, lineWidth };
   })();
 
   return (
@@ -113,7 +138,7 @@ export function BottomRight({
 
             {/* the left column: the label row, then the gauge row */}
             <g
-              transform={`translate(${card.columns[0].x + card.left.content.x}, ${card.left.content.y})`}
+              transform={`translate(${card.columns[0].x + card.left.content.x}, ${card.columns[0].y + card.left.content.y})`}
             >
               {[
                 <Label
@@ -136,27 +161,42 @@ export function BottomRight({
               ))}
             </g>
 
-            <g transform={`translate(${card.columns[1].x}, 0)`}>
-              {[
-                <Label
-                  width={card.left.content.width}
-                  height={card.left.rows.sizes[0]}
-                />,
-                <Gauge
-                  width={card.left.content.width}
-                  height={card.left.rows.sizes[1]}
-                  values={chartData.gauge.values}
-                  value={chartData.gauge.value}
-                />,
-              ].map((rowContent, i) => (
-                <g
-                  key={i}
-                  transform={`translate(0, ${card.left.rows.starts[i]})`}
-                >
-                  {rowContent}
+            {/* the right column: six rows, each a dot and one line */}
+            {(() => {
+              const {
+                rowCount,
+                rowHeight,
+                translateX,
+                translateY,
+                item,
+                lineWidth,
+              } = list;
+              return (
+                <g transform={`translate(${translateX}, ${translateY})`}>
+                  {Array.from({ length: rowCount }, (_, i) => (
+                    <g
+                      key={i}
+                      transform={`translate(0, ${rowHeight * i})`}
+                      fillOpacity={0.6}
+                    >
+                      <circle
+                        cx={item.leading.cx}
+                        cy={item.leading.cy}
+                        r={item.leading.radius}
+                        fill="var(--accent-dim)"
+                      />
+                      <Tube
+                        x={item.text.x}
+                        y={item.text.y + item.text.lineStarts[0]}
+                        width={lineWidth}
+                        height={item.text.lineHeights[0]}
+                        fill="var(--accent-dim)"
+                      />
+                    </g>
+                  ))}
                 </g>
-              ))}
-            </g>
+              );
+            })()}
           </>,
         ].map((group, i) => (
           <g key={i} transform={`translate(0, ${rows.starts[i]})`}>
@@ -165,66 +205,6 @@ export function BottomRight({
         ))}
       </g>
     </g>
-  );
-}
-
-// the label: a dot, then a title with a subtitle under it, centered in the
-// row's height. drawn from (0, 0)
-function Label({
-  width,
-  height,
-}: {
-  width: number; // the label row's width
-  height: number; // the label row's height
-}) {
-  const item = (() => {
-    const dotRadius = height * 0.25;
-    const lineHeight = dotRadius * 0.5;
-
-    return listItemLayout({
-      height,
-      leadingInset: 0,
-      leadingRadius: dotRadius,
-      gap: lineHeight * 2,
-      lineHeights: [lineHeight, lineHeight], // title, subtitle
-      lineGap: lineHeight,
-    });
-  })();
-
-  const { leading, text } = item;
-  const textWidth = width - text.x;
-
-  return (
-    <>
-      <circle
-        cx={leading.cx}
-        cy={leading.cy}
-        r={leading.radius}
-        fill="var(--accent)"
-        fillOpacity={0.8}
-      />
-      <g transform={`translate(${text.x}, ${text.y})`}>
-        {/* title: bright, shorter */}
-        <Tube
-          x={0}
-          y={text.lineStarts[0]}
-          width={textWidth}
-          height={text.lineHeights[0]}
-          level={0.5}
-          fill="var(--accent-electric)"
-        />
-        {/* subtitle: dim, longer */}
-        <Tube
-          x={0}
-          y={text.lineStarts[1]}
-          width={textWidth}
-          height={text.lineHeights[1]}
-          level={0.8}
-          fill="var(--accent-electric)"
-          fillOpacity={0.3}
-        />
-      </g>
-    </>
   );
 }
 

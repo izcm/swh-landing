@@ -1,5 +1,6 @@
 import {
   alignEnd,
+  ChartGuides,
   contentBoxLayout,
   LineChart,
   listItemLayout,
@@ -275,13 +276,20 @@ function LineChartBox({
         radius={radius}
         strokeWidth={strokeWidth}
       />
+      <ChartGuides
+        width={width}
+        height={height}
+        count={3}
+        insetX={width * 0.04}
+        color="var(--accent-deep)"
+      />
       <LineChart
         width={width}
         height={height}
         values={values}
         color="var(--accent-deep)"
         dotRadius={unit * 0.035}
-        areaOpacity={0.06}
+        areaOpacity={0.1}
         areaRadius={radius} // same corners as the box
       />
       {/* title + subtitle */}
@@ -335,35 +343,35 @@ function KpiCards({
     gap,
   );
 
-  // inside each card: padded in the card's own unit (1/12 of its height), a
-  // dot, then a title and a shorter subtitle spanning the rest of the inner
-  // box's width, centered on its height
+  // inside each card: padded 2 card units, a soft dot, then a title and a
+  // dimmer, shorter subtitle beside it, and a thin threshold bar along the bottom
   const card = (() => {
-    const box = paddedBox(cardWidth, height, 2.4); // 2 card units on every side
+    const box = paddedBox(cardWidth, height, 2);
     const { unit: cardUnit } = box;
-    const lineHeight = cardUnit;
+    const lineHeight = cardUnit * 0.7;
 
     const { leading: dot, text } = listItemLayout({
-      height: lineHeight + box.contentY,
+      height: cardUnit * 3.2, // the dot's row, the lines centered on it
       leadingInset: 0, // the padding already keeps it off the card's edge
-      leadingRadius: cardUnit * 1.25,
-      gap: cardUnit * 2.5,
+      leadingRadius: cardUnit,
+      gap: cardUnit * 2,
       lineHeights: [lineHeight, lineHeight], // title, subtitle
-      lineGap: cardUnit,
+      lineGap: cardUnit * 0.9,
     });
     const textWidth = box.contentWidth - text.x; // to the inner box's right edge
 
-    const secondaryTextY = box.contentHeight - lineHeight;
-
-    return {
-      x: box.contentX,
-      y: box.contentY,
-      dot,
-      text,
-      textWidth,
-      secondaryTextY,
+    // the threshold bar: along the bottom of the inner box, its whole width
+    const bar = {
+      y: box.contentHeight - lineHeight,
+      width: box.contentWidth,
+      height: lineHeight,
     };
+
+    return { x: box.contentX, y: box.contentY, dot, text, textWidth, bar };
   })();
+
+  // how full each card's threshold bar is, left to right
+  const barLevels = [0.65, 0.4, 0.8];
 
   return columns.starts.map((start, i) => (
     <g key={i} transform={`translate(${start}, 0)`}>
@@ -374,9 +382,9 @@ function KpiCards({
         strokeWidth={strokeWidth * 0.5}
       />
 
-      {/* dot, title and subtitle, inside the card's padding */}
+      {/* dot, title and subtitle, and the threshold bar, inside the card's padding */}
       {(() => {
-        const { x, y, dot, text, textWidth, secondaryTextY } = card;
+        const { x, y, dot, text, textWidth, bar } = card;
         return (
           <g transform={`translate(${x}, ${y})`}>
             <circle
@@ -384,30 +392,38 @@ function KpiCards({
               cy={dot.cy}
               r={dot.radius}
               fill={colorSelection[i % colorSelection.length]}
+              fillOpacity={0.95}
             />
+            {/* title: brighter, longer */}
             <Tube
               x={text.x}
               y={text.y + text.lineStarts[0]}
               width={textWidth}
               height={text.lineHeights[0]}
+              level={0.85}
               fill="var(--accent-electric)"
-              fillOpacity={0.3}
+              fillOpacity={0.6}
             />
+            {/* subtitle: dim, shorter */}
             <Tube
               x={text.x}
               y={text.y + text.lineStarts[1]}
-              width={textWidth * 0.6}
-              height={text.lineHeights[1]}
-              fill="var(--accent-electric)"
-              fillOpacity={0.3}
-            />
-
-            <Tube
-              y={secondaryTextY}
               width={textWidth}
               height={text.lineHeights[1]}
+              level={0.5}
               fill="var(--accent-electric)"
-              fillOpacity={0.25}
+              fillOpacity={0.38}
+            />
+            {/* threshold bar: a faint accent track, partly filled */}
+            <Tube
+              y={bar.y}
+              width={bar.width}
+              height={bar.height}
+              level={barLevels[i]}
+              fill="var(--accent)"
+              fillOpacity={0.58}
+              trackColor="var(--accent)"
+              trackOpacity={0.16}
             />
           </g>
         );

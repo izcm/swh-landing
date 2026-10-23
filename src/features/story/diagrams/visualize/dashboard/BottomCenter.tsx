@@ -4,6 +4,7 @@ import {
   alignCenter,
   alignEnd,
   BarChart,
+  ChartGuides,
   contentBoxLayout,
   DonutChart,
   layoutUnit,
@@ -79,17 +80,28 @@ export function BottomCenter({
     const chartHeight = boxHeight - insetY * 2;
 
     return (
-      <BarChart
-        x={insetX}
-        y={insetY}
-        width={chartWidth}
-        height={chartHeight}
-        values={chartData.bars}
-        color={`url(#${barGradientId})`}
-        opacity={0.875}
-        // selectedIdx={drilldown ? 3 : undefined} // the picked bar, or none without drilldown
-        barRatio={0.45}
-      />
+      <>
+        <ChartGuides
+          x={insetX}
+          y={insetY}
+          width={chartWidth}
+          height={chartHeight}
+          count={3}
+          insetX={chartWidth * 0.04}
+          color="var(--accent)"
+        />
+        <BarChart
+          x={insetX}
+          y={insetY}
+          width={chartWidth}
+          height={chartHeight}
+          values={chartData.bars}
+          color={`url(#${barGradientId})`}
+          opacity={0.875}
+          // selectedIdx={drilldown ? 3 : undefined} // the picked bar, or none without drilldown
+          barRatio={0.45}
+        />
+      </>
     );
   })();
 
@@ -118,11 +130,14 @@ export function BottomCenter({
       itemHeight: r * 2,
     });
 
-    // the label: a faint pill, 80% of the label row's width, centered in it
+    // the label: a faint pill, 80% of the label row's width and 0.75 of its
+    // height, centered in it
     const label = (() => {
       const width = inner.content.width * 0.8;
+      const height = inner.rows.sizes[0] * 0.75;
       const { offset: x } = alignCenter(inner.content.width, width);
-      return { x, y: inner.rows.starts[0], width, height: inner.rows.sizes[0] };
+      const { offset: y } = alignCenter(inner.rows.sizes[0], height);
+      return { x, y: inner.rows.starts[0] + y, width, height };
     })();
 
     return (
@@ -145,7 +160,7 @@ export function BottomCenter({
     );
   })();
 
-  // the bottom card: three list rows, each a colored dot and a title on the
+  // the bottom card: three list rows, each a soft colored dot and a title on the
   // left and a toggle on the right
   const list = (() => {
     const boxHeight = rows.sizes[2];
@@ -174,9 +189,9 @@ export function BottomCenter({
     const { leading: dot, text } = listItemLayout({
       height: rowHeight,
       leadingInset: layoutUnit(rowHeight) * 4,
-      leadingRadius: rowHeight * 0.25,
+      leadingRadius: rowHeight * 0.22,
       gap: rowHeight * 0.85,
-      lineHeights: [rowHeight * 0.25], // the title
+      lineHeights: [rowHeight * 0.22], // the title
     });
 
     // right: the toggle, flush right and centered on the row
@@ -203,6 +218,7 @@ export function BottomCenter({
               cy={dot.cy}
               r={dot.radius}
               fill={colorSelection[i % colorSelection.length]}
+              fillOpacity={0.92}
             />
             <Tube
               x={text.x}
@@ -210,7 +226,7 @@ export function BottomCenter({
               width={titleRoom * titleLength}
               height={text.lineHeights[0]}
               fill="var(--accent-electric)"
-              fillOpacity={0.3}
+              fillOpacity={0.34}
             />
             <Toggle {...toggle} isOn={isOn} color="var(--accent)" />
           </g>

@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { chartSeparatorStyle, toPoints, type Point } from "../../logic";
+import { toPoints, type Point } from "../../logic";
 
 type LineChartProps = {
   width: number;
@@ -44,14 +44,6 @@ export function LineChart({
   const last = points[points.length - 1];
   const areaD = `${lineD} L ${last.x} ${height} L ${points[0].x} ${height} Z`;
 
-  const separatorCount = 3;
-  const separators = Array.from({ length: separatorCount }).map((_, i) => ({
-    x1: width * 0.04,
-    x2: width * 0.96,
-    // evenly spaced: 1/5, 2/5, 3/5, 4/5 of the height
-    y: (height * (i + 1)) / (separatorCount + 1),
-  }));
-
   return (
     <g transform={`translate(${x}, ${y})`}>
       <defs>
@@ -82,18 +74,6 @@ export function LineChart({
           clipPath={`url(#${areaClipId})`}
         />
       )}
-
-      {separators.map((s, i) => (
-        <line
-          key={i}
-          x1={s.x1}
-          y1={s.y}
-          x2={s.x2}
-          y2={s.y}
-          stroke={color}
-          {...chartSeparatorStyle}
-        />
-      ))}
 
       {/* the picked point: a thin line down to the bottom, under the curve and the dots */}
       {selected && (

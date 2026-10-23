@@ -1,5 +1,6 @@
 import {
   BarChart,
+  ChartGuides,
   Tube,
   LineChart,
   RecessedPanel,
@@ -41,17 +42,28 @@ export function ChartRow({
     const values = [0.42, 0.58, 0.47, 1, 0.66, 0.79].map((v) => v * 0.65);
 
     return (
-      <BarChart
-        x={insetX}
-        y={insetY}
-        width={chartWidth}
-        height={chartHeight}
-        values={values}
-        color="var(--accent-deep)"
-        opacity={0.7}
-        selectedIdx={drilldown ? 3 : undefined} // the picked bar, or none without drilldown
-        barRatio={0.45}
-      />
+      <>
+        <ChartGuides
+          x={insetX}
+          y={insetY}
+          width={chartWidth}
+          height={chartHeight}
+          count={3}
+          insetX={chartWidth * 0.04}
+          color="var(--accent)"
+        />
+        <BarChart
+          x={insetX}
+          y={insetY}
+          width={chartWidth}
+          height={chartHeight}
+          values={values}
+          color="var(--accent-deep)"
+          opacity={0.7}
+          selectedIdx={drilldown ? 3 : undefined} // the picked bar, or none without drilldown
+          barRatio={0.45}
+        />
+      </>
     );
   })();
 
@@ -63,16 +75,25 @@ export function ChartRow({
     const values = Array.from({ length: 85 }, (_, i) => wave(i / 100));
 
     return (
-      <LineChart
-        width={columnSizes[0]}
-        height={height}
-        values={values}
-        color="var(--accent-deep)"
-        dotRadius={unit * 0.1}
-        areaOpacity={0.04}
-        areaRadius={boxRadius} // same corners as the box behind it
-        selectedIdx={drilldown ? 63 : undefined} // 63 = the highest bump (placeholder), or none without drilldown
-      />
+      <>
+        <ChartGuides
+          width={columnSizes[0]}
+          height={height}
+          count={3}
+          insetX={columnSizes[0] * 0.04}
+          color="var(--accent-deep)"
+        />
+        <LineChart
+          width={columnSizes[0]}
+          height={height}
+          values={values}
+          color="var(--accent-deep)"
+          dotRadius={unit * 0.1}
+          areaOpacity={0.04}
+          areaRadius={boxRadius} // same corners as the box behind it
+          selectedIdx={drilldown ? 63 : undefined} // 63 = the highest bump (placeholder), or none without drilldown
+        />
+      </>
     );
   })();
 

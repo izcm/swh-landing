@@ -43,7 +43,7 @@ const abouts: {
       "But the final product is still built and understood by me, not handed over to AI. Knowing how the software actually works is what makes it possible to maintain, debug and improve later, so that stays a core principle at SWH.",
     ],
     diagram: <AISvg />,
-    diagramMaxWidth: "37rem",
+    diagramMaxWidth: "36rem",
   },
   {
     eyebrow: "Tools",

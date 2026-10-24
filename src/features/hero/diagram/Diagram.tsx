@@ -162,16 +162,18 @@ export function HeroDiagram() {
                   strokeWidth={0.75}
                 />
 
-                {heroConnectors(layout, heroAngles, unit * 0.05).map(({ d }, i) => (
-                  <path
-                    key={i}
-                    d={d}
-                    stroke="var(--connector-color)"
-                    strokeWidth={1}
-                    fill="none"
-                    strokeDasharray="8 12"
-                  />
-                ))}
+                {heroConnectors(layout, heroAngles, unit * 0.05).map(
+                  ({ d }, i) => (
+                    <path
+                      key={i}
+                      d={d}
+                      stroke="var(--connector-color)"
+                      strokeWidth={1}
+                      fill="none"
+                      strokeDasharray="8 12"
+                    />
+                  ),
+                )}
 
                 <path
                   d={`

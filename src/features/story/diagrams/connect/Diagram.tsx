@@ -4,12 +4,12 @@ import { connectLayout } from "./layout";
 import { Nodes } from "./nodes/Nodes";
 
 export function ConnectDiagram() {
-  const viewboxWidth = 617;
+  const viewboxWidth = 615;
   const viewboxHeight = 270;
   // edge slopes in degrees: A down to the right, B up to the right
   const angles = { angleA: 15, angleB: 10 };
 
-  const { nodes, dataGrid, centerpiece } = connectLayout({
+  const { nodes, dataGrid, centerpiece, connectors } = connectLayout({
     viewboxWidth,
     viewboxHeight,
     angles,
@@ -25,7 +25,7 @@ export function ConnectDiagram() {
 
   return (
     <svg
-      viewBox={`0 d ${viewboxWidth} ${viewboxHeight}`}
+      viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       overflow="visible"
       className="block max-w-3xl w-full mx-auto"
     >
@@ -44,25 +44,47 @@ export function ConnectDiagram() {
         ))}
       </g>
 
-      {/* debug: a dot in the middle of each section: nodes, centerpiece, windows */}
-      {[
-        "#d9c79c" /* sand */,
-        "#9cc5a8" /* sage */,
-        "#aab4e6" /* lavender */,
-      ].map((fill, i) => (
-        <circle
+      {/* the connectors: a straight line from each node to the centerpiece's
+          left wall, the same style as the hero's */}
+      {connectors.nodesOut.map((out, i) => (
+        <path
           key={i}
-          className="svg-debug"
-          cx={(sectionEdges[i] + sectionEdges[i + 1]) / 2}
-          cy={viewboxHeight / 2}
-          r={2}
-          fill={fill}
+          d={`M ${out.x} ${out.y} L ${connectors.centerpieceIn.x} ${connectors.centerpieceIn.y}`}
+          stroke="var(--connector-color)"
+          strokeWidth={1}
+          fill="none"
+          strokeDasharray="8 12"
         />
       ))}
 
-      {/* left: the nodes */}
-      <Nodes height={nodes.groupHeight} layout={nodes} />
+      {/* the second connector: from the centerpiece's right wall down to the data grid */}
+      <path
+        d={`M ${connectors.centerpieceOut.x} ${connectors.centerpieceOut.y} L ${connectors.dataGridIn.x} ${connectors.dataGridIn.y}`}
+        stroke="var(--connector-color)"
+        strokeWidth={1}
+        fill="none"
+        strokeDasharray="8 12"
+      />
 
+      {/* left: the nodes */}
+      <Nodes layout={nodes} />
+
+      {/* debug: the connectors' ends: where each line leaves and arrives */}
+      {[
+        ...connectors.nodesOut,
+        connectors.centerpieceIn,
+        connectors.centerpieceOut,
+        connectors.dataGridIn,
+      ].map((p, i) => (
+        <circle
+          key={i}
+          className="svg-debug"
+          cx={p.x}
+          cy={p.y}
+          r={2}
+          fill="#ff4fa3" // pink
+        />
+      ))}
       {/* middle: the centerpiece */}
       <Centerpiece
         x={centerpiece.x}

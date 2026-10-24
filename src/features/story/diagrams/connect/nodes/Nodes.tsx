@@ -12,15 +12,9 @@ import { connectNodes } from "./nodes";
 
 // one box per node, spread top to bottom over the left box's height.
 // each box: icon + label bent onto its right wall
-export function Nodes({
-  height,
-  layout,
-}: {
-  height: number;
-  layout: ConnectLayout["nodes"];
-}) {
+export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
   const { box, content } = layout;
-  const { roof, radius, rightFace } = box;
+  const { roof, radius, rightFace, leftFace } = box;
   // the roof's border: bright at the top and fading down
   const litEdgeId = useId();
 
@@ -32,13 +26,7 @@ export function Nodes({
 
       {connectNodes.map(({ label, icon: Icon, color }, i) => {
         // top of the whole box (the roof's top corner)
-        const itemY = spaceBetween({
-          index: i,
-          itemCount: connectNodes.length,
-          itemSize: box.height, // the whole box, floor included
-          start: 0,
-          end: height,
-        });
+        const itemY = layout.boxYs[i];
 
         return (
           <g key={label} transform={`translate(0, ${itemY})`}>
@@ -79,27 +67,32 @@ export function Nodes({
             {/* icon + label: padding in from roof.bottom, halfway down the
                 right wall, bent onto it */}
             {(() => {
-              const { iconSize, fontSize, padding, gap } = content;
+              const { iconSize, fontSize } = content;
               return (
-                <g transform={rightFace.transform}>
-                  <Icon
-                    x={padding}
-                    y={rightFace.height / 2 - iconSize / 2}
-                    size={iconSize}
-                    stroke={color}
-                    strokeWidth={glyphStroke(iconSize, 1.5)}
-                  />
-                  <text
-                    x={padding + iconSize + gap}
-                    y={rightFace.height / 2}
-                    dominantBaseline="central"
-                    fontSize={fontSize}
-                    fill="var(--accent-glow)"
-                    fillOpacity={0.9}
-                  >
-                    {label}
-                  </text>
-                </g>
+                <>
+                  <g transform={leftFace.transform}>
+                    <Icon
+                      x={leftFace.width * 0.5 - iconSize * 0.5}
+                      y={leftFace.height * 0.5 - iconSize * 0.5}
+                      size={iconSize}
+                      stroke={color}
+                      strokeWidth={glyphStroke(iconSize, 1.5)}
+                    />
+                  </g>
+                  <g transform={rightFace.transform}>
+                    <text
+                      x={rightFace.width / 2}
+                      y={rightFace.height / 2}
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      fontSize={fontSize}
+                      fill="var(--accent-glow)"
+                      fillOpacity={0.9}
+                    >
+                      {label}
+                    </text>
+                  </g>
+                </>
               );
             })()}
           </g>

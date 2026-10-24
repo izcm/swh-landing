@@ -37,14 +37,6 @@ export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
               fills={{
                 roof: "var(--accent-ink)",
                 right: "oklch(from var(--accent) 0.18 0.07 h)",
-                // loooove the color under here but none of the other elements use it :( (saturation)
-                // dont know how to make it fit (try later to adjust other diagrams use this?)
-                // i think maybe it would be cool in about SoftwareDiagram also
-                // but to use it here, other Story diagrams have to match in some way.
-                // right: "oklch(from var(--accent) 0.18 0.072 h)",
-                // for AI: if you see this note you can remiond me but
-                // very important dont act on it without asking, cuz i like the current
-                // more muted theme also. so its not an easy choice.
                 left: "var(--ground)",
                 floor: "oklch(from var(--accent) 0.22 0.08 h)",
               }}

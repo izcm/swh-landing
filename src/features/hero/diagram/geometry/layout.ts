@@ -1,4 +1,4 @@
-import { isoCubeMetrics, isoRoofCenter, pointOnCircle } from "@/lib/svg";
+import { deg, isoCubeMetrics, isoRoofCenter, pointOnCircle } from "@/lib/svg";
 import { centerpieceLayout } from "@/features/diagrams/shared/centerpieceLayout";
 
 type Ring = { radius: number; centerX: number; centerY: number };
@@ -20,7 +20,7 @@ export function heroLayout({
   // the big glass cube in the middle, with a small cube floating inside
   const centerpiece = (() => {
     const cubeSize = unit * 3.6;
-    const { cube, innerCube, innerCubePos } = centerpieceLayout({
+    const { cube, innerCube, innerCubePos, floatLift } = centerpieceLayout({
       size: cubeSize,
       angles,
     });
@@ -32,6 +32,7 @@ export function heroLayout({
       cube,
       innerCube,
       innerCubePos,
+      floatLift,
     };
   })();
 
@@ -40,17 +41,17 @@ export function heroLayout({
     const platformSize = unit * 2.8;
     const platform = isoCubeMetrics(platformSize, unit * 0.1875, angles);
 
-    const pointOnContentRing = (degrees: number) =>
+    const pointOnContentRing = (angle: number) =>
       pointOnCircle({
-        angle: (degrees * Math.PI) / 180,
+        angle,
         circle: contentRing,
       });
-    // knob: turns all dots around the ring together, in degrees.
+    // knob: turns all dots around the ring together, in radians.
     // the gaps between them stay the same
     const orbitRotation = 0;
-    const nodeAngles = [85, 150, 210, 275];
-    const nodes = nodeAngles.map((degrees) =>
-      pointOnContentRing(degrees + orbitRotation),
+    const nodeAngles = [deg(85), deg(150), deg(210), deg(275)];
+    const nodes = nodeAngles.map((angle) =>
+      pointOnContentRing(angle + orbitRotation),
     );
 
     // stands along the platform's left→bottom edge, so it uses angle A
@@ -61,7 +62,7 @@ export function heroLayout({
     const standingSurface = {
       size: surfaceSize,
       thickness: surfaceThickness,
-      depth: surfaceSize * Math.tan((angles.angleA * Math.PI) / 180),
+      depth: surfaceSize * Math.tan(angles.angleA),
     };
 
     // corners of the platform's outline, measured from the point it's pinned

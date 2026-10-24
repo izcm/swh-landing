@@ -1,25 +1,23 @@
+import { deg } from "./geometry";
 import type { IsoBox, Point } from "./types";
 
-// angle = how steep the roof edges slope from horizontal, in degrees.
-// 30 is true isometric; smaller = flatter roof, bigger = steeper roof
+// angle = how steep the roof edges slope from horizontal, in radians.
+// deg(30) is true isometric; smaller = flatter roof, bigger = steeper roof
 export const isoCubeMetrics = (
   size: number,
   thickness?: number,
   // left / right roof-edge slopes. angleB defaults to angleA (a true iso cube)
-  { angleA = 30, angleB = angleA }: { angleA?: number; angleB?: number } = {},
+  { angleA = deg(30), angleB = angleA }: { angleA?: number; angleB?: number } = {},
 ) => {
-  const radA = (angleA * Math.PI) / 180;
-  const radB = (angleB * Math.PI) / 180;
+  const depth = size / (1 / Math.tan(angleA) + 1 / Math.tan(angleB)); // see DEPTH.png
 
-  const depth = size / (1 / Math.tan(radA) + 1 / Math.tan(radB)); // see DEPTH.png
+  const runA = depth / Math.tan(angleA);
+  const runB = depth / Math.tan(angleB);
 
-  const runA = depth / Math.tan(radA);
-  const runB = depth / Math.tan(radB);
-
-  // const depth = half * Math.tan(radA); // how far a roof edge drops (opposite side)
-  // const edgeLength = half / Math.cos(radA); // the roof edge itself (hypotenuse)
-  const edgeLengthA = runA / Math.cos(radA);
-  const edgeLengthB = runB / Math.cos(radB);
+  // const depth = half * Math.tan(angleA); // how far a roof edge drops (opposite side)
+  // const edgeLength = half / Math.cos(angleA); // the roof edge itself (hypotenuse)
+  const edgeLengthA = runA / Math.cos(angleA);
+  const edgeLengthB = runB / Math.cos(angleB);
 
   const height = depth * 2 + (thickness ?? edgeLengthA); // roof diamond + walls
 
@@ -109,7 +107,7 @@ export function panelPoints({
   angle: number;
 }) {
   // tan(angle) = depth / size -> depth = tan(angle) * size
-  const depth = Math.tan((angle * Math.PI) / 180) * size;
+  const depth = Math.tan(angle) * size;
 
   return {
     // how much lower the right side is than the left. one number for the whole panel

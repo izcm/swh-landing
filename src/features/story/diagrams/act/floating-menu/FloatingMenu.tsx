@@ -5,6 +5,7 @@ import {
   paddedBox,
   Platform,
   stackWithGaps,
+  toDegrees,
   type cardPlatformLayout,
 } from "@/lib/svg";
 import { ElectricGlass } from "../ElectricGlass";
@@ -104,7 +105,7 @@ export function FloatingMenu({
         <g className="float-bob">
           <Platform {...platform} grid={{ across: 5, along: 6 }} />
           {/* the card: glass, slanted by skewY */}
-          <g transform={`translate(${card.x}, ${card.y}) skewY(${card.angle})`}>
+          <g transform={`translate(${card.x}, ${card.y}) skewY(${toDegrees(card.angle)})`}>
             <ElectricGlass
               width={card.width}
               height={card.height}

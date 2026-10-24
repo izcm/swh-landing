@@ -1,7 +1,13 @@
 import { useId, type ComponentProps } from "react";
 import { EdgeGradient } from "../../styles";
 import { ISOCube } from "../iso";
-import { accentGlow, glyphStroke, gridLines, isoCubePoints } from "../../logic";
+import {
+  accentGlow,
+  deg,
+  glyphStroke,
+  gridLines,
+  isoCubePoints,
+} from "../../logic";
 import { platformGridStyle, platformStyle } from "../../styles";
 
 type IsoPlatformProps = ComponentProps<typeof ISOCube> & {
@@ -19,7 +25,7 @@ export function IsoPlatform({ grid, ...cube }: IsoPlatformProps) {
     y = 0,
     size = 100,
     thickness,
-    angleA = 30,
+    angleA = deg(30),
     angleB = angleA,
     strokeWeight,
     stroke,

@@ -1,5 +1,6 @@
 import {
   accentGlow,
+  deg,
   glyphStroke,
   isoCubePoints,
   type IsoCubeBaseProps,
@@ -64,7 +65,7 @@ export function ISOCube({
   // sizing dims
   size = 100,
   thickness,
-  angleA = 30,
+  angleA = deg(30),
   angleB = angleA,
 
   // colors, stroke, roundedness. defaults: the glassCube look

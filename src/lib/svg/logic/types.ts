@@ -23,7 +23,7 @@ export type IsoCubeBaseProps = ShapeProps & {
   // height of the vertical sides, in the same units as size. defaults to a true cube;
   // pass something small for a flat slab / platform
   thickness?: number;
-  // slope of the roof edges in degrees. 30 = true isometric
+  // slope of the roof edges in radians. deg(30) = true isometric
   // angle?: number;
 
   angleB?: number;

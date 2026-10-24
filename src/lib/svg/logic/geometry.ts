@@ -1,6 +1,12 @@
 import { stackWithGaps } from "./layout";
 import type { Point } from "./types";
 
+// an angle written in degrees, as radians: deg(15)
+export const deg = (degrees: number) => (degrees * Math.PI) / 180;
+
+// radians back to degrees, for SVG transforms like skewY() that only take degrees
+export const toDegrees = (radians: number) => (radians * 180) / Math.PI;
+
 // const K = 0.5522847498;
 
 // function corner(r: number) {
@@ -77,7 +83,7 @@ export function gridLines(
 }
 
 // how far down you go when you walk `along` (0–1) of an edge that slopes at
-// `angle` degrees. run = the edge's full horizontal length
+// `angle` (in radians). run = the edge's full horizontal length
 export function dropAlongEdge({
   run,
   along = 1,
@@ -87,10 +93,8 @@ export function dropAlongEdge({
   along?: number;
   angle: number;
 }) {
-  const radians = angle * (Math.PI / 180);
-
   const adj = run * along;
-  const opp = adj * Math.tan(radians);
+  const opp = adj * Math.tan(angle);
 
   return opp;
 }

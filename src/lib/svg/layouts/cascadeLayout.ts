@@ -1,4 +1,4 @@
-import { dropAlongEdge } from "../logic";
+import { dropAlongEdge, toDegrees } from "../logic";
 
 // a cascade: `count` items stepping back one behind the other, each one gapX
 // right and gapY down from the last, all skewed by skewY(angle).
@@ -67,7 +67,7 @@ export function cascadeLayout({
     stackHeight,
     toTop,
     // the whole cascade's slant, lifted so its highest corner is at y = 0
-    transform: `skewY(${angle}) translate(0, ${toTop})`,
+    transform: `skewY(${toDegrees(angle)}) translate(0, ${toTop})`,
     items,
   };
 }

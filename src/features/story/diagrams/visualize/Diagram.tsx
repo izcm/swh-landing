@@ -3,6 +3,7 @@ import { useId } from "react";
 import {
   BoxBody,
   deepShades,
+  deg,
   LitEdgeGradient,
   paddedBox,
   parallelogramMatrix,
@@ -31,23 +32,21 @@ export function VisualizeDiagram() {
   // colors the dashboards pick from, in order: three deep accent shades, darkest first
   const colorSelection = deepShades(3);
 
-  const angleA = 60;
-  const angleB = 11.5;
-  const radA = (angleA * Math.PI) / 180;
-  const radB = (angleB * Math.PI) / 180;
+  const angleA = deg(60);
+  const angleB = deg(11.5);
 
   // edge A: from the top of the box down to the right side
   const edgeA = (() => {
     const drop = viewboxHeight * 0.325; // how far it goes down
-    const run = drop / Math.tan(radA); // how far it goes sideways
-    const edgeLength = drop / Math.sin(radA);
+    const run = drop / Math.tan(angleA); // how far it goes sideways
+    const edgeLength = drop / Math.sin(angleA);
     return { run, drop, edgeLength };
   })();
 
   // edge B: from the left side up to the top, across the rest of the width
   const edgeB = (() => {
     const run = viewboxWidth - edgeA.run; // how far it goes sideways
-    const rise = run * Math.tan(radB); // how far it goes up
+    const rise = run * Math.tan(angleB); // how far it goes up
     const edgeLength = Math.hypot(run, rise); // edge B's full length
     return { run, rise, edgeLength };
   })();
@@ -65,7 +64,7 @@ export function VisualizeDiagram() {
       top: { x: edgeB.run, y: 0 },
     };
 
-    const missing = edgeA.run * Math.tan(radB);
+    const missing = edgeA.run * Math.tan(angleB);
     const lowerLeft = {
       x: 0,
       y: edgeB.rise + edgeA.drop + missing + dashboardGroupsGap + thickness,

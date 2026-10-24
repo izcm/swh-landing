@@ -28,5 +28,8 @@ export function centerpieceLayout({
   );
   const innerCubePos = standOn(isoFloorCenter(cube), innerCube);
 
-  return { cube, innerCube, innerCubePos };
+  // how far the small cube floats above the floor, as a share of its size
+  const floatLift = innerCube.size * 0.16;
+
+  return { cube, innerCube, innerCubePos, floatLift };
 }

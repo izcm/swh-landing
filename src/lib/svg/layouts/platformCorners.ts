@@ -17,15 +17,14 @@ export function platformCorners({
   angleB,
   thickness,
 }: PlatformShape) {
-  const rad = (deg: number) => (deg * Math.PI) / 180;
   // the two edge vectors
   const u = {
-    x: lengthA * Math.cos(rad(angleA)),
-    y: lengthA * Math.sin(rad(angleA)),
+    x: lengthA * Math.cos(angleA),
+    y: lengthA * Math.sin(angleA),
   };
   const v = {
-    x: lengthB * Math.cos(rad(angleB)),
-    y: -lengthB * Math.sin(rad(angleB)),
+    x: lengthB * Math.cos(angleB),
+    y: -lengthB * Math.sin(angleB),
   };
 
   // corners = sums of u and v, moved down by v's rise so nothing is above y = 0

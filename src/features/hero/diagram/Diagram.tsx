@@ -1,5 +1,11 @@
 // shared svg helpers
-import { alignCenter, paddedBox, dropAlongEdge, pointOnLine } from "@/lib/svg";
+import {
+  alignCenter,
+  deg,
+  paddedBox,
+  dropAlongEdge,
+  pointOnLine,
+} from "@/lib/svg";
 
 // this diagram's own parts
 import { HeroDefs } from "./Defs";
@@ -17,7 +23,7 @@ import { Orbit } from "./left/Orbit";
 import { HeroAppWindows } from "./right/HeroAppWindows";
 
 // the hero's camera: A = left→bottom edges (24°), B = bottom→right edges (30°)
-const heroAngles = { angleA: 24, angleB: 30 };
+const heroAngles = { angleA: deg(24), angleB: deg(30) };
 
 // debug lines have className="svg-debug". show/hide them in diagram.css
 export function HeroDiagram() {

@@ -5,6 +5,7 @@ import {
   alignEnd,
   cardPlatformLayout,
   cascadeLayout,
+  deg,
   LitEdgeGradient,
   paddedBox,
 } from "@/lib/svg";
@@ -34,7 +35,7 @@ export function ActDiagram() {
       // the stack's width: same as the old left box
       groupWidth: viewboxWidth * 0.68,
       heightToWidthRatio: 0.72,
-      angle: -15,
+      angle: deg(-15),
       count: 3,
       gapX: unit * 0.35,
       gapY: unit * 0.35,
@@ -85,7 +86,7 @@ export function ActDiagram() {
 
   // right: the platform with the card, placed by its real bounding box
   const floatingMenu = (() => {
-    const angleA = 22; // the platform's side edge
+    const angleA = deg(22); // the platform's side edge
     const layout = cardPlatformLayout({
       size: viewboxWidth * 0.25,
       angleA,
@@ -94,7 +95,7 @@ export function ActDiagram() {
       thickness: 6,
       cardSize: { width: 1, height: 1.3 },
       spanBToARatio: 0.8,
-      cardAngle: angleA - 8, // a bit flatter than the A edge, so the card faces us more
+      cardAngle: angleA - deg(8), // a bit flatter than the A edge, so the card faces us more
       cardAt: { alongA: 0.5 + 0.15, alongB: 0.5 + 0.15 }, // one gridline further in the B direction
     });
 

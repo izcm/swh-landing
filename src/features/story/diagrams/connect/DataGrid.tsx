@@ -1,4 +1,10 @@
-import { paddedBox, stackWithGaps, Tube, WindowPane } from "@/lib/svg";
+import {
+  layoutUnit,
+  placeItemCenter,
+  stackWithGaps,
+  Tube,
+  WindowPane,
+} from "@/lib/svg";
 import type { ConnectLayout } from "./layout";
 
 // the right box: two tilted windows, the front one holding a table of pills.
@@ -6,32 +12,41 @@ import type { ConnectLayout } from "./layout";
 export function DataGrid({ layout }: { layout: ConnectLayout["dataGrid"] }) {
   const { translateX, translateY, stackLayout } = layout;
 
-  const contentBox = paddedBox(
-    stackLayout.item.width,
-    stackLayout.item.height,
-    1,
-    1,
-  );
+  const { item } = stackLayout;
+  // 1/12 of a window's height: the table's ruler
+  const unit = layoutUnit(item.height);
 
   const columnCount = 3;
-  const columnSize = contentBox.contentWidth / columnCount;
+  // the table: as wide as the window minus one unit each side
+  const tableWidth = item.width - unit * 2; // knob
+  const columnSize = tableWidth / columnCount;
 
   const columns = stackWithGaps(
     Array.from({ length: columnCount }, () => columnSize),
     0,
   );
 
-  // rows: contentHeight is 10 units, 6 × 0.8 + 5 × 1 = 9.8 fits
   const rowCount = 7;
-  const pillHeight = contentBox.unit * 0.45;
-  const rowGap = contentBox.unit;
+  const pillHeight = unit * 0.45;
+  const rowGap = unit;
   const rows = stackWithGaps(
     Array.from({ length: rowCount }, () => pillHeight),
     rowGap,
   );
 
+  // the table's height: from the first row's top to the last row's bottom
+  const tableHeight = rows.starts[rowCount - 1] + pillHeight;
+
+  // the table, centered in the front window
+  const { offsetX, offsetY } = placeItemCenter({
+    parentWidth: item.width,
+    parentHeight: item.height,
+    itemWidth: tableWidth,
+    itemHeight: tableHeight,
+  });
+
   // space between a column's left edge and its pills
-  const pillInset = contentBox.unit * 0.25;
+  const pillInset = unit * 0.25;
   const pillMaxWidth = columnSize - pillInset * 2;
   // how wide each pill is (0..1 of pillMaxWidth), one array per column
   const pillWidths = [
@@ -63,9 +78,7 @@ export function DataGrid({ layout }: { layout: ConnectLayout["dataGrid"] }) {
   // drawn inside the front window
   const frontContent = (
     <>
-      <g
-        transform={`translate(${contentBox.contentX}, ${contentBox.contentY})`}
-      >
+      <g transform={`translate(${offsetX}, ${offsetY})`}>
         {columns.starts.map((start, i) => {
           return (
             <rect
@@ -74,7 +87,7 @@ export function DataGrid({ layout }: { layout: ConnectLayout["dataGrid"] }) {
               x={start}
               y={0}
               width={columnSize}
-              height={contentBox.contentHeight}
+              height={tableHeight}
               fill="none"
               stroke="purple" // lavender
               strokeWidth={0.75}
@@ -89,7 +102,7 @@ export function DataGrid({ layout }: { layout: ConnectLayout["dataGrid"] }) {
             key={i}
             x1={0}
             y1={y}
-            x2={contentBox.contentWidth}
+            x2={tableWidth}
             y2={y}
             stroke="var(--accent-faint)"
             opacity={0.2}
@@ -104,7 +117,7 @@ export function DataGrid({ layout }: { layout: ConnectLayout["dataGrid"] }) {
             x1={x}
             y1={0}
             x2={x}
-            y2={contentBox.contentHeight}
+            y2={tableHeight}
             stroke="var(--accent-faint)"
             opacity={0.2}
             strokeWidth={1}

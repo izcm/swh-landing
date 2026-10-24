@@ -5,9 +5,11 @@ import {
   WindowDots,
   accentGlow,
   alignCenter,
+  deg,
   glyphStroke,
   paddedBox,
   spaceBetween,
+  toDegrees,
 } from "@/lib/svg";
 import { EditorCode } from "./editor/EditorCode";
 
@@ -35,9 +37,9 @@ export function AISvg() {
   // preserve CodeEditor's 300:200 aspect ratio
   const editorBox = (() => {
     const width = contentWidth * 0.8;
-    const skew = 10;
+    const skew = deg(10);
 
-    const skewSlope = Math.tan((skew * Math.PI) / 180);
+    const skewSlope = Math.tan(skew);
 
     const itemCount = 3;
     const gapX = 45;
@@ -141,7 +143,7 @@ export function AISvg() {
         /> */}
 
         <g
-          transform={`translate(0, ${editorBox.translateY + editorBox.skew.addedHeight}) skewY(${-editorBox.skew.angle})`}
+          transform={`translate(0, ${editorBox.translateY + editorBox.skew.addedHeight}) skewY(${-toDegrees(editorBox.skew.angle)})`}
         >
           {/* drawn back to front: i = 0 is the furthest back, the last one is in front */}
           {Array.from({ length: editorBox.stack.count }).map((_, i) => {

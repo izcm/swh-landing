@@ -70,6 +70,18 @@
   }
 }
 
+/* spins round its own (0, 0): put it inside a <g> translated to the center */
+.spin {
+  transform-origin: 0 0;
+  animation: spin 12s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* a dot moving along a path. the path goes on the element itself:
    style={{ offsetPath: `path("...")` }} */
 .path-dot {
@@ -88,6 +100,7 @@
 @media (prefers-reduced-motion: reduce) {
   .float-bob,
   .float-shadow,
+  .spin,
   .path-dot {
     animation: none;
   }

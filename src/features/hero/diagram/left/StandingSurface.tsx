@@ -1,15 +1,17 @@
 import type { LucideIcon } from "lucide-react";
 import {
+  deg,
   glyphStroke,
   roundedPolygonPath,
   panelPoints,
+  toDegrees,
   type ShapeProps,
 } from "@/lib/svg";
 
 type Props = Omit<ShapeProps, "fill" | "stroke"> & {
   size?: number;
   thickness?: number;
-  // slope of the top edge in degrees. 30 = true isometric
+  // slope of the top edge in radians. deg(30) = true isometric
   angle?: number;
   // corner rounding, in the same units as size
   radius?: number;
@@ -24,7 +26,7 @@ export function StandingSurface({
   thickness = size,
   x = 0,
   y = 0,
-  angle = 30,
+  angle = deg(30),
   radius = 4,
   icon: Icon,
   iconStroke = "var(--accent)",
@@ -54,7 +56,7 @@ export function StandingSurface({
 
           return (
             <g
-              transform={`translate(${center.x}, ${center.y}) skewY(${angle})`}
+              transform={`translate(${center.x}, ${center.y}) skewY(${toDegrees(angle)})`}
             >
               <Icon
                 x={-iconSize / 2}

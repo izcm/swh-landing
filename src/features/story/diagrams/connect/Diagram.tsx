@@ -1,19 +1,24 @@
-import { Centerpiece } from "@/features/diagrams/shared/Centerpiece";
+import { deg } from "@/lib/svg";
+
+import { Centerpiece, innerFill } from "@/features/diagrams/shared/Centerpiece";
+
 import { DataGrid } from "./DataGrid";
 import { connectLayout } from "./layout";
 import { Nodes } from "./nodes/Nodes";
+import { SyncArrows } from "./SyncArrows";
 
 export function ConnectDiagram() {
   const viewboxWidth = 615;
   const viewboxHeight = 270;
-  // edge slopes in degrees: A down to the right, B up to the right
-  const angles = { angleA: 15, angleB: 10 };
+  // edge slopes in radians: A down to the right, B up to the right
+  const angles = { angleA: deg(15), angleB: deg(10) };
 
-  const { nodes, dataGrid, centerpiece, connectors } = connectLayout({
-    viewboxWidth,
-    viewboxHeight,
-    angles,
-  });
+  const { nodes, dataGrid, centerpiece, syncArrows, connectors } =
+    connectLayout({
+      viewboxWidth,
+      viewboxHeight,
+      angles,
+    });
 
   // debug: where each section starts and ends, left to right
   const sectionEdges = [
@@ -46,10 +51,10 @@ export function ConnectDiagram() {
 
       {/* the connectors: a straight line from each node to the centerpiece's
           left wall, the same style as the hero's */}
-      {connectors.nodesOut.map((out, i) => (
+      {connectors.nodeConnectors.map((path, i) => (
         <path
           key={i}
-          d={`M ${out.x} ${out.y} L ${connectors.centerpieceIn.x} ${connectors.centerpieceIn.y}`}
+          d={path}
           stroke="var(--connector-color)"
           strokeWidth={1}
           fill="none"
@@ -72,7 +77,7 @@ export function ConnectDiagram() {
       {/* debug: the connectors' ends: where each line leaves and arrives */}
       {[
         ...connectors.nodesOut,
-        connectors.centerpieceIn,
+        ...connectors.innerCubeIns,
         connectors.centerpieceOut,
         connectors.dataGridIn,
       ].map((p, i) => (
@@ -91,6 +96,14 @@ export function ConnectDiagram() {
         y={centerpiece.y}
         {...centerpiece.layout}
         angles={centerpiece.angles}
+      />
+
+      {/* under the centerpiece: two arrows spinning round a circle */}
+      <SyncArrows
+        {...syncArrows}
+        duration={12}
+        // the inner cube's color, more opaque
+        color={`oklch(from ${innerFill} l c h / 0.4)`}
       />
 
       {/* right: the data grid */}

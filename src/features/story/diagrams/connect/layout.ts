@@ -1,12 +1,14 @@
 import {
   alignEnd,
   cascadeLayout,
+  deg,
   dropAlongEdge,
   isoCubePoints,
   paddedBox,
   parallelogramMatrix,
   platformCorners,
   pointOnLine,
+  roundCorner,
   spaceEvenly,
   type Point,
 } from "@/lib/svg";
@@ -37,12 +39,12 @@ export function connectLayout({
     const box = (() => {
       const thickness = unit * 1.6;
       const radius = 3;
-      const radA = (angles.angleA * Math.PI) / 180;
-      const radB = (angles.angleB * Math.PI) / 180;
 
       const lengthA = unit * 1.8; // knob: roof.left → roof.bottom
       // roof.bottom → roof.right: the rest of groupWidth
-      const lengthB = (groupWidth - lengthA * Math.cos(radA)) / Math.cos(radB);
+      const lengthB =
+        (groupWidth - lengthA * Math.cos(angles.angleA)) /
+        Math.cos(angles.angleB);
 
       // roof + floor corners from the roof's two edges, measured from the box's top-left
       const { roof, floor } = platformCorners({
@@ -115,61 +117,71 @@ export function connectLayout({
     return { groupWidth, groupHeight, translateX, translateY, stackLayout };
   })();
 
-  // where each node's connector leaves: one per node box, the middle of its
-  // back wall, the side facing the centerpiece (opposite leftFace, where the
-  // icon is): where the wall's diagonals cross, halfway from roof.top to
-  // floor.right. the nodes are drawn from x = 0, each at its boxY. before the
-  // centerpiece, because the centerpiece lines up with the middle one
+  // each node's connector start: the middle of its back wall (facing the
+  // centerpiece). before the centerpiece, which lines up with the middle one
   const nodesOut = (() => {
     const { roof, floor } = nodes.box;
     const backWallCenter = pointOnLine(roof.top, floor.right, 0.5);
+
     return nodes.boxYs.map((boxY) => ({
       x: backWallCenter.x,
       y: boxY + backWallCenter.y,
     }));
   })();
 
-  // the slope the node connectors rise at toward the centerpiece: the nodes'
-  // angleB, the diagram's up-to-the-right slope
-  const nodesOutAngle = angles.angleB;
-
   // middle: the centerpiece, in the space left between the nodes and the windows
   const centerpiece = (() => {
     const groupWidth = viewboxWidth - nodes.groupWidth - dataGrid.groupWidth;
     const translateX = nodes.groupWidth; // right after the nodes
 
-    const angles = { angleA: 15, angleB: 15 };
-    const layout = centerpieceLayout({ size: unit * 5, angles });
+    const angles = { angleA: deg(20), angleB: deg(20) };
+    const layout = centerpieceLayout({ size: unit * 4.2, angles });
 
     const centerX = translateX + groupWidth * 0.55;
     const x = centerX - layout.cube.size * 0.5;
 
-    // its left wall's middle sits on HR's connector line: from the middle
-    // node's connector point, rising at nodesOutAngle until it reaches the
-    // wall. the wall's middle is halfway between roofLeft (x 0, 1 depth down)
-    // and floorBottom (x a.run, 2 depths + the thickness down)
+    // its left wall's middle sits on HR's connector line, which rises at the
+    // cube's angleB (so it meets the wall head-on)
     const leftWallMiddle = {
       x: layout.cube.a.run / 2,
       y: layout.cube.depth * 1.5 + layout.cube.thickness / 2,
     };
     const middleNodeOut = nodesOut[Math.floor(nodesOut.length / 2)];
-    // how much higher the wall's middle is than HR's point: the line climbs
-    // nodesOutAngle over the distance across (run · tan(angle))
+    // how much higher the wall's middle is than HR's point
     const rise = dropAlongEdge({
       run: x + leftWallMiddle.x - middleNodeOut.x, // across from HR to the wall's middle
-      angle: nodesOutAngle,
+      angle: deg(6),
     });
     const y = middleNodeOut.y - rise - leftWallMiddle.y;
 
     return { groupWidth, translateX, angles, layout, x, y };
   })();
 
-  // the connectors: where each line leaves and arrives, in viewbox coordinates.
-  // two runs: nodes → centerpiece (nodesOut → centerpieceIn) and
-  // centerpiece → data grid (centerpieceOut → dataGridIn)
+  // under the centerpiece: two arrows chasing each other round a circle
+  const syncArrows = (() => {
+    const { cube } = centerpiece.layout;
+    const radius = unit; // knob
+    const gap = unit * 0.5; // knob: cube's bottom → top of the circle
+    // lying flat on the same floor as the cube: squashed by its roof's slope
+    const squash = Math.tan(centerpiece.angles.angleA);
+
+    return {
+      cx: centerpiece.x + cube.size / 2,
+      cy: centerpiece.y + cube.height + gap + radius * squash,
+      squash,
+      radius,
+      count: 2,
+      thickness: unit * 0.12, // knob
+      gapAngle: deg(40), // knob
+      headLength: unit * 0.35, // knob
+      headWidth: unit * 0.35, // knob
+    };
+  })();
+
+  // the connectors' ends, in viewbox coordinates:
+  // nodesOut → centerpieceIns, centerpieceOut → dataGridIn
   const connectors = (() => {
-    // the centerpiece cube's corners: from isoCubePoints (drawn in a 100-wide
-    // box), scaled and moved to where the cube is drawn
+    // the cube's corners, scaled and moved to where it's drawn
     const { cube } = centerpiece.layout;
     const pts = isoCubePoints(
       cube.size,
@@ -182,35 +194,98 @@ export function connectLayout({
       y: centerpiece.y + p.y * pts.scale,
     });
 
-    // centerpieceIn: the middle of the cube's left wall
-    // (roofLeft → roofBottom, down to the floor), where its diagonals cross
-    const centerpieceIn = pointOnLine(
+    // the middle of the cube's left wall
+    const leftWallCenter = pointOnLine(
       at(pts.roofLeft),
       at(pts.floorBottom),
       0.5,
     );
 
-    // centerpieceOut: the middle of the cube's right wall
-    // (roofBottom → roofRight, down to the floor), where its diagonals cross
+    // one in per node, stacked straight up and down the left wall, the same
+    // distance apart, centered on the wall's middle. top node → top in
+    const inGap = cube.thickness * 0.12; // knob: between two ins, as a share of the wall's height
+    const middle = (nodesOut.length - 1) / 2;
+    const centerpieceIns = nodesOut.map((_, i) => ({
+      x: leftWallCenter.x,
+      y: leftWallCenter.y + (i - middle) * inGap,
+    }));
+
+    // where the node connectors end: one spot per node on the inner cube's left
+    // edge (its far-left vertical edge), inGap apart, centered on the edge's middle
+    const { innerCube, innerCubePos, floatLift } = centerpiece.layout;
+    const innerLeftEdgeMiddle = {
+      x: centerpiece.x + innerCubePos.x,
+      y:
+        centerpiece.y +
+        innerCubePos.y -
+        floatLift +
+        innerCube.depth +
+        innerCube.thickness / 2,
+    };
+    const innerCubeIns = nodesOut.map((_, i) => ({
+      x: innerLeftEdgeMiddle.x,
+      y: innerLeftEdgeMiddle.y + (i - middle) * inGap,
+    }));
+
+    // the middle of the cube's right wall
     const centerpieceOut = pointOnLine(
       at(pts.roofBottom),
       at(pts.floorRight),
       0.5,
     );
 
-    // dataGridIn: where the centerpiece's connector meets the data grid's x
-    // (its left edge): from centerpieceOut, falling at the diagram's angleA
-    // (15°, its down-to-the-right slope) over the distance across. down is +y
+    // from centerpieceOut, falling at angleA to the data grid's left edge
     const run = dataGrid.translateX - centerpieceOut.x;
     const dataGridIn = {
       x: dataGrid.translateX,
       y: centerpieceOut.y + dropAlongEdge({ run, angle: angles.angleA }),
     };
 
-    return { nodesOut, centerpieceIn, centerpieceOut, dataGridIn };
+    const nodeConnectors = nodesOut.map((out, i) => {
+      const centerpieceIn = centerpieceIns[i];
+      const innerCubeIn = innerCubeIns[i];
+      const line = {
+        dx: centerpieceIn.x - out.x,
+        dy: centerpieceIn.y - out.y,
+      };
+
+      // knob: each flat piece before and after the curve, as a share of dx
+      const straight = line.dx * 0.3;
+
+      // where the curve starts and ends
+      const curveStart = { x: out.x + straight, y: out.y };
+      const curveEnd = { x: centerpieceIn.x - straight, y: centerpieceIn.y };
+
+      const c1 = {
+        x: out.x + line.dx * 0.6,
+        y: out.y,
+      };
+
+      const c2 = {
+        x: out.x + line.dx * 0.3,
+        y: centerpieceIn.y,
+      };
+
+      return [
+        `M ${out.x} ${out.y}`,
+        `L ${curveStart.x} ${curveStart.y}`,
+        `C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${curveEnd.x} ${curveEnd.y}`,
+        // `L ${centerpieceIn.x} ${centerpieceIn.y}`,
+        `L ${innerCubeIn.x} ${innerCubeIn.y}`,
+      ].join(" ");
+    });
+
+    return {
+      nodesOut,
+      centerpieceIns,
+      innerCubeIns,
+      centerpieceOut,
+      dataGridIn,
+      nodeConnectors,
+    };
   })();
 
-  return { unit, nodes, dataGrid, centerpiece, connectors };
+  return { unit, nodes, dataGrid, centerpiece, syncArrows, connectors };
 }
 
 export type ConnectLayout = ReturnType<typeof connectLayout>;

@@ -138,11 +138,11 @@ export function LineChart({
   );
 }
 
-// angle (deg) of the line from first to last point, as drawn in a chart of
+// angle (radians) of the line from first to last point, as drawn in a chart of
 // this size — 0 is flat, negative points up, positive points down
 export function trendAngle(values: number[], width: number, height: number) {
   const points = toPoints(values, width, height);
   const first = points[0];
   const last = points[points.length - 1];
-  return (Math.atan2(last.y - first.y, last.x - first.x) * 180) / Math.PI;
+  return Math.atan2(last.y - first.y, last.x - first.x);
 }

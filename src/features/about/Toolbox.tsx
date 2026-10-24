@@ -29,7 +29,7 @@ const packages = [
 
 export function ToolboxPanels() {
   return (
-    <div className="grid gap-4 md:grid-cols-2 px-6 max-w-5xl mx-auto ">
+    <div className="grid gap-4 md:grid-cols-2 px-2 max-w-4xl mx-auto ">
       <Panel icon={Layers} title="Core technologies">
         {technologies.map((t) => (
           <Chip key={t}>{t}</Chip>
@@ -44,7 +44,7 @@ export function ToolboxPanels() {
           href={PACKAGES_URL}
           external
           // chip-sized for mouse users; touch keeps .btn's min-h-10 tap target
-          className="btn btn-secondary text-accent bg-transparent gap-2 px-3 py-1.5 text-xs pointer-fine:min-h-0"
+          className="btn btn-secondary text-accent bg-transparent gap-2 py-1.5 text-xs pointer-fine:min-h-0"
           icon={<ArrowRight className="size-4" strokeWidth={1.6} />}
         >
           View on GitHub

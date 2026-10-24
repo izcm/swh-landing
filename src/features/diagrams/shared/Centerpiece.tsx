@@ -2,6 +2,12 @@ import { ISOCube, glassCube, isoCubeMetrics, type Point } from "@/lib/svg";
 
 type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
 
+// the centerpiece's face colors, exported so other parts of a diagram can match them
+// export const innerFill = "oklch(from var(--accent-electric) 0.6 0.16 h / 0.6)";
+// export const innerFill = "oklch(from var(--accent) 0.1 c h / 1)";
+export const innerFill = "oklch(from var(--accent-electric) l c h / 0.25)";
+export const cubeFill = "oklch(from var(--accent-ink) l c h / 0.2)";
+
 // the big glass cube with a small cube floating inside. shared by every diagram
 // that draws it, so it looks the same everywhere. sizes come from
 // centerpieceLayout, the caller places it at x, y
@@ -11,6 +17,7 @@ export function Centerpiece({
   cube,
   innerCube,
   innerCubePos,
+  floatLift,
   angles,
 }: {
   x: number;
@@ -18,17 +25,10 @@ export function Centerpiece({
   cube: IsoMetrics;
   innerCube: IsoMetrics;
   innerCubePos: Point;
+  floatLift: number; // how far the small cube floats above the floor
   angles: { angleA: number; angleB: number };
 }) {
   const { size, height, depth, thickness } = cube;
-
-  // how far the small cube floats above the floor, as a share of its size
-  const floatLift = innerCube.size * 0.16;
-
-  // const innerFill = "oklch(from var(--accent-electric) 0.6 0.16 h / 0.6)";
-  // const innerFill = "oklch(from var(--accent) 0.1 c h / 1)";
-  const innerFill = "oklch(from var(--accent-electric) l c h / 0.25)";
-  const cubeFill = "oklch(from var(--accent-ink) l c h / 0.2)";
 
   const bigCube = {
     size,

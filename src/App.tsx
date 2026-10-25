@@ -38,7 +38,6 @@ function App() {
         <>
           <div className="md:min-h-below-nav-and-dev-banner mb-12 flex flex-col">
             <Hero />
-            {/* <Steps /> */}
           </div>
           <Story />
           <Demo />

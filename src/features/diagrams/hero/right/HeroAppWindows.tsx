@@ -1,5 +1,5 @@
 import { alignEnd, cascadeLayout, paddedBox, WindowPane } from "@/lib/svg";
-import { DashboardContent } from "@/features/story/diagrams/act/dashboard/DashboardContent";
+import { DashboardContent } from "@/features/diagrams/act/dashboard/DashboardContent";
 
 // the right box: three app windows, tilted along the A edges, sitting on the
 // box's bottom. x / y / width / height = the right box, from Diagram.tsx

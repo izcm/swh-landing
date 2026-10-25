@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { IconLink } from "@a2zb/react";
 
 import { cn } from "@/lib/cn";
-import { HeroDiagram } from "./diagram/Diagram";
+import { HeroDiagram } from "@/features/diagrams/hero/Diagram";
 
 export default function Hero() {
   return (

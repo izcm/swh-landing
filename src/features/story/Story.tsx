@@ -1,8 +1,9 @@
 import { SectionBase } from "@/features/core/SectionBase";
 
-import { ConnectDiagram } from "./diagrams/connect/Diagram";
-import { ActDiagram } from "./diagrams/act/Diagram";
-import { VisualizeDiagram } from "./diagrams/visualize/Diagram";
+import { ConnectDiagram } from "@/features/diagrams/connect/Diagram";
+import { ActDiagram } from "@/features/diagrams/act/Diagram";
+import { VisualizeDiagram } from "@/features/diagrams/visualize/Diagram";
+import { AutomateDiagram } from "@/features/diagrams/automate/Diagram";
 
 const sections = [
   {
@@ -30,9 +31,18 @@ const sections = [
     title: "Turn insight into action",
     paragraphs: [
       "Connected data and better visibility make it easier to identify what needs attention and decide what to do next.",
-      "We build tools that bring your key actions into one place, allowing you to work directly with the information in front of you rather than switching between systems to get things done.",
+      "We build tools that bring your key actions into one place, allowing you to work directly with the information in front of you rather than switching between systems.",
     ],
     diagram: <ActDiagram />,
+  },
+  {
+    eyebrow: "AUTOMATE",
+    title: "Placeholder title",
+    paragraphs: [
+      "Placeholder paragraph one. This is where the first line about automation goes.",
+      "Placeholder paragraph two. A second line to fill out the step.",
+    ],
+    diagram: <AutomateDiagram />,
   },
 ];
 

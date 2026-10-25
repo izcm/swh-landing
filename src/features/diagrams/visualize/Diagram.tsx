@@ -20,7 +20,7 @@ import { chartData } from "./data";
 
 export function VisualizeDiagram() {
   const viewboxWidth = 540;
-  const viewboxHeight = 350;
+  const viewboxHeight = 325;
   // same unit as Connect: 1/12 of the height
   const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
 
@@ -110,7 +110,7 @@ export function VisualizeDiagram() {
       };
     };
 
-    const splitUpper = 0.65;
+    const splitUpper = 0.625;
     const splitLower = [0.35, 0.78] as const;
 
     return {

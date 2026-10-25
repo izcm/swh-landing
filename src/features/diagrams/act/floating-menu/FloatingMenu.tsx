@@ -6,7 +6,7 @@ import {
   Platform,
   stackWithGaps,
   toDegrees,
-  type cardPlatformLayout,
+  type platformCardLayout,
 } from "@/lib/svg";
 import { ElectricGlass } from "../ElectricGlass";
 import { MenuRow } from "./MenuRow";
@@ -24,7 +24,7 @@ export function FloatingMenu({
   radius,
   rowGap,
 }: {
-  layout: ReturnType<typeof cardPlatformLayout>;
+  layout: ReturnType<typeof platformCardLayout>;
   radius: number; // the card's and rows' corner radius
   rowGap: number; // space between the card's rows
 }) {

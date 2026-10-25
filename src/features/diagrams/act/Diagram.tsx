@@ -3,11 +3,11 @@ import { useId } from "react";
 import {
   alignCenter,
   alignEnd,
-  cardPlatformLayout,
   cascadeLayout,
   deg,
   LitEdgeGradient,
   paddedBox,
+  platformCardLayout,
 } from "@/lib/svg";
 import { DashboardContent } from "./dashboard/DashboardContent";
 import { FloatingMenu } from "./floating-menu/FloatingMenu";
@@ -16,7 +16,8 @@ export function ActDiagram() {
   // 540 units at our 672px ≈ 1.24px per unit, close to Connect's 784px / 650 units
   // ≈ 1.2px per unit, so strokes and radii come out about as thick as Connect's
   const viewboxWidth = 540;
-  const viewboxHeight = 360;
+  const viewboxHeight = 330; // we have overflow visible btw
+
   // same unit as Connect: 1/12 of the height
   const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
   // corner radius of the windows
@@ -33,7 +34,7 @@ export function ActDiagram() {
   const dashboard = (() => {
     const stackLayout = cascadeLayout({
       // the stack's width: same as the old left box
-      groupWidth: viewboxWidth * 0.68,
+      groupWidth: viewboxWidth * 0.65,
       heightToWidthRatio: 0.72,
       angle: deg(-15),
       count: 3,
@@ -87,7 +88,7 @@ export function ActDiagram() {
   // right: the platform with the card, placed by its real bounding box
   const floatingMenu = (() => {
     const angleA = deg(22); // the platform's side edge
-    const layout = cardPlatformLayout({
+    const layout = platformCardLayout({
       size: viewboxWidth * 0.25,
       angleA,
       // same tilt as the windows: the platform's bottom→right edge runs parallel to them
@@ -112,6 +113,7 @@ export function ActDiagram() {
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       // 540 units at up to 672px ≈ 1.24px per unit, close to Connect. centered
       className="block max-w-2xl w-full mx-auto"
+      overflow={"visible"}
     >
       <defs>
         {/* top to bottom */}

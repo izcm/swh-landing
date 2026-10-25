@@ -1,4 +1,5 @@
-import type { Point } from "../logic";
+import type { Point } from "../../logic";
+import { parallelogramCorners } from "../parallelogramCorners";
 
 export type PlatformShape = {
   lengthA: number; // left→bottom edge, going down to the right at angleA
@@ -17,24 +18,16 @@ export function platformCorners({
   angleB,
   thickness,
 }: PlatformShape) {
-  // the two edge vectors
-  const u = {
-    x: lengthA * Math.cos(angleA),
-    y: lengthA * Math.sin(angleA),
-  };
-  const v = {
-    x: lengthB * Math.cos(angleB),
-    y: -lengthB * Math.sin(angleB),
-  };
-
-  // corners = sums of u and v, moved down by v's rise so nothing is above y = 0
-  const lift = -v.y;
-  const roof = {
-    left: { x: 0, y: lift },
-    bottom: { x: u.x, y: lift + u.y },
-    right: { x: u.x + v.x, y: lift + u.y + v.y },
-    top: { x: v.x, y: lift + v.y },
-  };
+  // edge B rises by this much, so start this far down to keep top at y = 0
+  const lift = lengthB * Math.sin(angleB);
+  const [left, bottom, right, top] = parallelogramCorners({
+    origin: { x: 0, y: lift },
+    lengthA,
+    angleA,
+    lengthB,
+    angleB: -angleB, // a Platform's angleB turns up, parallelogramCorners turns down
+  });
+  const roof = { left, bottom, right, top };
 
   const down = (p: Point) => ({ x: p.x, y: p.y + thickness });
   const floor = {

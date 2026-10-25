@@ -39,16 +39,6 @@ export function RadialGauge({
 
   return (
     <>
-      <linearGradient
-        id="gradient23812839213892"
-        gradientUnits="userSpaceOnUse"
-        x1={0}
-        x2={2 * radius}
-      >
-        <stop offset="0%" stopColor="var(--accent-glow)" />
-        <stop offset="100%" stopColor="var(--accent-deep)" />
-      </linearGradient>
-
       <g transform={`translate(${x}, ${y})`}>
         {segments.map((s, i) => (
           <path

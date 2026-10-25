@@ -1,10 +1,10 @@
-import { boundingBox, pointOnLine } from "../logic";
+import { boundingBox, pointOnLine } from "../../logic";
 import { platformCorners } from "./platformCorners";
 
 // a platform with a card standing upright on it: all the math.
 // everything is measured from the bounding box's top-left once you
 // translate by (originX, originY)
-export function cardPlatformLayout({
+export function platformCardLayout({
   size,
   angleA, // left to bottom corner (roof.bottom)
   angleB,

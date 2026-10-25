@@ -35,12 +35,13 @@ const sections = [
     ],
     diagram: <ActDiagram />,
   },
+
   {
     eyebrow: "AUTOMATE",
-    title: "Placeholder title",
+    title: "Let routine work take care of itself",
     paragraphs: [
-      "Placeholder paragraph one. This is where the first line about automation goes.",
-      "Placeholder paragraph two. A second line to fill out the step.",
+      "Think of the manual steps involved in moving information from one system to another, checking for updates, or following up on tasks.",
+      "Once your systems are connected, you can define rules and add workers that execute tasks like clockwork, retriering bothersome manual work.",
     ],
     diagram: <AutomateDiagram />,
   },

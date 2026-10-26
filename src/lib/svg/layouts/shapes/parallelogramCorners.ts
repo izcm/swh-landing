@@ -1,4 +1,4 @@
-import type { Point } from "../logic";
+import type { Point } from "../../logic";
 
 // a parallelogram from one corner (origin) and its two edges, both starting there.
 // angles: 0 points right, bigger turns clockwise (like pointOnCircle)

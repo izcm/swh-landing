@@ -1,5 +1,5 @@
 import { listItemLayout } from "./listItemLayout";
-import { spaceBetween } from "../logic";
+import { spaceBetween } from "../../logic";
 
 // where the legend's rows, dots and labels go: `count` rows spread over
 // `height`, the first at the top and the last at the bottom. its own function

@@ -1,4 +1,4 @@
-import { radialLayout } from "../../layouts/radialLayout";
+import { radialLayout } from "../../layouts/arrange/radialLayout";
 import { arcPath, pointOnCircle, type Point } from "../../logic";
 
 export function RadialGauge({

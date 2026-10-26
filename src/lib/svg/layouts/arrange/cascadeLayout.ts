@@ -1,4 +1,4 @@
-import { dropAlongEdge, toDegrees } from "../logic";
+import { dropAlongEdge, toDegrees } from "../../logic";
 
 // a cascade: `count` items stepping back one behind the other, each one gapX
 // right and gapY down from the last, all skewed by skewY(angle).

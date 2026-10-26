@@ -1,4 +1,4 @@
-import { paddedBox, stackWithGaps } from "../logic";
+import { paddedBox, stackWithGaps } from "../../logic";
 
 // a content box: width × height, translateX in from its parent's left edge.
 // its content sits paddingXUnits / paddingYUnits of `unit` in from the edges

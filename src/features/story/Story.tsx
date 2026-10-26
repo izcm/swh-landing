@@ -20,7 +20,7 @@ const sections = [
     eyebrow: "VISUALIZE",
     title: "See the bigger picture",
     paragraphs: [
-      "Connecting data across systems makes it possible to see more than any individual system can show on its own.",
+      "Once scattered data is connected and transformed, you can see way more than any individual system can show on its own.",
       "We build interactive dashboards that present up-to-date information in formats tailored to your business needs.",
       // "Explore information at different levels, spot patterns, and drill down into the details that matter.",
     ],
@@ -30,7 +30,7 @@ const sections = [
     eyebrow: "ACT",
     title: "Turn insight into action",
     paragraphs: [
-      "Connected data and better visibility make it easier to identify what needs attention and decide what to do next.",
+      "Better visibility make it easier to spot what needs attention and decide what to do next.",
       "We build tools that bring your key actions into one place, allowing you to work directly with the information in front of you rather than switching between systems.",
     ],
     diagram: <ActDiagram />,
@@ -41,7 +41,8 @@ const sections = [
     title: "Let routine work take care of itself",
     paragraphs: [
       "Think of the manual steps involved in moving information from one system to another, checking for updates, or following up on tasks.",
-      "Once your systems are connected, you can define rules and add workers that execute tasks like clockwork, retriering bothersome manual work.",
+      "When your systems work together, new opportunities for automation emerge. Repetitive tasks that once required manual effort can happen automatically.",
+      "We help you define rulesets and automated workers that execute tasks like clockwork.",
     ],
     diagram: <AutomateDiagram />,
   },

@@ -1,22 +1,43 @@
-import { arcPath, parallelogramCorners, pointOnCircle } from "@/lib/svg";
-import { radialLayout } from "@/lib/svg/layouts/radialLayout";
+import {
+  arcPath,
+  cascadeLayout,
+  deg,
+  isoTrapezoidCorners,
+  pointOnCircle,
+  pointOnLine,
+} from "@/lib/svg";
+import { radialLayout } from "@/lib/svg/layouts/arrange/radialLayout";
 
 export function AutomateDiagram() {
   const viewboxWidth = 540;
-  const viewboxHeight = 400;
+  const viewboxHeight = 350;
 
   const teethCount = 8;
 
-  // the wheel: a circle in the top-left corner
+  // === WHEEL MEASUREMENTS INCLUDING TEETH ===
   const wheel = (() => {
-    const radius = viewboxHeight * 0.25; // knob
-    // how far the teeth stick out past the rim (a gear's "module")
-    const toothHeight = (2 * radius) / teethCount;
-    // in by radius + toothHeight, so no tooth goes past the top or left edge
-    const centerX = radius + toothHeight;
-    const centerY = radius + toothHeight;
+    const radius = viewboxHeight * 0.22;
 
-    return { radius, toothHeight, centerX, centerY };
+    // how far the teeth stick out past the rim
+    const toothHeight = (2 * radius) / teethCount;
+    // how far each tooth's sides lean in, away from straight out
+    const toothLean = deg(15); // knob
+    const holeRadius = radius * 0.5;
+
+    // the whole gear, teeth included
+    const size = 2 * (radius + toothHeight);
+    const centerX = size / 2;
+    const centerY = size / 2;
+
+    return {
+      radius,
+      toothHeight,
+      toothLean,
+      holeRadius,
+      size,
+      centerX,
+      centerY,
+    };
   })();
 
   const segments = radialLayout({
@@ -29,14 +50,75 @@ export function AutomateDiagram() {
   const endTooth = (s: (typeof segments)[number]) =>
     s.midAngle + (s.endAngle - s.midAngle) / 2;
 
+  // a path fillRule counts the shape inside one path d's
+  // "evenodd" draws every other shape
+  // one shape is everything from one M to the next, called a "subpath"
+  const gear = (() => {
+    const { radius } = wheel;
+    const rimTo = (angle: number) => {
+      const p = pointOnCircle({ angle, circle: wheel });
+      return `A ${radius} ${radius} 0 0 1 ${p.x} ${p.y}`;
+    };
+
+    const outline = segments.map((s) => {
+      const rim = pointOnCircle({ angle: startTooth(s), circle: wheel });
+      const rimEnd = pointOnCircle({ angle: endTooth(s), circle: wheel });
+
+      const corners = isoTrapezoidCorners({
+        bottomCenter: pointOnLine(rim, rimEnd, 0.5),
+        lengthA: Math.hypot(rimEnd.x - rim.x, rimEnd.y - rim.y),
+        lengthB: wheel.toothHeight,
+        angleA: s.midAngle + Math.PI / 2, // along the rim
+        angleB: s.midAngle + wheel.toothLean, // out from the wheel, leaning in
+      });
+
+      return [
+        rimTo(startTooth(s)),
+        ...[corners[3], corners[2], corners[1]].map((p) => `L ${p.x} ${p.y}`),
+        // corners.map((p) => `L ${p.x} ${p.y}`),
+        rimTo(s.endAngle),
+      ].join(" ");
+    });
+
+    const start = pointOnCircle({
+      angle: segments[0].startAngle,
+      circle: wheel,
+    });
+    const hole = arcPath(
+      { ...wheel, radius: wheel.holeRadius },
+      0,
+      2 * Math.PI,
+    );
+
+    return {
+      d: `M ${start.x} ${start.y} ${outline.join(" ")} Z ${hole}`,
+    };
+  })();
+
+  // one wheel group, front side and back creating 3D look
+  const layers = (() => {
+    const count = 2; // knob
+    const gap = 15; // knob
+    return cascadeLayout({
+      groupWidth: wheel.size + gap * (count - 1),
+      heightToWidthRatio: 1,
+      angle: deg(-15),
+      // angle: deg(0),
+      count,
+      gapX: gap,
+      gapY: gap,
+      side: "left", // front copy is the lowest and furthest right
+    });
+  })();
+
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
-      className="block max-w-xl w-full mx-auto"
+      className="block max-w-2xl w-full mx-auto"
     >
       {/* debug: the viewbox's edges */}
       <rect
-        className="svg-debugg"
+        className="svg-debug"
         width={viewboxWidth}
         height={viewboxHeight}
         fill="none"
@@ -44,56 +126,19 @@ export function AutomateDiagram() {
         strokeWidth={0.75}
         strokeDasharray="6 4"
       />
-      <circle
-        cx={wheel.centerX}
-        cy={wheel.centerY}
-        r={wheel.radius * 0.6}
-        fill="none"
-        stroke="var(--accent)"
-      />
-
-      {segments.map((s, i) => {
-        const rim = pointOnCircle({ angle: startTooth(s), circle: wheel });
-        const rimEnd = pointOnCircle({ angle: endTooth(s), circle: wheel });
-
-        const tooth = {
-          lengthA: Math.hypot(rimEnd.x - rim.x, rimEnd.y - rim.y),
-          lengthB: wheel.toothHeight,
-        };
-
-        const corners = parallelogramCorners({
-          origin: rim,
-          ...tooth,
-          angleA: s.midAngle + Math.PI / 2, // along the rim
-          angleB: s.midAngle, // out from the wheel
-        });
-
-        return (
-          <g key={i}>
-            <path
-              d={arcPath(wheel, s.startAngle, startTooth(s))}
-              fill="none"
-              stroke={"var(--accent)"}
-              strokeWidth={1}
-            />
-            {/* the tooth's 3 outer sides, open where it sits on the rim */}
-            <path
-              d={[corners[1], corners[2], corners[3], corners[0]]
-                .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
-                .join(" ")}
-              fill="none"
-              stroke={"var(--accent)"}
-              strokeWidth={1}
-            />
-            <path
-              d={arcPath(wheel, endTooth(s), s.endAngle)}
-              fill="none"
-              stroke={"var(--accent)"}
-              strokeWidth={1}
-            />
-          </g>
-        );
-      })}
+      <g transform={layers.transform}>
+        {layers.items.map((item, i) => (
+          <path
+            key={i}
+            transform={`translate(${item.x}, ${item.y})`}
+            d={gear.d}
+            fillRule="evenodd"
+            fill={item.isFront ? "var(--accent-ink)" : "var(--accent-dim)"}
+            stroke="var(--accent)"
+            strokeWidth={1}
+          />
+        ))}
+      </g>
     </svg>
   );
 }

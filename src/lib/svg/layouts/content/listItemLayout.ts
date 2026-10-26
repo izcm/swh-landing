@@ -1,4 +1,4 @@
-import { alignCenter, stackWithGaps } from "../logic";
+import { alignCenter, stackWithGaps } from "../../logic";
 
 // one list item in a row `height` tall: a leading circle (a dot, an icon's
 // circle) `leadingInset` in from the left, then a block of lines `gap` after

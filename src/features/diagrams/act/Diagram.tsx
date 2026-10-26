@@ -16,7 +16,7 @@ export function ActDiagram() {
   // 540 units at our 672px ≈ 1.24px per unit, close to Connect's 784px / 650 units
   // ≈ 1.2px per unit, so strokes and radii come out about as thick as Connect's
   const viewboxWidth = 540;
-  const viewboxHeight = 330; // we have overflow visible btw
+  const viewboxHeight = 340; // we have overflow visible btw
 
   // same unit as Connect: 1/12 of the height
   const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);

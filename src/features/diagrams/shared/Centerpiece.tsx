@@ -5,7 +5,7 @@ type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
 // the centerpiece's face colors, exported so other parts of a diagram can match them
 // export const innerFill = "oklch(from var(--accent-electric) 0.6 0.16 h / 0.6)";
 // export const innerFill = "oklch(from var(--accent) 0.1 c h / 1)";
-export const innerFill = "oklch(from var(--accent-electric) l c h / 0.25)";
+export const innerFill = "oklch(from var(--accent-electric) l c h / 0.32)";
 export const cubeFill = "oklch(from var(--accent-ink) l c h / 0.2)";
 
 // the big glass cube with a small cube floating inside. shared by every diagram

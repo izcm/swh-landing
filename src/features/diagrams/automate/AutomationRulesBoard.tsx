@@ -1,4 +1,3 @@
-import { useId } from "react";
 import {
   Box,
   ChevronRight,
@@ -12,8 +11,7 @@ import {
   alignCenter,
   contentBoxLayout,
   glyphStrokeLucide,
-  InkFadeGradient,
-  LitEdgeGradient,
+  LitPane,
   placeItemCenter,
   RecessedPanel,
   stackWithGaps,
@@ -45,10 +43,6 @@ export function AutomationRulesBoard({
   paddingYUnits: number; // around the content, top and bottom, in units
 }) {
   const { front, item } = layout;
-  // the boards' border: bright at the top and fading down
-  const litEdgeId = useId();
-  // the boards' ink fade, over the ground
-  const inkId = useId();
 
   // the front board's content: the header, then the list of rules, paddingY apart
   const contentBox = (() => {
@@ -68,7 +62,7 @@ export function AutomationRulesBoard({
   // the list: one row per rule, stacked in the list's row with a smaller gap
   const list = (() => {
     const height = rows.sizes[1];
-    const gap = unit * 0.28; // knob: between two rules
+    const gap = unit * 0.24; // knob: between two rules
     const count = rules.length;
     // count rows + (count - 1) gaps fill the list's height
     const itemHeight = (height - gap * (count - 1)) / count;
@@ -85,7 +79,7 @@ export function AutomationRulesBoard({
     const height = rows.sizes[0];
     const iconSize = height * 0.6; // knob
     const gap = height * 0.25; // knob: icon → title
-    const fontSize = height * 0.42; // knob
+    const fontSize = height * 0.45; // knob
     const dotRadius = height * 0.0875; // knob
     const dotGap = dotRadius * 2.4; // knob
     const dotsWidth = dotRadius * 6 + dotGap * 2;
@@ -107,8 +101,8 @@ export function AutomationRulesBoard({
   const row = (lineCount: number, h: number) => {
     const insetX = h * 0.15; // knob: from the row's right edge to the chevron
     const gap = h * 0.2; // knob: separator → text
-    const iconSize = h * 0.42; // knob
-    const fontSize = h * 0.24; // knob
+    const iconSize = h * 0.4; // knob
+    const fontSize = h * 0.25; // knob
 
     // the icon's box: from the row's left edge, a share of its width, full
     // height. the icon sits in its middle
@@ -151,38 +145,17 @@ export function AutomationRulesBoard({
 
   return (
     <g transform={layout.transform}>
-      <defs>
-        <LitEdgeGradient id={litEdgeId} />
-        <InkFadeGradient id={inkId} />
-      </defs>
-
-      {/* the boards, back to front, like act's windows: dark ground, the ink fade,
-          the lit edge. the back one fades a bit */}
+      {/* the boards, back to front, each a lit pane. the back one fades a bit */}
       {layout.items.map((board, i) => (
         <g
           key={i}
           transform={`translate(${board.x}, ${board.y})`}
           opacity={0.6 + board.depth * 0.4}
         >
-          <rect
+          <LitPane
             width={board.width}
             height={board.height}
-            rx={radius}
-            fill="var(--ground)"
-          />
-          <rect
-            width={board.width}
-            height={board.height}
-            rx={radius}
-            fill={`url(#${inkId})`}
-          />
-          <rect
-            width={board.width}
-            height={board.height}
-            rx={radius}
-            fill="none"
-            stroke={`url(#${litEdgeId})`}
-            strokeWidth={1}
+            radius={radius}
           />
         </g>
       ))}
@@ -237,11 +210,20 @@ export function AutomationRulesBoard({
             const { icon, separator, text, chevron } = row(lines.length, h);
             return (
               <g key={i} transform={`translate(0, ${list.starts[i]})`}>
-                {/* the row: a recessed panel, like act's and visualize's boxes */}
+                {/* the row: a recessed panel, like act's and visualize's boxes, with its
+                    own dim accent border instead of the panel's gradient */}
                 <RecessedPanel
                   width={content.width}
                   height={h}
                   radius={radius}
+                  strokeWidth={0}
+                />
+                <rect
+                  width={content.width}
+                  height={h}
+                  rx={radius}
+                  fill="none"
+                  stroke="oklch(from var(--accent) l c h / 0.4)" // knob: 0.4
                   strokeWidth={0.75}
                 />
                 {/* icon */}

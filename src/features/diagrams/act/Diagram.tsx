@@ -5,8 +5,7 @@ import {
   alignEnd,
   cascadeLayout,
   deg,
-  InkFadeGradient,
-  LitEdgeGradient,
+  LitPane,
   paddedBox,
   platformCardLayout,
 } from "@/lib/svg";
@@ -26,10 +25,6 @@ export function ActDiagram() {
 
   // chart background: accent at the top, fading to transparent at the bottom
   const chartGradientId = useId();
-  // the dashboard windows' look: an ink fade from the top, and a border that's
-  // bright at the top and fades down
-  const paneInkId = useId();
-  const paneEdgeId = useId();
 
   // left: the dashboard, a stack of tilted windows
   const dashboard = (() => {
@@ -122,10 +117,6 @@ export function ActDiagram() {
           <stop offset="0%" stopColor="var(--accent)" stopOpacity={1} />
           <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
         </linearGradient>
-        {/* window fill: ink at the top, fading out toward the bottom */}
-        <InkFadeGradient id={paneInkId} />
-        {/* window border: electric, bright at the top and fading down */}
-        <LitEdgeGradient id={paneEdgeId} />
       </defs>
 
       <rect
@@ -150,18 +141,11 @@ export function ActDiagram() {
             transform={`translate(${win.x}, ${win.y})`}
             opacity={0.6 + win.depth * 0.4}
           >
-            {/* dark ground, the ink fade, a faint highlight along the top edge */}
-            <rect
+            {/* the lit pane, then a faint highlight along the top edge */}
+            <LitPane
               width={win.width}
               height={win.height}
-              rx={radius}
-              fill="var(--ground)"
-            />
-            <rect
-              width={win.width}
-              height={win.height}
-              rx={radius}
-              fill={`url(#${paneInkId})`}
+              radius={radius}
             />
             <line
               x1={radius}
@@ -171,15 +155,6 @@ export function ActDiagram() {
               stroke="var(--accent-electric)"
               strokeOpacity={1}
               strokeWidth={0.5}
-            />
-            {/* lit edge: a 1px hairline, bright at the top and fading down */}
-            <rect
-              width={win.width}
-              height={win.height}
-              rx={radius}
-              fill="none"
-              stroke={`url(#${paneEdgeId})`}
-              strokeWidth={1}
             />
             {win.isFront && dashboard.frontContent}
           </g>

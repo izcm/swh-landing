@@ -2,10 +2,12 @@ import {
   alignCenter,
   cascadeLayout,
   deg,
+  dropAlongEdge,
   Gear,
   gearLayout,
   paddedBox,
 } from "@/lib/svg";
+import { ActionCards } from "./ActionCards";
 import { AutomationRulesBoard } from "./AutomationRulesBoard";
 
 export function AutomateDiagram() {
@@ -53,28 +55,31 @@ export function AutomateDiagram() {
     bigGear.layout.groupHeight,
   ).offset;
 
-  const gearGroupWidth =
-    smallGear.translateX + smallGear.layout.groupWidth - bigGear.translateX;
+  // const gearGroupWidth =
+  //   smallGear.translateX + smallGear.layout.groupWidth - bigGear.translateX;
+
+  // the rule board's and the action cards' cascade: the same slant and steps,
+  // each with its own width and shape
+  const cascade = (groupWidth: number, heightToWidthRatio: number) =>
+    cascadeLayout({
+      groupWidth,
+      heightToWidthRatio,
+      angle: deg(11.25), // knob
+      count: 2, // knob
+      gapX: 8, // knob
+      gapY: 6, // knob
+      side: "right",
+    });
 
   const ruleBoard = (() => {
-    const groupWidth = Math.min(
-      viewboxWidth - gearGroupWidth,
-      viewboxWidth * 0.4,
-    );
+    const groupWidth = viewboxWidth * 0.4;
+
     // const groupHeight = viewboxHeight * 0.6;
 
     const translateX = viewboxWidth - groupWidth;
     const translateY = 0;
 
-    const boardLayout = cascadeLayout({
-      groupWidth,
-      heightToWidthRatio: 0.875,
-      angle: deg(11.25),
-      count: 2,
-      gapX: 10,
-      gapY: 8,
-      side: "right",
-    });
+    const boardLayout = cascade(groupWidth, 0.85);
 
     const radius = 4; // knob: the boards' and rows' corners
     // the front board's padding, in the diagram's unit (about 28, so keep it small)
@@ -90,6 +95,32 @@ export function AutomateDiagram() {
       radius,
       paddingXUnits,
       paddingYUnits,
+    };
+  })();
+
+  const actionCards = (() => {
+    const groupWidth = viewboxWidth * 0.275;
+    // the front board's bottom-left corner: the stack's bottom, minus the
+    // triangle under the board's slanted bottom edge (its width · tan(angle))
+    const { item, angle } = ruleBoard.boardLayout;
+    const translateX = viewboxWidth - groupWidth - unit; // lined up with the board's left edge
+    const translateY =
+      ruleBoard.translateY +
+      ruleBoard.boardLayout.stackHeight -
+      dropAlongEdge({ run: item.width, angle }) * 0.5;
+    const groupHeight = viewboxHeight - translateY; // down to the viewbox's bottom
+
+    // its  a box but we want the rounded rurface to face us.
+    // could we use boxbody for this ? cuz i want it to look like a box... but i want the roof to be facing us
+
+    const itemLayout = cascade(groupWidth, 0.24);
+
+    return {
+      groupWidth,
+      groupHeight,
+      translateX,
+      translateY,
+      itemLayout,
     };
   })();
 
@@ -143,6 +174,27 @@ export function AutomateDiagram() {
           className="svg-debug"
           width={ruleBoard.groupWidth}
           height={ruleBoard.boardLayout.stackHeight}
+          fill="none"
+          stroke="#aab4e6" // lavender
+          strokeWidth={0.75}
+          strokeDasharray="6 4"
+        />
+      </g>
+
+      {/* the actions, under the rule board */}
+      <g
+        transform={`translate(${actionCards.translateX}, ${actionCards.translateY})`}
+      >
+        <ActionCards
+          layout={actionCards.itemLayout}
+          height={actionCards.groupHeight}
+          radius={ruleBoard.radius}
+        />
+        {/* debug: the actions' box */}
+        <rect
+          className="svg-debug"
+          width={actionCards.groupWidth}
+          height={actionCards.groupHeight}
           fill="none"
           stroke="#aab4e6" // lavender
           strokeWidth={0.75}

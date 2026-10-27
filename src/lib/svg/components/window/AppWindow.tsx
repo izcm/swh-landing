@@ -96,7 +96,7 @@ export function AppWindow({
         y={inset}
         width={viewboxWidth - inset * 2}
         height={viewboxHeight - inset * 2}
-        rx={radius ?? "var(--rx-node-md)"}
+        rx={radius}
         // filter="url(#tinyGlow)"
         {...nodeStyle}
       />

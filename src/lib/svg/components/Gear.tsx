@@ -10,7 +10,7 @@ export function Gear({ layout }: { layout: ReturnType<typeof gearLayout> }) {
   return (
     <g transform={transform}>
       {/* soft blue halo around the whole gear */}
-      <g style={{ filter: accentGlow(4, 24) }}>
+      <g style={{ filter: accentGlow(4, 16) }}>
         {items.map((item, i) => (
           <g key={i} transform={`translate(${item.x}, ${item.y})`}>
             {/* side walls back to the copy behind (the back copy has none) */}
@@ -30,7 +30,7 @@ export function Gear({ layout }: { layout: ReturnType<typeof gearLayout> }) {
               fillRule="evenodd"
               fill={
                 item.isFront
-                  ? "oklch(from var(--accent-ink) calc(l - 0.01) c h)"
+                  ? "oklch(from var(--accent-ink) l c h)"
                   : "oklch(from var(--accent) 0.18 0.07 h)"
               }
               stroke={

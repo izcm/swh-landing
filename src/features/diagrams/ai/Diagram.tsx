@@ -7,7 +7,7 @@ import {
   alignCenter,
   deg,
   glyphStroke,
-  InkFadeGradient,
+  LitPane,
   paddedBox,
   spaceBetween,
   toDegrees,
@@ -48,6 +48,7 @@ export function AISvg() {
 
     const itemWidth = width - gapX * (itemCount - 1);
     const itemHeight = (itemWidth * 2) / 3;
+    const radius = 6; // knob: the editors' corners
 
     // highest point: back editor's top-right corner from origin (a distance thats why we add it to bottom)
     const topLift = itemWidth * skewSlope;
@@ -69,14 +70,9 @@ export function AISvg() {
 
       skew: { angle: skew, addedHeight: topLift },
       stack: { count: itemCount, gapX, gapY },
-      item: { width: itemWidth, height: itemHeight },
+      item: { width: itemWidth, height: itemHeight, radius },
     };
   })();
-
-  // the front editor's background: the ink fade from its top
-  const editorBgId = useId();
-  // the front editor's border: bright at the top, fading toward the bottom
-  const editorBorderId = useId();
 
   // AI suggestion panel, placed relative to the front editor (in the tilted group's coords)
   const suggestionGradientId = useId();
@@ -175,48 +171,20 @@ export function AISvg() {
                   height={editorBox.item.height}
                   viewboxWidth={300}
                   viewboxHeight={200}
+                  radius={6}
                   ghost={!isFront}
                   fill={isFront ? "var(--node-color-deep)" : undefined}
                   strokeWidth={isFront ? 0 : undefined} // trying: no border on the front editor
                 >
-                  {/* the front editor's background, layered inline: dark ground, a soft
-                      ink fade from the top, and a faint highlight along the top edge.
-                      AppWindow draws in a 300 × 200 box with --rx-node-md (8) corners,
-                      and glyphStroke turns parent units into that box's units */}
+                  {/* the front editor's background: the lit pane, then a faint
+                      highlight along the top edge. AppWindow draws in a 300 × 200
+                      box, and glyphStroke turns parent units into that box's units */}
                   {isFront && (
                     <>
-                      <defs>
-                        <InkFadeGradient id={editorBgId} />
-                        <linearGradient
-                          id={editorBorderId}
-                          x1="0"
-                          y1="0"
-                          x2="0"
-                          y2="1"
-                        >
-                          <stop
-                            offset="0%"
-                            stopColor="var(--accent-electric)"
-                            stopOpacity={0.6}
-                          />
-                          <stop
-                            offset="100%"
-                            stopColor="var(--accent-electric)"
-                            stopOpacity={0.15}
-                          />
-                        </linearGradient>
-                      </defs>
-                      <rect
+                      <LitPane
                         width={300}
                         height={200}
-                        rx={8}
-                        fill="var(--ground)"
-                      />
-                      <rect
-                        width={300}
-                        height={200}
-                        rx={8}
-                        fill={`url(#${editorBgId})`}
+                        radius={editorBox.item.radius}
                       />
                       <line
                         x1={8}
@@ -230,15 +198,6 @@ export function AISvg() {
                           0.6,
                           300,
                         )}
-                      />
-                      {/* lit edge: a 1px hairline, bright at the top and fading down */}
-                      <rect
-                        width={300}
-                        height={200}
-                        rx={8}
-                        fill="none"
-                        stroke={`url(#${editorBorderId})`}
-                        strokeWidth={1}
                       />
                     </>
                   )}

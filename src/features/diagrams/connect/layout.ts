@@ -38,7 +38,7 @@ export function connectLayout({
     // -- BOX · one shape, used for every node, as wide as groupWidth --
     const box = (() => {
       const thickness = unit * 1.6;
-      const radius = 6;
+      const radius = 12;
 
       const lengthA = unit * 1.8; // knob: roof.left → roof.bottom
       // roof.bottom → roof.right: the rest of groupWidth

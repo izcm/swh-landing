@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { LitEdgeGradient } from "../gradients";
 
 // a box sunk into a window (act's chart boxes and list): faint electric fill +
 // electric border. everything inside starts at (0, 0) = the box's top-left
@@ -19,24 +20,13 @@ export function RecessedPanel({
     <>
       <defs>
         {/* border: bright at the top, fading toward the bottom */}
-        <linearGradient id={borderId} x1="0" y1="0" x2="0" y2="1">
-          <stop
-            offset="0%"
-            stopColor="var(--accent-electric)"
-            stopOpacity={0.9}
-          />
-          <stop
-            offset="100%"
-            stopColor="var(--accent-electric)"
-            stopOpacity={0.25}
-          />
-        </linearGradient>
+        <LitEdgeGradient id={borderId} opacity={[0.9, 0.25]} />
       </defs>
       <rect
         width={width}
         height={height}
         rx={radius}
-        fill="oklch(from var(--accent) 0.0875 0.05 h)"
+        fill="oklch(from var(--accent) 0.12 0.02 h)"
         fillOpacity={1}
       />
       <rect
@@ -50,8 +40,8 @@ export function RecessedPanel({
         width={width}
         height={height}
         rx={radius}
-        fill="oklch(from var(--accent) 0.25 0.065 h)"
-        fillOpacity={0.35}
+        fill="oklch(from var(--accent) 0.32 0.14 h)"
+        fillOpacity={0.2}
       />
       <rect
         width={width}

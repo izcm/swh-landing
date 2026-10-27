@@ -61,7 +61,7 @@ export default function Hero() {
         </IconLink>
       </div>
 
-      <div className="w-full max-w-200 2xl:max-w-200 mx-auto">
+      <div className="w-full max-w-200 2xl:max-w-210 mx-auto">
         <HeroDiagram />
       </div>
     </section>

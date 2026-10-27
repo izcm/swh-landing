@@ -8,7 +8,7 @@ import {
   gridLines,
   isoCubePoints,
 } from "../../logic";
-import { platformGridStyle, platformStyle } from "../../styles";
+import { platformGridStyle, platformStyle } from "./platformStyle";
 
 type IsoPlatformProps = ComponentProps<typeof ISOCube> & {
   // grid on the roof: how many equal parts each direction is split into

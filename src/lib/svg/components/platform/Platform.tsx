@@ -3,7 +3,7 @@ import { EdgeGradient } from "../../styles";
 import { BoxBody } from "../iso";
 import { accentGlow, gridLines, type Point } from "../../logic";
 import { platformCorners, type PlatformShape } from "../../layouts";
-import { platformGridStyle, platformStyle } from "../../styles";
+import { platformGridStyle, platformStyle } from "./platformStyle";
 
 type PlatformProps = Partial<Point> &
   PlatformShape & {

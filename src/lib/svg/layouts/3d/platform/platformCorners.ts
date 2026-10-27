@@ -1,5 +1,5 @@
-import type { Point } from "../../logic";
-import { parallelogramCorners } from "../shapes/parallelogramCorners";
+import type { Point } from "../../../logic";
+import { parallelogramCorners } from "../../shapes/parallelogramCorners";
 
 export type PlatformShape = {
   lengthA: number; // left→bottom edge, going down to the right at angleA

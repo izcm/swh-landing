@@ -1,4 +1,4 @@
-import { isoCubeMetrics, panelPoints } from "../../logic";
+import { isoCubeMetrics, panelPoints } from "../../../logic";
 
 // a platform with a panel standing on its roof. the panel stands
 // `towardTop` along the left→top edge (which grid line), then `towardBottom`

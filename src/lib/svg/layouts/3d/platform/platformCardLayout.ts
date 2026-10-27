@@ -1,4 +1,4 @@
-import { boundingBox, pointOnLine } from "../../logic";
+import { boundingBox, pointOnLine } from "../../../logic";
 import { platformCorners } from "./platformCorners";
 
 // a platform with a card standing upright on it: all the math.

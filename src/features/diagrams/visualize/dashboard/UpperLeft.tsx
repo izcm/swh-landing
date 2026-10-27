@@ -53,6 +53,7 @@ export function UpperLeft({
     unit,
     paddingXUnits,
     paddingYUnits,
+    rowGapUnits: paddingYUnits,
     rowShares: [0.025, 0.65, 0.325],
   });
 
@@ -289,7 +290,7 @@ function LineChartBox({
         values={values}
         color="var(--accent-deep)"
         dotRadius={unit * 0.035}
-        areaOpacity={0.1}
+        areaOpacity={0.08}
         areaRadius={radius} // same corners as the box
       />
       {/* title + subtitle */}

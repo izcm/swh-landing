@@ -25,7 +25,7 @@ export function CardBackground({
         width={width}
         height={height}
         rx={radius}
-        fill="oklch(from var(--accent-electric) l c h / 0.01)"
+        fill="oklch(from var(--accent-electric) l calc(c + 0.16) h / 0.012)"
         fillOpacity={1}
       />
     </>

@@ -32,6 +32,7 @@ export function BottomLeft({
     unit,
     paddingXUnits,
     paddingYUnits,
+    rowGapUnits: paddingYUnits,
     rowShares: [0.025, 0.975],
   });
 

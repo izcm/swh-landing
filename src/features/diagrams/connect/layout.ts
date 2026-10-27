@@ -38,7 +38,7 @@ export function connectLayout({
     // -- BOX · one shape, used for every node, as wide as groupWidth --
     const box = (() => {
       const thickness = unit * 1.6;
-      const radius = 3;
+      const radius = 6;
 
       const lengthA = unit * 1.8; // knob: roof.left → roof.bottom
       // roof.bottom → roof.right: the rest of groupWidth
@@ -78,8 +78,9 @@ export function connectLayout({
       const iconSize = unit * 0.85; // knob
       const fontSize = unit * 0.62; // knob
       const gap = unit * 0.7; // knob: icon → label
+      const plateInset = unit * 0.25; // knob: wall's edge → the plate under the icon / label
 
-      return { iconSize, fontSize, gap };
+      return { iconSize, fontSize, gap, plateInset };
     })();
 
     // each box's top (the roof's top corner), spread evenly down the column

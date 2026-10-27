@@ -7,9 +7,12 @@
 export function LitEdgeGradient({
   id,
   height,
+  // stop opacities: top, bottom
+  opacity = [0.6, 0.15],
 }: {
   id: string;
   height?: number;
+  opacity?: [number, number];
 }) {
   return (
     <linearGradient
@@ -20,11 +23,15 @@ export function LitEdgeGradient({
       x2="0"
       y2={height ?? 1}
     >
-      <stop offset="0%" stopColor="var(--accent-electric)" stopOpacity={0.6} />
+      <stop
+        offset="0%"
+        stopColor="var(--accent-electric)"
+        stopOpacity={opacity[0]}
+      />
       <stop
         offset="100%"
         stopColor="var(--accent-electric)"
-        stopOpacity={0.15}
+        stopOpacity={opacity[1]}
       />
     </linearGradient>
   );

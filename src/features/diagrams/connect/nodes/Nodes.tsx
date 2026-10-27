@@ -3,9 +3,9 @@ import { useId } from "react";
 import {
   BoxBody,
   glyphStroke,
+  InkFadeGradient,
   LitEdgeGradient,
   roundedPolygonPath,
-  spaceBetween,
 } from "@/lib/svg";
 import type { ConnectLayout } from "../layout";
 import { connectNodes } from "./nodes";
@@ -17,11 +17,21 @@ export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
   const { roof, radius, rightFace, leftFace } = box;
   // the roof's border: bright at the top and fading down
   const litEdgeId = useId();
+  // the right wall's ink fade, over its fill
+  const inkId = useId();
+  // the extra layer on every face: a dark accent, see-through
+  const layer = "oklch(from var(--accent) 0.12 0.04 h / 0.2)"; // knob
+  // the roof's outline, for its lit edge
+  const roofOutline = roundedPolygonPath(
+    [roof.left, roof.top, roof.right, roof.bottom],
+    radius,
+  );
 
   return (
     <>
       <defs>
         <LitEdgeGradient id={litEdgeId} />
+        <InkFadeGradient id={inkId} />
       </defs>
 
       {connectNodes.map(({ label, icon: Icon, color }, i) => {
@@ -34,10 +44,15 @@ export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
               roof={roof}
               height={box.thickness}
               strokeWidth={1}
+              // each face: its base color + one dark, see-through accent layer
               fills={{
-                roof: "var(--accent-ink)",
-                right: "oklch(from var(--accent) 0.18 0.07 h)",
-                left: "var(--ground)",
+                roof: ["var(--accent-ink)", layer],
+                right: [
+                  "oklch(from var(--accent) 0.18 0.05 h)",
+                  layer,
+                  `url(#${inkId})`,
+                ],
+                left: ["var(--ground)", layer],
                 floor: "oklch(from var(--accent) 0.22 0.08 h)",
               }}
               radius={radius}
@@ -47,10 +62,7 @@ export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
             />
             {/* lit edge: one outline around the roof */}
             <path
-              d={roundedPolygonPath(
-                [roof.left, roof.top, roof.right, roof.bottom],
-                radius,
-              )}
+              d={roofOutline}
               fill="none"
               stroke={`url(#${litEdgeId})`}
               strokeWidth={1}

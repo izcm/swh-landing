@@ -1,8 +1,19 @@
-import { alignCenter, deg, Gear, gearLayout } from "@/lib/svg";
+import {
+  alignCenter,
+  cascadeLayout,
+  deg,
+  Gear,
+  gearLayout,
+  paddedBox,
+} from "@/lib/svg";
+import { AutomationRulesBoard } from "./AutomationRulesBoard";
 
 export function AutomateDiagram() {
   const viewboxWidth = 540;
-  const viewboxHeight = 340;
+  const viewboxHeight = 360;
+
+  // 1/12 of the height
+  const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
 
   // the gear, in the top-left corner
   const gear = (widthRatio: number) => {
@@ -19,7 +30,7 @@ export function AutomateDiagram() {
       holeRadius,
       holeRingRadius: holeRadius * 1.2, // knob
       depth: radius * 0.25, // knob
-      tilt: deg(-20), // knob
+      tilt: deg(-22.5), // knob
     });
   };
 
@@ -32,7 +43,7 @@ export function AutomateDiagram() {
 
   const smallGear = (() => {
     const layout = gear(0.16);
-    const translateX = bigGear.translateX + bigGear.layout.groupWidth * 0.65;
+    const translateX = bigGear.translateX + bigGear.layout.groupWidth * 0.625;
     const translateY = 0;
     return { layout, translateX, translateY };
   })();
@@ -42,6 +53,46 @@ export function AutomateDiagram() {
     bigGear.layout.groupHeight,
   ).offset;
 
+  const gearGroupWidth =
+    smallGear.translateX + smallGear.layout.groupWidth - bigGear.translateX;
+
+  const ruleBoard = (() => {
+    const groupWidth = Math.min(
+      viewboxWidth - gearGroupWidth,
+      viewboxWidth * 0.4,
+    );
+    // const groupHeight = viewboxHeight * 0.6;
+
+    const translateX = viewboxWidth - groupWidth;
+    const translateY = 0;
+
+    const boardLayout = cascadeLayout({
+      groupWidth,
+      heightToWidthRatio: 0.875,
+      angle: deg(11.25),
+      count: 2,
+      gapX: 10,
+      gapY: 8,
+      side: "right",
+    });
+
+    const radius = 4; // knob: the boards' and rows' corners
+    // the front board's padding, in the diagram's unit (about 28, so keep it small)
+    const paddingXUnits = 0.5; // knob
+    const paddingYUnits = 0.25; // knob
+
+    return {
+      groupWidth,
+      // groupHeight,
+      translateX,
+      translateY,
+      boardLayout,
+      radius,
+      paddingXUnits,
+      paddingYUnits,
+    };
+  })();
+
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
@@ -49,7 +100,7 @@ export function AutomateDiagram() {
     >
       {/* debug: the viewbox's edges */}
       <rect
-        className="svg-debugd"
+        className="svg-debug"
         width={viewboxWidth}
         height={viewboxHeight}
         fill="none"
@@ -68,6 +119,35 @@ export function AutomateDiagram() {
         >
           <Gear layout={bigGear.layout} />
         </g>
+      </g>
+
+      <g
+        transform={`translate(${smallGear.translateX + smallGear.layout.groupWidth}, ${gearGroupOffsetY + bigGear.layout.groupHeight * 0.5})`}
+      >
+        <circle cx={0} cy={0} fill="hotpink" r={4} />
+      </g>
+
+      {/* the rule board */}
+      <g
+        transform={`translate(${ruleBoard.translateX}, ${ruleBoard.translateY})`}
+      >
+        <AutomationRulesBoard
+          layout={ruleBoard.boardLayout}
+          radius={ruleBoard.radius}
+          unit={unit}
+          paddingXUnits={ruleBoard.paddingXUnits}
+          paddingYUnits={ruleBoard.paddingYUnits}
+        />
+        {/* debug: the rule board's box */}
+        <rect
+          className="svg-debug"
+          width={ruleBoard.groupWidth}
+          height={ruleBoard.boardLayout.stackHeight}
+          fill="none"
+          stroke="#aab4e6" // lavender
+          strokeWidth={0.75}
+          strokeDasharray="6 4"
+        />
       </g>
     </svg>
   );

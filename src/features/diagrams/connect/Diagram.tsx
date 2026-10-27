@@ -103,7 +103,7 @@ export function ConnectDiagram() {
         {...syncArrows}
         duration={12}
         // the inner cube's color, more opaque
-        color={`oklch(from ${innerFill} l c h / 0.4)`}
+        color={`oklch(from ${innerFill} l c h / 0.55)`}
       />
 
       {/* right: the data grid */}

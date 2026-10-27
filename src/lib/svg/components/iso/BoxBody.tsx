@@ -10,12 +10,15 @@ import {
 // the 4 corners of a box's roof (its top face). left is at x = 0
 export type BoxRoof = { left: Point; top: Point; right: Point; bottom: Point };
 
-// one color per face, already resolved (no defaults here: the caller picks the look)
+// one color, or a list drawn as layers, bottom first, all under the edges
+type FaceFill = string | string[];
+
+// one fill per face, already resolved (no defaults here: the caller picks the look)
 export type BoxFills = {
-  roof: string;
-  left: string;
-  right: string;
-  floor: string;
+  roof: FaceFill;
+  left: FaceFill;
+  right: FaceFill;
+  floor: FaceFill;
 };
 
 // the middle of a rounded corner's curve: where the outline really turns.
@@ -83,6 +86,16 @@ export function BoxBody({
     bottom: down(roof.bottom),
   };
 
+  // the roof's and floor's outlines, shared by their fill layers and their stroke
+  const roofPath = roundedPolygonPath(
+    [roof.left, roof.top, roof.right, roof.bottom],
+    radius,
+  );
+  const floorPath = roundedPolygonPath(
+    [floor.left, floor.top, floor.right, floor.bottom],
+    radius,
+  );
+
   // where each rounded roof corner really turns. walls and side edges start here.
   // (old ISOCube worked these out from angleA alone, which is only exact when
   // both angles are the same. same numbers when they are)
@@ -139,15 +152,20 @@ export function BoxBody({
         />
       )}
       {drawUnder && showFloor && (
-        <path
-          d={roundedPolygonPath(
-            [floor.left, floor.top, floor.right, floor.bottom],
-            radius,
+        <>
+          {/* a fill is one color or a list: [fill].flat() makes it a list either way */}
+          {[fills.floor].flat().map((fill, i) => (
+            <path key={i} d={floorPath} fill={fill} />
+          ))}
+          {part !== "under" && (
+            <path
+              d={floorPath}
+              fill="none"
+              stroke={edgeStroke}
+              strokeWidth={strokeWidth}
+            />
           )}
-          fill={fills.floor}
-          stroke={part === "under" ? "none" : edgeStroke}
-          strokeWidth={strokeWidth}
-        />
+        </>
       )}
       {/* the floor's lines floor.left → floor.top → floor.right. a whole cube with `showFloor` 
           gets them from the floor's outline. with showFloor false (no floor at all) or for the under half (its
@@ -184,14 +202,20 @@ export function BoxBody({
       {drawOver && (
         <>
           {/* walls: left and right faces meeting at the middle edge */}
-          <polygon
-            points={`${tip.left.x},${tip.left.y} ${roof.bottom.x},${roof.bottom.y} ${floor.bottom.x},${floor.bottom.y} ${leftFloorTip.x},${leftFloorTip.y}`}
-            fill={fills.left}
-          />
-          <polygon
-            points={`${roof.bottom.x},${roof.bottom.y} ${tip.right.x},${tip.right.y} ${rightFloorTip.x},${rightFloorTip.y} ${floor.bottom.x},${floor.bottom.y}`}
-            fill={fills.right}
-          />
+          {[fills.left].flat().map((fill, i) => (
+            <polygon
+              key={i}
+              points={`${tip.left.x},${tip.left.y} ${roof.bottom.x},${roof.bottom.y} ${floor.bottom.x},${floor.bottom.y} ${leftFloorTip.x},${leftFloorTip.y}`}
+              fill={fill}
+            />
+          ))}
+          {[fills.right].flat().map((fill, i) => (
+            <polygon
+              key={i}
+              points={`${roof.bottom.x},${roof.bottom.y} ${tip.right.x},${tip.right.y} ${rightFloorTip.x},${rightFloorTip.y} ${floor.bottom.x},${floor.bottom.y}`}
+              fill={fill}
+            />
+          ))}
 
           {/* side edges */}
           <line
@@ -222,12 +246,12 @@ export function BoxBody({
           )}
 
           {/* roof */}
+          {[fills.roof].flat().map((fill, i) => (
+            <path key={i} d={roofPath} fill={fill} />
+          ))}
           <path
-            d={roundedPolygonPath(
-              [roof.left, roof.top, roof.right, roof.bottom],
-              radius,
-            )}
-            fill={fills.roof}
+            d={roofPath}
+            fill="none"
             stroke={edgeStroke}
             strokeWidth={strokeWidth}
           />

@@ -45,6 +45,7 @@ export function BottomRight({
     unit,
     paddingXUnits,
     paddingYUnits,
+    rowGapUnits: paddingYUnits,
     rowShares: [0.025, 0.975],
   });
 
@@ -81,6 +82,7 @@ export function BottomRight({
       unit,
       paddingXUnits: 0,
       paddingYUnits: 0,
+      rowGapUnits: 0,
       rowShares: [0.2, 0.8], // the label, the gauge
     });
 

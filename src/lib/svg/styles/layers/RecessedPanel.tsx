@@ -36,7 +36,7 @@ export function RecessedPanel({
         width={width}
         height={height}
         rx={radius}
-        fill="oklch(from var(--accent) 0.0875 0.05 h)"
+        fill="oklch(from var(--accent) 0.0875 0.06 h)"
         fillOpacity={1}
       />
       <rect

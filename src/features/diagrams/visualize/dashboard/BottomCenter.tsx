@@ -51,6 +51,7 @@ export function BottomCenter({
     unit,
     paddingXUnits,
     paddingYUnits,
+    rowGapUnits: paddingYUnits,
     rowShares: [0.025, 0.4875, 0.4875],
   });
 
@@ -117,6 +118,7 @@ export function BottomCenter({
       unit: layoutUnit(boxHeight),
       paddingXUnits: 1,
       paddingYUnits: 1.2,
+      rowGapUnits: 1.2,
       rowShares: [0.1, 0.9], // the label, the donut
     });
     const donutRowHeight = inner.rows.sizes[1];
@@ -181,6 +183,7 @@ export function BottomCenter({
       unit: layoutUnit(boxHeight),
       paddingXUnits: 1,
       paddingYUnits: 1,
+      rowGapUnits: 1,
       rowShares: items.map(() => 1 / items.length),
     });
     const rowHeight = inner.rows.sizes[0]; // every row is the same height

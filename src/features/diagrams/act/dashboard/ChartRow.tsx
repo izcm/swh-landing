@@ -89,7 +89,7 @@ export function ChartRow({
           values={values}
           color="var(--accent-deep)"
           dotRadius={unit * 0.1}
-          areaOpacity={0.04}
+          areaOpacity={0.064}
           areaRadius={boxRadius} // same corners as the box behind it
           selectedIdx={drilldown ? 63 : undefined} // 63 = the highest bump (placeholder), or none without drilldown
         />

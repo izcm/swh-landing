@@ -15,7 +15,7 @@ type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
 // cube shows. the small cube: accent, a bit see-through, electric edges
 export const cubeFill =
   "oklch(from var(--accent-ink) calc(l - 0.02) calc(c - 0.01) h / 0.55)";
-export const innerFill = "oklch(from var(--accent) l c h / 0.45)";
+export const innerFill = "oklch(from var(--accent) calc(l + 0.08) c h / 0.45)"; // knob: + 0.08
 // the big cube's back edges, seen through its faces (the gear's faint edge)
 const faintEdge = "oklch(from var(--accent-electric) l c h / 0.35)";
 
@@ -54,12 +54,13 @@ export function Centerpiece({
     thickness,
     showMiddleEdge: true,
 
-    // dark glass: roof and walls lit at the top (the roof a touch lighter), the floor darker
+    // dark glass, lit at the top: the roof lightest, the walls a step darker.
+    // the floor like the roof
     faces: {
       roof: `url(#${roofGradientId})`,
       left: `url(#${wallGradientId})`,
       right: `url(#${wallGradientId})`,
-      floor: "oklch(from var(--accent) 0.12 0.02 h / 0.6)",
+      floor: `url(#${roofGradientId})`,
     },
     showFloor: true,
     // electric edges, brightest at the top. faint ones at the back, like the gear
@@ -72,10 +73,7 @@ export function Centerpiece({
 
   return (
     // one soft halo around the whole centerpiece
-    <g
-      transform={`translate(${x}, ${y})`}
-      style={{ filter: accentGlow(4, 10) }}
-    >
+    <g transform={`translate(${x}, ${y})`} style={{ filter: accentGlow(3, 8) }}>
       <defs>
         {/* the big cube's border: electric, brightest at the top and still
             clearly there at the bottom */}
@@ -102,11 +100,11 @@ export function Centerpiece({
         <linearGradient id={wallGradientId} x1="0" y1="0" x2="0" y2="1">
           <stop
             offset="0%"
-            stopColor="oklch(from var(--accent) 0.24 0.10 h / 0.5)"
+            stopColor="oklch(from var(--accent) 0.24 0.1 h / 0.35)"
           />
           <stop
             offset="100%"
-            stopColor="oklch(from var(--accent) 0.14 0.05 h / 0.6)"
+            stopColor="oklch(from var(--accent) 0.14 0.04 h / 0.8)"
           />
         </linearGradient>
         {/* the big cube's roof: like the walls but a touch lighter, so the
@@ -114,11 +112,11 @@ export function Centerpiece({
         <linearGradient id={roofGradientId} x1="0" y1="0" x2="0" y2="1">
           <stop
             offset="0%"
-            stopColor="oklch(from var(--accent) 0.28 0.11 h / 0.5)"
+            stopColor="oklch(from var(--accent) 0.32 0.1 h / 0.5)" // knob
           />
           <stop
             offset="100%"
-            stopColor="oklch(from var(--accent) 0.18 0.08 h / 0.55)"
+            stopColor="oklch(from var(--accent) 0.18 0.1 h / 0.6)"
           />
         </linearGradient>
       </defs>
@@ -148,8 +146,8 @@ export function Centerpiece({
           // light: the roof brightest, the walls a step darker each
           faces={{
             roof: innerFill,
-            left: "oklch(from var(--accent) calc(l - 0.14) c h / 0.6)",
-            right: "oklch(from var(--accent) calc(l - 0.07) c h / 0.6)",
+            left: "oklch(from var(--accent) calc(l - 0.2) c h / 0.6)", // knob: - 0.25
+            right: "oklch(from var(--accent) calc(l - 0.1) c h / 0.6)", // knob: - 0.1
           }}
           stroke="var(--accent-electric)"
           strokeWeight={1}

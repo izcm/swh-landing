@@ -50,6 +50,7 @@ export function UpperRight({
     unit,
     paddingXUnits,
     paddingYUnits,
+    rowGapUnits: paddingYUnits,
     rowShares: [0.025, 0.4875, 0.4875],
   });
 
@@ -198,6 +199,7 @@ function TrendCard({
       unit: cardUnit,
       paddingXUnits: 1.5,
       paddingYUnits: 1.5,
+      rowGapUnits: 1.5,
       rowShares: [0.25, 0.75], // the title row, the chart
     });
     const titleRowHeight = inner.rows.sizes[0];
@@ -410,6 +412,7 @@ function AlertCard({
       unit: cardUnit,
       paddingXUnits: 1.5,
       paddingYUnits: 1.5,
+      rowGapUnits: 1.5,
       rowShares: [0.3, 0.7], // the label, the alert
     });
     const alertRowHeight = inner.rows.sizes[1];

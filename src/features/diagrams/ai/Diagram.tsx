@@ -7,6 +7,7 @@ import {
   alignCenter,
   deg,
   glyphStroke,
+  InkFadeGradient,
   paddedBox,
   spaceBetween,
   toDegrees,
@@ -185,24 +186,7 @@ export function AISvg() {
                   {isFront && (
                     <>
                       <defs>
-                        <linearGradient
-                          id={editorBgId}
-                          x1="0"
-                          y1="0"
-                          x2="0"
-                          y2="1"
-                        >
-                          <stop
-                            offset="0%"
-                            stopColor="var(--accent-ink)"
-                            stopOpacity={0.9}
-                          />
-                          <stop
-                            offset="100%"
-                            stopColor="var(--accent-ink)"
-                            stopOpacity={0}
-                          />
-                        </linearGradient>
+                        <InkFadeGradient id={editorBgId} />
                         <linearGradient
                           id={editorBorderId}
                           x1="0"

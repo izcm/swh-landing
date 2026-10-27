@@ -1,5 +1,12 @@
 import { useId } from "react";
-import { ISOCube, glassCube, isoCubeMetrics, type Point } from "@/lib/svg";
+import {
+  ISOCube,
+  accentGlow,
+  glassCube,
+  isoCubeMetrics,
+  isoCubePoints,
+  type Point,
+} from "@/lib/svg";
 
 type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
 
@@ -8,7 +15,7 @@ type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
 // cube shows. the small cube: accent, a bit see-through, electric edges
 export const cubeFill =
   "oklch(from var(--accent-ink) calc(l - 0.02) calc(c - 0.01) h / 0.55)";
-export const innerFill = "oklch(from var(--accent) l c h / 0.6)";
+export const innerFill = "oklch(from var(--accent) l c h / 0.45)";
 // the big cube's back edges, seen through its faces (the gear's faint edge)
 const faintEdge = "oklch(from var(--accent-electric) l c h / 0.35)";
 
@@ -36,6 +43,12 @@ export function Centerpiece({
   const wallGradientId = useId();
   const roofGradientId = useId();
 
+  // the big cube's border gradient, laid out in the 100-wide box ISOCube draws
+  // in (so it also paints the straight side edges): roof's top corner to floor's bottom
+  const edgeGradientId = useId();
+  const box = isoCubePoints(size, thickness, angles.angleA, angles.angleB);
+  const edgeHeight = box.roofBottom.y + box.verticalHeight;
+
   const bigCube = {
     size,
     thickness,
@@ -46,26 +59,50 @@ export function Centerpiece({
       roof: `url(#${roofGradientId})`,
       left: `url(#${wallGradientId})`,
       right: `url(#${wallGradientId})`,
-      floor: "oklch(from var(--accent) 0.12 0.04 h / 0.6)",
+      floor: "oklch(from var(--accent) 0.12 0.02 h / 0.6)",
     },
     showFloor: true,
-    // bright edges in front, faint ones at the back, like the gear
-    stroke: "var(--accent-electric)",
+    // electric edges, brightest at the top. faint ones at the back, like the gear
+    stroke: `url(#${edgeGradientId})`,
     floorTopStroke: faintEdge,
     strokeWeight: 0.75,
-    glow: { blur: 3, strength: 16 },
     radius: 2,
     ...angles,
   };
 
   return (
-    <g transform={`translate(${x}, ${y})`}>
+    // one soft halo around the whole centerpiece
+    <g
+      transform={`translate(${x}, ${y})`}
+      style={{ filter: accentGlow(4, 10) }}
+    >
       <defs>
+        {/* the big cube's border: electric, brightest at the top and still
+            clearly there at the bottom */}
+        <linearGradient
+          id={edgeGradientId}
+          gradientUnits="userSpaceOnUse"
+          x1="0"
+          y1="0"
+          x2="0"
+          y2={edgeHeight}
+        >
+          <stop
+            offset="0%"
+            stopColor="var(--accent-electric)"
+            stopOpacity={0.95}
+          />
+          <stop
+            offset="100%"
+            stopColor="var(--accent-electric)"
+            stopOpacity={0.4}
+          />
+        </linearGradient>
         {/* the big cube's walls: lit at the top, darker toward the floor */}
         <linearGradient id={wallGradientId} x1="0" y1="0" x2="0" y2="1">
           <stop
             offset="0%"
-            stopColor="oklch(from var(--accent) 0.24 0.12 h / 0.5)"
+            stopColor="oklch(from var(--accent) 0.24 0.10 h / 0.5)"
           />
           <stop
             offset="100%"
@@ -77,7 +114,7 @@ export function Centerpiece({
         <linearGradient id={roofGradientId} x1="0" y1="0" x2="0" y2="1">
           <stop
             offset="0%"
-            stopColor="oklch(from var(--accent) 0.28 0.13 h / 0.5)"
+            stopColor="oklch(from var(--accent) 0.28 0.11 h / 0.5)"
           />
           <stop
             offset="100%"
@@ -100,7 +137,8 @@ export function Centerpiece({
         fillOpacity={0.18}
         style={{ filter: "blur(6px)" }}
       />
-      <g className="float-bob">
+      {/* the small cube's own slight glow, on top of the centerpiece's */}
+      <g className="float-bob" style={{ filter: accentGlow(1.5, 8) }}>
         <ISOCube
           {...glassCube}
           x={innerCubePos.x}
@@ -115,7 +153,6 @@ export function Centerpiece({
           }}
           stroke="var(--accent-electric)"
           strokeWeight={1}
-          glow={{ blur: 1.5, strength: 8 }}
           {...angles}
         />
       </g>

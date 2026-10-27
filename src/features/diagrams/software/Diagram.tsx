@@ -3,7 +3,9 @@ import {
   IsoPlatform,
   platformStyle,
   IsoCubeShadow,
+  accentGlow,
   glassCube,
+  glassGlow,
   isoFloorCenter,
   isoCubeMetrics,
   isoRoofCenter,
@@ -22,6 +24,9 @@ export function SoftwareDiagram() {
 
   const half = cube.size / 2;
   const { depth, edgeLength: rise } = isoCubeMetrics(cubeSize);
+
+  // the glass cubes' halo, put on the <g> around each group of cubes
+  const glassGlowFilter = accentGlow(glassGlow.blur, glassGlow.strength);
 
   const { contentX, contentY, contentWidth, contentHeight, unit } = paddedBox(
     viewboxWidth,
@@ -296,7 +301,9 @@ export function SoftwareDiagram() {
             } as React.CSSProperties
           }
         >
-          <ISOCube {...glassCube} size={cubeSize} x={half * 1.5} y={0} />
+          <g style={{ filter: glassGlowFilter }}>
+            <ISOCube {...glassCube} size={cubeSize} x={half * 1.5} y={0} />
+          </g>
         </g>
       </g>
 
@@ -304,7 +311,15 @@ export function SoftwareDiagram() {
       <g
         transform={`translate(${bottomLeft.positions.x}, ${bottomLeft.positions.y})`}
       >
-        <g opacity={1}>
+        <g
+          opacity={1}
+          style={{
+            filter: accentGlow(
+              platformStyle.glow.blur,
+              platformStyle.glow.strength,
+            ),
+          }}
+        >
           <ISOCube
             {...platformStyle}
             size={bottomLeft.bigCube.size}
@@ -331,20 +346,22 @@ export function SoftwareDiagram() {
           style={{ filter: "blur(4px)" }}
         />
         <g className="float-bob">
-          <ISOCube
-            {...glassCube}
-            x={bottomLeft.smallCubePos.x}
-            y={bottomLeft.smallCubePos.y - bottomLeft.floatLift}
-            size={cube.size}
-            faces={{
-              roof: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
-              left: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
-              right: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
-            }}
-            // was / 0.8 drawn twice; one layer at 0.96 looks the same
-            stroke="oklch(from var(--accent) 0.85 0.12 h / 0.96)"
-            showFloorTopEdges
-          />
+          <g style={{ filter: glassGlowFilter }}>
+            <ISOCube
+              {...glassCube}
+              x={bottomLeft.smallCubePos.x}
+              y={bottomLeft.smallCubePos.y - bottomLeft.floatLift}
+              size={cube.size}
+              faces={{
+                roof: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
+                left: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
+                right: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
+              }}
+              // was / 0.8 drawn twice; one layer at 0.96 looks the same
+              stroke="oklch(from var(--accent) 0.85 0.12 h / 0.96)"
+              showFloorTopEdges
+            />
+          </g>
         </g>
       </g>
 
@@ -386,8 +403,10 @@ export function SoftwareDiagram() {
             <CubeBase size={cubeSize} y={rise} />
 
             {/* TOP ROW — two cubes on the top cells */}
-            <ISOCube {...glassCube} size={cubeSize} x={half} y={0} />
-            <ISOCube {...glassCube} size={cubeSize} x={cubeSize} y={depth} />
+            <g style={{ filter: glassGlowFilter }}>
+              <ISOCube {...glassCube} size={cubeSize} x={half} y={0} />
+              <ISOCube {...glassCube} size={cubeSize} x={cubeSize} y={depth} />
+            </g>
           </g>
         </g>
       </g>
@@ -401,7 +420,7 @@ function CubeBase({ size, y = 0 }: { size: number; y?: number }) {
   const half = size / 2;
 
   return (
-    <>
+    <g style={{ filter: accentGlow(glassGlow.blur, glassGlow.strength) }}>
       <ISOCube
         {...glassCube}
         size={size}
@@ -417,6 +436,6 @@ function CubeBase({ size, y = 0 }: { size: number; y?: number }) {
       <ISOCube {...glassCube} size={size} x={0} y={y + depth} />
       <ISOCube {...glassCube} size={size} x={size} y={y + depth} />
       <ISOCube {...glassCube} size={size} x={half} y={y + depth * 2} />
-    </>
+    </g>
   );
 }

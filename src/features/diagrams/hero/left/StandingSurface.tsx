@@ -1,7 +1,10 @@
+import { useId } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   deg,
   glyphStroke,
+  InkFadeGradient,
+  LitEdgeGradient,
   roundedPolygonPath,
   panelPoints,
   toDegrees,
@@ -36,15 +39,27 @@ export function StandingSurface({
     corners: { topLeft, topRight, bottomRight, bottomLeft },
   } = panelPoints({ size, thickness, angle });
 
+  const outline = roundedPolygonPath(
+    [topLeft, topRight, bottomRight, bottomLeft],
+    radius,
+  );
+  const edgeId = useId();
+  const inkId = useId();
+
   return (
     <g transform={`translate(${x}, ${y})`}>
+      <defs>
+        <LitEdgeGradient id={edgeId} />
+        <InkFadeGradient id={inkId} />
+      </defs>
+
+      {/* layered like act's windows: dark ground, act's ink fade, and the lit
+          edge: bright at the top, fading down */}
+      <path d={outline} fill="var(--ground)" />
       <path
-        d={roundedPolygonPath(
-          [topLeft, topRight, bottomRight, bottomLeft],
-          radius,
-        )}
-        fill="var(--accent-ink)"
-        stroke="var(--accent-dim)"
+        d={outline}
+        fill={`url(#${inkId})`}
+        stroke={`url(#${edgeId})`}
         strokeWidth={1}
       />
 

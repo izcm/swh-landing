@@ -5,6 +5,7 @@ import {
   alignEnd,
   cascadeLayout,
   deg,
+  InkFadeGradient,
   LitEdgeGradient,
   paddedBox,
   platformCardLayout,
@@ -122,10 +123,7 @@ export function ActDiagram() {
           <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
         </linearGradient>
         {/* window fill: ink at the top, fading out toward the bottom */}
-        <linearGradient id={paneInkId} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--accent-ink)" stopOpacity={0.9} />
-          <stop offset="100%" stopColor="var(--accent-ink)" stopOpacity={0} />
-        </linearGradient>
+        <InkFadeGradient id={paneInkId} />
         {/* window border: electric, bright at the top and fading down */}
         <LitEdgeGradient id={paneEdgeId} />
       </defs>

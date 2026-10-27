@@ -44,14 +44,11 @@ export function IsoPlatform({ grid, ...cube }: IsoPlatformProps) {
   const gradientId = useId();
 
   return (
-    <>
+    <g style={{ filter: accentGlow(glow.blur, glow.strength) }}>
       <ISOCube {...style} />
 
       {/* same transform as ISOCube, so the grid lands on its roof */}
-      <g
-        transform={`translate(${x}, ${y}) scale(${scale})`}
-        style={{ filter: accentGlow(glow.blur, glow.strength) }}
-      >
+      <g transform={`translate(${x}, ${y}) scale(${scale})`}>
         <defs>
           <EdgeGradient
             id={gradientId}
@@ -73,6 +70,6 @@ export function IsoPlatform({ grid, ...cube }: IsoPlatformProps) {
           />
         ))}
       </g>
-    </>
+    </g>
   );
 }

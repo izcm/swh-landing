@@ -1,5 +1,4 @@
 import {
-  accentGlow,
   deg,
   glyphStroke,
   isoCubePoints,
@@ -26,8 +25,6 @@ type ISOCubeProps = IsoCubeBaseProps & {
   floorTopStroke?: string;
   // edge gradient stop opacities (start, middle, end). see EdgeGradient
   edgeOpacity?: [number, number, number];
-  // soft accent glow around the whole cube
-  glow?: { blur: number; strength: number };
 
   // show knobs
   // false: no floor fill and no floor-top edges, only the floor's two
@@ -54,9 +51,12 @@ export const glassCube = {
   showMiddleEdge: true,
   strokeWeight: 0.85,
   edgeOpacity: [1, 1, 1] as [number, number, number],
-  glow: { blur: 4, strength: 12 },
 };
 
+// the glass look's halo, for the caller's wrapping <g>: ISOCube draws no glow
+export const glassGlow = { blur: 4, strength: 12 };
+
+// no glow: the caller wraps it in its own <g>
 export function ISOCube({
   // position
   x = 0,
@@ -73,7 +73,6 @@ export function ISOCube({
   strokeWeight = glassCube.strokeWeight,
   radius = glassCube.radius,
   edgeOpacity = glassCube.edgeOpacity,
-  glow = glassCube.glow,
 
   stroke,
   floorTopStroke,
@@ -98,10 +97,7 @@ export function ISOCube({
   const strokeWidth = glyphStroke(size, strokeWeight, 100);
 
   return (
-    <g
-      transform={`translate(${x}, ${y}) scale(${scale})`}
-      style={{ filter: accentGlow(glow.blur, glow.strength) }}
-    >
+    <g transform={`translate(${x}, ${y}) scale(${scale})`}>
       <BoxBody
         roof={roof}
         height={verticalHeight}

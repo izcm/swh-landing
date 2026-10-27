@@ -1,4 +1,4 @@
-import { deg, Gear, gearLayout } from "@/lib/svg";
+import { alignCenter, deg, Gear, gearLayout } from "@/lib/svg";
 
 export function AutomateDiagram() {
   const viewboxWidth = 540;
@@ -18,24 +18,29 @@ export function AutomateDiagram() {
       toothLean: deg(15), // knob
       holeRadius,
       holeRingRadius: holeRadius * 1.2, // knob
-      depth: radius * 0.2, // knob
-      tilt: deg(-15), // knob
+      depth: radius * 0.25, // knob
+      tilt: deg(-20), // knob
     });
   };
 
   const bigGear = (() => {
-    const layout = gear(0.22);
+    const layout = gear(0.2);
     const translateX = 0; // flush with the left edge
     const translateY = 0; // flush with the top edge
     return { layout, translateX, translateY };
   })();
 
   const smallGear = (() => {
-    const layout = gear(0.18);
+    const layout = gear(0.16);
     const translateX = bigGear.translateX + bigGear.layout.groupWidth * 0.65;
     const translateY = 0;
     return { layout, translateX, translateY };
   })();
+
+  const gearGroupOffsetY = alignCenter(
+    viewboxHeight,
+    bigGear.layout.groupHeight,
+  ).offset;
 
   return (
     <svg
@@ -52,13 +57,17 @@ export function AutomateDiagram() {
         strokeWidth={0.75}
         strokeDasharray="6 4"
       />
-      <g
-        transform={`translate(${smallGear.translateX}, ${smallGear.translateY})`}
-      >
-        <Gear layout={smallGear.layout} />
-      </g>
-      <g transform={`translate(${bigGear.translateX}, ${bigGear.translateY})`}>
-        <Gear layout={bigGear.layout} />
+      <g transform={`translate(0, ${gearGroupOffsetY})`}>
+        <g
+          transform={`translate(${smallGear.translateX}, ${smallGear.translateY})`}
+        >
+          <Gear layout={smallGear.layout} />
+        </g>
+        <g
+          transform={`translate(${bigGear.translateX}, ${bigGear.translateY})`}
+        >
+          <Gear layout={bigGear.layout} />
+        </g>
       </g>
     </svg>
   );

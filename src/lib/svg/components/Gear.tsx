@@ -30,7 +30,7 @@ export function Gear({ layout }: { layout: ReturnType<typeof gearLayout> }) {
               fillRule="evenodd"
               fill={
                 item.isFront
-                  ? "oklch(from var(--accent-ink) calc(l - 0.02) calc(c - 0.01) h)"
+                  ? "oklch(from var(--accent-ink) calc(l - 0.01) c h)"
                   : "oklch(from var(--accent) 0.18 0.07 h)"
               }
               stroke={

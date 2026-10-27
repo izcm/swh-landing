@@ -30,7 +30,7 @@ export function AutomateDiagram() {
       holeRadius,
       holeRingRadius: holeRadius * 1.2, // knob
       depth: radius * 0.25, // knob
-      tilt: deg(-22.5), // knob
+      tilt: deg(-20), // knob
     });
   };
 
@@ -124,7 +124,7 @@ export function AutomateDiagram() {
       <g
         transform={`translate(${smallGear.translateX + smallGear.layout.groupWidth}, ${gearGroupOffsetY + bigGear.layout.groupHeight * 0.5})`}
       >
-        <circle cx={0} cy={0} fill="hotpink" r={4} />
+        <circle className="svg-debug" cx={0} cy={0} fill="hotpink" r={4} />
       </g>
 
       {/* the rule board */}

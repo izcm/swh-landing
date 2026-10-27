@@ -12,8 +12,10 @@ import {
   alignCenter,
   contentBoxLayout,
   glyphStrokeLucide,
+  InkFadeGradient,
   LitEdgeGradient,
   placeItemCenter,
+  RecessedPanel,
   stackWithGaps,
   WindowDots,
   type cascadeLayout,
@@ -43,8 +45,10 @@ export function AutomationRulesBoard({
   paddingYUnits: number; // around the content, top and bottom, in units
 }) {
   const { front, item } = layout;
-  // the front board's border: bright at the top and fading down
+  // the boards' border: bright at the top and fading down
   const litEdgeId = useId();
+  // the boards' ink fade, over the ground
+  const inkId = useId();
 
   // the front board's content: the header, then the list of rules, paddingY apart
   const contentBox = (() => {
@@ -148,28 +152,39 @@ export function AutomationRulesBoard({
   return (
     <g transform={layout.transform}>
       <defs>
-        <LitEdgeGradient id={litEdgeId} opacity={[0.6, 0.35]} />
+        <LitEdgeGradient id={litEdgeId} />
+        <InkFadeGradient id={inkId} />
       </defs>
 
-      {/* the boards, back to front: the gear's front-face color. the front board
-          gets the lit edge (bright at the top, fading down), the back one the
-          gear's faint edge */}
+      {/* the boards, back to front, like act's windows: dark ground, the ink fade,
+          the lit edge. the back one fades a bit */}
       {layout.items.map((board, i) => (
-        <rect
+        <g
           key={i}
-          x={board.x}
-          y={board.y}
-          width={board.width}
-          height={board.height}
-          rx={radius}
-          fill="oklch(from var(--accent-ink) calc(l - 0.02) calc(c - 0.01) h)"
-          stroke={
-            board.isFront
-              ? `url(#${litEdgeId})`
-              : "oklch(from var(--accent-electric) l c h / 0.35)"
-          }
-          strokeWidth={1}
-        />
+          transform={`translate(${board.x}, ${board.y})`}
+          opacity={0.6 + board.depth * 0.4}
+        >
+          <rect
+            width={board.width}
+            height={board.height}
+            rx={radius}
+            fill="var(--ground)"
+          />
+          <rect
+            width={board.width}
+            height={board.height}
+            rx={radius}
+            fill={`url(#${inkId})`}
+          />
+          <rect
+            width={board.width}
+            height={board.height}
+            rx={radius}
+            fill="none"
+            stroke={`url(#${litEdgeId})`}
+            strokeWidth={1}
+          />
+        </g>
       ))}
 
       {/* the front board's content, inside its padding */}
@@ -222,13 +237,11 @@ export function AutomationRulesBoard({
             const { icon, separator, text, chevron } = row(lines.length, h);
             return (
               <g key={i} transform={`translate(0, ${list.starts[i]})`}>
-                {/* the row: a dark card with the gear's faint edge */}
-                <rect
+                {/* the row: a recessed panel, like act's and visualize's boxes */}
+                <RecessedPanel
                   width={content.width}
                   height={h}
-                  rx={radius}
-                  fill="oklch(from var(--accent) 0.2 0.07 h / 0.5)" // knob
-                  stroke="oklch(from var(--accent-electric) l c h / 0.35)"
+                  radius={radius}
                   strokeWidth={0.75}
                 />
                 {/* icon */}

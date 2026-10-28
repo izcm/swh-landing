@@ -92,31 +92,3 @@ export function isoCubePoints(
     floorBottom: down(roofBottom),
   };
 }
-
-// a flat panel standing on its left edge, its top edge sloping down at `angle`.
-// thickness = how tall its vertical edges are; the right side sits `depth`
-// lower, so the whole panel is thickness + depth tall. corners measured from
-// its top-left
-export function panelPoints({
-  size,
-  thickness,
-  angle,
-}: {
-  size: number;
-  thickness: number;
-  angle: number;
-}) {
-  // tan(angle) = depth / size -> depth = tan(angle) * size
-  const depth = Math.tan(angle) * size;
-
-  return {
-    // how much lower the right side is than the left. one number for the whole panel
-    depth,
-    corners: {
-      topLeft: { x: 0, y: 0 } as Point,
-      topRight: { x: size, y: depth } as Point,
-      bottomRight: { x: size, y: thickness + depth } as Point,
-      bottomLeft: { x: 0, y: thickness } as Point,
-    },
-  };
-}

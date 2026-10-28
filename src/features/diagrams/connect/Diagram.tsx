@@ -95,9 +95,9 @@ export function ConnectDiagram() {
         x={centerpiece.x}
         y={centerpiece.y}
         {...centerpiece.layout}
-        angles={centerpiece.angles}
-        cubeStrokeWeight={0.4} // knob
-        innerCubeStrokeWeight={0.4} // knob
+        angle={centerpiece.angles.angleA}
+        cubeStrokeWeight={0.6} // knob
+        innerCubeStrokeWeight={0.5} // knob
       />
 
       {/* under the centerpiece: two arrows spinning round a circle */}

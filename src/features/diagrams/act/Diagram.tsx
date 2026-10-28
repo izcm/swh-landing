@@ -8,7 +8,6 @@ import {
   deg,
   LitPane,
   paddedBox,
-  // platformCardLayout,
 } from "@/lib/svg";
 import { MenuBoard, type MenuBoardRow } from "../shared/MenuBoard";
 import { MenuBoardHeader } from "../shared/MenuBoardHeader";

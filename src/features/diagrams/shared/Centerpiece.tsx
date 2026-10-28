@@ -28,7 +28,7 @@ export function Centerpiece({
   innerCube,
   innerCubePos,
   floatLift,
-  angles,
+  angle,
   cubeStrokeWeight,
   innerCubeStrokeWeight,
 }: {
@@ -38,7 +38,7 @@ export function Centerpiece({
   innerCube: IsoMetrics;
   innerCubePos: Point;
   floatLift: number; // how far the small cube floats above the floor
-  angles: { angleA: number; angleB: number };
+  angle: number;
   cubeStrokeWeight: number; // the big cube's edges, in viewBox units at any cube size
   innerCubeStrokeWeight: number; // the small cube's edges, same
 }) {
@@ -52,23 +52,9 @@ export function Centerpiece({
   const bigCube = {
     size,
     thickness,
-    showMiddleEdge: true,
-
-    // the walls lit from the middle. no roof or floor fill
-    faces: {
-      roof: "none",
-      left: `url(#${wallLightId})`,
-      right: `url(#${wallLightId})`,
-      floor: "none",
-    },
-    showFloor: true,
-    // electric edges. faint ones at the back, like the gear
-    // stroke: "var(-accent-electric)",
-    stroke: whiterAccent,
-    floorTopStroke: faintEdge,
-    strokeWeight: cubeStrokeWeight,
+    angle,
+    strokeWidth: cubeStrokeWeight,
     radius: 0,
-    ...angles,
   };
 
   return (
@@ -97,7 +83,11 @@ export function Centerpiece({
       </defs>
 
       {/* big cube, under half: floor-top edges + floor */}
-      <ISOCube {...bigCube} part="under" showFloorTopEdges />
+      <ISOCube
+        {...bigCube}
+        // faint edges at the back, like the gear
+        strokes={{ back: faintEdge, floorTop: faintEdge }}
+      />
 
       {/* the small cube's light on the floor, under it. iso-flattened ellipse */}
       <ellipse
@@ -118,21 +108,39 @@ export function Centerpiece({
           y={innerCubePos.y - floatLift}
           size={innerCube.size}
           thickness={innerCube.thickness}
-          faces={{
+          angle={angle}
+          fills={{
             roof: innerFill,
-            floor: "none",
             left: "oklch(from var(--accent) calc(l - 0.2) c h / 0.6)", // knob: - 0.25
             right: "oklch(from var(--accent) calc(l - 0.1) c h / 0.6)", // knob: - 0.1
           }}
-          showFloor
-          stroke={whiterAccent}
-          strokeWeight={innerCubeStrokeWeight}
-          {...angles}
+          strokes={{
+            roof: whiterAccent,
+            left: whiterAccent,
+            right: whiterAccent,
+            middle: whiterAccent,
+            floor: whiterAccent,
+            floorTop: whiterAccent,
+          }}
+          strokeWidth={innerCubeStrokeWeight}
         />
       </g>
 
       {/* big cube, over half: walls + edges + roof, over the small cube */}
-      <ISOCube {...bigCube} part="over" />
+      <ISOCube
+        {...bigCube}
+        // the walls lit from the middle. no roof or floor fill
+        fills={{ left: `url(#${wallLightId})`, right: `url(#${wallLightId})` }}
+        // electric edges
+        // stroke: "var(-accent-electric)",
+        strokes={{
+          roof: whiterAccent,
+          left: whiterAccent,
+          right: whiterAccent,
+          middle: whiterAccent,
+          floor: whiterAccent,
+        }}
+      />
     </g>
   );
 }

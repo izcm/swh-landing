@@ -10,8 +10,8 @@ export default function Hero() {
     <section
       className={cn(
         "flex flex-1 flex-col justify-center gap-8",
-        "w-full px-6 py-8 sm:px-8",
-        "xl:mx-auto xl:w-[90vw] xl:flex-row xl:items-center",
+        "w-full px-4 py-8 sm:px-8",
+        "xl:mx-auto xl:w-[94vw] xl:flex-row xl:items-center",
         "xl:gap-10 xl:px-0 xl:py-0",
       )}
     >

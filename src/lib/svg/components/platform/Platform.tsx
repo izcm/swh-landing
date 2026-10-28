@@ -11,7 +11,7 @@ type PlatformProps = Partial<Point> &
     grid: { across: number; along: number };
   };
 
-// a platform like IsoPlatform, but each roof edge has its own length.
+// a platform where each roof edge has its own length.
 // drawn in real units (no 100-wide box, no scale)
 export function Platform({
   x = 0,
@@ -22,9 +22,10 @@ export function Platform({
   const { thickness } = shape;
   const { roof } = platformCorners(shape);
 
-  // faces / strokeWeight / glow are handled here; the rest goes to BoxBody as is
-  const { faces, strokeWeight, glow, ...boxLook } = platformStyle;
+  // the platform look
+  const { fills, strokeWidth, glow, radius } = platformStyle;
   const gradientId = useId();
+  const edge = `url(#${gradientId})`;
   const lines = gridLines(roof, grid);
 
   return (
@@ -34,15 +35,17 @@ export function Platform({
     >
       <BoxBody
         roof={roof}
-        height={thickness}
-        strokeWidth={strokeWeight}
-        fills={{
-          roof: faces.roof,
-          left: faces.left,
-          right: faces.left,
-          floor: faces.left,
+        thickness={thickness}
+        strokeWidth={strokeWidth}
+        fills={fills}
+        radius={radius}
+        strokes={{
+          roof: edge,
+          left: edge,
+          right: edge,
+          floor: edge,
+          floorTop: edge,
         }}
-        {...boxLook}
       />
 
       <defs>
@@ -61,7 +64,7 @@ export function Platform({
           x2={b.x}
           y2={b.y}
           stroke={`url(#${gradientId})`}
-          strokeWidth={strokeWeight}
+          strokeWidth={strokeWidth}
           {...platformGridStyle}
         />
       ))}

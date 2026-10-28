@@ -5,8 +5,8 @@ import {
   glyphStroke,
   InkFadeGradient,
   LitEdgeGradient,
+  parallelogramCorners,
   roundedPolygonPath,
-  panelPoints,
   toDegrees,
   type ShapeProps,
 } from "@/lib/svg";
@@ -34,10 +34,14 @@ export function StandingSurface({
   icon: Icon,
   iconStroke = "var(--accent)",
 }: Props) {
-  const {
-    depth,
-    corners: { topLeft, topRight, bottomRight, bottomLeft },
-  } = panelPoints({ size, thickness, angle });
+  const [topLeft, topRight, bottomRight, bottomLeft] = parallelogramCorners({
+    origin: { x: 0, y: 0 },
+    lengthA: size / Math.cos(angle),
+    angleA: angle,
+    lengthB: thickness,
+    angleB: deg(90),
+  });
+  const depth = topRight.y;
 
   const outline = roundedPolygonPath(
     [topLeft, topRight, bottomRight, bottomLeft],

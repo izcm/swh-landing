@@ -1,11 +1,6 @@
 import { FileSpreadsheet, Cloud, FileText, Settings } from "lucide-react";
 import type { CSSProperties } from "react";
-import {
-  IsoCubeShadow,
-  IsoPlatform,
-  isoCubeMetrics,
-  type Point,
-} from "@/lib/svg";
+import { IsoCubeShadow, Platform, isoCubeMetrics, type Point } from "@/lib/svg";
 import { StandingSurface } from "./StandingSurface";
 
 type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
@@ -101,14 +96,15 @@ export function Orbit({
 
           {/* platform + panel bob together */}
           <g className="float-bob">
-            <IsoPlatform
+            <Platform
               x={platformBoxPoints[i].x}
               y={platformBoxPoints[i].y}
-              size={platform.size}
+              lengthA={platform.a.edgeLength}
+              lengthB={platform.b.edgeLength}
+              angleA={platform.a.angle}
+              angleB={platform.b.angle}
               thickness={platform.thickness}
-              strokeWeight={0.7}
               grid={{ across: 4, along: 4 }}
-              {...angles}
             />
 
             <StandingSurface

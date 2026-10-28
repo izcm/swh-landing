@@ -21,6 +21,8 @@ export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
   const inkId = useId();
   // the extra layer on every face: a dark accent, see-through
   const layer = "oklch(from var(--accent) 0.12 0.04 h / 0.2)"; // knob
+  // every edge of the box
+  const edge = "oklch(from var(--accent-electric) l c h / 0.35)"; // knob
   // the roof's outline, for its lit edge
   const roofOutline = roundedPolygonPath(
     [roof.left, roof.top, roof.right, roof.bottom],
@@ -42,7 +44,7 @@ export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
           <g key={label} transform={`translate(0, ${itemY})`}>
             <BoxBody
               roof={roof}
-              height={box.thickness}
+              thickness={box.thickness}
               strokeWidth={1}
               // each face: its base color + one dark, see-through accent layer
               fills={{
@@ -56,9 +58,14 @@ export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
                 floor: "oklch(from var(--accent) 0.22 0.08 h)",
               }}
               radius={radius}
-              stroke="oklch(from var(--accent-electric) l c h / 0.35)"
-              showMiddleEdge // the line from roof.bottom down to floor.bottom
-              showFloor
+              strokes={{
+                roof: edge,
+                left: edge,
+                right: edge,
+                middle: edge, // the line from roof.bottom down to floor.bottom
+                floor: edge,
+                floorTop: edge,
+              }}
             />
             {/* lit edge: one outline around the roof */}
             <path

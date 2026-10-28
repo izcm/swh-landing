@@ -1,16 +1,23 @@
+import { useId } from "react";
+
 import {
   ISOCube,
-  IsoPlatform,
+  Platform,
   platformStyle,
   IsoCubeShadow,
   accentGlow,
+  deg,
+  EdgeGradient,
   glassCube,
+  glassEdgeOpacity,
   glassGlow,
   isoFloorCenter,
   isoCubeMetrics,
+  isoCubePoints,
   isoRoofCenter,
   paddedBox,
   standOn,
+  type BoxLook,
   type Point,
 } from "@/lib/svg";
 
@@ -259,8 +266,46 @@ export function SoftwareDiagram() {
   // CSS wants the path wrapped as path("...")
   const cssPath = `path("${motionPath}")`;
 
+  const glassEdgeId = useId();
+  const glassBox = isoCubePoints(cubeSize, undefined, deg(30), deg(30));
+  const glassEdge = `url(#${glassEdgeId})`;
+  const glassStrokes = {
+    roof: glassEdge,
+    left: glassEdge,
+    right: glassEdge,
+    middle: glassEdge,
+    floor: glassEdge,
+  };
+
+  const bigCubeEdgeId = useId();
+  const bigCubeBox = isoCubePoints(
+    bottomLeft.bigCube.size,
+    bottomLeft.bigCube.thickness,
+    deg(30),
+    deg(30),
+  );
+  const bigCubeEdge = `url(#${bigCubeEdgeId})`;
+
+  // was / 0.8 drawn twice; one layer at 0.96 looks the same
+  const floatingCubeEdge = "oklch(from var(--accent) 0.85 0.12 h / 0.96)";
+
   return (
     <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}>
+      <defs>
+        <EdgeGradient
+          id={glassEdgeId}
+          width={100}
+          height={glassBox.roofBottom.y + glassBox.verticalHeight}
+          opacity={glassEdgeOpacity}
+        />
+        <EdgeGradient
+          id={bigCubeEdgeId}
+          width={100}
+          height={bigCubeBox.roofBottom.y + bigCubeBox.verticalHeight}
+          opacity={platformStyle.edgeOpacity}
+        />
+      </defs>
+
       <path
         d={arcConnector}
         fill="none"
@@ -288,7 +333,11 @@ export function SoftwareDiagram() {
 
       {/* top */}
       <g transform={`translate(${top.positions.x}, ${top.positions.y})`}>
-        <CubeBase size={cubeSize} y={cube.edgeLength - cube.depth / 2} />
+        <CubeBase
+          size={cubeSize}
+          y={cube.edgeLength - cube.depth / 2}
+          strokes={glassStrokes}
+        />
 
         {/* TOP CUBE — straddles the top seam, lifts a little off the base */}
         <g
@@ -302,7 +351,13 @@ export function SoftwareDiagram() {
           }
         >
           <g style={{ filter: glassGlowFilter }}>
-            <ISOCube {...glassCube} size={cubeSize} x={half * 1.5} y={0} />
+            <ISOCube
+              {...glassCube}
+              strokes={glassStrokes}
+              size={cubeSize}
+              x={half * 1.5}
+              y={0}
+            />
           </g>
         </g>
       </g>
@@ -321,17 +376,24 @@ export function SoftwareDiagram() {
           }}
         >
           <ISOCube
-            {...platformStyle}
+            strokeWidth={platformStyle.strokeWidth}
             size={bottomLeft.bigCube.size}
             thickness={bottomLeft.bigCube.thickness}
             radius={4}
-            faces={{
+            fills={{
               roof: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
               left: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
               right: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
               floor: "oklch(from var(--accent) 0.2 0.06 h)",
             }}
-            showMiddleEdge
+            strokes={{
+              roof: bigCubeEdge,
+              left: bigCubeEdge,
+              right: bigCubeEdge,
+              middle: bigCubeEdge,
+              floor: bigCubeEdge,
+              floorTop: bigCubeEdge,
+            }}
           />
         </g>
         {/* shadow on the floor, under the floating cube. iso-flattened ellipse */}
@@ -352,14 +414,20 @@ export function SoftwareDiagram() {
               x={bottomLeft.smallCubePos.x}
               y={bottomLeft.smallCubePos.y - bottomLeft.floatLift}
               size={cube.size}
-              faces={{
+              fills={{
                 roof: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
                 left: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
                 right: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
               }}
-              // was / 0.8 drawn twice; one layer at 0.96 looks the same
-              stroke="oklch(from var(--accent) 0.85 0.12 h / 0.96)"
-              showFloorTopEdges
+              strokes={{
+                roof: floatingCubeEdge,
+                left: floatingCubeEdge,
+                right: floatingCubeEdge,
+                middle: floatingCubeEdge,
+                back: floatingCubeEdge,
+                floor: floatingCubeEdge,
+                floorTop: floatingCubeEdge,
+              }}
             />
           </g>
         </g>
@@ -391,8 +459,11 @@ export function SoftwareDiagram() {
         >
           {/* PLATFORM */}
           <g transform={`translate(0, ${bottomRight.platformY})`}>
-            <IsoPlatform
-              size={bottomRight.platform.size}
+            <Platform
+              lengthA={bottomRight.platform.a.edgeLength}
+              lengthB={bottomRight.platform.b.edgeLength}
+              angleA={bottomRight.platform.a.angle}
+              angleB={bottomRight.platform.b.angle}
               thickness={bottomRight.platform.thickness}
               grid={{ across: 4, along: 4 }}
             />
@@ -400,12 +471,24 @@ export function SoftwareDiagram() {
 
           {/* GROUP OF CUBES */}
           <g transform={`translate(${bottomRight.cubeOffsetX})`}>
-            <CubeBase size={cubeSize} y={rise} />
+            <CubeBase size={cubeSize} y={rise} strokes={glassStrokes} />
 
             {/* TOP ROW — two cubes on the top cells */}
             <g style={{ filter: glassGlowFilter }}>
-              <ISOCube {...glassCube} size={cubeSize} x={half} y={0} />
-              <ISOCube {...glassCube} size={cubeSize} x={cubeSize} y={depth} />
+              <ISOCube
+                {...glassCube}
+                strokes={glassStrokes}
+                size={cubeSize}
+                x={half}
+                y={0}
+              />
+              <ISOCube
+                {...glassCube}
+                strokes={glassStrokes}
+                size={cubeSize}
+                x={cubeSize}
+                y={depth}
+              />
             </g>
           </g>
         </g>
@@ -415,7 +498,15 @@ export function SoftwareDiagram() {
 }
 
 // the shared 2x2 base, drawn top to bottom. y = where the top cube sits
-function CubeBase({ size, y = 0 }: { size: number; y?: number }) {
+function CubeBase({
+  size,
+  y = 0,
+  strokes,
+}: {
+  size: number;
+  y?: number;
+  strokes: BoxLook["strokes"];
+}) {
   const { depth } = isoCubeMetrics(size);
   const half = size / 2;
 
@@ -423,19 +514,38 @@ function CubeBase({ size, y = 0 }: { size: number; y?: number }) {
     <g style={{ filter: accentGlow(glassGlow.blur, glassGlow.strength) }}>
       <ISOCube
         {...glassCube}
+        strokes={strokes}
         size={size}
         x={half}
         y={y}
-        faces={{
+        fills={{
           roof: "oklch(from var(--accent) 0.18 0.06 h)",
           left: "oklch(from var(--accent) 0.18 0.06 h)",
           right: "oklch(from var(--accent) 0.18 0.06 h)",
         }}
       />{" "}
       {/* hack to hide animation dot when behind cluster in top group */}
-      <ISOCube {...glassCube} size={size} x={0} y={y + depth} />
-      <ISOCube {...glassCube} size={size} x={size} y={y + depth} />
-      <ISOCube {...glassCube} size={size} x={half} y={y + depth * 2} />
+      <ISOCube
+        {...glassCube}
+        strokes={strokes}
+        size={size}
+        x={0}
+        y={y + depth}
+      />
+      <ISOCube
+        {...glassCube}
+        strokes={strokes}
+        size={size}
+        x={size}
+        y={y + depth}
+      />
+      <ISOCube
+        {...glassCube}
+        strokes={strokes}
+        size={size}
+        x={half}
+        y={y + depth * 2}
+      />
     </g>
   );
 }

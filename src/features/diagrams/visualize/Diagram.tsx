@@ -4,6 +4,7 @@ import {
   BoxBody,
   deepShades,
   deg,
+  EdgeGradient,
   LitEdgeGradient,
   paddedBox,
   parallelogramMatrix,
@@ -26,6 +27,12 @@ export function VisualizeDiagram() {
 
   // the dashboards' border: same as act's windows, bright at the top and fading down
   const paneEdgeId = useId();
+  // the dashboards' faint box edges: one gradient per dashboard, sized to it
+  const dashboardEdgeId = useId();
+  const dashboardStrokes = (i: number) => {
+    const edge = `url(#${dashboardEdgeId}-${i})`;
+    return { roof: edge, left: edge, right: edge, floor: edge, floorTop: edge };
+  };
 
   const screenRadius = 3;
 
@@ -160,9 +167,17 @@ export function VisualizeDiagram() {
         dashboards.lower.right,
       ].map((roof, i) => (
         <g key={i}>
+          <defs>
+            <EdgeGradient
+              id={`${dashboardEdgeId}-${i}`}
+              width={roof.right.x}
+              height={roof.bottom.y + dashboards.thickness}
+              opacity={[0.2, 0.35, 0.1]}
+            />
+          </defs>
           <BoxBody
             roof={roof}
-            height={dashboards.thickness}
+            thickness={dashboards.thickness}
             strokeWidth={1}
             fills={{
               //   roof: "none",
@@ -173,8 +188,7 @@ export function VisualizeDiagram() {
               //   floor: "oklch(from var(--accent) 0.22 0.08 h)",
             }}
             radius={screenRadius}
-            edgeOpacity={[0.2, 0.35, 0.1]}
-            showFloor
+            strokes={dashboardStrokes(i)}
           />
           {/* lit edge: one outline around the roof, like act's window rect */}
           <path

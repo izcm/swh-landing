@@ -50,7 +50,7 @@ export function HeroDiagram() {
         {/* middle: the centerpiece */}
         <Centerpiece
           {...centerpiece}
-          angles={heroAngles}
+          angle={heroAngles.angleA}
           cubeStrokeWeight={1} // knob
           innerCubeStrokeWeight={1.2} // knob
         />

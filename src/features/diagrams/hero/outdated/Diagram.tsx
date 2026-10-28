@@ -192,7 +192,7 @@ export function HeroDiagram() {
 
                 <Centerpiece
                   {...layout.centerpiece}
-                  angles={heroAngles}
+                  angle={heroAngles.angleA}
                   cubeStrokeWeight={0.75} // knob
                   innerCubeStrokeWeight={1} // knob
                 />

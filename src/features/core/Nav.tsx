@@ -24,7 +24,7 @@ export default function Nav({
 }) {
   return (
     <>
-      <div className="bg-warning py-1.5 text-center text-xs font-semibold tracking-widest text-ground">
+      <div className="bg-linear-to-r from-warning/25 via-warning/10 to-warning/25 ring-1 ring-inset ring-warning py-1.5 text-center text-xs font-semibold tracking-widest text-warning">
         CURRENTLY UNDER DEVELOPMENT
       </div>
 

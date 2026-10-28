@@ -42,8 +42,6 @@
   #root {
     width: 100%;
     margin: 0 auto;
-    border-inline: 1px solid;
-    border-color: var(--faint);
     min-height: 100svh;
     display: flex;
     flex-direction: column;

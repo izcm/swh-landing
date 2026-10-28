@@ -41,7 +41,7 @@ export function SectionBase({
         <h2 className="text-2xl sm:text-3xl font-medium text-fg">{title}</h2>
 
         <div className="flex flex-col justify-between">
-          <div className="flex flex-col gap-4 text-fg-tinted/90 text-sm sm:text-lg">
+          <div className="flex flex-col gap-4 text-fg-tinted/90 text-base sm:text-lg">
             {text}
           </div>
         </div>

@@ -49,6 +49,9 @@ export function Centerpiece({
 
   const wallLightId = useId();
 
+  const sideFadeId = useId();
+  const innerFadeId = useId();
+
   const bigCube = {
     size,
     thickness,
@@ -56,6 +59,29 @@ export function Centerpiece({
     strokeWidth: cubeStrokeWeight,
     radius: 0,
   };
+
+  const edgeFade = (id: string, box: IsoMetrics) => (
+    <linearGradient
+      id={id}
+      gradientUnits="userSpaceOnUse"
+      x1={0}
+      x2={0}
+      y1={box.depth}
+      y2={box.depth + box.thickness}
+    >
+      <stop offset="0%" stopColor={whiterAccent} stopOpacity={1} />
+      <stop offset="80%" stopColor="var(--accent)" stopOpacity={0.6} />{" "}
+      <stop offset="100%" stopColor={whiterAccent} stopOpacity={0.8} />{" "}
+    </linearGradient>
+  );
+
+  const edgeStrokes = (fadeId: string) => ({
+    roof: whiterAccent,
+    left: `url(#${fadeId})`,
+    right: `url(#${fadeId})`,
+    middle: whiterAccent,
+    floor: whiterAccent,
+  });
 
   return (
     // one soft halo around the whole centerpiece
@@ -76,10 +102,9 @@ export function Centerpiece({
           <stop offset="45%" stopColor={bluerAccent} stopOpacity={0.15} />
           <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
         </radialGradient>
-        <linearGradient
-          id="somethingwhocares"
-          gradientUnits="userSpaceOnUse"
-        ></linearGradient>
+        {/* stroke gradients on left and right edge of both cubes */}
+        {edgeFade(sideFadeId, cube)}
+        {edgeFade(innerFadeId, innerCube)}
       </defs>
 
       {/* big cube, under half: floor-top edges + floor */}
@@ -114,14 +139,7 @@ export function Centerpiece({
             left: "oklch(from var(--accent) calc(l - 0.2) c h / 0.6)", // knob: - 0.25
             right: "oklch(from var(--accent) calc(l - 0.1) c h / 0.6)", // knob: - 0.1
           }}
-          strokes={{
-            roof: whiterAccent,
-            left: whiterAccent,
-            right: whiterAccent,
-            middle: whiterAccent,
-            floor: whiterAccent,
-            floorTop: whiterAccent,
-          }}
+          strokes={{ ...edgeStrokes(innerFadeId), floorTop: whiterAccent }}
           strokeWidth={innerCubeStrokeWeight}
         />
       </g>
@@ -133,13 +151,7 @@ export function Centerpiece({
         fills={{ left: `url(#${wallLightId})`, right: `url(#${wallLightId})` }}
         // electric edges
         // stroke: "var(-accent-electric)",
-        strokes={{
-          roof: whiterAccent,
-          left: whiterAccent,
-          right: whiterAccent,
-          middle: whiterAccent,
-          floor: whiterAccent,
-        }}
+        strokes={edgeStrokes(sideFadeId)}
       />
     </g>
   );

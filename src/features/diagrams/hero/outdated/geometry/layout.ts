@@ -22,7 +22,7 @@ export function heroLayout({
     const cubeSize = unit * 3.6;
     const { cube, innerCube, innerCubePos, floatLift } = centerpieceLayout({
       size: cubeSize,
-      angles,
+      angle: angles.angleA,
     });
 
     return {

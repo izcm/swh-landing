@@ -1,4 +1,4 @@
-import { deg, glyphStroke, isoCubePoints, type Point } from "../../logic";
+import { deg, isoCubeMetrics, type Point } from "../../logic";
 import { BoxBody, type BoxLook } from "./BoxBody";
 
 type ISOCubeProps = Partial<Point> &
@@ -44,22 +44,23 @@ export function ISOCube({
   strokeWidth,
   radius,
 }: ISOCubeProps) {
-  const { scale, verticalHeight, roofTop, roofLeft, roofRight, roofBottom } =
-    isoCubePoints(size, thickness, angle, angle);
+  const { depth, a, b, edgeLength } = isoCubeMetrics(size, thickness, {
+    angleA: angle,
+    angleB: angle,
+  });
   const roof = {
-    left: roofLeft,
-    top: roofTop,
-    right: roofRight,
-    bottom: roofBottom,
+    left: { x: 0, y: depth },
+    top: { x: b.run, y: 0 },
+    right: { x: size, y: depth },
+    bottom: { x: a.run, y: depth * 2 },
   };
 
   return (
-    <g transform={`translate(${x}, ${y}) scale(${scale})`}>
+    <g transform={`translate(${x}, ${y})`}>
       <BoxBody
         roof={roof}
-        thickness={verticalHeight}
-        // in real units (undo the scale) so edges match ISOCube's at any size
-        strokeWidth={glyphStroke(size, strokeWidth, 100)}
+        thickness={thickness ?? edgeLength}
+        strokeWidth={strokeWidth}
         radius={radius}
         fills={fills}
         strokes={strokes}

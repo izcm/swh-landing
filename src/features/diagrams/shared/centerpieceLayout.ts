@@ -1,16 +1,15 @@
 import { isoCubeMetrics, isoFloorCenter, standOn } from "@/lib/svg";
 
-type Angles = { angleA: number; angleB: number };
-
 // the centerpiece's proportions: a big cube with a small cube standing in the
-// middle of its floor. the caller picks the big cube's size and the camera angles
+// middle of its floor. the caller picks the big cube's size and the camera angle
 export function centerpieceLayout({
   size,
-  angles,
+  angle,
 }: {
   size: number;
-  angles: Angles;
+  angle: number;
 }) {
+  const angles = { angleA: angle, angleB: angle };
   const thicknessRatio = 0.625;
   const cube = isoCubeMetrics(size, size * thicknessRatio, angles);
 

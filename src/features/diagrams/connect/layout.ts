@@ -135,8 +135,8 @@ export function connectLayout({
     const groupWidth = viewboxWidth - nodes.groupWidth - dataGrid.groupWidth;
     const translateX = nodes.groupWidth; // right after the nodes
 
-    const angles = { angleA: deg(20), angleB: deg(20) };
-    const layout = centerpieceLayout({ size: unit * 4.2, angles });
+    const angle = deg(20);
+    const layout = centerpieceLayout({ size: unit * 4.2, angle });
 
     const centerX = translateX + groupWidth * 0.55;
     const x = centerX - layout.cube.size * 0.5;
@@ -155,7 +155,7 @@ export function connectLayout({
     });
     const y = middleNodeOut.y - rise - leftWallMiddle.y;
 
-    return { groupWidth, translateX, angles, layout, x, y };
+    return { groupWidth, translateX, angle, layout, x, y };
   })();
 
   // under the centerpiece: two arrows chasing each other round a circle
@@ -164,7 +164,7 @@ export function connectLayout({
     const radius = unit; // knob
     const gap = unit * 0.5; // knob: cube's bottom → top of the circle
     // lying flat on the same floor as the cube: squashed by its roof's slope
-    const squash = Math.tan(centerpiece.angles.angleA);
+    const squash = Math.tan(centerpiece.angle);
 
     return {
       cx: centerpiece.x + cube.size / 2,
@@ -187,8 +187,8 @@ export function connectLayout({
     const pts = isoCubePoints(
       cube.size,
       cube.thickness,
-      centerpiece.angles.angleA,
-      centerpiece.angles.angleB,
+      centerpiece.angle,
+      centerpiece.angle,
     );
     const at = (p: Point) => ({
       x: centerpiece.x + p.x * pts.scale,

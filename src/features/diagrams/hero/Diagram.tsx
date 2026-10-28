@@ -5,8 +5,7 @@ import { alignCenter, deg, paddedBox } from "@/lib/svg";
 import { Centerpiece } from "@/features/diagrams/shared/Centerpiece";
 import { centerpieceLayout } from "@/features/diagrams/shared/centerpieceLayout";
 
-// the hero's camera: true isometric, both roof edges at 30°
-const heroAngles = { angleA: deg(30), angleB: deg(30) };
+const heroAngle = deg(25);
 
 // debug lines have className="svg-debug". show/hide them in diagram.css
 export function HeroDiagram() {
@@ -21,8 +20,8 @@ export function HeroDiagram() {
 
   // the centerpiece, in the middle of the content box
   const centerpiece = (() => {
-    const size = unit * 8; // knob: same size in units as the old hero's
-    const layout = centerpieceLayout({ size, angles: heroAngles });
+    const size = unit * 7; // knob: same size in units as the old hero's
+    const layout = centerpieceLayout({ size, angle: heroAngle });
 
     const { offset: x } = alignCenter(contentWidth, layout.cube.size);
     const { offset: y } = alignCenter(contentHeight, layout.cube.height);
@@ -50,8 +49,8 @@ export function HeroDiagram() {
         {/* middle: the centerpiece */}
         <Centerpiece
           {...centerpiece}
-          angle={heroAngles.angleA}
-          cubeStrokeWeight={1} // knob
+          angle={heroAngle}
+          cubeStrokeWeight={1.6} // knob
           innerCubeStrokeWeight={1.2} // knob
         />
       </g>

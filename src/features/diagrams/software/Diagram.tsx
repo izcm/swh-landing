@@ -6,14 +6,12 @@ import {
   platformStyle,
   IsoCubeShadow,
   accentGlow,
-  deg,
   EdgeGradient,
   glassCube,
   glassEdgeOpacity,
   glassGlow,
   isoFloorCenter,
   isoCubeMetrics,
-  isoCubePoints,
   isoRoofCenter,
   paddedBox,
   standOn,
@@ -267,7 +265,6 @@ export function SoftwareDiagram() {
   const cssPath = `path("${motionPath}")`;
 
   const glassEdgeId = useId();
-  const glassBox = isoCubePoints(cubeSize, undefined, deg(30), deg(30));
   const glassEdge = `url(#${glassEdgeId})`;
   const glassStrokes = {
     roof: glassEdge,
@@ -278,12 +275,6 @@ export function SoftwareDiagram() {
   };
 
   const bigCubeEdgeId = useId();
-  const bigCubeBox = isoCubePoints(
-    bottomLeft.bigCube.size,
-    bottomLeft.bigCube.thickness,
-    deg(30),
-    deg(30),
-  );
   const bigCubeEdge = `url(#${bigCubeEdgeId})`;
 
   // was / 0.8 drawn twice; one layer at 0.96 looks the same
@@ -294,14 +285,14 @@ export function SoftwareDiagram() {
       <defs>
         <EdgeGradient
           id={glassEdgeId}
-          width={100}
-          height={glassBox.roofBottom.y + glassBox.verticalHeight}
+          width={cubeSize}
+          height={cube.height}
           opacity={glassEdgeOpacity}
         />
         <EdgeGradient
           id={bigCubeEdgeId}
-          width={100}
-          height={bigCubeBox.roofBottom.y + bigCubeBox.verticalHeight}
+          width={bottomLeft.bigCube.size}
+          height={bottomLeft.bigCube.height}
           opacity={platformStyle.edgeOpacity}
         />
       </defs>

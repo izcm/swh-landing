@@ -48,7 +48,7 @@ export function DashboardContent({
     const panelWidth = bottomColumns.sizes[1];
     const panelHeight = rowSizes[1] * 0.5;
 
-    // the donut, pulled in from the box's sides like the bar chart
+    // the donut, pulled in from the box's sides
     const insetX = panelWidth * 0.1; // each side
     const boxWidth = panelWidth - insetX * 2;
     const boxHeight = unit * 2; // the ring's diameter (radius = unit, as now)
@@ -77,7 +77,7 @@ export function DashboardContent({
       />
       <g
         transform={`translate(${donut.insetX}, ${donut.boxY})`}
-        opacity={0.65} // same as the bar chart
+        opacity={0.65} // knob
       >
         <DonutWithLegend
           width={donut.boxWidth}

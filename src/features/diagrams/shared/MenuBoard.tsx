@@ -1,11 +1,5 @@
-import {
-  Box,
-  ChevronRight,
-  FileText,
-  Settings,
-  User,
-  type LucideIcon,
-} from "lucide-react";
+import type { ReactNode } from "react";
+import { ChevronRight, type LucideIcon } from "lucide-react";
 
 import {
   alignCenter,
@@ -15,55 +9,60 @@ import {
   placeItemCenter,
   RecessedPanel,
   stackWithGaps,
-  WindowDots,
   type cascadeLayout,
 } from "@/lib/svg";
 
-// one row per rule: its icon and its text, one string per line
-const rules: { icon: LucideIcon; lines: string[] }[] = [
-  { icon: FileText, lines: ["When a new invoice", "is created"] },
-  { icon: User, lines: ["Sync employee data", "across systems"] },
-  { icon: Box, lines: ["Create follow-up task"] },
-];
+// one row: its icon and its text, one string per line
+export type MenuBoardRow = { icon: LucideIcon; lines: string[] };
 
-// the automate diagram's rule board: a cascade of dark boards, the front one
-// with a header (gear icon, title, dots) and one row per rule.
+// a menu board: a cascade of dark boards, the front one with a header (drawn
+// by the caller) and one row per entry in `rows`.
 // drawn with the cascade's top-left at (0, 0)
-export function AutomationRulesBoard({
+export function MenuBoard({
   layout,
   radius,
   unit,
   paddingXUnits,
   paddingYUnits,
+  headerShare,
+  headerGapUnits,
+  rowGapUnits,
+  fontSizeUnits,
+  header: renderHeader,
+  rows,
 }: {
   layout: ReturnType<typeof cascadeLayout>;
   radius: number; // the boards' and rows' corner radius
-  unit: number; // the diagram's ruler, the padding is measured in it
+  unit: number; // the diagram's ruler, the padding and gaps are measured in it
   paddingXUnits: number; // around the content, left and right, in units
   paddingYUnits: number; // around the content, top and bottom, in units
+  headerShare: number; // the header's share of the content's height
+  headerGapUnits: number; // header → rows, in units
+  rowGapUnits: number; // between two rows, in units
+  fontSizeUnits: number; // the rows' text size, in units
+  // draws the header in its box, from (0, 0)
+  header: (box: { width: number; height: number }) => ReactNode;
+  rows: MenuBoardRow[];
 }) {
   const { front, item } = layout;
 
-  // the front board's content: the header, then the list of rules, paddingY apart
-  const contentBox = (() => {
-    const headerShare = 0.15; // knob: the header's share of the rows' height
-    return contentBoxLayout({
-      width: item.width,
-      height: item.height,
-      unit,
-      paddingXUnits,
-      paddingYUnits,
-      rowGapUnits: 0.2, // knob: header → list
-      rowShares: [headerShare, 1 - headerShare],
-    });
-  })();
-  const { content, rows } = contentBox;
+  // the front board's content: the header, then the list of rows
+  const contentBox = contentBoxLayout({
+    width: item.width,
+    height: item.height,
+    unit,
+    paddingXUnits,
+    paddingYUnits,
+    rowGapUnits: headerGapUnits,
+    rowShares: [headerShare, 1 - headerShare],
+  });
+  const { content, rows: contentRows } = contentBox;
 
-  // the list: one row per rule, stacked in the list's row with a smaller gap
+  // the list: one row per entry, stacked in the list's row with a smaller gap
   const list = (() => {
-    const height = rows.sizes[1];
-    const gap = unit * 0.24; // knob: between two rules
-    const count = rules.length;
+    const height = contentRows.sizes[1];
+    const gap = unit * rowGapUnits;
+    const count = rows.length;
     // count rows + (count - 1) gaps fill the list's height
     const itemHeight = (height - gap * (count - 1)) / count;
     const { starts } = stackWithGaps(
@@ -71,38 +70,19 @@ export function AutomationRulesBoard({
       gap,
     );
 
-    return { y: rows.starts[1], itemHeight, starts };
+    return { y: contentRows.starts[1], itemHeight, starts };
   })();
 
-  // the header row: gear icon + title on the left, dots at the right end
-  const header = (() => {
-    const height = rows.sizes[0];
-    const iconSize = height * 0.6; // knob
-    const gap = height * 0.25; // knob: icon → title
-    const fontSize = height * 0.45; // knob
-    const dotRadius = height * 0.0875; // knob
-    const dotGap = dotRadius * 2.4; // knob
-    const dotsWidth = dotRadius * 6 + dotGap * 2;
-
-    return {
-      height,
-      iconSize,
-      fontSize,
-      dotRadius,
-      dotGap,
-      icon: { x: 0, y: (height - iconSize) / 2 },
-      title: { x: iconSize + gap, y: height / 2 },
-      dotsX: content.width - dotsWidth, // flush with the content's right edge
-    };
-  })();
+  // the header row's box, the caller draws in it
+  const header = { width: content.width, height: contentRows.sizes[0] };
 
   // inside one row, left to right: the icon's box with the separator line as
-  // its right side, then the rule's lines `gap` after it. the chevron at the end
+  // its right side, then the row's lines `gap` after it. the chevron at the end
   const row = (lineCount: number, h: number) => {
     const insetX = h * 0.15; // knob: from the row's right edge to the chevron
-    const gap = h * 0.2; // knob: separator → text
+    const gap = h * 0.28; // knob: separator → text
     const iconSize = h * 0.4; // knob
-    const fontSize = h * 0.25; // knob
+    const fontSize = unit * fontSizeUnits;
 
     // the icon's box: from the row's left edge, a share of its width, full
     // height. the icon sits in its middle
@@ -119,7 +99,7 @@ export function AutomationRulesBoard({
     const [, textX] = across.starts;
     const separatorX = iconBox.width; // the box's right side
 
-    // down: the rule's lines stacked, then centered in the row
+    // down: the row's lines stacked, then centered in the row
     const lineHeights = Array.from({ length: lineCount }, () => fontSize);
     const lineGap = fontSize * 0.35; // knob
     const { starts: lineStarts } = stackWithGaps(lineHeights, lineGap);
@@ -152,11 +132,7 @@ export function AutomationRulesBoard({
           transform={`translate(${board.x}, ${board.y})`}
           opacity={0.6 + board.depth * 0.4}
         >
-          <LitPane
-            width={board.width}
-            height={board.height}
-            radius={radius}
-          />
+          <LitPane width={board.width} height={board.height} radius={radius} />
         </g>
       ))}
 
@@ -164,48 +140,14 @@ export function AutomationRulesBoard({
       <g
         transform={`translate(${front.x + content.x}, ${front.y + content.y})`}
       >
-        {/* header: gear icon, title, dots */}
-        {(() => {
-          const {
-            icon,
-            title,
-            iconSize,
-            fontSize,
-            height,
-            dotsX,
-            dotRadius,
-            dotGap,
-          } = header;
-          return (
-            <g transform={`translate(0, ${rows.starts[0]})`}>
-              <Settings
-                x={icon.x}
-                y={icon.y}
-                size={iconSize}
-                stroke="var(--accent-electric)"
-                strokeWidth={glyphStrokeLucide(iconSize, 0.9)}
-              />
-              <text
-                x={title.x}
-                y={title.y}
-                dominantBaseline="central"
-                fontSize={fontSize}
-                fontWeight={500}
-                fill="var(--accent-glow)"
-                fillOpacity={0.9}
-              >
-                Automation Rules
-              </text>
-              <g transform={`translate(${dotsX}, 0)`}>
-                <WindowDots height={height} radius={dotRadius} gap={dotGap} />
-              </g>
-            </g>
-          );
-        })()}
+        {/* header: drawn by the caller */}
+        <g transform={`translate(0, ${contentRows.starts[0]})`}>
+          {renderHeader(header)}
+        </g>
 
-        {/* the rules, one row each */}
+        {/* the rows, one per entry */}
         <g transform={`translate(0, ${list.y})`}>
-          {rules.map(({ icon: Icon, lines }, i) => {
+          {rows.map(({ icon: Icon, lines }, i) => {
             const h = list.itemHeight;
             const { icon, separator, text, chevron } = row(lines.length, h);
             return (
@@ -243,7 +185,7 @@ export function AutomationRulesBoard({
                   stroke="oklch(from var(--accent-electric) l c h / 0.35)"
                   strokeWidth={0.75}
                 />
-                {/* the rule's text, one <text> per line */}
+                {/* the row's text, one <text> per line */}
                 {lines.map((line, j) => (
                   <text
                     key={j}

@@ -1,13 +1,15 @@
 import {
-  BarChart,
   ChartGuides,
+  layoutUnit,
+  paddedBox,
   Tube,
   LineChart,
   RecessedPanel,
   stackWithGaps,
 } from "@/lib/svg";
+import { Gauge } from "../../shared/Gauge";
 
-// first row: two boxes side by side, line chart in the left one, bar chart in the right
+// first row: two boxes side by side, line chart in the left one, radial gauge in the right
 export function ChartRow({
   width,
   height,
@@ -30,41 +32,14 @@ export function ChartRow({
   const columnSizes = [columnSpace * 0.65, columnSpace * 0.35];
   const columns = stackWithGaps(columnSizes, gap);
 
-  // right box: bar chart, pulled in a little so the bars don't touch the box
-  const barChart = (() => {
-    const boxWidth = columnSizes[1];
-    const insetX = boxWidth * 0.06; // each side
-    const insetY = height * 0.12; // top and bottom
-    const chartWidth = boxWidth - insetX * 2;
-    const chartHeight = height - insetY * 2;
-
-    // bar heights (0..1)
-    const values = [0.42, 0.58, 0.47, 1, 0.66, 0.79].map((v) => v * 0.65);
-
-    return (
-      <>
-        <ChartGuides
-          x={insetX}
-          y={insetY}
-          width={chartWidth}
-          height={chartHeight}
-          count={3}
-          insetX={chartWidth * 0.04}
-          color="var(--accent)"
-        />
-        <BarChart
-          x={insetX}
-          y={insetY}
-          width={chartWidth}
-          height={chartHeight}
-          values={values}
-          color="var(--accent-deep)"
-          opacity={0.7}
-          selectedIdx={drilldown ? 3 : undefined} // the picked bar, or none without drilldown
-          barRatio={0.45}
-        />
-      </>
-    );
+  // right box: like visualize's gauge card, the gauge with its label,
+  // padded in the box's own unit
+  const gaugeCard = (() => {
+    const box = paddedBox(columnSizes[1], height, 1, 0.5, layoutUnit(height)); // knob: 1 across, 0.5 down
+    const labelShare = 0.2; // knob: the label row's share
+    // placeholder: the segments (one tick where each starts) and how full it is
+    const data = { values: [1, 1, 1, 1, 1, 1], value: 1.2 };
+    return { box, labelShare, data };
   })();
 
   // left box: line chart
@@ -102,7 +77,7 @@ export function ChartRow({
   const chartLabelsLayout = (() => {
     const inset = unit * 0.6; // from the box's top and left edges
     const width = unit * 2.5; // the title's width, the same in both boxes
-    const lineHeight = unit * 0.15;
+    const lineHeight = unit * 0.12;
     const lineHeights = [lineHeight, lineHeight]; // title, subtitle
     const lines = stackWithGaps(lineHeights, lineHeight);
 
@@ -122,20 +97,36 @@ export function ChartRow({
               y={lineStarts[0]}
               width={width}
               height={lineHeights[0]}
-              fill="var(--accent)"
-              fillOpacity={0.5}
+              fill="var(--accent-electric)"
+              fillOpacity={0.6}
             />
             <Tube
               y={lineStarts[1]}
               width={width * 0.5}
               height={lineHeights[1]}
-              fill="var(--accent-faint)"
+              fill="var(--accent)"
+              fillOpacity={0.2}
             />
           </g>
         );
       })()}
     </>,
-    <>{barChart}</>,
+    <>
+      {(() => {
+        const { box, labelShare, data } = gaugeCard;
+        return (
+          <g transform={`translate(${box.contentX}, ${box.contentY})`}>
+            <Gauge
+              width={box.contentWidth}
+              height={box.contentHeight}
+              labelShare={labelShare}
+              values={data.values}
+              value={data.value}
+            />
+          </g>
+        );
+      })()}
+    </>,
   ];
 
   return (

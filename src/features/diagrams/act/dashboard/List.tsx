@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import {
   deepShades,
@@ -18,8 +18,8 @@ function labelLength(i: number) {
   return 0.25 + zeroToOne * 0.35;
 }
 
-// list rows filling a width × height box. each row: a dot, a label with a
-// subtitle under it, and a small square button with an arrow on the right
+// list rows filling a width × height box. each row: a small circle marker, a
+// label with a subtitle under it, and a chevron on the right
 export function List({
   width,
   height,
@@ -45,34 +45,31 @@ export function List({
     rowGap,
   );
 
-  // left to middle: the dot, then the label with the subtitle under it,
+  // left to middle: the marker, then the label with the subtitle under it,
   // both centered in the row's height
   const item = (() => {
     const dotRadius = rowHeight * 0.1875;
-    const lineHeight = dotRadius * 0.75;
+    const lineHeight = dotRadius * 0.55; // knob
 
     return listItemLayout({
       height: rowHeight,
       leadingInset: unit * 0.45,
       leadingRadius: dotRadius,
-      gap: rowHeight * 0.375,
+      gap: rowHeight * 0.28,
       lineHeights: [lineHeight, lineHeight], // label, subtitle
       lineGap: dotRadius * 0.8,
     });
   })();
 
-  // right: a square button, as far in from the right edge as the dot is from the left
-  const button = (() => {
-    const size = rowHeight * 0.875;
-    const x = width - size * 1.2;
-    const y = (rowHeight - size) / 2;
-    const iconSize = size * 0.6;
-
-    return { size, x, y, radius: size * 0.15, iconSize };
+  // right: a chevron, as far in from the right edge as the marker is from the left
+  const chevron = (() => {
+    const size = rowHeight * 0.4; // knob
+    const x = width - unit * 0.45 - size; // unit * 0.45 = the marker's leadingInset
+    return { x, y: (rowHeight - size) / 2, size };
   })();
 
-  // the text's width: from where it starts to a little before the button
-  const textWidth = button.x - rowHeight * 0.25 - item.text.x;
+  // the text's width: from where it starts to a little before the chevron
+  const textWidth = chevron.x - rowHeight * 0.25 - item.text.x;
 
   const dotColors = deepShades(rowCount);
 
@@ -98,10 +95,11 @@ export function List({
         />
       )}
 
+      {/* marker: a small circle in the leading circle's box */}
       <circle
         cx={item.leading.cx}
         cy={item.leading.cy}
-        r={item.leading.radius}
+        r={item.leading.radius * 0.7} // knob: smaller than the leading circle
         fill={dotColors[i]}
         fillOpacity={0.8}
       />
@@ -135,30 +133,15 @@ export function List({
         );
       })()}
 
-      {/* button: slightly rounded square with an arrow */}
-      {(() => {
-        const { x, y, size, radius: r, iconSize } = button;
-        return (
-          <>
-            <rect
-              x={x}
-              y={y}
-              width={size}
-              height={size}
-              rx={r}
-              fill="oklch(from var(--accent) 0.4 0.15 h / 0.15)"
-            />
-            <ArrowRight
-              x={x + (size - iconSize) / 2}
-              y={y + (size - iconSize) / 2}
-              size={iconSize}
-              stroke="var(--accent-electric)"
-              strokeOpacity={0.8}
-              strokeWidth={glyphStrokeLucide(iconSize, 0.875)}
-            />
-          </>
-        );
-      })()}
+      {/* chevron at the end */}
+      <ChevronRight
+        x={chevron.x}
+        y={chevron.y}
+        size={chevron.size}
+        stroke="var(--accent-electric)"
+        strokeOpacity={0.6}
+        strokeWidth={glyphStrokeLucide(chevron.size, 1.2)}
+      />
     </g>
   ));
 }

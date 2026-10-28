@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { Eye, Plus, User, Zap } from "lucide-react";
 
 import {
   alignCenter,
@@ -7,10 +8,18 @@ import {
   deg,
   LitPane,
   paddedBox,
-  platformCardLayout,
+  // platformCardLayout,
 } from "@/lib/svg";
+import { MenuBoard, type MenuBoardRow } from "../shared/MenuBoard";
+import { MenuBoardHeader } from "../shared/MenuBoardHeader";
 import { DashboardContent } from "./dashboard/DashboardContent";
-import { FloatingMenu } from "./floating-menu/FloatingMenu";
+
+// the menu board's rows: one per action
+const actions: MenuBoardRow[] = [
+  { icon: Plus, lines: ["Create task"] },
+  { icon: User, lines: ["Assign to"] },
+  { icon: Eye, lines: ["Track item"] },
+];
 
 export function ActDiagram() {
   // 540 units at our 672px ≈ 1.24px per unit, close to Connect's 784px / 650 units
@@ -81,27 +90,47 @@ export function ActDiagram() {
     return { stackLayout, windows, translateY, frontContent };
   })();
 
-  // right: the platform with the card, placed by its real bounding box
-  const floatingMenu = (() => {
-    const angleA = deg(22); // the platform's side edge
-    const layout = platformCardLayout({
-      size: viewboxWidth * 0.25,
-      angleA,
-      // same tilt as the windows: the platform's bottom→right edge runs parallel to them
-      angleB: -dashboard.stackLayout.angle,
-      thickness: 6,
-      cardSize: { width: 1, height: 1.3 },
-      spanBToARatio: 0.8,
-      cardAngle: angleA - deg(8), // a bit flatter than the A edge, so the card faces us more
-      cardAt: { alongA: 0.5 + 0.15, alongB: 0.5 + 0.15 }, // one gridline further in the B direction
+  // right: the menu board, where the floating menu was
+  const menuBoard = (() => {
+    const groupWidth = viewboxWidth * 0.31; // knob
+    const boardLayout = cascadeLayout({
+      groupWidth,
+      heightToWidthRatio: 0.96, // knob
+      // tilted the other way from the windows, facing them
+      angle: -dashboard.stackLayout.angle,
+      count: 2, // knob
+      gapX: unit * 0.2, // knob: the windows' steps
+      gapY: unit * 0.2, // knob
+      side: "right",
     });
 
-    const translateX = viewboxWidth - layout.groupWidth; // flush with the right edge
-    const { offset: centerY } = alignCenter(viewboxHeight, layout.groupHeight);
-    const { offset: endY } = alignEnd(viewboxHeight, layout.groupHeight);
+    const translateX = viewboxWidth - groupWidth; // flush with the right edge
+    const { offset: centerY } = alignCenter(
+      viewboxHeight,
+      boardLayout.stackHeight,
+    );
+    const { offset: endY } = alignEnd(viewboxHeight, boardLayout.stackHeight);
     const translateY = (centerY + endY) / 2; // halfway between centered and at the bottom
 
-    return { layout, translateX, translateY };
+    // automate's values, so the two boards match
+    const paddingXUnits = 0.5; // knob
+    const paddingYUnits = 0.25; // knob
+    const headerShare = 0.15; // knob: the header's share of the board's content
+    const headerGapUnits = 0.2; // knob: header → rows
+    const rowGapUnits = 0.24; // knob: between two rows
+    const fontSizeUnits = 0.36; // knob: the rows' text size
+
+    return {
+      boardLayout,
+      translateX,
+      translateY,
+      paddingXUnits,
+      paddingYUnits,
+      headerShare,
+      headerGapUnits,
+      rowGapUnits,
+      fontSizeUnits,
+    };
   })();
 
   return (
@@ -142,11 +171,7 @@ export function ActDiagram() {
             opacity={0.6 + win.depth * 0.4}
           >
             {/* the lit pane, then a faint highlight along the top edge */}
-            <LitPane
-              width={win.width}
-              height={win.height}
-              radius={radius}
-            />
+            <LitPane width={win.width} height={win.height} radius={radius} />
             <line
               x1={radius}
               y1={1}
@@ -161,15 +186,39 @@ export function ActDiagram() {
         ))}
       </g>
 
-      <g
-        transform={`translate(${floatingMenu.translateX}, ${floatingMenu.translateY})`}
-      >
-        <FloatingMenu
-          layout={floatingMenu.layout}
-          radius={radius}
-          rowGap={unit * 0.25}
-        />
-      </g>
+      {/* the menu board, where the floating menu was */}
+      {(() => {
+        const {
+          translateX,
+          translateY,
+          boardLayout,
+          paddingXUnits,
+          paddingYUnits,
+          headerShare,
+          headerGapUnits,
+          rowGapUnits,
+          fontSizeUnits,
+        } = menuBoard;
+        return (
+          <g transform={`translate(${translateX}, ${translateY})`}>
+            <MenuBoard
+              layout={boardLayout}
+              radius={radius}
+              unit={unit}
+              paddingXUnits={paddingXUnits}
+              paddingYUnits={paddingYUnits}
+              headerShare={headerShare}
+              headerGapUnits={headerGapUnits}
+              rowGapUnits={rowGapUnits}
+              fontSizeUnits={fontSizeUnits}
+              header={({ height }) => (
+                <MenuBoardHeader height={height} icon={Zap} title="Actions" />
+              )}
+              rows={actions}
+            />
+          </g>
+        );
+      })()}
     </svg>
   );
 }

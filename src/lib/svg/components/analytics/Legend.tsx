@@ -1,25 +1,24 @@
 import type { ReactNode } from "react";
 
-import type { legendLayout } from "../../layouts";
-
 // one legend row: a dot in `color`, then `label`
 export type LegendItem = {
   color: string; // the dot (and, in a chart, the thing it names)
   label?: ReactNode; // drawn after the dot
 };
 
-// one row per item: a dot in the item's color, then its label, drawn with
-// its top-left at the label slot's top-left (the slot is rowHeight tall).
-// drawn with the legend's top-left at (0, 0)
+// one row per item: a dot in the item's color, then its label, drawn from
+// labelX at the row's top. drawn with the legend's top-left at (0, 0)
 export function Legend({
-  layout,
+  rowStarts,
+  dot,
+  labelX,
   items,
 }: {
-  layout: ReturnType<typeof legendLayout>;
+  rowStarts: number[]; // each row's top
+  dot: { cx: number; cy: number; radius: number }; // inside a row
+  labelX: number; // where each label starts, inside a row
   items: LegendItem[];
 }) {
-  const { rowStarts, dot, labelX } = layout;
-
   return (
     <>
       {rowStarts.map((rowY, i) => (

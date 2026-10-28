@@ -4,16 +4,14 @@ import {
   layoutUnit,
   listItemLayout,
   paddedBox,
-  placeItemCenter,
   stackWithGaps,
   Tube,
   WindowDots,
 } from "@/lib/svg";
+import { Gauge } from "../../shared/Gauge";
 import type { ChartData } from "../data";
 import { CardBackground } from "./CardBackground";
 import { TitleTube } from "./header-elements";
-import { Label } from "./Label";
-import { RadialGauge } from "@/lib/svg/components/analytics/RadialGauge";
 
 // what's on the lower-right dashboard: a header, then one card filling the
 // rest. fills exactly the width × height it's given (no padding around the
@@ -52,8 +50,7 @@ export function BottomRight({
   const { content, rows } = contentBox;
 
   // the card: padded 1 card unit left and right and half a unit top and bottom,
-  // split into two columns one padding apart. the left column is split into
-  // the label row and the gauge row
+  // split into two columns one padding apart
   const card = (() => {
     const width = content.width;
     const height = rows.sizes[1];
@@ -75,18 +72,7 @@ export function BottomRight({
       }));
     })();
 
-    // the left column: the label row, then the gauge row
-    const left = contentBoxLayout({
-      width: columns[0].width,
-      height: columns[0].height,
-      unit,
-      paddingXUnits: 0,
-      paddingYUnits: 0,
-      rowGapUnits: 0,
-      rowShares: [0.2, 0.8], // the label, the gauge
-    });
-
-    return { width, height, columns, left };
+    return { width, height, columns };
   })();
 
   // the right column: six rows, each a dot and one line, as tall as the left
@@ -138,29 +124,17 @@ export function BottomRight({
               strokeWidth={strokeWidth * 0.5}
             />
 
-            {/* the left column: the label row, then the gauge row */}
+            {/* the left column: the gauge with its label */}
             <g
-              transform={`translate(${card.columns[0].x + card.left.content.x}, ${card.columns[0].y + card.left.content.y})`}
+              transform={`translate(${card.columns[0].x}, ${card.columns[0].y})`}
             >
-              {[
-                <Label
-                  width={card.left.content.width}
-                  height={card.left.rows.sizes[0]}
-                />,
-                <Gauge
-                  width={card.left.content.width}
-                  height={card.left.rows.sizes[1]}
-                  values={chartData.gauge.values}
-                  value={chartData.gauge.value}
-                />,
-              ].map((rowContent, i) => (
-                <g
-                  key={i}
-                  transform={`translate(0, ${card.left.rows.starts[i]})`}
-                >
-                  {rowContent}
-                </g>
-              ))}
+              <Gauge
+                width={card.columns[0].width}
+                height={card.columns[0].height}
+                labelShare={0.2} // knob
+                values={chartData.gauge.values}
+                value={chartData.gauge.value}
+              />
             </g>
 
             {/* the right column: six rows, each a dot and one line */}
@@ -207,93 +181,6 @@ export function BottomRight({
         ))}
       </g>
     </g>
-  );
-}
-
-// the gauge: as big as fits in the row, centered in it, with a tube in its
-// open bottom. drawn from (0, 0)
-function Gauge({
-  width,
-  height,
-  values,
-  value,
-}: {
-  width: number; // the gauge row's width
-  height: number; // the gauge row's height
-  values: number[]; // the segments (one tick where each starts)
-  value: number; // how full it is, out of their total
-}) {
-  const gauge = (() => {
-    const radius = Math.min(width, height) * 0.44;
-    const thickness = radius * 0.13;
-    const { offsetX: translateX, offsetY: translateY } = placeItemCenter({
-      parentWidth: width,
-      parentHeight: height,
-      itemWidth: radius * 2,
-      itemHeight: radius * 2,
-    });
-
-    const total = values.reduce((sum, size) => sum + size, 0);
-
-    // the tube: half as wide as the gauge, centered under it, filled up to value
-    const tube = {
-      x: radius * 0.5,
-      y: radius * 1.8,
-      width: radius,
-      height: thickness * 0.5,
-      level: value / total,
-    };
-
-    const emptyOpacity = 0.25; // the gauge's and the tube's empty part
-
-    return { radius, thickness, translateX, translateY, tube, emptyOpacity };
-  })();
-
-  const { radius, thickness, translateX, translateY, tube, emptyOpacity } =
-    gauge;
-
-  return (
-    <>
-      <defs>
-        {/* the gauge's: in the gauge's own coordinates (RadialGauge draws inside its translate(x, y)) */}
-        <linearGradient
-          id="gaugeGradient"
-          gradientUnits="userSpaceOnUse"
-          x1={0}
-          x2={radius * 2}
-        >
-          <stop offset="0%" stopColor="var(--accent)" />
-          <stop offset="100%" stopColor="var(--accent-deep)" />
-        </linearGradient>
-        {/* the tube's: the same, moved over by translateX, because the tube is drawn in the row's coordinates */}
-        <linearGradient
-          id="gaugeTubeGradient"
-          gradientUnits="userSpaceOnUse"
-          x1={translateX}
-          x2={translateX + radius * 2}
-        >
-          <stop offset="0%" stopColor="var(--accent)" />
-          <stop offset="100%" stopColor="var(--accent-deep)" />
-        </linearGradient>
-      </defs>
-      <RadialGauge
-        x={translateX}
-        y={translateY}
-        radius={radius}
-        thickness={thickness}
-        values={values}
-        value={value}
-        fill="url(#gaugeGradient)"
-        segmentOpacity={emptyOpacity}
-      />
-      <Tube
-        {...tube}
-        x={translateX + tube.x}
-        y={translateY + tube.y}
-        fill="url(#gaugeTubeGradient)"
-        trackOpacity={emptyOpacity}
-      />
-    </>
   );
 }
 

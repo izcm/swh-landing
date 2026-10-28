@@ -1,3 +1,5 @@
+import { Box, FileText, User } from "lucide-react";
+
 import {
   alignCenter,
   cascadeLayout,
@@ -7,8 +9,16 @@ import {
   gearLayout,
   paddedBox,
 } from "@/lib/svg";
+import { MenuBoard, type MenuBoardRow } from "../shared/MenuBoard";
 import { ActionCards } from "./ActionCards";
-import { AutomationRulesBoard } from "./AutomationRulesBoard";
+import { AutomationRulesHeader } from "./AutomationRulesHeader";
+
+// one row per rule: its icon and its text, one string per line
+const rules: MenuBoardRow[] = [
+  { icon: FileText, lines: ["When a new invoice", "is created"] },
+  { icon: User, lines: ["Sync employee data", "across systems"] },
+  { icon: Box, lines: ["Create follow-up task"] },
+];
 
 export function AutomateDiagram() {
   const viewboxWidth = 540;
@@ -85,6 +95,10 @@ export function AutomateDiagram() {
     // the front board's padding, in the diagram's unit (about 28, so keep it small)
     const paddingXUnits = 0.5; // knob
     const paddingYUnits = 0.25; // knob
+    const headerShare = 0.15; // knob: the header's share of the board's content
+    const headerGapUnits = 0.2; // knob: header → rules
+    const rowGapUnits = 0.24; // knob: between two rules
+    const fontSizeUnits = 0.32; // knob: the rules' text size
 
     return {
       groupWidth,
@@ -95,6 +109,10 @@ export function AutomateDiagram() {
       radius,
       paddingXUnits,
       paddingYUnits,
+      headerShare,
+      headerGapUnits,
+      rowGapUnits,
+      fontSizeUnits,
     };
   })();
 
@@ -162,12 +180,20 @@ export function AutomateDiagram() {
       <g
         transform={`translate(${ruleBoard.translateX}, ${ruleBoard.translateY})`}
       >
-        <AutomationRulesBoard
+        <MenuBoard
           layout={ruleBoard.boardLayout}
           radius={ruleBoard.radius}
           unit={unit}
           paddingXUnits={ruleBoard.paddingXUnits}
           paddingYUnits={ruleBoard.paddingYUnits}
+          headerShare={ruleBoard.headerShare}
+          headerGapUnits={ruleBoard.headerGapUnits}
+          rowGapUnits={ruleBoard.rowGapUnits}
+          fontSizeUnits={ruleBoard.fontSizeUnits}
+          header={({ width, height }) => (
+            <AutomationRulesHeader width={width} height={height} />
+          )}
+          rows={rules}
         />
         {/* debug: the rule board's box */}
         <rect

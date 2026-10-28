@@ -97,6 +97,7 @@ export function About() {
         {abouts.map((about, i) => (
           <SectionBase
             key={about.eyebrow}
+            id={`about-${about.eyebrow.toLowerCase().replaceAll(" ", "-")}`}
             index={i}
             maxIndex={abouts.length}
             eyebrow={about.eyebrow}

@@ -6,12 +6,12 @@ import { deepShades, Tube } from "./lib/svg";
 function App() {
   const [tab, setTab] = useState<"story" | "about" | "tmp">(
     // "tmp",
-    location.hash === "#about" ? "about" : "story",
+    location.hash.startsWith("#about") ? "about" : "story",
   );
 
   useEffect(() => {
     const onHashChange = () =>
-      setTab(location.hash === "#about" ? "about" : "story");
+      setTab(location.hash.startsWith("#about") ? "about" : "story");
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);

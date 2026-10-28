@@ -75,7 +75,7 @@ function StorySection({
 }) {
   return (
     <SectionBase
-      id={`story-${index}`}
+      id={`story-${section.eyebrow.toLowerCase().replaceAll(" ", "-")}`}
       index={index}
       maxIndex={sections.length}
       eyebrow={section.eyebrow}

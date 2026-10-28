@@ -91,7 +91,12 @@ export function ISOCube({
 
   const { scale, verticalHeight, roofTop, roofLeft, roofRight, roofBottom } =
     isoCubePoints(size, thickness, angleA, angleB);
-  const roof = { left: roofLeft, top: roofTop, right: roofRight, bottom: roofBottom };
+  const roof = {
+    left: roofLeft,
+    top: roofTop,
+    right: roofRight,
+    bottom: roofBottom,
+  };
 
   // in real units (undo the scale) so edges match ISOCube's at any size
   const strokeWidth = glyphStroke(size, strokeWeight, 100);

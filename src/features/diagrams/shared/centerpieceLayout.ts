@@ -1,9 +1,4 @@
-import {
-  isoCubeMetrics,
-  isoFloorCenter,
-  platformCorners,
-  standOn,
-} from "@/lib/svg";
+import { isoCubeMetrics, isoFloorCenter, standOn } from "@/lib/svg";
 
 type Angles = { angleA: number; angleB: number };
 
@@ -16,14 +11,15 @@ export function centerpieceLayout({
   size: number;
   angles: Angles;
 }) {
-  const cube = isoCubeMetrics(size, size * 0.577, angles);
+  const thicknessRatio = 0.625;
+  const cube = isoCubeMetrics(size, size * thicknessRatio, angles);
 
   // small cube standing in the middle of the big cube's floor,
   // same as SoftwareDiagram's bottom-left group
   const innerCubeSize = cube.size / 2;
   const innerCube = isoCubeMetrics(
     innerCubeSize,
-    innerCubeSize * 0.577,
+    innerCubeSize * thicknessRatio,
     angles,
   );
   const innerCubePos = standOn(isoFloorCenter(cube), innerCube);

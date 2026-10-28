@@ -9,59 +9,66 @@ export default function Hero() {
   return (
     <section
       className={cn(
-        // layout
-        "flex flex-1 flex-col items-center justify-center gap-3",
-        // spacing + text
-        "px-2 text-center",
-        // 2xl: side by side
-        "2xl:flex-row 2xl:justify-start 2xl:gap-3",
-        "2xl:mt-0 2xl:mx-auto 2xl:w-[90vw]",
-        "2xl:text-start",
+        "flex flex-1 flex-col justify-center gap-8",
+        "w-full px-6 py-8 sm:px-8",
+        "xl:mx-auto xl:w-[90vw] xl:flex-row xl:items-center",
+        "xl:gap-10 xl:px-0 xl:py-0",
       )}
     >
       <div
         className={cn(
-          "flex flex-col items-center gap-3 mt-6 mb-3 2xl:my-0",
-          "2xl:items-start 2xl:gap-2",
+          "flex flex-col items-start gap-5 text-start",
+          "w-full max-w-4xl",
+          "xl:mx-0 xl:basis-2/5 xl:shrink-0 xl:gap-6",
         )}
       >
         <h1
           className={cn(
-            "max-w-xl",
-            "text-3xl font-normal leading-tight text-fg",
-            "md:text-4xl",
-            "2xl:min-w-md 2xl:text-5xl",
+            "text-4xl font-normal leading-tight text-fg",
+            "sm:text-5xl",
           )}
         >
-          Systems that work{" "}
-          <span className="text-accent font-semibold">together.</span>
+          SWH <span className="font-semibold text-accent">Studio.</span>
         </h1>
 
-        <p
+        <div
           className={cn(
-            "font-light text-fg-tinted/80",
-            "md:text-lg",
-            "2xl:text-xl",
+            "flex flex-col gap-4",
+            "text-base leading-relaxed font-light text-fg-tinted/80",
+            "sm:text-lg",
           )}
         >
-          Discover hidden value through{" "}
-          <span className="2xl:block">new connections.</span>
-        </p>
+          <p>
+            Welcome to SWH Studio, an independent software studio focused on
+            helping Norwegian businesses make better use of technology.
+          </p>
+
+          <p>
+            From connecting existing systems to building custom tools and
+            exploring practical applications of AI, the goal is simple: make
+            technology work for your business, not the other way around.
+          </p>
+        </div>
 
         <IconLink
-          href="#story-0"
+          href="#story-connect"
           icon={<ArrowRight size={16} />}
           className={cn(
-            "btn-menu gap-3",
+            "btn-menu gap-3 px-0",
             "text-lg font-light tracking-wide text-accent",
-            "2xl:mt-3 2xl:px-0",
+            "xl:mt-3",
           )}
         >
-          See how it works
+          See how we work
         </IconLink>
       </div>
 
-      <div className="w-full max-w-200 2xl:max-w-210 mx-auto">
+      <div
+        className={cn(
+          "w-full max-w-2xl mx-auto",
+          "xl:min-w-0 xl:max-w-4xl xl:flex-1",
+        )}
+      >
         <HeroDiagram />
       </div>
     </section>

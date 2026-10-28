@@ -8,7 +8,6 @@ import {
   parallelogramMatrix,
   platformCorners,
   pointOnLine,
-  roundCorner,
   spaceEvenly,
   type Point,
 } from "@/lib/svg";
@@ -101,6 +100,7 @@ export function connectLayout({
   const dataGrid = (() => {
     const groupWidth = viewboxWidth * 0.36;
 
+    // the three windows that are stacked behind eachother to the right side of diagram
     const stackLayout = cascadeLayout({
       groupWidth,
       heightToWidthRatio: 0.85,

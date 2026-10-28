@@ -1,11 +1,15 @@
 import {
   alignCenter,
   layoutUnit,
+  paddedBox,
   RecessedPanel,
   stackWithGaps,
 } from "@/lib/svg";
+import {
+  ScandinaviaMap,
+  scandinaviaMapBounds,
+} from "../../shared/ScandinaviaMap";
 import { ChartRow } from "./ChartRow";
-import { DonutWithLegend } from "./DonutWithLegend";
 import { List } from "./List";
 
 // what's inside the dashboard window: charts on top, a list below.
@@ -34,7 +38,7 @@ export function DashboardContent({
   const columnGap = unit * 0.75;
 
   // second row: two columns like the chart row, the list on the left and
-  // the donut on the right, shared 65 / 35 after the gap
+  // the map on the right, shared 65 / 35 after the gap
   const bottomColumns = (() => {
     const space = width - columnGap;
     const sizes = [space * 0.65, space * 0.35];
@@ -42,19 +46,22 @@ export function DashboardContent({
     return { sizes, starts };
   })();
 
-  // right column: a box like the chart boxes, the donut and its legend on it,
-  // centered on the box's height
-  const donut = (() => {
+  // right column: a box like the chart boxes, the whole row tall, with the
+  // map in it: as tall as the box minus 1 unit top and bottom, centered across
+  // the box
+  const scandinaviaMap = (() => {
     const panelWidth = bottomColumns.sizes[1];
-    const panelHeight = rowSizes[1] * 0.5;
+    const panelHeight = rowSizes[1];
+    const box = paddedBox(panelWidth, panelHeight, 1, 1, unit); // knob: 1 unit
 
-    // the donut, pulled in from the box's sides
-    const insetX = panelWidth * 0.1; // each side
-    const boxWidth = panelWidth - insetX * 2;
-    const boxHeight = unit * 2; // the ring's diameter (radius = unit, as now)
-    const { offset: boxY } = alignCenter(panelHeight, boxHeight);
+    const height = box.contentHeight;
+    const width =
+      (height * scandinaviaMapBounds.width) / scandinaviaMapBounds.height;
 
-    return { panelWidth, panelHeight, insetX, boxWidth, boxHeight, boxY };
+    const { offset: translateX } = alignCenter(panelWidth, width);
+    const translateY = box.contentY;
+
+    return { panelWidth, panelHeight, height, translateX, translateY };
   })();
 
   // what goes in each column of the second row, left to right
@@ -68,24 +75,37 @@ export function DashboardContent({
       rowGap={rowGap * 0.5}
       selectedIdx={drilldown ? 1 : undefined} // the picked row, or none without drilldown
     />,
-    <>
-      <RecessedPanel
-        width={donut.panelWidth}
-        height={donut.panelHeight}
-        radius={radius}
-        strokeWidth={1}
-      />
-      <g
-        transform={`translate(${donut.insetX}, ${donut.boxY})`}
-        opacity={0.65} // knob
-      >
-        <DonutWithLegend
-          width={donut.boxWidth}
-          height={donut.boxHeight}
-          unit={unit}
-        />
-      </g>
-    </>,
+    // the map in its box
+    (() => {
+      const {
+        panelWidth,
+        panelHeight,
+        height: mapHeight,
+        translateX,
+        translateY,
+      } = scandinaviaMap;
+      return (
+        <>
+          <RecessedPanel
+            width={panelWidth}
+            height={panelHeight}
+            radius={radius}
+            strokeWidth={1}
+          />
+          <g
+            transform={`translate(${translateX}, ${translateY})`}
+            opacity={0.65} // knob
+          >
+            <ScandinaviaMap
+              height={mapHeight}
+              fills={{ norway: "none", sweden: "none", denmark: "none" }}
+              stroke="var(--accent)"
+              strokeWidth={0.5}
+            />
+          </g>
+        </>
+      );
+    })(),
   ];
 
   const rowContent = [

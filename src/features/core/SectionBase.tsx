@@ -38,10 +38,10 @@ export function SectionBase({
       "
       >
         <EyebrowRule index={index} label={eyebrow} maxIndex={maxIndex} />
-        <h2 className="text-3xl font-medium text-fg">{title}</h2>
+        <h2 className="text-2xl sm:text-3xl font-medium text-fg">{title}</h2>
 
         <div className="flex flex-col justify-between">
-          <div className="flex flex-col gap-4 text-fg-tinted/90 text-lg">
+          <div className="flex flex-col gap-4 text-fg-tinted/90 text-sm sm:text-lg">
             {text}
           </div>
         </div>

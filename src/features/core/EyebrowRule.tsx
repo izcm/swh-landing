@@ -24,11 +24,15 @@ export default function EyebrowRule({
       </div>
 
       <div className="flex gap-3">
-        <span className="eyebrow text-accent-deep">{indexStr}</span>
+        <span className="eyebrow text-accent-deep max-sm:text-xs">
+          {indexStr}
+        </span>
 
-        <span className="eyebrow text-fg-tinted  opacity-80">/</span>
+        <span className="eyebrow text-fg-tinted  opacity-80 max-sm:text-xs">
+          /
+        </span>
 
-        <span className="eyebrow text-fg-tinted  opacity-80">
+        <span className="eyebrow text-fg-tinted  opacity-80 max-sm:text-xs">
           {label.toUpperCase()}
         </span>
       </div>

@@ -1,11 +1,22 @@
-import { alignEnd, contentBoxLayout, WindowDots } from "@/lib/svg";
+import {
+  alignCenter,
+  alignEnd,
+  contentBoxLayout,
+  paddedBox,
+  WindowDots,
+} from "@/lib/svg";
+import {
+  ScandinaviaMap,
+  scandinaviaMapBounds,
+} from "../../shared/ScandinaviaMap";
 import type { ChartData } from "../data";
 import { CardBackground } from "./CardBackground";
 import { TitleTube } from "./header-elements";
 
 // what's on the lower-left dashboard: a header, then one card filling the
-// rest. fills exactly the width × height it's given (no padding around the
-// outside). a plain <g> drawn from (0, 0); the diagram bends it onto the roof
+// rest, with the scandinavia map in it. fills exactly the width × height it's
+// given (no padding around the outside). a plain <g> drawn from (0, 0); the
+// diagram bends it onto the roof
 export function BottomLeft({
   width,
   height,
@@ -38,6 +49,25 @@ export function BottomLeft({
 
   const { content, rows } = contentBox;
 
+  // the card's map: as tall as the card, minus 1 card unit top and bottom,
+  // and centered across the card
+  const scandinaviaMap = (() => {
+    const cardWidth = content.width;
+    const cardHeight = rows.sizes[1];
+    const box = paddedBox(cardWidth, cardHeight, 1, 1); // knob: 1 card unit
+
+    const height = box.contentHeight;
+    const width =
+      (height * scandinaviaMapBounds.width) / scandinaviaMapBounds.height;
+
+    const { offset: translateX } = alignCenter(cardWidth, width);
+    const translateY = box.contentY;
+
+    const fills = { norway: "none", sweden: "none", denmark: "none" };
+
+    return { height, translateX, translateY, fills };
+  })();
+
   return (
     <g>
       {/* debug: the area to fill */}
@@ -58,12 +88,26 @@ export function BottomLeft({
       >
         {[
           <Header width={content.width} height={rows.sizes[0]} />,
-          <CardBackground
-            width={content.width}
-            height={rows.sizes[1]}
-            radius={radius}
-            strokeWidth={strokeWidth * 0.5}
-          />,
+          <>
+            <CardBackground
+              width={content.width}
+              height={rows.sizes[1]}
+              radius={radius}
+              strokeWidth={strokeWidth * 0.5}
+            />
+
+            {/* the map, centered in the card */}
+            <g
+              transform={`translate(${scandinaviaMap.translateX}, ${scandinaviaMap.translateY})`}
+            >
+              <ScandinaviaMap
+                height={scandinaviaMap.height}
+                fills={scandinaviaMap.fills}
+                stroke="var(--accent)"
+                strokeWidth={strokeWidth * 0.5}
+              />
+            </g>
+          </>,
         ].map((group, i) => (
           <g key={i} transform={`translate(0, ${rows.starts[i]})`}>
             {group}

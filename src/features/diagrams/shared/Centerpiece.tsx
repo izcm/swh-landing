@@ -177,7 +177,11 @@ export function Centerpiece({
               left: innerLeftFill,
               right: innerRightFill,
             }}
-            strokes={{ ...edgeStrokes(innerFadeId), floorTop: whiterAccent }}
+            strokes={{
+              ...edgeStrokes(innerFadeId),
+              floorTop: "var(--accent)",
+              floor: "var(--accent)",
+            }}
             strokeWidth={innerCubeStrokeWeight}
           />
           {/* its Y of front edges, seen through its corner light mask */}

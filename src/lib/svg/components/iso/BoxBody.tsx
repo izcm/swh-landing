@@ -172,21 +172,6 @@ export function BoxBody({
           strokeWidth={strokeWidth}
         />
       ))}
-      {/* the floor's front edges: floor.left → floor.bottom → floor.right */}
-      {[strokes.floor ?? []].flat().map((stroke, i) => (
-        <path
-          key={i}
-          d={`M ${leftFloorTip.x} ${leftFloorTip.y}
-              Q ${leftHalfBottom.x} ${leftHalfBottom.y} ${floorLeft.before.x} ${floorLeft.before.y}
-              L ${floorBottom.before.x} ${floorBottom.before.y}
-              Q ${floorBottom.corner.x} ${floorBottom.corner.y} ${floorBottom.after.x} ${floorBottom.after.y}
-              L ${floorRight.after.x} ${floorRight.after.y}
-              Q ${rightHalfBottom.x} ${rightHalfBottom.y} ${rightFloorTip.x} ${rightFloorTip.y}`}
-          fill="none"
-          stroke={stroke}
-          strokeWidth={strokeWidth}
-        />
-      ))}
 
       {/* walls: left and right faces meeting at the middle edge */}
       {[fills.left ?? []].flat().map((fill, i) => (
@@ -201,6 +186,22 @@ export function BoxBody({
           key={i}
           points={`${roof.bottom.x},${roof.bottom.y} ${tip.right.x},${tip.right.y} ${rightFloorTip.x},${rightFloorTip.y} ${floor.bottom.x},${floor.bottom.y}`}
           fill={fill}
+        />
+      ))}
+
+      {/* the floor's front edges: floor.left → floor.bottom → floor.right */}
+      {[strokes.floor ?? []].flat().map((stroke, i) => (
+        <path
+          key={i}
+          d={`M ${leftFloorTip.x} ${leftFloorTip.y}
+              Q ${leftHalfBottom.x} ${leftHalfBottom.y} ${floorLeft.before.x} ${floorLeft.before.y}
+              L ${floorBottom.before.x} ${floorBottom.before.y}
+              Q ${floorBottom.corner.x} ${floorBottom.corner.y} ${floorBottom.after.x} ${floorBottom.after.y}
+              L ${floorRight.after.x} ${floorRight.after.y}
+              Q ${rightHalfBottom.x} ${rightHalfBottom.y} ${rightFloorTip.x} ${rightFloorTip.y}`}
+          fill="none"
+          stroke={stroke}
+          strokeWidth={strokeWidth}
         />
       ))}
 

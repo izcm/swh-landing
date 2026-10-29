@@ -50,14 +50,24 @@ export function AutomateDiagram() {
     const layout = gear(0.2);
     const translateX = 0; // flush with the left edge
     const translateY = 0; // flush with the top edge
-    return { layout, translateX, translateY };
+    const drawing = (
+      <g transform={`translate(${translateX}, ${translateY})`}>
+        <Gear layout={layout} />
+      </g>
+    );
+    return { layout, translateX, translateY, drawing };
   })();
 
   const smallGear = (() => {
     const layout = gear(0.16);
     const translateX = bigGear.translateX + bigGear.layout.groupWidth * 0.625;
     const translateY = 0;
-    return { layout, translateX, translateY };
+    const drawing = (
+      <g transform={`translate(${translateX}, ${translateY})`}>
+        <Gear layout={layout} />
+      </g>
+    );
+    return { layout, translateX, translateY, drawing };
   })();
 
   const gearGroupOffsetY = alignCenter(
@@ -99,6 +109,41 @@ export function AutomateDiagram() {
     const headerGapUnits = 0.2; // knob: header → rules
     const rowGapUnits = 0.24; // knob: between two rules
     const fontSizeUnits = 0.32; // knob: the rules' text size
+    const headerFontSize = unit * 0.35; // knob: the header's text size
+
+    const drawing = (
+      <g transform={`translate(${translateX}, ${translateY})`}>
+        <MenuBoard
+          layout={boardLayout}
+          radius={radius}
+          unit={unit}
+          paddingXUnits={paddingXUnits}
+          paddingYUnits={paddingYUnits}
+          headerShare={headerShare}
+          headerGapUnits={headerGapUnits}
+          rowGapUnits={rowGapUnits}
+          fontSizeUnits={fontSizeUnits}
+          header={({ width, height }) => (
+            <AutomationRulesHeader
+              width={width}
+              height={height}
+              fontSize={headerFontSize}
+            />
+          )}
+          rows={rules}
+        />
+        {/* debug: the rule board's box */}
+        <rect
+          className="svg-debug"
+          width={groupWidth}
+          height={boardLayout.stackHeight}
+          fill="none"
+          stroke="#aab4e6" // lavender
+          strokeWidth={0.75}
+          strokeDasharray="6 4"
+        />
+      </g>
+    );
 
     return {
       groupWidth,
@@ -107,12 +152,7 @@ export function AutomateDiagram() {
       translateY,
       boardLayout,
       radius,
-      paddingXUnits,
-      paddingYUnits,
-      headerShare,
-      headerGapUnits,
-      rowGapUnits,
-      fontSizeUnits,
+      drawing,
     };
   })();
 
@@ -133,12 +173,33 @@ export function AutomateDiagram() {
 
     const itemLayout = cascade(groupWidth, 0.24);
 
+    const drawing = (
+      <g transform={`translate(${translateX}, ${translateY})`}>
+        <ActionCards
+          layout={itemLayout}
+          height={groupHeight}
+          radius={ruleBoard.radius}
+        />
+        {/* debug: the actions' box */}
+        <rect
+          className="svg-debug"
+          width={groupWidth}
+          height={groupHeight}
+          fill="none"
+          stroke="#aab4e6" // lavender
+          strokeWidth={0.75}
+          strokeDasharray="6 4"
+        />
+      </g>
+    );
+
     return {
       groupWidth,
       groupHeight,
       translateX,
       translateY,
       itemLayout,
+      drawing,
     };
   })();
 
@@ -158,16 +219,8 @@ export function AutomateDiagram() {
         strokeDasharray="6 4"
       />
       <g transform={`translate(0, ${gearGroupOffsetY})`}>
-        <g
-          transform={`translate(${smallGear.translateX}, ${smallGear.translateY})`}
-        >
-          <Gear layout={smallGear.layout} />
-        </g>
-        <g
-          transform={`translate(${bigGear.translateX}, ${bigGear.translateY})`}
-        >
-          <Gear layout={bigGear.layout} />
-        </g>
+        {smallGear.drawing}
+        {bigGear.drawing}
       </g>
 
       <g
@@ -177,56 +230,10 @@ export function AutomateDiagram() {
       </g>
 
       {/* the rule board */}
-      <g
-        transform={`translate(${ruleBoard.translateX}, ${ruleBoard.translateY})`}
-      >
-        <MenuBoard
-          layout={ruleBoard.boardLayout}
-          radius={ruleBoard.radius}
-          unit={unit}
-          paddingXUnits={ruleBoard.paddingXUnits}
-          paddingYUnits={ruleBoard.paddingYUnits}
-          headerShare={ruleBoard.headerShare}
-          headerGapUnits={ruleBoard.headerGapUnits}
-          rowGapUnits={ruleBoard.rowGapUnits}
-          fontSizeUnits={ruleBoard.fontSizeUnits}
-          header={({ width, height }) => (
-            <AutomationRulesHeader width={width} height={height} />
-          )}
-          rows={rules}
-        />
-        {/* debug: the rule board's box */}
-        <rect
-          className="svg-debug"
-          width={ruleBoard.groupWidth}
-          height={ruleBoard.boardLayout.stackHeight}
-          fill="none"
-          stroke="#aab4e6" // lavender
-          strokeWidth={0.75}
-          strokeDasharray="6 4"
-        />
-      </g>
+      {ruleBoard.drawing}
 
       {/* the actions, under the rule board */}
-      <g
-        transform={`translate(${actionCards.translateX}, ${actionCards.translateY})`}
-      >
-        <ActionCards
-          layout={actionCards.itemLayout}
-          height={actionCards.groupHeight}
-          radius={ruleBoard.radius}
-        />
-        {/* debug: the actions' box */}
-        <rect
-          className="svg-debug"
-          width={actionCards.groupWidth}
-          height={actionCards.groupHeight}
-          fill="none"
-          stroke="#aab4e6" // lavender
-          strokeWidth={0.75}
-          strokeDasharray="6 4"
-        />
-      </g>
+      {actionCards.drawing}
     </svg>
   );
 }

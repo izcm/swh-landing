@@ -7,9 +7,11 @@ import { MenuBoardHeader } from "../shared/MenuBoardHeader";
 export function AutomationRulesHeader({
   width,
   height,
+  fontSize,
 }: {
   width: number;
   height: number;
+  fontSize: number; // the title's text size
 }) {
   const dots = (() => {
     const radius = height * 0.0875; // knob
@@ -22,6 +24,7 @@ export function AutomationRulesHeader({
     <>
       <MenuBoardHeader
         height={height}
+        fontSize={fontSize}
         icon={Settings}
         title="Automation Rules"
       />

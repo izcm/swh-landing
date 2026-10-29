@@ -50,3 +50,18 @@ export function arcPath(
 
   return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y}`;
 }
+
+// a diamond's outline through its 4 corners, as an svg path `d` string
+export function diamondPath({
+  left,
+  bottom,
+  right,
+  top,
+}: {
+  left: Point;
+  bottom: Point;
+  right: Point;
+  top: Point;
+}) {
+  return `M ${left.x} ${left.y} L ${bottom.x} ${bottom.y} L ${right.x} ${right.y} L ${top.x} ${top.y} Z`;
+}

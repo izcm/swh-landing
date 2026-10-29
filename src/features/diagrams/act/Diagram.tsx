@@ -118,6 +118,7 @@ export function ActDiagram() {
     const headerGapUnits = 0.2; // knob: header → rows
     const rowGapUnits = 0.24; // knob: between two rows
     const fontSizeUnits = 0.36; // knob: the rows' text size
+    const headerFontSize = unit * 0.32; // knob: the header's text size
 
     return {
       boardLayout,
@@ -129,6 +130,7 @@ export function ActDiagram() {
       headerGapUnits,
       rowGapUnits,
       fontSizeUnits,
+      headerFontSize,
     };
   })();
 
@@ -197,25 +199,31 @@ export function ActDiagram() {
           headerGapUnits,
           rowGapUnits,
           fontSizeUnits,
+          headerFontSize,
         } = menuBoard;
         return (
-          <g transform={`translate(${translateX}, ${translateY})`}>
-            <MenuBoard
-              layout={boardLayout}
-              radius={radius}
-              unit={unit}
-              paddingXUnits={paddingXUnits}
-              paddingYUnits={paddingYUnits}
-              headerShare={headerShare}
-              headerGapUnits={headerGapUnits}
-              rowGapUnits={rowGapUnits}
-              fontSizeUnits={fontSizeUnits}
-              header={({ height }) => (
-                <MenuBoardHeader height={height} icon={Zap} title="Actions" />
-              )}
-              rows={actions}
-            />
-          </g>
+          <MenuBoard
+            x={translateX}
+            y={translateY}
+            layout={boardLayout}
+            radius={radius}
+            unit={unit}
+            paddingXUnits={paddingXUnits}
+            paddingYUnits={paddingYUnits}
+            headerShare={headerShare}
+            headerGapUnits={headerGapUnits}
+            rowGapUnits={rowGapUnits}
+            fontSizeUnits={fontSizeUnits}
+            header={({ height }) => (
+              <MenuBoardHeader
+                height={height}
+                fontSize={headerFontSize}
+                icon={Zap}
+                title="Actions"
+              />
+            )}
+            rows={actions}
+          />
         );
       })()}
     </svg>

@@ -5,17 +5,18 @@ import { glyphStrokeLucide } from "@/lib/svg";
 // header's height. drawn from (0, 0)
 export function MenuBoardHeader({
   height,
+  fontSize,
   icon: Icon,
   title,
 }: {
-  height: number; // the header row's height, everything is sized from it
+  height: number; // the header row's height, the gap is sized from it
+  fontSize: number; // the title's text size
   icon: LucideIcon;
   title: string;
 }) {
   const header = (() => {
-    const iconSize = height * 0.6; // knob
+    const iconSize = fontSize * 1.33; // knob
     const gap = height * 0.25; // knob: icon → title
-    const fontSize = height * 0.45; // knob
     return {
       iconSize,
       fontSize,
@@ -37,7 +38,7 @@ export function MenuBoardHeader({
         x={header.title.x}
         y={header.title.y}
         dominantBaseline="central"
-        fontSize={header.fontSize}
+        fontSize={fontSize}
         fontWeight={500}
         fill="var(--accent-glow)"
         fillOpacity={0.9}

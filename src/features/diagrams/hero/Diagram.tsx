@@ -1,20 +1,27 @@
 import { useId } from "react";
+import { CirclePlay, Mail, Plus, RefreshCw, Zap } from "lucide-react";
 
 // shared svg helpers
-import {
-  alignCenter,
-  boxCorners,
-  deg,
-  isoFloorCenter,
-  paddedBox,
-  type BoxRoof,
-} from "@/lib/svg";
+import { alignCenter, cascadeLayout, deg, paddedBox } from "@/lib/svg";
 
 // the big glass cube with the small one inside, shared with connect
 import { Centerpiece } from "@/features/diagrams/shared/Centerpiece";
 import { centerpieceLayout } from "@/features/diagrams/shared/centerpieceLayout";
 
+import { MenuBoard, type MenuBoardRow } from "../shared/MenuBoard";
+import { MenuBoardHeader } from "../shared/MenuBoardHeader";
+
+import { floorLayout } from "./floor";
+
 const heroAngle = deg(25);
+
+// the action menu's rows: one per action, as in the reference
+const actions: MenuBoardRow[] = [
+  { icon: Plus, lines: ["Create task"] },
+  { icon: RefreshCw, lines: ["Sync data"] },
+  { icon: Mail, lines: ["Send reminder"] },
+  { icon: CirclePlay, lines: ["Run automation"] },
+];
 
 // debug lines have className="svg-debug". show/hide them in diagram.css
 export function HeroDiagram() {
@@ -29,6 +36,7 @@ export function HeroDiagram() {
 
   // ids for the <defs> below
   const floorTileId = useId();
+  const floorMaskId = useId();
 
   // the centerpiece, in the middle of the content box
   const centerpiece = (() => {
@@ -38,145 +46,158 @@ export function HeroDiagram() {
     const { offset: x } = alignCenter(contentWidth, layout.cube.size);
     const { offset: y } = alignCenter(contentHeight, layout.cube.height);
 
-    return { ...layout, x, y };
+    const drawing = (
+      <Centerpiece
+        {...layout}
+        x={x}
+        y={y}
+        angle={heroAngle}
+        cubeStrokeWeight={1} // knob
+        innerCubeStrokeWeight={1} // knob
+      />
+    );
+
+    return { ...layout, x, y, drawing };
   })();
 
-  // a diamond's path through its 4 corners
-  const diamondD = ({ left, right, bottom, top }: BoxRoof) =>
-    `M ${left.x} ${left.y} L ${bottom.x} ${bottom.y} L ${right.x} ${right.y} L ${top.x} ${top.y} Z`;
-
-  // one floor tile: a diamond at the cube's angle
-  const floorTile = (() => {
-    const length = centerpiece.cube.edgeLength / 3; // knob: tiles per cube edge
-    const { roof: corners } = boxCorners({
-      lengthA: length,
-      lengthB: length,
-      angleA: heroAngle,
-      angleB: heroAngle,
-      thickness: 0,
-    });
-    const d = diamondD(corners);
-    return { corners, d, length };
-  })();
-
-  // the floor: a big diamond of floor tiles, centered under the centerpiece
+  const tilesPerCubeEdge = 3;
+  // the floor of tiles under the centerpiece
   const floor = (() => {
-    const length = floorTile.length * 12; // knob: tiles per floor edge
-    const { roof } = boxCorners({
-      lengthA: length,
-      lengthB: length,
-      angleA: heroAngle,
-      angleB: heroAngle,
-      thickness: 0,
+    const layout = floorLayout({
+      cube: centerpiece.cube,
+      cubePos: { x: centerpiece.x, y: centerpiece.y },
+      angle: heroAngle,
+      tilesPerCubeEdge, // knob
+      tilesPerFloorEdge: 12, // knob
     });
-    const { left, right, bottom } = roof;
-    const d = diamondD(roof);
+    const { tile, fade, width, height } = layout;
 
-    // the floor's middle on the big cube's floor center
-    const cubeFloor = isoFloorCenter(centerpiece.cube);
-    const translateX = centerpiece.x + cubeFloor.x - right.x / 2;
-    const translateY = centerpiece.y + cubeFloor.y - left.y;
+    const drawing = (
+      <>
+        <defs>
+          {/* the fade: white in the middle, gone at the floor's edges */}
+          <radialGradient
+            id="somethingxoxo"
+            gradientUnits="userSpaceOnUse"
+            cx={fade.cx}
+            cy={fade.cy}
+            r={fade.r}
+            // flattens the circle around its middle
+            gradientTransform={`translate(${fade.cx} ${fade.cy}) scale(1 ${fade.squash}) translate(${-fade.cx} ${-fade.cy})`}
+          >
+            <stop offset="0%" stopColor="white" stopOpacity={1} />
+            <stop offset="50%" stopColor="white" stopOpacity={0.8} />
+            <stop offset="100%" stopColor="white" stopOpacity={0} />
+          </radialGradient>
 
-    // a tile's left corner on the cube's floor left corner, so the cube's floor
-    // edges sit on grid lines. in the floor's own coordinates
-    const cubeFloorLeft = {
-      x: centerpiece.x - translateX,
-      y: centerpiece.y + cubeFloor.y - translateY,
-    };
-    const patternX = cubeFloorLeft.x;
-    const patternY = cubeFloorLeft.y - floorTile.corners.left.y;
+          <mask
+            id={floorMaskId}
+            maskUnits="userSpaceOnUse"
+            x={0}
+            y={0}
+            width={width}
+            height={height}
+          >
+            <rect
+              x={0}
+              y={0}
+              width={width}
+              height={height}
+              fill="url(#somethingxoxo)"
+            />
+          </mask>
 
-    // the fade: the circle that fits inside the floor, flattened like the floor.
-    // it ends where the floor's edges are, so they never show
-    const fade = {
-      cx: right.x / 2,
-      cy: left.y,
-      r: right.x / 2 / Math.SQRT2,
-      squash: Math.tan(heroAngle),
-    };
+          <pattern
+            id={floorTileId}
+            patternUnits="userSpaceOnUse"
+            x={layout.patternX}
+            y={layout.patternY}
+            width={tile.corners.right.x}
+            height={tile.corners.bottom.y}
+          >
+            <path
+              d={tile.d}
+              fill="none"
+              stroke="var(--accent)"
+              strokeWidth={1}
+            />
+          </pattern>
+        </defs>
 
-    return {
-      d,
-      width: right.x,
-      height: bottom.y,
-      translateX,
-      translateY,
-      patternX,
-      patternY,
-      fade,
-    };
+        <g transform={`translate(${layout.translateX}, ${layout.translateY})`}>
+          <path
+            d={layout.d}
+            fill={`url(#${floorTileId})`}
+            opacity={0.15}
+            mask={`url(#${floorMaskId})`}
+          />
+        </g>
+      </>
+    );
+
+    return { ...layout, drawing };
+  })();
+
+  const actionMenu = (() => {
+    const { x: cpx, y: cpy, cube } = centerpiece;
+    const x = cpx + cube.size + cube.edgeLength / (tilesPerCubeEdge * 2); // to end of cube + half of one tile
+    const y = cpy;
+
+    const boardLayout = cascadeLayout({
+      groupWidth: unit * 3.8, // knob
+      heightToWidthRatio: 1.4, // knob: taller than act's board, it has 4 rows
+      // slants down to the right, like the cube's left face
+      angle: heroAngle,
+      count: 2, // knob
+      gapX: unit * 0.2, // knob
+      gapY: unit * 0.2, // knob
+      side: "right", // the back board sticks out up and to the right
+    });
+
+    const radius = unit * 0.1; // knob: the boards' and rows' corners
+    const paddingXUnits = 0.25; // knob
+    const paddingYUnits = 0.2; // knob
+    const headerShare = 0.15; // knob: the header's share of the board's content
+    const headerGapUnits = 0.15; // knob: header → rows
+    const rowGapUnits = 0.18; // knob: between two rows
+    const fontSizeUnits = 0.225; // knob: the rows' text size
+    const headerFontSize = unit * 0.25; // knob: the header's text size
+
+    // its top-left at x, y
+    const drawing = (
+      <MenuBoard
+        x={x}
+        y={y}
+        layout={boardLayout}
+        radius={radius}
+        unit={unit}
+        paddingXUnits={paddingXUnits}
+        paddingYUnits={paddingYUnits}
+        headerShare={headerShare}
+        headerGapUnits={headerGapUnits}
+        rowGapUnits={rowGapUnits}
+        fontSizeUnits={fontSizeUnits}
+        header={({ height }) => (
+          <MenuBoardHeader
+            height={height}
+            fontSize={headerFontSize}
+            icon={Zap}
+            title="Actions"
+          />
+        )}
+        rows={actions}
+      />
+    );
+
+    return { x, y, drawing };
   })();
 
   return (
     <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`} overflow="visible">
-      <defs>
-        {/* GRADIENTS */}
-        {(() => {
-          const { cx, cy, r, squash } = floor.fade;
-          return (
-            <radialGradient
-              id="somethingxoxo"
-              gradientUnits="userSpaceOnUse"
-              cx={cx}
-              cy={cy}
-              r={r}
-              // flattens the circle around its middle
-              gradientTransform={`translate(${cx} ${cy}) scale(1 ${squash}) translate(${-cx} ${-cy})`}
-            >
-              <stop offset="0%" stopColor="white" stopOpacity={1} />
-              <stop offset="50%" stopColor="white" stopOpacity={0.8} />
-              <stop offset="100%" stopColor="white" stopOpacity={0} />
-            </radialGradient>
-          );
-        })()}
-
-        {/* MASKS */}
-        <mask
-          id={"somethingelsexoxo"}
-          maskUnits="userSpaceOnUse"
-          x={0}
-          y={0}
-          width={floor.width}
-          height={floor.height}
-        >
-          <rect
-            x={0}
-            y={0}
-            width={floor.width}
-            height={floor.height}
-            fill={`url(#somethingxoxo)`}
-          />
-        </mask>
-
-        {/* PATTERNS */}
-        <pattern
-          id={floorTileId}
-          patternUnits="userSpaceOnUse"
-          x={floor.patternX}
-          y={floor.patternY}
-          width={floorTile.corners.right.x}
-          height={floorTile.corners.bottom.y}
-        >
-          <path
-            d={floorTile.d}
-            fill="none"
-            stroke="var(--accent)"
-            strokeWidth={1}
-          />
-        </pattern>
-      </defs>
-
       {/* everything inside starts at the content box's top-left */}
       <g transform={`translate(${contentX}, ${contentY})`}>
         {/* the floor, under the centerpiece */}
-        <g transform={`translate(${floor.translateX}, ${floor.translateY})`}>
-          <path
-            d={floor.d}
-            fill={`url(#${floorTileId})`}
-            opacity={0.15}
-            mask="url(#somethingelsexoxo)"
-          />
-        </g>
+        {floor.drawing}
 
         {/* debug: content box (inside the padding) */}
         <rect
@@ -192,12 +213,10 @@ export function HeroDiagram() {
         />
 
         {/* middle: the centerpiece */}
-        <Centerpiece
-          {...centerpiece}
-          angle={heroAngle}
-          cubeStrokeWeight={1} // knob
-          innerCubeStrokeWeight={1} // knob
-        />
+        {centerpiece.drawing}
+
+        {/* right of the cube: the action menu */}
+        {actionMenu.drawing}
       </g>
     </svg>
   );

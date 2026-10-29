@@ -6,6 +6,8 @@ import {
   platformStyle,
   IsoCubeShadow,
   accentGlow,
+  allFills,
+  allStrokes,
   EdgeGradient,
   glassCube,
   glassEdgeOpacity,
@@ -372,19 +374,10 @@ export function SoftwareDiagram() {
             thickness={bottomLeft.bigCube.thickness}
             radius={4}
             fills={{
-              roof: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
-              left: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
-              right: "oklch(from var(--accent) 0.15 0.06 h / 0.3)",
+              ...allFills("oklch(from var(--accent) 0.15 0.06 h / 0.3)"),
               floor: "oklch(from var(--accent) 0.2 0.06 h)",
             }}
-            strokes={{
-              roof: bigCubeEdge,
-              left: bigCubeEdge,
-              right: bigCubeEdge,
-              middle: bigCubeEdge,
-              floor: bigCubeEdge,
-              floorTop: bigCubeEdge,
-            }}
+            strokes={{ ...allStrokes(bigCubeEdge), back: [] }}
           />
         </g>
         {/* shadow on the floor, under the floating cube. iso-flattened ellipse */}
@@ -406,19 +399,10 @@ export function SoftwareDiagram() {
               y={bottomLeft.smallCubePos.y - bottomLeft.floatLift}
               size={cube.size}
               fills={{
-                roof: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
-                left: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
-                right: "oklch(from var(--accent) 0.4 0.12 h / 0.8)",
+                ...allFills("oklch(from var(--accent) 0.4 0.12 h / 0.8)"),
+                floor: [],
               }}
-              strokes={{
-                roof: floatingCubeEdge,
-                left: floatingCubeEdge,
-                right: floatingCubeEdge,
-                middle: floatingCubeEdge,
-                back: floatingCubeEdge,
-                floor: floatingCubeEdge,
-                floorTop: floatingCubeEdge,
-              }}
+              strokes={allStrokes(floatingCubeEdge)}
             />
           </g>
         </g>
@@ -510,9 +494,8 @@ function CubeBase({
         x={half}
         y={y}
         fills={{
-          roof: "oklch(from var(--accent) 0.18 0.06 h)",
-          left: "oklch(from var(--accent) 0.18 0.06 h)",
-          right: "oklch(from var(--accent) 0.18 0.06 h)",
+          ...allFills("oklch(from var(--accent) 0.18 0.06 h)"),
+          floor: [],
         }}
       />{" "}
       {/* hack to hide animation dot when behind cluster in top group */}

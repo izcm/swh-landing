@@ -1,2 +1,2 @@
 export * from "./gearLayout";
-export * from "./platform";
+export * from "./box";

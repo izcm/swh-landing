@@ -1,7 +1,7 @@
 import type { Point } from "../../../logic";
 import { parallelogramCorners } from "../../shapes/parallelogramCorners";
 
-export type PlatformShape = {
+export type BoxSize = {
   lengthA: number; // left→bottom edge, going down to the right at angleA
   lengthB: number; // bottom→right edge, going up to the right at angleB
   angleA: number;
@@ -9,15 +9,15 @@ export type PlatformShape = {
   thickness: number;
 };
 
-// a Platform's corners, measured from its own top-left (the x / y you give it).
+// a box's corners, measured from its own top-left (the x / y you give it).
 // roof: the top face. floor: the same corners moved down by thickness
-export function platformCorners({
+export function boxCorners({
   lengthA,
   lengthB,
   angleA,
   angleB,
   thickness,
-}: PlatformShape) {
+}: BoxSize) {
   // edge B rises by this much, so start this far down to keep top at y = 0
   const lift = lengthB * Math.sin(angleB);
   const [left, bottom, right, top] = parallelogramCorners({
@@ -25,7 +25,7 @@ export function platformCorners({
     lengthA,
     angleA,
     lengthB,
-    angleB: -angleB, // a Platform's angleB turns up, parallelogramCorners turns down
+    angleB: -angleB, // a box's angleB turns up, parallelogramCorners turns down
   });
   const roof = { left, bottom, right, top };
 

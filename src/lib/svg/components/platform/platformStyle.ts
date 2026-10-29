@@ -1,11 +1,11 @@
+import { allFills } from "../iso";
+
 // the platform look: solid accent roof, dark walls, a floor, soft glow.
 // (what ISOCube's defaults used to be, before they became glassCube)
 export const platformStyle = {
   fills: {
+    ...allFills("var(--platform-wall-fill)"),
     roof: "oklch(from var(--accent) 0.22 0.08 h)",
-    left: "var(--platform-wall-fill)",
-    right: "var(--platform-wall-fill)",
-    floor: "var(--platform-wall-fill)",
   },
   strokeWidth: 1,
   radius: 4,

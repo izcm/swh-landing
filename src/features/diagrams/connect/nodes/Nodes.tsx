@@ -1,6 +1,7 @@
 import { useId } from "react";
 
 import {
+  allStrokes,
   BoxBody,
   glyphStroke,
   InkFadeGradient,
@@ -58,14 +59,7 @@ export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
                 floor: "oklch(from var(--accent) 0.22 0.08 h)",
               }}
               radius={radius}
-              strokes={{
-                roof: edge,
-                left: edge,
-                right: edge,
-                middle: edge, // the line from roof.bottom down to floor.bottom
-                floor: edge,
-                floorTop: edge,
-              }}
+              strokes={{ ...allStrokes(edge), back: [] }}
             />
             {/* lit edge: one outline around the roof */}
             <path

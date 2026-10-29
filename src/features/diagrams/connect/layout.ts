@@ -6,7 +6,7 @@ import {
   isoCubePoints,
   paddedBox,
   parallelogramMatrix,
-  platformCorners,
+  boxCorners,
   pointOnLine,
   spaceEvenly,
   type Point,
@@ -46,7 +46,7 @@ export function connectLayout({
         Math.cos(angles.angleB);
 
       // roof + floor corners from the roof's two edges, measured from the box's top-left
-      const { roof, floor } = platformCorners({
+      const { roof, floor } = boxCorners({
         lengthA,
         lengthB,
         ...angles,

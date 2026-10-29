@@ -1,7 +1,9 @@
 import { useId } from "react";
 import {
+  CornerLightMask,
   ISOCube,
   accentGlow,
+  allFills,
   glassCube,
   isoCubeMetrics,
   type Point,
@@ -9,18 +11,14 @@ import {
 
 type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
 
-// the centerpiece's colors, exported so other parts of a diagram can match them.
-// the big cube: the automate gear's dark look, half see-through so the small
-// cube shows. the small cube: accent, a bit see-through, electric edges
-export const cubeFill =
-  "oklch(from var(--accent-ink) calc(l - 0.02) calc(c - 0.01) h / 0.55)";
-export const innerFill = "oklch(from var(--accent) calc(l + 0.08) c h / 0.45)"; // knob: + 0.08
-// the big cube's back edges, seen through its faces (the gear's faint edge)
+export const innerFill = "oklch(from var(--accent) calc(l + 0.08) c h / 0.45)";
+const innerLeftFill = "oklch(from var(--accent) calc(l - 0.2) c h / 0.6)";
+const innerRightFill = "oklch(from var(--accent) calc(l - 0.1) c h / 0.6)";
 const faintEdge = "oklch(from var(--accent-electric) l c h / 0.35)";
+const bluerAccent = "oklch(from var(--accent) calc(l - 0.2) c h)";
+const whiterAccent = "oklch(from var(--accent) calc(l + 0.2) c h)";
 
-// the big glass cube with a small cube floating inside. shared by every diagram
-// that draws it, so it looks the same everywhere. sizes come from
-// centerpieceLayout, the caller places it at x, y
+// a big glass cube with a small cube floating inside. sizes from centerpieceLayout
 export function Centerpiece({
   x,
   y,
@@ -44,13 +42,12 @@ export function Centerpiece({
 }) {
   const { size, height, depth, thickness } = cube;
 
-  const bluerAccent = "oklch(from var(--accent) calc(l - 0.2) c h)";
-  const whiterAccent = "oklch(from var(--accent) calc(l + 0.2) c h)";
-
+  // ids for the <defs> below
   const wallLightId = useId();
-
   const sideFadeId = useId();
   const innerFadeId = useId();
+  const cornerMaskId = useId();
+  const innerCornerMaskId = useId();
 
   const bigCube = {
     size,
@@ -60,6 +57,32 @@ export function Centerpiece({
     radius: 0,
   };
 
+  // the small cube's light on the floor, under it. iso-flattened ellipse
+  const floatShadow = (() => {
+    const rx = innerCube.size * 0.4;
+    return {
+      cx: size / 2,
+      cy: height - depth,
+      rx,
+      ry: rx * Math.tan(Math.PI / 6),
+    };
+  })();
+
+  // where a box's corner light sits, in the box's own coordinates
+  const cornerLightCenter = (box: IsoMetrics) => {
+    // the y where the left and right edges end (floor.left / floor.right)
+    const sideEdgeBottom = box.depth + box.thickness;
+    return { x: sideEdgeBottom * 0.5, y: box.size * 0.5 };
+  };
+
+  // a box's Y of front edges: roof.left → roof.bottom → roof.right, then
+  // roof.bottom down to floor.bottom. in the box's own coordinates
+  const frontY = (box: IsoMetrics) => {
+    const half = box.size * 0.5;
+    return `M 0 ${box.depth} l ${half} ${box.depth} l ${half} ${-box.depth} M ${half} ${box.depth * 2} l 0 ${box.thickness}`;
+  };
+
+  // whiterAccent at a box's side-edge top, fading to accent at its bottom
   const edgeFade = (id: string, box: IsoMetrics) => (
     <linearGradient
       id={id}
@@ -70,23 +93,23 @@ export function Centerpiece({
       y2={box.depth + box.thickness}
     >
       <stop offset="0%" stopColor={whiterAccent} stopOpacity={1} />
-      <stop offset="80%" stopColor="var(--accent)" stopOpacity={0.6} />{" "}
-      <stop offset="100%" stopColor={whiterAccent} stopOpacity={0.8} />{" "}
+      <stop offset="100%" stopColor="var(--accent)" stopOpacity={1} />
     </linearGradient>
   );
 
+  // both cubes' edges: faded sides, bright roof and middle
   const edgeStrokes = (fadeId: string) => ({
     roof: whiterAccent,
     left: `url(#${fadeId})`,
     right: `url(#${fadeId})`,
     middle: whiterAccent,
-    floor: whiterAccent,
+    floor: "var(--accent)",
   });
 
   return (
-    // one soft halo around the whole centerpiece
     <g transform={`translate(${x}, ${y})`}>
       <defs>
+        {/* wall light: a faint blue ring around the middle, for the big cube's faces */}
         <radialGradient
           id={wallLightId}
           gradientUnits="userSpaceOnUse"
@@ -102,56 +125,86 @@ export function Centerpiece({
           <stop offset="45%" stopColor={bluerAccent} stopOpacity={0.15} />
           <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
         </radialGradient>
-        {/* stroke gradients on left and right edge of both cubes */}
+
+        {/* corner light masks, one per cube */}
+        <CornerLightMask
+          id={cornerMaskId}
+          box={cube}
+          center={cornerLightCenter(cube)}
+          radius={size * 0.5} // knob
+          opacity={[0.75, 0.5]} // knob
+        />
+        <CornerLightMask
+          id={innerCornerMaskId}
+          box={innerCube}
+          center={cornerLightCenter(innerCube)}
+          radius={innerCube.size * 0.5} // knob
+          opacity={[0.75, 0.5]} // knob
+        />
+
+        {/* side-edge fades, one per cube */}
         {edgeFade(sideFadeId, cube)}
         {edgeFade(innerFadeId, innerCube)}
       </defs>
 
-      {/* big cube, under half: floor-top edges + floor */}
+      {/* big cube, under half: its back edges, faint like the gear's */}
       <ISOCube
         {...bigCube}
-        // faint edges at the back, like the gear
         strokes={{ back: faintEdge, floorTop: faintEdge }}
       />
 
-      {/* the small cube's light on the floor, under it. iso-flattened ellipse */}
+      {/* float shadow: the small cube's light on the floor */}
       <ellipse
         className="float-shadow"
-        cx={size / 2}
-        cy={height - depth}
-        rx={innerCube.size * 0.4}
-        ry={innerCube.size * 0.4 * Math.tan(Math.PI / 6)}
+        {...floatShadow}
         fill="var(--accent-electric)"
         fillOpacity={0.18}
         style={{ filter: "blur(6px)" }}
       />
-      {/* the small cube's own slight glow, on top of the centerpiece's */}
+
+      {/* small cube, with its own slight glow */}
       <g className="float-bob" style={{ filter: accentGlow(1.5, 8) }}>
-        <ISOCube
-          {...glassCube}
-          x={innerCubePos.x}
-          y={innerCubePos.y - floatLift}
-          size={innerCube.size}
-          thickness={innerCube.thickness}
-          angle={angle}
-          fills={{
-            roof: innerFill,
-            left: "oklch(from var(--accent) calc(l - 0.2) c h / 0.6)", // knob: - 0.25
-            right: "oklch(from var(--accent) calc(l - 0.1) c h / 0.6)", // knob: - 0.1
-          }}
-          strokes={{ ...edgeStrokes(innerFadeId), floorTop: whiterAccent }}
-          strokeWidth={innerCubeStrokeWeight}
-        />
+        <g
+          transform={`translate(${innerCubePos.x}, ${innerCubePos.y - floatLift})`}
+        >
+          <ISOCube
+            {...glassCube}
+            size={innerCube.size}
+            thickness={innerCube.thickness}
+            angle={angle}
+            fills={{
+              roof: innerFill,
+              left: innerLeftFill,
+              right: innerRightFill,
+            }}
+            strokes={{ ...edgeStrokes(innerFadeId), floorTop: whiterAccent }}
+            strokeWidth={innerCubeStrokeWeight}
+          />
+          {/* its Y of front edges, seen through its corner light mask */}
+          <path
+            d={frontY(innerCube)}
+            fill="none"
+            stroke="white"
+            strokeWidth={innerCubeStrokeWeight} // knob
+            mask={`url(#${innerCornerMaskId})`}
+          />
+        </g>
       </g>
 
-      {/* big cube, over half: walls + edges + roof, over the small cube */}
+      {/* big cube, over half: faces and edges, over the small cube */}
       <ISOCube
         {...bigCube}
-        // the walls lit from the middle. no roof or floor fill
-        fills={{ left: `url(#${wallLightId})`, right: `url(#${wallLightId})` }}
-        // electric edges
-        // stroke: "var(-accent-electric)",
+        fills={{ ...allFills(`url(#${wallLightId})`), floor: [] }}
         strokes={edgeStrokes(sideFadeId)}
+      />
+
+      {/* the big cube's Y of front edges, seen through its corner light mask */}
+      <path
+        d={frontY(cube)}
+        fill="none"
+        stroke="white"
+        strokeWidth={cubeStrokeWeight} // knob
+        mask={`url(#${cornerMaskId})`}
       />
     </g>
   );

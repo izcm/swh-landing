@@ -2,11 +2,11 @@ import { useId } from "react";
 import { EdgeGradient } from "../../styles";
 import { BoxBody } from "../iso";
 import { accentGlow, gridLines, type Point } from "../../logic";
-import { platformCorners, type PlatformShape } from "../../layouts";
+import { boxCorners, type BoxSize } from "../../layouts";
 import { platformGridStyle, platformStyle } from "./platformStyle";
 
 type PlatformProps = Partial<Point> &
-  PlatformShape & {
+  BoxSize & {
     // grid on the roof: how many equal parts each direction is split into
     grid: { across: number; along: number };
   };
@@ -20,7 +20,7 @@ export function Platform({
   ...shape
 }: PlatformProps) {
   const { thickness } = shape;
-  const { roof } = platformCorners(shape);
+  const { roof } = boxCorners(shape);
 
   // the platform look
   const { fills, strokeWidth, glow, radius } = platformStyle;

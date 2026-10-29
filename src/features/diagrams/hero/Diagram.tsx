@@ -10,7 +10,7 @@ const heroAngle = deg(25);
 // debug lines have className="svg-debug". show/hide them in diagram.css
 export function HeroDiagram() {
   const viewboxWidth = 900;
-  const viewboxHeight = 650;
+  const viewboxHeight = 600;
 
   const { contentX, contentY, contentWidth, contentHeight, unit } = paddedBox(
     viewboxWidth,
@@ -20,7 +20,7 @@ export function HeroDiagram() {
 
   // the centerpiece, in the middle of the content box
   const centerpiece = (() => {
-    const size = unit * 7; // knob: same size in units as the old hero's
+    const size = unit * 8; // knob: same size in units as the old hero's
     const layout = centerpieceLayout({ size, angle: heroAngle });
 
     const { offset: x } = alignCenter(contentWidth, layout.cube.size);
@@ -50,8 +50,8 @@ export function HeroDiagram() {
         <Centerpiece
           {...centerpiece}
           angle={heroAngle}
-          cubeStrokeWeight={1.6} // knob
-          innerCubeStrokeWeight={1.2} // knob
+          cubeStrokeWeight={1} // knob
+          innerCubeStrokeWeight={1} // knob
         />
       </g>
     </svg>

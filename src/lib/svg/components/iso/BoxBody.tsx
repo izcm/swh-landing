@@ -18,6 +18,14 @@ export type BoxFills = {
   floor: Paint;
 };
 
+// every face in one paint. spread it and override single faces after
+export const allFills = (paint: Paint): BoxFills => ({
+  roof: paint,
+  left: paint,
+  right: paint,
+  floor: paint,
+});
+
 export type BoxStrokes = {
   roof: Paint;
   left: Paint;
@@ -27,6 +35,17 @@ export type BoxStrokes = {
   floor: Paint;
   floorTop: Paint;
 };
+
+// every edge in one paint. spread it and override single edges after
+export const allStrokes = (paint: Paint): BoxStrokes => ({
+  roof: paint,
+  left: paint,
+  right: paint,
+  middle: paint,
+  back: paint,
+  floor: paint,
+  floorTop: paint,
+});
 
 // where the box is
 export type BoxShape = {

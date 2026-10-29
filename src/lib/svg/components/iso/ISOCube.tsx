@@ -1,5 +1,5 @@
 import { deg, isoCubeMetrics, type Point } from "../../logic";
-import { BoxBody, type BoxLook } from "./BoxBody";
+import { allFills, BoxBody, type BoxLook } from "./BoxBody";
 
 type ISOCubeProps = Partial<Point> &
   BoxLook & {
@@ -16,7 +16,7 @@ const glassFill = "oklch(from var(--accent) 0.18 0.06 h / 0.5)";
 
 export const glassCube = {
   radius: 0,
-  fills: { roof: glassFill, left: glassFill, right: glassFill },
+  fills: { ...allFills(glassFill), floor: [] },
   strokeWidth: 0.85,
 };
 

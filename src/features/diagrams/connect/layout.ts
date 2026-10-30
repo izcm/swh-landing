@@ -3,13 +3,11 @@ import {
   cascadeLayout,
   deg,
   dropAlongEdge,
-  isoCubePoints,
   paddedBox,
   parallelogramMatrix,
   boxCorners,
   pointOnLine,
   spaceEvenly,
-  type Point,
 } from "@/lib/svg";
 import { centerpieceLayout } from "@/features/diagrams/shared/centerpieceLayout";
 import { connectNodes } from "./nodes/nodes";
@@ -182,25 +180,20 @@ export function connectLayout({
   // the connectors' ends, in viewbox coordinates:
   // nodesOut → centerpieceIns, centerpieceOut → dataGridIn
   const connectors = (() => {
-    // the cube's corners, scaled and moved to where it's drawn
+    // the cube's corners, where it's drawn
     const { cube } = centerpiece.layout;
-    const pts = isoCubePoints(
-      cube.size,
-      cube.thickness,
-      centerpiece.angle,
-      centerpiece.angle,
-    );
-    const at = (p: Point) => ({
-      x: centerpiece.x + p.x * pts.scale,
-      y: centerpiece.y + p.y * pts.scale,
+    const { roof, floor } = boxCorners({
+      lengthA: cube.a.edgeLength,
+      lengthB: cube.b.edgeLength,
+      angleA: cube.a.angle,
+      angleB: cube.b.angle,
+      thickness: cube.thickness,
+      x: centerpiece.x,
+      y: centerpiece.y,
     });
 
     // the middle of the cube's left wall
-    const leftWallCenter = pointOnLine(
-      at(pts.roofLeft),
-      at(pts.floorBottom),
-      0.5,
-    );
+    const leftWallCenter = pointOnLine(roof.left, floor.bottom, 0.5);
 
     // one in per node, stacked straight up and down the left wall, the same
     // distance apart, centered on the wall's middle. top node → top in
@@ -229,11 +222,7 @@ export function connectLayout({
     }));
 
     // the middle of the cube's right wall
-    const centerpieceOut = pointOnLine(
-      at(pts.roofBottom),
-      at(pts.floorRight),
-      0.5,
-    );
+    const centerpieceOut = pointOnLine(roof.bottom, floor.right, 0.5);
 
     // from centerpieceOut, falling at angleA to the data grid's left edge
     const run = dataGrid.translateX - centerpieceOut.x;

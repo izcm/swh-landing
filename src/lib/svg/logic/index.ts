@@ -5,3 +5,4 @@ export * from "./paths";
 export * from "./style";
 export * from "./transform";
 export * from "./types";
+export * from "./vector";

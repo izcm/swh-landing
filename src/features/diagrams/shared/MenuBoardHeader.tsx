@@ -40,8 +40,8 @@ export function MenuBoardHeader({
         dominantBaseline="central"
         fontSize={fontSize}
         fontWeight={500}
-        fill="var(--accent-glow)"
-        fillOpacity={0.9}
+        fill="var(--color-fg-tinted)"
+        fillOpacity={1}
       >
         {title}
       </text>

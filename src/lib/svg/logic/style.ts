@@ -34,13 +34,10 @@ export const deepShades = (count: number, start = 0) =>
       `oklch(from var(--accent) calc(l - 0.12 + ${(start + i) * 0.03}) calc(c + 0.03) h)`,
   );
 
-// Lucide icons are drawn on a fixed 0 0 24 24 viewBox; the `size` prop
-// scales that whole box (and strokeWidth along with it) up to the
-// rendered size. Dividing by 24/size undoes that stretch in advance, so
-// `weight` is the visual thickness you actually see, at any icon size.
-// `box` is the width the shape is drawn in before scaling (24 for Lucide,
-// 100 for ISOCube)
-export function glyphStroke(size: number, weight = 1, box = 24) {
+// the strokeWidth to set on a shape drawn in a `box`-wide box and stretched to
+// `size`, so it shows up `weight` thick. e.g. box 24, size 96, weight 2 → 0.5,
+// which the 4× stretch turns into 2. for Lucide icons use glyphStrokeLucide
+export function glyphStroke(size: number, weight: number, box: number) {
   return weight * (box / size);
 }
 

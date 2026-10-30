@@ -2,7 +2,16 @@ import { useId } from "react";
 import { CirclePlay, Mail, Plus, RefreshCw, Zap } from "lucide-react";
 
 // shared svg helpers
-import { alignCenter, cascadeLayout, deg, paddedBox } from "@/lib/svg";
+import {
+  addVector,
+  alignCenter,
+  boxCorners,
+  cascadeLayout,
+  deg,
+  paddedBox,
+  scaleVector,
+  toDegrees,
+} from "@/lib/svg";
 
 // the big glass cube with the small one inside, shared with connect
 import { Centerpiece } from "@/features/diagrams/shared/Centerpiece";
@@ -12,6 +21,7 @@ import { MenuBoard, type MenuBoardRow } from "../shared/MenuBoard";
 import { MenuBoardHeader } from "../shared/MenuBoardHeader";
 
 import { floorLayout } from "./floor";
+import { CascadeBoards } from "../shared/CascadeBoards";
 
 const heroAngle = deg(25);
 
@@ -40,11 +50,23 @@ export function HeroDiagram() {
 
   // the centerpiece, in the middle of the content box
   const centerpiece = (() => {
-    const size = unit * 7; // knob: same size in units as the old hero's
+    const size = unit * 7.5; // knob: same size in units as the old hero's
     const layout = centerpieceLayout({ size, angle: heroAngle });
 
     const { offset: x } = alignCenter(contentWidth, layout.cube.size);
     const { offset: y } = alignCenter(contentHeight, layout.cube.height);
+
+    const { cube } = layout;
+    // the cube's corners in the hero diagram
+    const cubeCorners = boxCorners({
+      lengthA: cube.a.edgeLength,
+      lengthB: cube.b.edgeLength,
+      angleA: cube.a.angle,
+      angleB: cube.b.angle,
+      thickness: cube.thickness,
+      x,
+      y,
+    });
 
     const drawing = (
       <Centerpiece
@@ -57,7 +79,7 @@ export function HeroDiagram() {
       />
     );
 
-    return { ...layout, x, y, drawing };
+    return { ...layout, x, y, cubeCorners, drawing };
   })();
 
   const tilesPerCubeEdge = 3;
@@ -71,6 +93,7 @@ export function HeroDiagram() {
       tilesPerFloorEdge: 12, // knob
     });
     const { tile, fade, width, height } = layout;
+    const fadeStretchX = 1.3; // knob: how much wider than the floor's own circle the fade reaches
 
     const drawing = (
       <>
@@ -82,11 +105,11 @@ export function HeroDiagram() {
             cx={fade.cx}
             cy={fade.cy}
             r={fade.r}
-            // flattens the circle around its middle
-            gradientTransform={`translate(${fade.cx} ${fade.cy}) scale(1 ${fade.squash}) translate(${-fade.cx} ${-fade.cy})`}
+            // flattens the circle around its middle, and stretches it sideways
+            gradientTransform={`translate(${fade.cx} ${fade.cy}) scale(${fadeStretchX} ${fade.squash}) translate(${-fade.cx} ${-fade.cy})`}
           >
             <stop offset="0%" stopColor="white" stopOpacity={1} />
-            <stop offset="50%" stopColor="white" stopOpacity={0.8} />
+            <stop offset="50%" stopColor="white" stopOpacity={0.75} />
             <stop offset="100%" stopColor="white" stopOpacity={0} />
           </radialGradient>
 
@@ -138,19 +161,24 @@ export function HeroDiagram() {
     return { ...layout, drawing };
   })();
 
+  // between a cascade's boards, across and down: shared by the action menu and
+  // the dashboard
+  const cascadeGap = unit * 0.2; // knob
+
   const actionMenu = (() => {
-    const { x: cpx, y: cpy, cube } = centerpiece;
-    const x = cpx + cube.size + cube.edgeLength / (tilesPerCubeEdge * 2); // to end of cube + half of one tile
-    const y = cpy;
+    const { cube, cubeCorners } = centerpiece;
+    const x =
+      cubeCorners.roof.right.x + cube.edgeLength / (tilesPerCubeEdge * 2); // to end of cube + half of one tile
+    const y = cubeCorners.roof.top.y;
 
     const boardLayout = cascadeLayout({
-      groupWidth: unit * 3.8, // knob
-      heightToWidthRatio: 1.4, // knob: taller than act's board, it has 4 rows
+      groupWidth: unit * 4, // knob
+      heightToWidthRatio: 1.45, // knob: taller than act's board, it has 4 rows
       // slants down to the right, like the cube's left face
       angle: heroAngle,
       count: 2, // knob
-      gapX: unit * 0.2, // knob
-      gapY: unit * 0.2, // knob
+      gapX: cascadeGap,
+      gapY: cascadeGap,
       side: "right", // the back board sticks out up and to the right
     });
 
@@ -160,8 +188,8 @@ export function HeroDiagram() {
     const headerShare = 0.15; // knob: the header's share of the board's content
     const headerGapUnits = 0.15; // knob: header → rows
     const rowGapUnits = 0.18; // knob: between two rows
-    const fontSizeUnits = 0.225; // knob: the rows' text size
-    const headerFontSize = unit * 0.25; // knob: the header's text size
+    const fontSizeUnits = 0.26; // knob: the rows' text size
+    const headerFontSize = unit * 0.28; // knob: the header's text size
 
     // its top-left at x, y
     const drawing = (
@@ -192,13 +220,63 @@ export function HeroDiagram() {
     return { x, y, drawing };
   })();
 
+  const dashboard = (() => {
+    const { cube, cubeCorners } = centerpiece;
+
+    // slight skew
+    const angle = heroAngle;
+
+    const heightToWidthRatio = 0.75;
+    const itemHeight = cube.thickness * 1;
+    const itemWidth = itemHeight / heightToWidthRatio;
+
+    const itemCount = 2;
+    const groupWidth = itemWidth + cascadeGap * (itemCount - 1); // two items
+
+    const boardLayout = cascadeLayout({
+      groupWidth,
+      heightToWidthRatio,
+      gapX: cascadeGap,
+      gapY: cascadeGap,
+      count: itemCount,
+      angle: -angle,
+      side: "left",
+    });
+
+    const { floor, roof } = cubeCorners;
+
+    // edge A, down-right: left → bottom
+    const edgeA = scaleVector(
+      {
+        x: roof.bottom.x - roof.left.x,
+        y: roof.bottom.y - roof.left.y,
+      },
+      -1,
+    );
+
+    const start = addVector(cubeCorners.roof.left, edgeA);
+
+    const drawing = (
+      <>
+        <g
+          transform={`translate(${start.x}, ${start.y - boardLayout.toTop}) ${boardLayout.transform}`}
+        >
+          <CascadeBoards layout={boardLayout} radius={3} backOpacity={0.6} />
+        </g>
+      </>
+    );
+
+    // how far the board's highest corner is above the content box's top (y = 0).
+    // 0 when it already fits
+    const overflow = Math.max(0, boardLayout.toTop - start.y);
+
+    return { overflow, drawing };
+  })();
+
   return (
     <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`} overflow="visible">
       {/* everything inside starts at the content box's top-left */}
       <g transform={`translate(${contentX}, ${contentY})`}>
-        {/* the floor, under the centerpiece */}
-        {floor.drawing}
-
         {/* debug: content box (inside the padding) */}
         <rect
           className="svg-debug"
@@ -212,11 +290,20 @@ export function HeroDiagram() {
           strokeDasharray="6 4"
         />
 
-        {/* middle: the centerpiece */}
-        {centerpiece.drawing}
+        {/* the scene, moved down just enough for the dashboard to fit */}
+        <g transform={`translate(0, ${dashboard.overflow})`}>
+          {/* the floor, under the centerpiece */}
+          {floor.drawing}
 
-        {/* right of the cube: the action menu */}
-        {actionMenu.drawing}
+          {/* left of the cube: the dashboard */}
+          {dashboard.drawing}
+
+          {/* middle: the centerpiece */}
+          {centerpiece.drawing}
+
+          {/* right of the cube: the action menu */}
+          {actionMenu.drawing}
+        </g>
       </g>
     </svg>
   );

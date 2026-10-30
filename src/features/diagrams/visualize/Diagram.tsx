@@ -1,6 +1,7 @@
 import { useId } from "react";
 
 import {
+  addVector,
   BoxBody,
   deepShades,
   deg,
@@ -10,6 +11,7 @@ import {
   parallelogramMatrix,
   pointOnLine,
   roundedPolygonPath,
+  scaleVector,
   type Point,
 } from "@/lib/svg";
 import { BottomCenter } from "./dashboard/BottomCenter";
@@ -91,29 +93,17 @@ export function VisualizeDiagram() {
     ) => {
       const k = dropAlongA / alongA.y;
 
-      const drop = (p: Point) => ({
-        x: p.x + alongA.x * k,
-        y: p.y + alongA.y * k,
-      });
+      const drop = (p: Point) => addVector(p, scaleVector(alongA, k));
       const left = drop(pointOnLine(line.left, line.top, t0));
       const top = drop(pointOnLine(line.left, line.top, t1));
 
-      const sideA = {
-        x: alongA.x * spanA,
-        y: alongA.y * spanA,
-      };
+      const sideA = scaleVector(alongA, spanA);
 
       return {
         left,
         top,
-        right: {
-          x: top.x + sideA.x,
-          y: top.y + sideA.y,
-        },
-        bottom: {
-          x: left.x + sideA.x,
-          y: left.y + sideA.y,
-        },
+        right: addVector(top, sideA),
+        bottom: addVector(left, sideA),
       };
     };
 

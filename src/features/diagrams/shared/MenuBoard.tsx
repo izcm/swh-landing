@@ -5,12 +5,13 @@ import {
   alignCenter,
   contentBoxLayout,
   glyphStrokeLucide,
-  LitPane,
   placeItemCenter,
   RecessedPanel,
   stackWithGaps,
   type cascadeLayout,
 } from "@/lib/svg";
+
+import { CascadeBoards } from "./CascadeBoards";
 
 // one row: its icon and its text, one string per line
 export type MenuBoardRow = { icon: LucideIcon; lines: string[] };
@@ -82,16 +83,9 @@ export function MenuBoard({
 
   return (
     <g transform={`translate(${x}, ${y}) ${layout.transform}`}>
-      {/* the boards, back to front, each a lit pane. the back one fades a bit */}
-      {layout.items.map((board, i) => (
-        <g
-          key={i}
-          transform={`translate(${board.x}, ${board.y})`}
-          opacity={0.6 + board.depth * 0.4}
-        >
-          <LitPane width={board.width} height={board.height} radius={radius} />
-        </g>
-      ))}
+      {/* the boards, back to front. the back one fades a bit */}
+      <CascadeBoards layout={layout} radius={radius} backOpacity={0.6} />
+
 
       {/* the front board's content, inside its padding */}
       <g
@@ -198,8 +192,8 @@ function MenuRow({
           y={text.y + text.lineStarts[j] + text.lineHeights[j] / 2}
           dominantBaseline="central"
           fontSize={fontSize}
-          fill="var(--accent-glow)"
-          fillOpacity={0.8}
+          fill="var(--color-fg-tinted)"
+          fillOpacity={1}
         >
           {line}
         </text>

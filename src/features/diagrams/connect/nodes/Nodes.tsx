@@ -3,7 +3,7 @@ import { useId } from "react";
 import {
   allStrokes,
   BoxBody,
-  glyphStroke,
+  glyphStrokeLucide,
   InkFadeGradient,
   LitEdgeGradient,
   roundedPolygonPath,
@@ -81,7 +81,7 @@ export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
                       y={leftFace.height * 0.5 - iconSize * 0.5}
                       size={iconSize}
                       stroke={color}
-                      strokeWidth={glyphStroke(iconSize, 1.5)}
+                      strokeWidth={glyphStrokeLucide(iconSize, 1.5)}
                     />
                   </g>
                   <g transform={rightFace.transform}>

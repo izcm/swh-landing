@@ -1,6 +1,6 @@
 import {
+  boxCorners,
   dropAlongEdge,
-  isoCubePoints,
   pointOnLine,
   type Point,
 } from "@/lib/svg";
@@ -42,28 +42,29 @@ export function heroConnectors(
     y: centerpiece.y + cube.height,
   };
 
-  // the platform's corners, from isoCubePoints (drawn in a 100-wide box)
-  const pts = isoCubePoints(
-    platform.size,
-    platform.thickness,
-    platform.a.angle,
-    platform.b.angle,
-  );
+  // the platform's roof corners, measured from its own top-left
+  const { roof } = boxCorners({
+    lengthA: platform.a.edgeLength,
+    lengthB: platform.b.edgeLength,
+    angleA: platform.a.angle,
+    angleB: platform.b.angle,
+    thickness: platform.thickness,
+  });
 
   return orbit.platformPoints.map((platformBox, i) => {
     const platformCenter = orbit.platformCenterPoints[i];
     const isLower = platformCenter.y > cubeMiddleY;
     const isAboveOrBelow = isAboveOrBelowCube(platformCenter, centerpiece);
 
-    // ...this platform's corners: scaled + moved to its spot
+    // ...this platform's corners, moved to its spot
     const at = (p: Point) => ({
-      x: platformBox.x + p.x * pts.scale,
-      y: platformBox.y + p.y * pts.scale,
+      x: platformBox.x + p.x,
+      y: platformBox.y + p.y,
     });
-    const roofTop = at(pts.roofTop);
-    const roofRight = at(pts.roofRight);
-    const roofLeft = at(pts.roofLeft);
-    const roofBottom = at(pts.roofBottom);
+    const roofTop = at(roof.top);
+    const roofRight = at(roof.right);
+    const roofLeft = at(roof.left);
+    const roofBottom = at(roof.bottom);
 
     const atTopRight = (t: number) => pointOnLine(roofTop, roofRight, t);
     const atBottomRight = (t: number) => pointOnLine(roofRight, roofBottom, t);

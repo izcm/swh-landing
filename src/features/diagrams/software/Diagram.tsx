@@ -1,6 +1,7 @@
 import { useId } from "react";
 
 import {
+  addVector,
   ISOCube,
   Platform,
   platformStyle,
@@ -16,6 +17,7 @@ import {
   isoCubeMetrics,
   isoRoofCenter,
   paddedBox,
+  scaleVector,
   standOn,
   type BoxLook,
   type Point,
@@ -168,9 +170,9 @@ export function SoftwareDiagram() {
     const handle = (p: Point, towards: Point) => {
       let t = { x: -p.y, y: p.x };
       if (t.x * (towards.x - p.x) + t.y * (towards.y - p.y) < 0) {
-        t = { x: -t.x, y: -t.y };
+        t = scaleVector(t, -1);
       }
-      return fromCircle({ x: p.x + t.x * k, y: p.y + t.y * k });
+      return fromCircle(addVector(p, scaleVector(t, k)));
     };
 
     const c1 = handle(a, b);

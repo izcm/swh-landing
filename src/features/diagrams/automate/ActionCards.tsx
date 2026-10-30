@@ -4,10 +4,11 @@ import {
   accentGlow,
   alignCenter,
   glyphStrokeLucide,
-  LitPane,
   stackWithGaps,
   type cascadeLayout,
 } from "@/lib/svg";
+
+import { CascadeBoards } from "../shared/CascadeBoards";
 
 // one card per action: its icon and its label
 const actions: { icon: LucideIcon; label: string }[] = [
@@ -73,21 +74,8 @@ export function ActionCards({
         return (
           <g key={i} transform={`translate(0, ${stack.starts[i]})`}>
             <g transform={layout.transform}>
-              {/* the cards, back to front, each a lit pane with a dim accent
-                  border. the back one fades a bit */}
-              {layout.items.map((board, j) => (
-                <g
-                  key={j}
-                  transform={`translate(${board.x}, ${board.y})`}
-                  opacity={0.6 + board.depth * 0.4}
-                >
-                  <LitPane
-                    width={board.width}
-                    height={board.height}
-                    radius={radius}
-                  />
-                </g>
-              ))}
+              {/* the cards, back to front. the back one fades a bit */}
+              <CascadeBoards layout={layout} radius={radius} backOpacity={0.6} />
 
               {/* the front card's content */}
               <g transform={`translate(${front.x}, ${front.y})`}>

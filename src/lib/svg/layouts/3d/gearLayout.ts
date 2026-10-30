@@ -1,4 +1,10 @@
-import { arcPath, pointOnCircle, pointOnLine, type Point } from "../../logic";
+import {
+  addVector,
+  arcPath,
+  pointOnCircle,
+  pointOnLine,
+  type Point,
+} from "../../logic";
 import { cascadeLayout } from "../arrange/cascadeLayout";
 import { radialLayout } from "../arrange/radialLayout";
 import { isoTrapezoidCorners } from "../shapes/isoTrapezoidCorners";
@@ -110,7 +116,7 @@ export function gearLayout({
   // tooth edge and one per gap, each joining the piece on the front to the
   // same piece on the back
   const walls = (() => {
-    const behind = (p: Point) => ({ x: p.x + offset.x, y: p.y + offset.y });
+    const behind = (p: Point) => addVector(p, offset);
     const onRim = (angle: number) => pointOnCircle({ angle, circle: wheel });
 
     // a flat wall along the straight edge p → q

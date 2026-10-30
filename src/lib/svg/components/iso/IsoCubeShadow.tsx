@@ -1,4 +1,5 @@
-import { isoCubeMetrics, isoCubePoints, type Point } from "../../logic";
+import { isoCubeMetrics, type Point } from "../../logic";
+import { boxCorners } from "../../layouts";
 import { BoxShadow } from "./BoxShadow";
 
 type IsoCubeMetrics = ReturnType<typeof isoCubeMetrics>;
@@ -10,7 +11,6 @@ type IsoCubeMetrics = ReturnType<typeof isoCubeMetrics>;
 export function IsoCubeShadow({
   x = 0,
   y = 0,
-  size,
   thickness,
   a,
   b,
@@ -23,14 +23,20 @@ export function IsoCubeShadow({
     duration?: string;
     delay?: string;
   }) {
-  const pts = isoCubePoints(size, thickness, a.angle, b.angle);
+  // the cube's floor corners
+  const { floor } = boxCorners({
+    lengthA: a.edgeLength,
+    lengthB: b.edgeLength,
+    angleA: a.angle,
+    angleB: b.angle,
+    thickness,
+  });
 
   return (
     <BoxShadow
       x={x}
       y={y}
-      corners={[pts.floorLeft, pts.floorTop, pts.floorRight, pts.floorBottom]}
-      scale={pts.scale}
+      corners={[floor.left, floor.top, floor.right, floor.bottom]}
       drop={drop}
       duration={duration}
       delay={delay}

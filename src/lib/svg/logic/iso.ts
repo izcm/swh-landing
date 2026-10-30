@@ -7,7 +7,10 @@ export const isoCubeMetrics = (
   size: number,
   thickness?: number,
   // left / right roof-edge slopes. angleB defaults to angleA (a true iso cube)
-  { angleA = deg(30), angleB = angleA }: { angleA?: number; angleB?: number } = {},
+  {
+    angleA = deg(30),
+    angleB = angleA,
+  }: { angleA?: number; angleB?: number } = {},
 ) => {
   const depth = size / (1 / Math.tan(angleA) + 1 / Math.tan(angleB)); // see DEPTH.png
 
@@ -52,43 +55,3 @@ export const standOn = (point: Point, box: IsoBox): Point => {
   const floor = isoFloorCenter(box);
   return { x: point.x - floor.x, y: point.y - floor.y };
 };
-
-// the 8 corners of an iso box, in the 100-wide box it's drawn in (scaled to size afterwards)
-export function isoCubePoints(
-  size: number,
-  thickness: number | undefined,
-  angleA: number,
-  angleB: number = angleA,
-) {
-  const scale = size / 100;
-  const { depth, edgeLength, a, b } = isoCubeMetrics(100, undefined, {
-    angleA,
-    angleB,
-  });
-
-  // undo the scale so thickness stays in real units; default = true cube
-  const verticalHeight =
-    thickness !== undefined ? thickness / scale : edgeLength;
-
-  const roofTop = { x: b.run, y: 0 };
-  const roofLeft = { x: 0, y: depth };
-  const roofRight = { x: 100, y: depth };
-  const roofBottom = { x: a.run, y: depth * 2 };
-
-  const down = (p: Point) => ({ x: p.x, y: p.y + verticalHeight });
-
-  return {
-    scale,
-    depth,
-    verticalHeight,
-    roofTop,
-    roofLeft,
-    roofRight,
-    roofBottom,
-    // floorTop is straight below roofTop
-    floorTop: down(roofTop),
-    floorLeft: down(roofLeft),
-    floorRight: down(roofRight),
-    floorBottom: down(roofBottom),
-  };
-}

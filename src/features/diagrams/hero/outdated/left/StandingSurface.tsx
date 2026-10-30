@@ -2,7 +2,7 @@ import { useId } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   deg,
-  glyphStroke,
+  glyphStrokeLucide,
   InkFadeGradient,
   LitEdgeGradient,
   parallelogramCorners,
@@ -81,7 +81,7 @@ export function StandingSurface({
                 x={-iconSize / 2}
                 y={-iconSize / 2}
                 size={iconSize}
-                strokeWidth={glyphStroke(iconSize, 1.25)}
+                strokeWidth={glyphStrokeLucide(iconSize, 1.25)}
                 stroke={iconStroke}
               />
             </g>

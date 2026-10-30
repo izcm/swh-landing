@@ -9,7 +9,7 @@ export type BoxSize = {
   thickness: number;
 };
 
-// a box's corners, measured from its own top-left (the x / y you give it).
+// a box's corners, with its top-left at (x, y).
 // roof: the top face. floor: the same corners moved down by thickness
 export function boxCorners({
   lengthA,
@@ -17,11 +17,16 @@ export function boxCorners({
   angleA,
   angleB,
   thickness,
-}: BoxSize) {
-  // edge B rises by this much, so start this far down to keep top at y = 0
+  x = 0,
+  y = 0,
+}: BoxSize & {
+  x?: number; // where the box's top-left goes
+  y?: number;
+}) {
+  // edge B rises by this much, so start this far down to keep top at y
   const lift = lengthB * Math.sin(angleB);
   const [left, bottom, right, top] = parallelogramCorners({
-    origin: { x: 0, y: lift },
+    origin: { x, y: y + lift },
     lengthA,
     angleA,
     lengthB,

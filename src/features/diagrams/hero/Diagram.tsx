@@ -8,6 +8,7 @@ import {
   boxCorners,
   cascadeLayout,
   deg,
+  isoCubeEdgeVectors,
   paddedBox,
   scaleVector,
   toDegrees,
@@ -243,18 +244,9 @@ export function HeroDiagram() {
       side: "left",
     });
 
-    const { floor, roof } = cubeCorners;
+    const { edgeA } = isoCubeEdgeVectors(cube);
 
-    // edge A, down-right: left → bottom
-    const edgeA = scaleVector(
-      {
-        x: roof.bottom.x - roof.left.x,
-        y: roof.bottom.y - roof.left.y,
-      },
-      -1,
-    );
-
-    const start = addVector(cubeCorners.roof.left, edgeA);
+    const start = addVector(cubeCorners.roof.left, scaleVector(edgeA, -1));
 
     const drawing = (
       <>
@@ -271,6 +263,69 @@ export function HeroDiagram() {
     const overflow = Math.max(0, boardLayout.toTop - start.y);
 
     return { overflow, drawing };
+  })();
+
+  const centerpieceDecorators = (() => {
+    const { cube, cubeCorners } = centerpiece;
+
+    const { floor: cubeFloor } = cubeCorners;
+
+    const { edgeA, edgeB } = isoCubeEdgeVectors(cube);
+
+    const start = addVector(cubeFloor.top, {
+      x: 0,
+      // y: 0,
+      y: -cube.thickness * 0.1,
+    });
+
+    const lineScale = 1.15; // knob: each line's length, in cube edges
+
+    const end1 = addVector(start, scaleVector(edgeA, lineScale));
+    const end2 = addVector(start, scaleVector(edgeB, -lineScale)); // same line as now: right → bottom
+
+    const verticalLine = (() => {
+      const lineStart = addVector(start, scaleVector(edgeA, 0.2));
+      const lineEnd = addVector(lineStart, {
+        x: 0,
+        y: -cube.thickness * lineScale,
+      });
+      return { start: lineStart, end: lineEnd };
+    })();
+
+    const dashArray = "12 4"; // knob: dash length, gap length
+    const dotRadius = 2; // knob: the tiny circles at the lines' ends
+
+    const drawing = (
+      <g color="var(--accent)" opacity={0.5}>
+        {[verticalLine, { start, end: end1 }, { start, end: end2 }].map(
+          (line, i) => (
+            <line
+              key={i}
+              x1={line.start.x}
+              y1={line.start.y}
+              x2={line.end.x}
+              y2={line.end.y}
+              stroke="currentColor"
+              strokeWidth={1}
+              strokeDasharray={dashArray}
+            />
+          ),
+        )}
+
+        {/* tiny circles at the lines' ends */}
+        {[verticalLine.start, verticalLine.end, end1, end2].map((point, i) => (
+          <circle
+            key={i}
+            cx={point.x}
+            cy={point.y}
+            r={dotRadius}
+            fill="currentColor"
+          />
+        ))}
+      </g>
+    );
+
+    return { drawing };
   })();
 
   return (
@@ -297,6 +352,9 @@ export function HeroDiagram() {
 
           {/* left of the cube: the dashboard */}
           {dashboard.drawing}
+
+          {/* middle: around the centerpiece */}
+          {centerpieceDecorators.drawing}
 
           {/* middle: the centerpiece */}
           {centerpiece.drawing}

@@ -7,17 +7,6 @@ export const deg = (degrees: number) => (degrees * Math.PI) / 180;
 // radians back to degrees, for SVG transforms like skewY() that only take degrees
 export const toDegrees = (radians: number) => (radians * 180) / Math.PI;
 
-// const K = 0.5522847498;
-
-// function corner(r: number) {
-//   const c = r * K;
-
-//   return {
-//     radius: r,
-//     control: c,
-//   };
-// }
-
 export const pointOnCircle = ({
   angle,
   circle,

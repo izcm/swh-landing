@@ -1,6 +1,9 @@
 import { deg } from "@/lib/svg";
 
-import { Centerpiece, innerFill } from "@/features/diagrams/shared/Centerpiece";
+import {
+  Centerpiece,
+  innerRoofFill,
+} from "@/features/diagrams/shared/Centerpiece";
 
 import { DataGrid } from "./DataGrid";
 import { connectLayout } from "./layout";
@@ -105,7 +108,7 @@ export function ConnectDiagram() {
         {...syncArrows}
         duration={12}
         // the inner cube's color, more opaque
-        color={`oklch(from ${innerFill} l c h / 0.55)`}
+        color={`oklch(from ${innerRoofFill} l c h / 0.55)`}
       />
 
       {/* right: the data grid */}

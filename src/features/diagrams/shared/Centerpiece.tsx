@@ -11,9 +11,14 @@ import {
 
 type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
 
-export const innerFill = "oklch(from var(--accent) calc(l + 0.08) c h / 0.45)";
+export const innerRoofFill =
+  "oklch(from var(--accent) calc(l + 0.08) c h / 0.45)";
+export const innerFloorFill =
+  "oklch(from var(--accent) calc(l + 0.1) c h / 0.1875)";
+
 const innerLeftFill = "oklch(from var(--accent) calc(l - 0.2) c h / 0.6)";
 const innerRightFill = "oklch(from var(--accent) calc(l - 0.1) c h / 0.6)";
+
 const faintEdge = "oklch(from var(--accent-electric) l c h / 0.35)";
 const bluerAccent = "oklch(from var(--accent) calc(l - 0.2) c h)";
 const whiterAccent = "oklch(from var(--accent) calc(l + 0.2) c h)";
@@ -173,7 +178,8 @@ export function Centerpiece({
             thickness={innerCube.thickness}
             angle={angle}
             fills={{
-              roof: innerFill,
+              roof: innerRoofFill,
+              floor: innerFloorFill,
               left: innerLeftFill,
               right: innerRightFill,
             }}

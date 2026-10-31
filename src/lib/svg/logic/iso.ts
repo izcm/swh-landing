@@ -39,6 +39,13 @@ export const isoCubeMetrics = (
   };
 };
 
+// a cube's two roof edges as vectors.
+// edgeA: left → bottom (down-right), edgeB: bottom → right (up-right)
+export const isoCubeEdgeVectors = (cube: ReturnType<typeof isoCubeMetrics>) => ({
+  edgeA: { x: cube.a.run, y: cube.depth },
+  edgeB: { x: cube.b.run, y: -cube.depth },
+});
+
 // centers of the roof and floor diamonds, measured from the box's top-left (its x/y)
 export const isoRoofCenter = (box: IsoBox): Point => ({
   x: box.size / 2,

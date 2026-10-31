@@ -11,7 +11,7 @@ import {
 } from "@/lib/svg";
 import { MenuBoard, type MenuBoardRow } from "../shared/MenuBoard";
 import { MenuBoardHeader } from "../shared/MenuBoardHeader";
-import { DashboardContent } from "./dashboard/DashboardContent";
+import { DashboardContent } from "./dashboard/Content";
 
 // the menu board's rows: one per action
 const actions: MenuBoardRow[] = [

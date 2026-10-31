@@ -1,5 +1,5 @@
 import { alignEnd, cascadeLayout, paddedBox, WindowPane } from "@/lib/svg";
-import { DashboardContent } from "@/features/diagrams/act/dashboard/DashboardContent";
+import { DashboardContent } from "@/features/diagrams/act/dashboard/Content";
 
 // the right box: three app windows, tilted along the A edges, sitting on the
 // box's bottom. x / y / width / height = the right box, from Diagram.tsx
@@ -77,7 +77,12 @@ export function HeroAppWindows({
             transform={`translate(${win.x}, ${win.y})`}
             opacity={0.6 + win.depth * 0.4}
           >
-            <WindowPane width={win.width} height={win.height} radius={3} strokeWidth={0.8} />
+            <WindowPane
+              width={win.width}
+              height={win.height}
+              radius={3}
+              strokeWidth={0.8}
+            />
             {win.isFront && frontContent}
           </g>
         ))}

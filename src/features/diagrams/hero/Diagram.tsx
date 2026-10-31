@@ -3,10 +3,12 @@ import { CirclePlay, Mail, Plus, RefreshCw, Zap } from "lucide-react";
 
 // shared svg helpers
 import {
+  accentGlow,
   addVector,
   alignCenter,
   boxCorners,
   cascadeLayout,
+  deepShades,
   deg,
   isoCubeEdgeVectors,
   paddedBox,
@@ -22,6 +24,8 @@ import { MenuBoard, type MenuBoardRow } from "../shared/MenuBoard";
 import { MenuBoardHeader } from "../shared/MenuBoardHeader";
 
 import { floorLayout } from "./floor";
+import { Header } from "./dashboard/Header";
+import { Content } from "./dashboard/Content";
 import { CascadeBoards } from "../shared/CascadeBoards";
 
 const heroAngle = deg(25);
@@ -248,12 +252,61 @@ export function HeroDiagram() {
 
     const start = addVector(cubeCorners.roof.left, scaleVector(edgeA, -1));
 
+    const radius = 3; // knob: the boards' corners, also the boxes' inside the dashboard
+    // the KPI cards' dots: three deep accent shades, darkest first
+    const colorSelection = deepShades(3);
+
+    // the front board: the header across the top, the content under it inside the padding
+    const frontBoard = (() => {
+      const { width, height } = boardLayout.item;
+      const headerHeight = height * 0.12;
+      const box = paddedBox(width, height - headerHeight, 0.6);
+      const content = {
+        x: box.contentX,
+        y: headerHeight + box.contentY,
+        width: box.contentWidth,
+        height: box.contentHeight,
+      };
+      return { width, headerHeight, paddingX: box.paddingX, content };
+    })();
+
     const drawing = (
       <>
         <g
           transform={`translate(${start.x}, ${start.y - boardLayout.toTop}) ${boardLayout.transform}`}
         >
-          <CascadeBoards layout={boardLayout} radius={3} backOpacity={0.6} />
+          <CascadeBoards
+            layout={boardLayout}
+            radius={radius}
+            backOpacity={0.6}
+          />
+
+          {/* the front board's content */}
+          <g opacity={1}>
+            {(() => {
+              const { width, headerHeight, paddingX, content } = frontBoard;
+              return (
+                <g
+                  transform={`translate(${boardLayout.front.x}, ${boardLayout.front.y})`}
+                >
+                  <Header
+                    width={width}
+                    height={headerHeight}
+                    paddingX={paddingX}
+                  />
+                  <g transform={`translate(${content.x}, ${content.y})`}>
+                    <Content
+                      width={content.width}
+                      height={content.height}
+                      radius={radius}
+                      strokeWidth={1} // knob
+                      colorSelection={colorSelection}
+                    />
+                  </g>
+                </g>
+              );
+            })()}
+          </g>
         </g>
       </>
     );
@@ -278,7 +331,7 @@ export function HeroDiagram() {
       y: -cube.thickness * 0.1,
     });
 
-    const lineScale = 1.15; // knob: each line's length, in cube edges
+    const lineScale = 1.2; // knob: each line's length, in cube edges
 
     const end1 = addVector(start, scaleVector(edgeA, lineScale));
     const end2 = addVector(start, scaleVector(edgeB, -lineScale)); // same line as now: right → bottom
@@ -292,11 +345,11 @@ export function HeroDiagram() {
       return { start: lineStart, end: lineEnd };
     })();
 
-    const dashArray = "12 4"; // knob: dash length, gap length
+    const dashArray = "12 6"; // knob: dash length, gap length
     const dotRadius = 2; // knob: the tiny circles at the lines' ends
 
     const drawing = (
-      <g color="var(--accent)" opacity={0.5}>
+      <g>
         {[verticalLine, { start, end: end1 }, { start, end: end2 }].map(
           (line, i) => (
             <line
@@ -305,23 +358,27 @@ export function HeroDiagram() {
               y1={line.start.y}
               x2={line.end.x}
               y2={line.end.y}
-              stroke="currentColor"
-              strokeWidth={1}
+              stroke="var(--accent)"
+              strokeWidth={0.75}
               strokeDasharray={dashArray}
             />
           ),
         )}
 
         {/* tiny circles at the lines' ends */}
-        {[verticalLine.start, verticalLine.end, end1, end2].map((point, i) => (
-          <circle
-            key={i}
-            cx={point.x}
-            cy={point.y}
-            r={dotRadius}
-            fill="currentColor"
-          />
-        ))}
+        <g style={{ filter: accentGlow(4, 50) }}>
+          {[verticalLine.start, verticalLine.end, end1, end2].map(
+            (point, i) => (
+              <circle
+                key={i}
+                cx={point.x}
+                cy={point.y}
+                r={dotRadius}
+                fill="var(--accent)"
+              />
+            ),
+          )}
+        </g>
       </g>
     );
 

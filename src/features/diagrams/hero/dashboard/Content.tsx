@@ -1,7 +1,7 @@
 import {
-  alignEnd,
   ChartGuides,
   contentBoxLayout,
+  layoutUnit,
   LineChart,
   listItemLayout,
   paddedBox,
@@ -14,88 +14,69 @@ import {
 const wave = (x: number) => 0.3 + 0.22 * x + 0.16 * Math.sin(4 * Math.PI * x);
 
 // what the line chart draws
-const data = {
-  trend: Array.from({ length: 85 }, (_, i) => wave(i / 100)),
-};
+const trend = Array.from({ length: 85 }, (_, i) => wave(i / 100));
 
-// what's on the hero dashboard: a side panel on the left, a line chart on
-// the right. fills exactly the width × height it's given (no padding around the
-// outside). a plain <g> drawn with its top-left at (x, y); the diagram bends it onto the roof
-export function HeroDashboard({
-  x = 0,
-  y = 0,
+// the side panel on the left, the line chart and the KPI cards on the right.
+// fills exactly the width × height it's given, no padding. drawn from (0, 0)
+export function Content({
   width,
   height,
   radius,
-  unit,
   strokeWidth,
-  paddingXUnits,
-  paddingYUnits,
   colorSelection,
 }: {
-  x?: number; // where the dashboard's top-left goes
-  y?: number;
-  width: number; // the area to fill
+  width: number;
   height: number;
   radius: number; // corner radius of the boxes inside
-  unit: number; // the diagram's ruler, shared by all five dashboards
   strokeWidth: number; // the boxes' border thickness
-  paddingXUnits: number; // around the content, left and right, in units
-  paddingYUnits: number; // around the content, top and bottom, in units
   colorSelection: string[]; // colors to pick from, in order
 }) {
-  // left: the side panel, flush with the edges
+  const unit = layoutUnit(height);
+  // between the two columns, the two rows and the KPI cards
+  const gapUnits = 0.5; // gap will be this% of unit
+  const gap = unit * gapUnits;
+
+  // left column
   const sidePanel = (() => {
     const groupWidth = width * 0.25;
-    const groupHeight = height;
-    return { groupWidth, groupHeight };
+    const drawing = (
+      <SidePanel width={groupWidth} rowHeight={unit} rowGap={unit * 0.1} />
+    );
+    return { groupWidth, drawing };
   })();
 
-  // right: the rest of the width, split into rows: the header, the line chart,
-  // the KPI cards
-  const contentBox = contentBoxLayout({
-    width: width - sidePanel.groupWidth,
-    height,
-    translateX: sidePanel.groupWidth, // right after the side panel
-    unit,
-    paddingXUnits,
-    paddingYUnits,
-    rowGapUnits: paddingYUnits,
-    rowShares: [0.025, 0.65, 0.325],
-  });
+  // right column: line chart, KPI cards
+  const contentBox = (() => {
+    const translateX = sidePanel.groupWidth;
+    const layout = contentBoxLayout({
+      width: width - translateX,
+      height,
+      translateX,
+      unit,
+      paddingXUnits: 0,
+      paddingYUnits: 0,
+      rowGapUnits: gapUnits,
+      rowShares: [0.65, 0.35],
+    });
+    const { content, rows } = layout;
 
-  const { content, rows, paddingX, paddingY } = contentBox;
-
-  return (
-    <g transform={`translate(${x}, ${y})`}>
-      <SidePanel
-        width={sidePanel.groupWidth}
-        height={sidePanel.groupHeight}
-        radius={radius}
-        unit={unit}
-        strokeWidth={strokeWidth}
-        paddingX={paddingX * 0.75}
-        paddingY={paddingY * 0.75}
-      />
-
-      {/* the content box: the header, the line chart, the KPI cards */}
+    const drawing = (
       <g
-        transform={`translate(${contentBox.translateX + content.x}, ${content.y})`}
+        transform={`translate(${layout.translateX + content.x}, ${content.y})`}
       >
         {[
-          <Header width={content.width} height={rows.sizes[0]} />,
           <LineChartBox
             width={content.width}
-            height={rows.sizes[1]}
+            height={rows.sizes[0]}
             radius={radius}
             unit={unit}
             strokeWidth={strokeWidth}
-            values={data.trend}
+            values={trend}
           />,
           <KpiCards
             width={content.width}
-            height={rows.sizes[2]}
-            gap={paddingX}
+            height={rows.sizes[1]}
+            gap={gap}
             radius={radius}
             strokeWidth={strokeWidth}
             colorSelection={colorSelection}
@@ -106,189 +87,73 @@ export function HeroDashboard({
           </g>
         ))}
       </g>
-    </g>
+    );
+
+    return { drawing };
+  })();
+
+  return (
+    <>
+      {sidePanel.drawing}
+      {contentBox.drawing}
+    </>
   );
 }
 
-// the side panel: a deeper tint of the dashboard's ink, a faint electric line
-// where it meets the rest, and a menu. drawn from (0, 0)
+// the side panel: a menu. drawn from (0, 0)
 function SidePanel({
   width,
-  height,
-  radius,
-  unit,
-  strokeWidth,
-  paddingX,
-  paddingY,
+  rowHeight,
+  rowGap,
 }: {
   width: number; // the panel's width
-  height: number;
-  radius: number; // the dashboard's corner radius, also the selected item's
-  unit: number; // the diagram's ruler
-  strokeWidth: number; // the edge line's and the selected item's border
-  paddingX: number; // around the menu, left and right
-  paddingY: number; // above the menu
+  rowHeight: number; // each menu item's height
+  rowGap: number; // between two menu items
 }) {
-  // the panel's outline: only its left corners are rounded: they sit on the
-  // dashboard's own rounded corners. its right side meets the rest of the
-  // dashboard, so it stays sharp
-  const outline = (() => {
-    const r = radius;
-    // clockwise from the top edge, the same curve as roundedPolygonPath's corners
-    const path = `M ${r} 0 H ${width} V ${height} H ${r} Q 0 ${height} 0 ${height - r} V ${r} Q 0 0 ${r} 0 Z`;
-
-    return { path };
-  })();
-
   // the menu: a column of items from the top, each a dot and one label line.
-  // the selected item sits in a recessed panel like the dashboard's boxes,
-  // with a brighter dot and label
-  const menu = (() => {
-    const rowWidth = (width - paddingX * 2) * 0.85;
-    const rowHeight = unit * 0.35;
-    const rowGap = unit * 0.1;
-    const insetX = rowHeight * 0.5; // from the row's left and right edges
+  // the selected item has a brighter dot and label
+  const insetX = rowHeight * 0.5; // between the dot and the label
 
-    // each item's label length, as a share of the text's width, top to bottom
-    const labelLengths = [0.7, 0.65, 0.8, 0.6, 0.85, 0.7];
-    // const labelLengths = [1, 1, 1, 1, 1, 1];
-    const selectedIdx = 2;
+  // each item's label length, as a share of the text's width, top to bottom
+  const labelLengths = [0.8, 0.65, 0.8, 0.7, 0.85];
+  // const labelLengths = [1, 1, 1, 1, 1, 1];
+  const selectedIdx = 0;
 
-    const rows = stackWithGaps(
-      labelLengths.map(() => rowHeight),
-      rowGap,
-    );
-    const { leading: dot, text } = listItemLayout({
-      height: rowHeight,
-      leadingInset: insetX,
-      leadingRadius: rowHeight * 0.22,
-      gap: insetX,
-      lineHeights: [rowHeight * 0.2], // the label
-    });
-    const textWidth = rowWidth - text.x - insetX;
+  const rows = stackWithGaps(
+    labelLengths.map(() => rowHeight),
+    rowGap,
+  );
+  const { leading: dot, text } = listItemLayout({
+    height: rowHeight,
+    leadingInset: 0,
+    leadingRadius: rowHeight * 0.22,
+    gap: insetX,
+    lineHeights: [rowHeight * 0.2], // the label
+  });
+  const textWidth = width - text.x;
 
+  return rows.starts.map((rowY, i) => {
+    const isSelected = i === selectedIdx;
     return (
-      <g transform={`translate(${paddingX}, ${paddingY})`}>
-        {rows.starts.map((rowY, i) => {
-          const isSelected = i === selectedIdx;
-          return (
-            <g key={i} transform={`translate(0, ${rowY})`}>
-              {isSelected && (
-                <RecessedPanel
-                  width={rowWidth}
-                  height={rowHeight}
-                  radius={radius}
-                  strokeWidth={strokeWidth}
-                />
-              )}
-              <circle
-                cx={dot.cx}
-                cy={dot.cy}
-                r={dot.radius}
-                fill="var(--accent-electric)"
-                fillOpacity={isSelected ? 0.85 : 0.35}
-              />
-              <Tube
-                x={text.x}
-                y={text.y + text.lineStarts[0]}
-                width={textWidth * labelLengths[i]}
-                height={text.lineHeights[0]}
-                fill="var(--accent-electric)"
-                fillOpacity={isSelected ? 0.85 : 0.15}
-              />
-            </g>
-          );
-        })}
+      <g key={i} transform={`translate(0, ${rowY})`}>
+        <circle
+          cx={dot.cx}
+          cy={dot.cy}
+          r={dot.radius}
+          fill="var(--accent-electric)"
+          fillOpacity={isSelected ? 0.85 : 0.35}
+        />
+        <Tube
+          x={text.x}
+          y={text.y + text.lineStarts[0]}
+          width={textWidth * labelLengths[i]}
+          height={text.lineHeights[0]}
+          fill="var(--accent-electric)"
+          fillOpacity={isSelected ? 0.85 : 0.15}
+        />
       </g>
     );
-  })();
-
-  return (
-    <g>
-      {/* the panel: a deeper tint of the dashboard's ink (--accent-ink is
-          0.17 lightness), and a faint electric line where it meets the rest */}
-      <path
-        d={outline.path}
-        // fill="oklch(from var(--accent) 0.16 0.05 h)"
-        fill="oklch(from var(--accent) 0.15 0.042 h)"
-      />
-      <line
-        x1={width}
-        y1={0}
-        x2={width}
-        y2={height}
-        stroke="var(--accent-electric)"
-        strokeOpacity={0.5}
-        strokeWidth={strokeWidth}
-      />
-      {menu}
-    </g>
-  );
-}
-
-// the header: an outlined title on the left and a dim button on the right,
-// both rects as tall as the header row, with fully round ends. drawn from (0, 0)
-function Header({
-  width,
-  height,
-}: {
-  width: number; // the header row's width
-  height: number; // the header row's height
-}) {
-  const titleWidth = width * 0.25;
-  const buttonWidth = width * 0.1;
-  const { offset: buttonX } = alignEnd(width, buttonWidth);
-
-  return (
-    <g>
-      <TitleTube width={titleWidth} height={height} />
-      <OutlineButton x={buttonX} width={buttonWidth} height={height} />
-    </g>
-  );
-}
-
-// a dashboard header's title: a filled pill as tall as the header row.
-// drawn from (0, 0)
-function TitleTube({
-  width,
-  height,
-}: {
-  width: number;
-  height: number; // the header row's height
-}) {
-  return (
-    <rect
-      width={width}
-      height={height}
-      rx={height / 2}
-      fill="var(--accent-electric)"
-      fillOpacity={0.4}
-    />
-  );
-}
-
-// a dashboard header's button: a pill drawn with a stroke only, as tall as the
-// header row. drawn from (x, 0)
-function OutlineButton({
-  x = 0,
-  width,
-  height,
-}: {
-  x?: number; // from the header's left edge
-  width: number;
-  height: number; // the header row's height
-}) {
-  return (
-    <rect
-      x={x}
-      width={width}
-      height={height}
-      rx={height / 2}
-      fill="none"
-      stroke="var(--accent)"
-      strokeWidth={0.5}
-    />
-  );
+  });
 }
 
 // the line chart's box: same look as act's ChartRow, its own curve, nothing

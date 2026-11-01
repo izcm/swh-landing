@@ -3,12 +3,12 @@ import {
   layoutUnit,
   paddedBox,
   RecessedPanel,
-  stackWithGaps,
+  splitWithGaps,
 } from "@/lib/svg";
 import {
   ScandinaviaMap,
   scandinaviaMapBounds,
-} from "../../shared/ScandinaviaMap";
+} from "../../shared/maps/ScandinaviaMap";
 import { ChartRow } from "./ChartRow";
 import { List } from "./List";
 
@@ -31,18 +31,18 @@ export function DashboardContent({
   const unit = layoutUnit(height);
 
   const rowGap = unit * 0.5;
-  const rowSpace = height - rowGap;
-  const rowSizes = [rowSpace * 0.45, rowSpace * 0.55];
-  const rows = stackWithGaps(rowSizes, rowGap);
+  const { sizes: rowSizes, starts: rowStarts } = splitWithGaps(
+    height,
+    [0.45, 0.55],
+    rowGap,
+  );
 
   const columnGap = unit * 0.75;
 
   // second row: two columns like the chart row, the list on the left and
   // the map on the right, shared 65 / 35 after the gap
   const bottomColumns = (() => {
-    const space = width - columnGap;
-    const sizes = [space * 0.65, space * 0.35];
-    const { starts } = stackWithGaps(sizes, columnGap);
+    const { sizes, starts } = splitWithGaps(width, [0.65, 0.35], columnGap);
     return { sizes, starts };
   })();
 
@@ -92,17 +92,20 @@ export function DashboardContent({
             radius={radius}
             strokeWidth={1}
           />
-          <g
-            transform={`translate(${translateX}, ${translateY})`}
+          <ScandinaviaMap
+            x={translateX}
+            y={translateY}
             opacity={0.65} // knob
-          >
-            <ScandinaviaMap
-              height={mapHeight}
-              fills={{ norway: "none", sweden: "none", denmark: "none" }}
-              stroke="var(--accent)"
-              strokeWidth={0.5}
-            />
-          </g>
+            height={mapHeight}
+            fills={{
+              norway: "none",
+              sweden: "none",
+              denmark: "none",
+              finland: "none",
+            }}
+            stroke="var(--accent)"
+            strokeWidth={0.5}
+          />
         </>
       );
     })(),
@@ -129,7 +132,7 @@ export function DashboardContent({
 
   return (
     <g>
-      {rows.starts.map((rowY, i) => (
+      {rowStarts.map((rowY, i) => (
         <g key={i} transform={`translate(0, ${rowY})`}>
           {/* debug: the row's box */}
           <rect

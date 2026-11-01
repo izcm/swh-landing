@@ -8,7 +8,7 @@ import {
   Tube,
   WindowDots,
 } from "@/lib/svg";
-import { Gauge } from "../../shared/Gauge";
+import { Gauge } from "../../../shared/Gauge";
 import type { ChartData } from "../data";
 import { CardBackground } from "./CardBackground";
 import { TitleTube } from "./header-elements";

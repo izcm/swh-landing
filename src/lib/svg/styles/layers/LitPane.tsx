@@ -29,7 +29,14 @@ export function LitPane({
         <InkFadeGradient id={inkId} />
         <LitEdgeGradient id={edgeId} opacity={edgeOpacity} />
       </defs>
-      <rect width={width} height={height} rx={radius} fill="var(--ground)" />
+      <rect
+        width={width}
+        height={height}
+        rx={radius}
+        fill="var(--ground)"
+        stroke="var(--accent-faint)"
+        strokeWidth={1}
+      />
       {/* the ink fade, with the lit edge as its stroke */}
       <rect
         width={width}

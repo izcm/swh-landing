@@ -7,11 +7,13 @@ import {
   glyphStrokeLucide,
   placeItemCenter,
   RecessedPanel,
+  shortSideUnit,
+  splitWithGaps,
   stackWithGaps,
   type cascadeLayout,
 } from "@/lib/svg";
 
-import { CascadeBoards } from "./CascadeBoards";
+import { CascadeBoards } from "../CascadeBoards";
 
 // one row: its icon and its text, one string per line
 export type MenuBoardRow = { icon: LucideIcon; lines: string[] };
@@ -24,12 +26,8 @@ export function MenuBoard({
   y = 0,
   layout,
   radius,
-  unit,
-  paddingXUnits,
-  paddingYUnits,
+  spacing,
   headerShare,
-  headerGapUnits,
-  rowGapUnits,
   fontSizeUnits,
   header: renderHeader,
   rows,
@@ -38,27 +36,24 @@ export function MenuBoard({
   y?: number;
   layout: ReturnType<typeof cascadeLayout>;
   radius: number; // the boards' and rows' corner radius
-  unit: number; // the diagram's ruler, the padding and gaps are measured in it
-  paddingXUnits: number; // around the content, left and right, in units
-  paddingYUnits: number; // around the content, top and bottom, in units
+  spacing: { paddingX: number; paddingY: number; rowGap: number }; // in units
   headerShare: number; // the header's share of the content's height
-  headerGapUnits: number; // header → rows, in units
-  rowGapUnits: number; // between two rows, in units
   fontSizeUnits: number; // the rows' text size, in units
   // draws the header in its box, from (0, 0)
-  header: (box: { width: number; height: number }) => ReactNode;
+  header: (box: { width: number; height: number; unit: number }) => ReactNode;
   rows: MenuBoardRow[];
 }) {
   const { front, item } = layout;
+  const unit = shortSideUnit(item.width, item.height);
 
   // the front board's content: the header, then the list of rows
   const contentBox = contentBoxLayout({
     width: item.width,
     height: item.height,
     unit,
-    paddingXUnits,
-    paddingYUnits,
-    rowGapUnits: headerGapUnits,
+    paddingXUnits: spacing.paddingX,
+    paddingYUnits: spacing.paddingY,
+    rowGapUnits: 0,
     rowShares: [headerShare, 1 - headerShare],
   });
   const { content, rows: contentRows } = contentBox;
@@ -66,26 +61,24 @@ export function MenuBoard({
   // the list: one row per entry, stacked in the list's row with a smaller gap
   const list = (() => {
     const height = contentRows.sizes[1];
-    const gap = unit * rowGapUnits;
+    const gap = unit * spacing.rowGap;
     const count = rows.length;
-    // count rows + (count - 1) gaps fill the list's height
-    const itemHeight = (height - gap * (count - 1)) / count;
-    const { starts } = stackWithGaps(
-      Array.from({ length: count }, () => itemHeight),
+    const { sizes, starts } = splitWithGaps(
+      height,
+      Array.from({ length: count }, () => 1 / count),
       gap,
     );
 
-    return { y: contentRows.starts[1], itemHeight, starts };
+    return { y: contentRows.starts[1], itemHeight: sizes[0], starts };
   })();
 
   // the header row's box, the caller draws in it
-  const header = { width: content.width, height: contentRows.sizes[0] };
+  const header = { width: content.width, height: contentRows.sizes[0], unit };
 
   return (
     <g transform={`translate(${x}, ${y}) ${layout.transform}`}>
       {/* the boards, back to front. the back one fades a bit */}
       <CascadeBoards layout={layout} radius={radius} backOpacity={0.6} />
-
 
       {/* the front board's content, inside its padding */}
       <g

@@ -1,6 +1,6 @@
 import { Settings } from "lucide-react";
 import { WindowDots } from "@/lib/svg";
-import { MenuBoardHeader } from "../shared/MenuBoardHeader";
+import { MenuBoardHeader } from "../shared/menu-board/Header";
 
 // the automate rule board's header: gear icon + title on the left, the
 // window dots at the right end. drawn in a width × height box from (0, 0)

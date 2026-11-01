@@ -27,15 +27,14 @@ export function SectionBase({
   return (
     <section
       id={id}
-      className="flex flex-col min-h-below-nav scroll-mt-18 py-6 lg:py-"
+      className="flex flex-col min-h-below-nav scroll-mt-18 py-6 mx-4 lg:py-"
     >
       <div
         className="
-      relative isolate overflow-hidden
-      flex flex-col gap-6
-      p-4 w-full mx-auto
-      sm:p-8 max-w-3xl 
-      "
+          relative isolate overflow-hidden
+          flex flex-col gap-6 w-full mx-auto
+          max-w-3xl bg.white 
+          "
       >
         <EyebrowRule index={index} label={eyebrow} maxIndex={maxIndex} />
         <h2 className="text-2xl sm:text-3xl font-medium text-fg">{title}</h2>

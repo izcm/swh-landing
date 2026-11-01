@@ -5,6 +5,7 @@ import {
   Tube,
   LineChart,
   RecessedPanel,
+  splitWithGaps,
   stackWithGaps,
 } from "@/lib/svg";
 import { Gauge } from "../../shared/Gauge";
@@ -28,9 +29,11 @@ export function ChartRow({
   drilldown?: boolean; // consumer decides if dashboard displays highlighted areas on graphs for the "drilldown" look
 }) {
   // the row's width, shared 62 / 38 after the gap
-  const columnSpace = width - gap;
-  const columnSizes = [columnSpace * 0.65, columnSpace * 0.35];
-  const columns = stackWithGaps(columnSizes, gap);
+  const { sizes: columnSizes, starts: columnStarts } = splitWithGaps(
+    width,
+    [0.65, 0.35],
+    gap,
+  );
 
   // right box: like visualize's gauge card, the gauge with its label,
   // padded in the box's own unit
@@ -131,7 +134,7 @@ export function ChartRow({
 
   return (
     <>
-      {columns.starts.map((columnX, i) => (
+      {columnStarts.map((columnX, i) => (
         <g key={i} transform={`translate(${columnX}, 0)`}>
           <RecessedPanel
             width={columnSizes[i]}

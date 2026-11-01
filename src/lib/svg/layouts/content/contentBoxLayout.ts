@@ -1,4 +1,4 @@
-import { paddedBox, stackWithGaps } from "../../logic";
+import { paddedBox, splitWithGaps } from "../../logic";
 
 // a content box: width × height, translateX in from its parent's left edge.
 // its content sits paddingXUnits / paddingYUnits of `unit` in from the edges
@@ -44,9 +44,11 @@ export function contentBoxLayout({
   };
 
   const rowGap = unit * rowGapUnits;
-  const rowSpace = content.height - rowGap * (rowShares.length - 1);
-  const rowSizes = rowShares.map((share) => rowSpace * share);
-  const { starts: rowStarts } = stackWithGaps(rowSizes, rowGap);
+  const { sizes: rowSizes, starts: rowStarts } = splitWithGaps(
+    content.height,
+    rowShares,
+    rowGap,
+  );
 
   return {
     groupWidth,

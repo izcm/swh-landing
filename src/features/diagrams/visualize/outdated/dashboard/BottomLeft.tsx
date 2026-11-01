@@ -8,7 +8,7 @@ import {
 import {
   ScandinaviaMap,
   scandinaviaMapBounds,
-} from "../../shared/ScandinaviaMap";
+} from "../../../shared/maps/ScandinaviaMap";
 import type { ChartData } from "../data";
 import { CardBackground } from "./CardBackground";
 import { TitleTube } from "./header-elements";
@@ -63,7 +63,12 @@ export function BottomLeft({
     const { offset: translateX } = alignCenter(cardWidth, width);
     const translateY = box.contentY;
 
-    const fills = { norway: "none", sweden: "none", denmark: "none" };
+    const fills = {
+      norway: "none",
+      sweden: "none",
+      denmark: "none",
+      finland: "none",
+    };
 
     return { height, translateX, translateY, fills };
   })();
@@ -104,7 +109,7 @@ export function BottomLeft({
                 height={scandinaviaMap.height}
                 fills={scandinaviaMap.fills}
                 stroke="var(--accent)"
-                strokeWidth={strokeWidth * 0.5}
+                strokeWidth={0.2}
               />
             </g>
           </>,

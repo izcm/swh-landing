@@ -2,7 +2,7 @@ import { SectionBase } from "@/features/core/SectionBase";
 
 import { ConnectDiagram } from "@/features/diagrams/connect/Diagram";
 import { ActDiagram } from "@/features/diagrams/act/Diagram";
-import { VisualizeDiagram } from "@/features/diagrams/visualize/Diagram";
+import { VisualizeDiagram } from "../diagrams/visualize/Diagram";
 import { AutomateDiagram } from "@/features/diagrams/automate/Diagram";
 
 const sections = [

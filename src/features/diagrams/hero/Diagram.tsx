@@ -19,8 +19,8 @@ import {
 import { Centerpiece } from "@/features/diagrams/shared/Centerpiece";
 import { centerpieceLayout } from "@/features/diagrams/shared/centerpieceLayout";
 
-import { MenuBoard, type MenuBoardRow } from "../shared/MenuBoard";
-import { MenuBoardHeader } from "../shared/MenuBoardHeader";
+import { MenuBoard, type MenuBoardRow } from "../shared/menu-board/MenuBoard";
+import { MenuBoardHeader } from "../shared/menu-board/Header";
 
 import { floorLayout } from "./floor";
 import { Header } from "./dashboard/content/Header";
@@ -187,13 +187,10 @@ export function HeroDiagram() {
     });
 
     const radius = unit * 0.1; // knob: the boards' and rows' corners
-    const paddingXUnits = 0.25; // knob
-    const paddingYUnits = 0.2; // knob
-    const headerShare = 0.15; // knob: the header's share of the board's content
-    const headerGapUnits = 0.15; // knob: header → rows
-    const rowGapUnits = 0.18; // knob: between two rows
-    const fontSizeUnits = 0.26; // knob: the rows' text size
-    const headerFontSize = unit * 0.28; // knob: the header's text size
+    const spacing = { paddingX: 0.8, paddingY: 0.6, rowGap: 0.6 }; // in the board's unit
+    const headerShare = 0.18;
+    const fontSizeUnits = 0.8;
+    const headerFontSizeUnits = 0.9;
 
     // its top-left at x, y
     const drawing = (
@@ -202,17 +199,13 @@ export function HeroDiagram() {
         y={y}
         layout={boardLayout}
         radius={radius}
-        unit={unit}
-        paddingXUnits={paddingXUnits}
-        paddingYUnits={paddingYUnits}
+        spacing={spacing}
         headerShare={headerShare}
-        headerGapUnits={headerGapUnits}
-        rowGapUnits={rowGapUnits}
         fontSizeUnits={fontSizeUnits}
-        header={({ height }) => (
+        header={({ height, unit }) => (
           <MenuBoardHeader
             height={height}
-            fontSize={headerFontSize}
+            fontSize={unit * headerFontSizeUnits}
             icon={Zap}
             title="Actions"
           />

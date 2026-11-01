@@ -6,7 +6,7 @@ import {
   glyphStrokeLucide,
   listItemLayout,
   RecessedPanel,
-  stackWithGaps,
+  splitWithGaps,
 } from "@/lib/svg";
 
 // how much of the row a label takes, like a word or two of text: somewhere
@@ -37,13 +37,12 @@ export function List({
   rowGap: number; // space between rows
   selectedIdx?: number; // the highlighted row. none if left out
 }) {
-  // rowCount rows + (rowCount - 1) gaps fill the height
-  const rowHeight = (height - rowGap * (rowCount - 1)) / rowCount;
-
-  const rows = stackWithGaps(
-    Array.from({ length: rowCount }, () => rowHeight),
+  const rows = splitWithGaps(
+    height,
+    Array.from({ length: rowCount }, () => 1 / rowCount),
     rowGap,
   );
+  const rowHeight = rows.sizes[0];
 
   // left to middle: the marker, then the label with the subtitle under it,
   // both centered in the row's height

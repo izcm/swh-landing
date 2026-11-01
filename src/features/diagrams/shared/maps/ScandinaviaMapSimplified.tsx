@@ -12,7 +12,7 @@ const outlines = {
 
 // the box around all three outlines, in the same coordinates. the caller can
 // use it for the map's width: height · width / height
-export const scandinaviaMapBounds = {
+export const scandinaviaMapSimplifiedBounds = {
   x: 45,
   y: 120.3,
   width: 560,
@@ -21,8 +21,8 @@ export const scandinaviaMapBounds = {
 
 // norway, sweden and denmark, each filled with its own color and outlined in
 // `stroke`. `height` tall, and as wide as the map's shape makes it. drawn from
-// (0, 0): the top-left of scandinaviaMapBounds
-export function ScandinaviaMap({
+// (0, 0): the top-left of scandinaviaMapSimplifiedBounds
+export function ScandinaviaMapSimplified({
   height,
   fills,
   stroke,
@@ -33,8 +33,8 @@ export function ScandinaviaMap({
   stroke: string; // the outline around each country
   strokeWidth: number; // the outline's thickness, at the size it's drawn
 }) {
-  const { x, y } = scandinaviaMapBounds;
-  const scale = height / scandinaviaMapBounds.height;
+  const { x, y } = scandinaviaMapSimplifiedBounds;
+  const scale = height / scandinaviaMapSimplifiedBounds.height;
 
   return (
     <g

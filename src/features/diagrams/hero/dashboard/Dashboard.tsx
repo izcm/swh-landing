@@ -5,7 +5,7 @@ import {
   paddedBox,
   placeItemCenter,
   RecessedPanel,
-  stackWithGaps,
+  splitWithGaps,
 } from "@/lib/svg";
 
 import { KPICardContent } from "./content/KPICardContent";
@@ -65,9 +65,11 @@ export function Dashboard({
     const cards = (() => {
       const shares = [0.5, 0.25, 0.25];
       const height = rows.sizes[1];
-      const space = content.width - gap * (shares.length - 1);
-      const widths = shares.map((share) => space * share);
-      const { starts } = stackWithGaps(widths, gap);
+      const { sizes: widths, starts } = splitWithGaps(
+        content.width,
+        shares,
+        gap,
+      );
       // how full each card's bottom tube is, left to right
       const levels = [0.65, 0.4, 0.8];
 

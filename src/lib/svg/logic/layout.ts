@@ -59,8 +59,12 @@ export const spaceAround = ({
   return start + gap / 2 + index * (itemSize + gap);
 };
 
-// the shared ruler: 1/12 of a box's height
-export const layoutUnit = (height: number) => height / 12;
+// the shared ruler: 1/12 of the size it's given
+export const layoutUnit = (size: number) => size / 12;
+
+// the same ruler, from a box's shorter side
+export const shortSideUnit = (width: number, height: number) =>
+  layoutUnit(Math.min(width, height));
 
 // any width × height box (a whole diagram's viewBox, a group, …): a base unit
 // (1/12 of its height, or the `unit` passed in, so boxes of different heights
@@ -148,4 +152,12 @@ export function stackWithGaps(sizes: number[], gap: number) {
   const dividers = starts.slice(1).map((start) => start - gap / 2);
 
   return { starts, dividers };
+}
+
+// splits `length` by `shares` after taking out the gaps between them
+export function splitWithGaps(length: number, shares: number[], gap: number) {
+  const space = length - gap * (shares.length - 1);
+  const sizes = shares.map((share) => space * share);
+
+  return { sizes, ...stackWithGaps(sizes, gap) };
 }

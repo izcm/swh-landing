@@ -1,246 +1,178 @@
 import { useId } from "react";
-
 import {
-  addVector,
-  BoxBody,
-  deepShades,
-  deg,
-  EdgeGradient,
+  alignCenter,
+  alignEnd,
+  InkFadeGradient,
+  layoutUnit,
   LitEdgeGradient,
-  paddedBox,
   parallelogramMatrix,
+  placeItemCenter,
   pointOnLine,
   roundedPolygonPath,
-  scaleVector,
-  type Point,
+  splitWithGaps,
 } from "@/lib/svg";
-import { BottomCenter } from "./dashboard/BottomCenter";
-import { BottomLeft } from "./dashboard/BottomLeft";
-import { BottomRight } from "./dashboard/BottomRight";
-import { UpperLeft } from "./dashboard/UpperLeft";
-import { UpperRight } from "./dashboard/UpperRight";
-import { chartData } from "./data";
+import {
+  ScandinaviaOrthographic,
+  scandinaviaOrthographicBounds,
+} from "../shared/maps/ScandinaviaOrthographic";
 
 export function VisualizeDiagram() {
   const viewboxWidth = 540;
-  const viewboxHeight = 340;
-  // same unit as Connect: 1/12 of the height
-  const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
+  const viewboxHeight = 360;
 
-  // the dashboards' border: same as act's windows, bright at the top and fading down
-  const paneEdgeId = useId();
-  // the dashboards' faint box edges: one gradient per dashboard, sized to it
-  const dashboardEdgeId = useId();
-  const dashboardStrokes = (i: number) => {
-    const edge = `url(#${dashboardEdgeId}-${i})`;
-    return { roof: edge, left: edge, right: edge, floor: edge, floorTop: edge };
-  };
+  const unit = layoutUnit(viewboxHeight);
 
-  const screenRadius = 3;
+  // ids for the board's gradients in <defs>
+  const inkId = useId();
+  const edgeId = useId();
 
-  // colors the dashboards pick from, in order: three deep accent shades, darkest first
-  const colorSelection = deepShades(3);
+  const boards = (() => {
+    const boardsConfig = [
+      { height: 1, insetLeft: 0, insetRight: 0.08 },
+      { height: 0.9, insetLeft: 0.08, insetRight: 0 },
+    ];
+    const radius = 12;
 
-  const angleA = deg(60);
-  const angleB = deg(11.5);
+    const { sizes, starts } = splitWithGaps(
+      viewboxWidth,
+      [0.5, 0.5],
+      unit * 0.75,
+    );
 
-  // edge A: from the top of the box down to the right side
-  const edgeA = (() => {
-    const drop = viewboxHeight * 0.325; // how far it goes down
-    const run = drop / Math.tan(angleA); // how far it goes sideways
-    const edgeLength = drop / Math.sin(angleA);
-    return { run, drop, edgeLength };
-  })();
+    const layouts = sizes.map((boxWidth, i) => {
+      const { height, insetLeft, insetRight } = boardsConfig[i];
+      const boxHeight = viewboxHeight * height;
+      const { offset: boxY } = alignEnd(viewboxHeight, boxHeight);
+      const boxX = starts[i];
 
-  // edge B: from the left side up to the top, across the rest of the width
-  const edgeB = (() => {
-    const run = viewboxWidth - edgeA.run; // how far it goes sideways
-    const rise = run * Math.tan(angleB); // how far it goes up
-    const edgeLength = Math.hypot(run, rise); // edge B's full length
-    return { run, rise, edgeLength };
-  })();
+      const left = boxHeight * insetLeft;
+      const right = boxHeight * insetRight;
 
-  // two dashboards on edge B, three on a parallel line below
-  const dashboards = (() => {
-    const thickness = unit * 0.15; // how tall each dashboard's sides are
-    const dashboardGroupsGap = unit * 0.75; // between the upper and the lower row
+      // top-left, top-right, bottom-right, bottom-left
+      const corners = [
+        { x: boxX, y: boxY + left },
+        { x: boxX + boxWidth, y: boxY + right },
+        { x: boxX + boxWidth, y: boxY + boxHeight - right },
+        { x: boxX, y: boxY + boxHeight - left },
+      ];
 
-    const alongA = { x: edgeA.run, y: edgeA.drop };
-    const gap = unit / edgeB.edgeLength; // one unit, as a part of edge B
-
-    const upperLine = {
-      left: { x: 0, y: edgeB.rise },
-      top: { x: edgeB.run, y: 0 },
-    };
-
-    const missing = edgeA.run * Math.tan(angleB);
-    const lowerLeft = {
-      x: 0,
-      y: edgeB.rise + edgeA.drop + missing + dashboardGroupsGap + thickness,
-    };
-    const lowerLine = {
-      left: lowerLeft,
-      top: { x: edgeB.run, y: lowerLeft.y - edgeB.rise },
-    };
-
-    // 0 = line.left, 1 = line.top
-    const between = (
-      line: { left: Point; top: Point },
-      t0: number,
-      t1: number,
-      dropAlongA: number = 0, // for lower middle dashboard
-      spanA: number = 1, // 0..1
-    ) => {
-      const k = dropAlongA / alongA.y;
-
-      const drop = (p: Point) => addVector(p, scaleVector(alongA, k));
-      const left = drop(pointOnLine(line.left, line.top, t0));
-      const top = drop(pointOnLine(line.left, line.top, t1));
-
-      const sideA = scaleVector(alongA, spanA);
+      // content gets the biggest rectangle that fits inside the trapezoid
+      const inner = Math.max(left, right);
 
       return {
-        left,
-        top,
-        right: addVector(top, sideA),
-        bottom: addVector(left, sideA),
+        corners,
+        ...parallelogramMatrix({
+          origin: { x: boxX, y: boxY + inner },
+          xEnd: { x: boxX + boxWidth, y: boxY + inner },
+          yEnd: { x: boxX, y: boxY + boxHeight - inner },
+        }),
       };
-    };
+    });
 
-    const splitUpper = 0.625;
-    const splitLower = [0.35, 0.78] as const;
+    const drawing = () =>
+      layouts.map(({ corners }, i) => {
+        const outline = roundedPolygonPath(corners, radius);
+
+        return (
+          <g key={i}>
+            <path
+              d={outline}
+              fill="var(--ground)"
+              stroke="var(--accent-faint)"
+              strokeWidth={1}
+            />
+            <path
+              d={outline}
+              fill={`url(#${inkId})`}
+              stroke={`url(#${edgeId})`}
+              strokeWidth={1}
+            />
+          </g>
+        );
+      });
 
     return {
-      upper: {
-        left: between(upperLine, 0, splitUpper - gap),
-        right: between(upperLine, splitUpper, 1),
-      },
-      lower: {
-        left: between(lowerLine, 0, splitLower[0] - gap, 0, 0.75),
-        middle: between(lowerLine, splitLower[0], splitLower[1] - gap, 12),
-        right: between(lowerLine, splitLower[1], 1, 0, 0.65),
-      },
-      upperLine,
-      lowerLine,
-      thickness,
+      sizes,
+      starts,
+      layouts,
+      drawing,
     };
   })();
 
-  // what's drawn on each dashboard, in the same order as the list below.
-  // null = empty for now
-  const dashboardContents = [
-    UpperLeft,
-    UpperRight,
-    BottomLeft,
-    BottomCenter,
-    BottomRight,
-  ];
+  const map = (() => {
+    const { height, width } = boards.layouts[0];
+    const [topLeft, topRight, bottomRight, bottomLeft] =
+      boards.layouts[0].corners;
+
+    const headerStart = pointOnLine(topLeft, bottomLeft, 0.085);
+    const headerEnd = pointOnLine(topRight, bottomRight, 0.085);
+
+    const headerHeight = height * 0.1;
+
+    const mapHeight = height - headerHeight;
+
+    const mapWidth =
+      (mapHeight * scandinaviaOrthographicBounds.width) /
+      scandinaviaOrthographicBounds.height;
+
+    const { offsetX: mapX, offsetY: mapY } = placeItemCenter({
+      parentHeight: height - headerHeight,
+      parentWidth: width,
+      itemWidth: mapWidth,
+      itemHeight: mapHeight,
+    });
+    const header = () => (
+      <line
+        x1={headerStart.x}
+        y1={headerStart.y}
+        x2={headerEnd.x}
+        y2={headerEnd.y}
+        stroke="var(--accent-faint)"
+        strokeWidth={1}
+      />
+    );
+
+    const drawing = () => (
+      <g
+        transform={`translate(${mapX}, ${mapY + headerHeight}) rotate(8, ${mapWidth * 0.5}, ${mapHeight * 0.5})`}
+      >
+        <ScandinaviaOrthographic
+          height={mapHeight}
+          fills={{
+            norway: "none",
+            sweden: "none",
+            denmark: "none",
+            finland: "none",
+          }}
+          stroke="var(--accent)"
+          strokeWidth={0.5}
+        />
+      </g>
+    );
+
+    return { header, drawing };
+  })();
 
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
-      // 615 units at up to 768px ≈ 1.25px per unit, close to Connect. centered
-
-      className="block w-full max-w-2xl mx-auto"
+      className="block max-w-3xl w-full mx-auto"
+      overflow={"visible"}
     >
       <defs>
-        {/* act's window border: electric, bright at the top and fading down */}
-        <LitEdgeGradient id={paneEdgeId} />
+        <InkFadeGradient id={inkId} />
+        <LitEdgeGradient id={edgeId} />
       </defs>
+      {boards.drawing()}
 
-      {/* all five dashboards: dark ground + act's ink fade, act's border */}
-      {[
-        dashboards.upper.left,
-        dashboards.upper.right,
-        dashboards.lower.left,
-        dashboards.lower.middle,
-        dashboards.lower.right,
-      ].map((roof, i) => (
-        <g key={i}>
-          <defs>
-            <EdgeGradient
-              id={`${dashboardEdgeId}-${i}`}
-              width={roof.right.x}
-              height={roof.bottom.y + dashboards.thickness}
-              opacity={[0.2, 0.35, 0.1]}
-            />
-          </defs>
-          <BoxBody
-            roof={roof}
-            thickness={dashboards.thickness}
-            strokeWidth={1}
-            fills={{
-              //   roof: "none",
-              roof: "var(--accent-ink)",
-              right: "var(--platform-wall-fill)",
-              left: "var(--platform-wall-fill)",
-              floor: "oklch(from var(--accent) 0.22 0.08 h)",
-              //   floor: "oklch(from var(--accent) 0.22 0.08 h)",
-            }}
-            radius={screenRadius}
-            strokes={dashboardStrokes(i)}
-          />
-          {/* lit edge: one outline around the roof, like act's window rect */}
-          <path
-            d={roundedPolygonPath(
-              [roof.left, roof.top, roof.right, roof.bottom],
-              screenRadius,
-            )}
-            fill="none"
-            stroke={`url(#${paneEdgeId})`}
-            strokeWidth={1}
-          />
-          {/* the content, bent onto the roof */}
-          {(() => {
-            const Content = dashboardContents[i];
-            if (!Content) return null;
-            const { transform, width, height } = parallelogramMatrix({
-              origin: roof.left,
-              xEnd: roof.top,
-              yEnd: roof.bottom,
-            });
-            return (
-              <g transform={transform}>
-                <Content
-                  width={width}
-                  height={height}
-                  radius={screenRadius}
-                  unit={unit}
-                  strokeWidth={1}
-                  paddingXUnits={0.3}
-                  paddingYUnits={0.25}
-                  colorSelection={colorSelection}
-                  chartData={chartData}
-                />
-              </g>
-            );
-          })()}
-        </g>
-      ))}
+      {map.header()}
+      <g transform={boards.layouts[0].transform}>{map.drawing()}</g>
 
-      {/* debug: the upper and the lower line the dashboards sit on, from
-          line.left to line.top */}
-      {[dashboards.upperLine, dashboards.lowerLine].map((line, i) => (
-        <line
-          key={i}
-          className="svg-debug"
-          x1={line.left.x}
-          y1={line.left.y}
-          x2={line.top.x}
-          y2={line.top.y}
-          stroke="#ff4fa3" // pink: edge B's direction
-          strokeWidth={0.75}
-        />
-      ))}
-
-      {/* debug: the whole box. inset by half the stroke, so the whole line
-          shows inside the viewBox */}
+      {/* debug: the viewbox's edges */}
       <rect
         className="svg-debug"
-        x={0.375}
-        y={0.375}
-        width={viewboxWidth - 0.75}
-        height={viewboxHeight - 0.75}
+        width={viewboxWidth}
+        height={viewboxHeight}
         fill="none"
         stroke="#aab4e6" // lavender
         strokeWidth={0.75}

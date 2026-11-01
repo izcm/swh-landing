@@ -9,7 +9,7 @@ import {
   gearLayout,
   paddedBox,
 } from "@/lib/svg";
-import { MenuBoard, type MenuBoardRow } from "../shared/MenuBoard";
+import { MenuBoard, type MenuBoardRow } from "../shared/menu-board/MenuBoard";
 import { ActionCards } from "./ActionCards";
 import { AutomationRulesHeader } from "./AutomationRulesHeader";
 
@@ -102,32 +102,24 @@ export function AutomateDiagram() {
     const boardLayout = cascade(groupWidth, 0.85);
 
     const radius = 4; // knob: the boards' and rows' corners
-    // the front board's padding, in the diagram's unit (about 28, so keep it small)
-    const paddingXUnits = 0.5; // knob
-    const paddingYUnits = 0.25; // knob
-    const headerShare = 0.15; // knob: the header's share of the board's content
-    const headerGapUnits = 0.2; // knob: header → rules
-    const rowGapUnits = 0.24; // knob: between two rules
-    const fontSizeUnits = 0.32; // knob: the rules' text size
-    const headerFontSize = unit * 0.35; // knob: the header's text size
+    const spacing = { paddingX: 1, paddingY: 0.5, rowGap: 0.5 }; // in the board's unit
+    const headerShare = 0.18;
+    const fontSizeUnits = 0.65;
+    const headerFontSizeUnits = 0.7;
 
     const drawing = (
       <g transform={`translate(${translateX}, ${translateY})`}>
         <MenuBoard
           layout={boardLayout}
           radius={radius}
-          unit={unit}
-          paddingXUnits={paddingXUnits}
-          paddingYUnits={paddingYUnits}
+          spacing={spacing}
           headerShare={headerShare}
-          headerGapUnits={headerGapUnits}
-          rowGapUnits={rowGapUnits}
           fontSizeUnits={fontSizeUnits}
-          header={({ width, height }) => (
+          header={({ width, height, unit }) => (
             <AutomationRulesHeader
               width={width}
               height={height}
-              fontSize={headerFontSize}
+              fontSize={unit * headerFontSizeUnits}
             />
           )}
           rows={rules}

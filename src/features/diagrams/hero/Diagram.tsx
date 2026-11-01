@@ -8,7 +8,6 @@ import {
   alignCenter,
   boxCorners,
   cascadeLayout,
-  deepShades,
   deg,
   isoCubeEdgeVectors,
   paddedBox,
@@ -24,8 +23,8 @@ import { MenuBoard, type MenuBoardRow } from "../shared/MenuBoard";
 import { MenuBoardHeader } from "../shared/MenuBoardHeader";
 
 import { floorLayout } from "./floor";
-import { Header } from "./dashboard/Header";
-import { Content } from "./dashboard/Content";
+import { Header } from "./dashboard/content/Header";
+import { Dashboard } from "./dashboard/Dashboard";
 import { CascadeBoards } from "../shared/CascadeBoards";
 
 const heroAngle = deg(25);
@@ -253,8 +252,6 @@ export function HeroDiagram() {
     const start = addVector(cubeCorners.roof.left, scaleVector(edgeA, -1));
 
     const radius = 3; // knob: the boards' corners, also the boxes' inside the dashboard
-    // the KPI cards' dots: three deep accent shades, darkest first
-    const colorSelection = deepShades(3);
 
     // the front board: the header across the top, the content under it inside the padding
     const frontBoard = (() => {
@@ -295,12 +292,11 @@ export function HeroDiagram() {
                     paddingX={paddingX}
                   />
                   <g transform={`translate(${content.x}, ${content.y})`}>
-                    <Content
+                    <Dashboard
                       width={content.width}
                       height={content.height}
                       radius={radius}
                       strokeWidth={1} // knob
-                      colorSelection={colorSelection}
                     />
                   </g>
                 </g>

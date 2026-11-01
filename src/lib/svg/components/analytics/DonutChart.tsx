@@ -1,8 +1,8 @@
+import type { SVGProps } from "react";
 import { arcPath, donutArcs } from "../../logic";
 import type { Slice } from "./types";
 
 // a ring cut into slices, each starting where the previous one ends.
-// fills a 2·radius × 2·radius box with its top-left at (x, y)
 export function DonutChart({
   x = 0,
   y = 0,
@@ -11,7 +11,9 @@ export function DonutChart({
   thickness,
   startAngle = -Math.PI / 2,
   gapAngle = 0,
-}: {
+  transform = "",
+  ...groupProps
+}: Omit<SVGProps<SVGGElement>, "x" | "y"> & {
   x?: number;
   y?: number;
   slices: Slice[];
@@ -24,7 +26,7 @@ export function DonutChart({
   const circle = {
     centerX: radius,
     centerY: radius,
-    radius: radius - thickness / 2,
+    radius: radius - thickness * 0.5,
   };
   const arcs = donutArcs(
     slices.map((slice) => slice.value),
@@ -33,7 +35,7 @@ export function DonutChart({
   );
 
   return (
-    <g transform={`translate(${x}, ${y})`}>
+    <g {...groupProps} transform={`translate(${x}, ${y}) ${transform}`}>
       {arcs.map((arc, i) => (
         <path
           key={i}

@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 
 import { boxCorners } from "../../layouts/3d/box/boxCorners";
-import { deg } from "../geometry";
+import { deg } from "../math/geometry";
 import { isoCubeEdgeVectors, isoCubeMetrics } from "../iso";
-import { addVector } from "../vector";
+import { addVector } from "../math/vector";
 
 describe("isoCubeEdgeVectors", () => {
   // different angles, so a mixed-up a / b shows

@@ -40,13 +40,14 @@ export default function Hero() {
         >
           <p>
             Welcome to SWH Studio, an independent software studio focused on
-            helping Norwegian businesses make better use of technology.
+            helping Norwegian businesses modernize their technology and
+            operations.
           </p>
 
           <p>
-            From connecting existing systems to building custom tools and
-            exploring practical applications of AI, the goal is simple: make
-            technology work for your business, not the other way around.
+            With technology evolving faster than ever, our mission is to make it
+            easier for small and medium-sized companies to explore and adopt new
+            solutions, including AI.
           </p>
         </div>
 
@@ -59,7 +60,7 @@ export default function Hero() {
             "xl:mt-3",
           )}
         >
-          See how we work
+          See what we do
         </IconLink>
       </div>
 

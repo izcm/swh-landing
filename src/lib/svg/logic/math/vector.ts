@@ -1,4 +1,4 @@
-import type { Point } from "./types";
+import type { Point } from "../types";
 
 // a vector times a number: the same line, `factor` times as long.
 // -1 flips it to point the other way

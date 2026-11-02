@@ -1,4 +1,4 @@
-import type { Point } from "./types";
+import type { Point } from "../types";
 
 // bends a flat drawing onto a parallelogram given by 3 of its corners.
 // draw the content from (0, 0) in a width × height area and wrap it in

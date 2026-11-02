@@ -1,4 +1,5 @@
 export type Point = { x: number; y: number };
+export type Vector = Point;
 
 // props most svg pieces take: where to draw it, and its edge + face colors
 export type ShapeProps = Partial<Point> & {

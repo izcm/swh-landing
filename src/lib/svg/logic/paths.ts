@@ -1,4 +1,4 @@
-import { pointOnCircle } from "./geometry";
+import { pointOnCircle, pointOnLine } from "./math/geometry";
 import type { Point } from "./types";
 
 // smooth curve through every point, as an svg path `d` string.
@@ -64,4 +64,55 @@ export function diamondPath({
   top: Point;
 }) {
   return `M ${left.x} ${left.y} L ${bottom.x} ${bottom.y} L ${right.x} ${right.y} L ${top.x} ${top.y} Z`;
+}
+
+// the two points a rounded corner curves between: `radius` back along the edge towards
+// `prev`, and `radius` forward along the edge towards `next`. draw it as
+// `… L before Q corner after …`. radius is in the same units as the points
+export function roundCorner(
+  prev: Point,
+  corner: Point,
+  next: Point,
+  radius: number,
+) {
+  // pointOnLine wants a fraction of the edge, so divide the distance by the edge's length
+  const tIn = radius / Math.hypot(prev.x - corner.x, prev.y - corner.y);
+  const tOut = radius / Math.hypot(next.x - corner.x, next.y - corner.y);
+
+  return {
+    before: pointOnLine(corner, prev, tIn),
+    corner,
+    after: pointOnLine(corner, next, tOut),
+  };
+}
+
+// open path from `prev` to `next` through `corner`, the corner rounded by
+// `radius` (0 keeps it sharp)
+export function roundedCornerPath(
+  prev: Point,
+  corner: Point,
+  next: Point,
+  radius: number,
+) {
+  const { before, after } = roundCorner(prev, corner, next, radius);
+
+  return `M ${prev.x} ${prev.y} L ${before.x} ${before.y} Q ${corner.x} ${corner.y} ${after.x} ${after.y} L ${next.x} ${next.y}`;
+}
+
+// closed shape through `points` with every corner rounded
+export function roundedPolygonPath(points: Point[], radius: number) {
+  const n = points.length;
+
+  const corners = points.map((corner, i) =>
+    roundCorner(points[(i - 1 + n) % n], corner, points[(i + 1) % n], radius),
+  );
+
+  return (
+    corners
+      .map(
+        ({ before, corner, after }, i) =>
+          `${i === 0 ? "M" : "L"} ${before.x} ${before.y} Q ${corner.x} ${corner.y} ${after.x} ${after.y}`,
+      )
+      .join(" ") + " Z"
+  );
 }

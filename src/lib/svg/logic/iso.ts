@@ -1,4 +1,4 @@
-import { deg } from "./geometry";
+import { deg } from "./math/geometry";
 import type { IsoBox, Point } from "./types";
 
 // angle = how steep the roof edges slope from horizontal, in radians.

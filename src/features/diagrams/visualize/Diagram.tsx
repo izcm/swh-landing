@@ -1,20 +1,19 @@
 import { useId } from "react";
 import {
-  alignCenter,
   alignEnd,
+  DebugLines,
+  DebugPoints,
   InkFadeGradient,
   layoutUnit,
   LitEdgeGradient,
   parallelogramMatrix,
-  placeItemCenter,
-  pointOnLine,
   roundedPolygonPath,
   splitWithGaps,
 } from "@/lib/svg";
-import {
-  ScandinaviaOrthographic,
-  scandinaviaOrthographicBounds,
-} from "../shared/maps/ScandinaviaOrthographic";
+
+import { ScandinaviaOrthographic } from "../shared/maps/ScandinaviaOrthographic";
+import { CornerDecorator } from "./CornerDecorator";
+import { mapLayout } from "./mapLayout";
 
 export function VisualizeDiagram() {
   const viewboxWidth = 540;
@@ -29,13 +28,13 @@ export function VisualizeDiagram() {
   const boards = (() => {
     const boardsConfig = [
       { height: 1, insetLeft: 0, insetRight: 0.08 },
-      { height: 0.9, insetLeft: 0.08, insetRight: 0 },
+      { height: 0.92, insetLeft: 0.08, insetRight: 0 },
     ];
     const radius = 12;
 
     const { sizes, starts } = splitWithGaps(
       viewboxWidth,
-      [0.5, 0.5],
+      [0.6, 0.4],
       unit * 0.75,
     );
 
@@ -56,15 +55,16 @@ export function VisualizeDiagram() {
         { x: boxX, y: boxY + boxHeight - left },
       ];
 
-      // content gets the biggest rectangle that fits inside the trapezoid
+      // content gets a parallelogram along the board's top edge, as tall as its
+      // shorter side, so it stays inside the trapezoid
       const inner = Math.max(left, right);
 
       return {
         corners,
         ...parallelogramMatrix({
-          origin: { x: boxX, y: boxY + inner },
-          xEnd: { x: boxX + boxWidth, y: boxY + inner },
-          yEnd: { x: boxX, y: boxY + boxHeight - inner },
+          origin: corners[0],
+          xEnd: corners[1],
+          yEnd: { x: boxX, y: corners[0].y + boxHeight - inner * 2 },
         }),
       };
     });
@@ -95,68 +95,86 @@ export function VisualizeDiagram() {
       sizes,
       starts,
       layouts,
+      radius,
       drawing,
     };
   })();
 
+  // the four framing items around map
+  // const framing _= () =>
+
   const map = (() => {
-    const { height, width } = boards.layouts[0];
-    const [topLeft, topRight, bottomRight, bottomLeft] =
-      boards.layouts[0].corners;
+    const board = boards.layouts[0];
 
-    const headerStart = pointOnLine(topLeft, bottomLeft, 0.085);
-    const headerEnd = pointOnLine(topRight, bottomRight, 0.085);
-
-    const headerHeight = height * 0.1;
-
-    const mapHeight = height - headerHeight;
-
-    const mapWidth =
-      (mapHeight * scandinaviaOrthographicBounds.width) /
-      scandinaviaOrthographicBounds.height;
-
-    const { offsetX: mapX, offsetY: mapY } = placeItemCenter({
-      parentHeight: height - headerHeight,
-      parentWidth: width,
-      itemWidth: mapWidth,
-      itemHeight: mapHeight,
+    const layout = mapLayout({
+      boardCorners: board.corners,
+      boardWidth: board.width,
+      boardHeight: board.height,
+      radius: boards.radius,
+      unit,
     });
-    const header = () => (
-      <line
-        x1={headerStart.x}
-        y1={headerStart.y}
-        x2={headerEnd.x}
-        y2={headerEnd.y}
-        stroke="var(--accent-faint)"
-        strokeWidth={1}
-      />
-    );
 
-    const drawing = () => (
-      <g
-        transform={`translate(${mapX}, ${mapY + headerHeight}) rotate(8, ${mapWidth * 0.5}, ${mapHeight * 0.5})`}
-      >
-        <ScandinaviaOrthographic
-          height={mapHeight}
-          fills={{
-            norway: "none",
-            sweden: "none",
-            denmark: "none",
-            finland: "none",
-          }}
-          stroke="var(--accent)"
-          strokeWidth={0.5}
-        />
-      </g>
-    );
+    const drawing = () => {
+      const { header, underHeader, innerTrapezoid, cornerDecorators, map } =
+        layout;
+      const fill = `url(#${inkId})`;
 
-    return { header, drawing };
+      return (
+        <>
+          <path d={underHeader.d} fill="var(--ground)" opacity={0.75} />
+
+          <line
+            x1={header.start.x}
+            y1={header.start.y}
+            x2={header.end.x}
+            y2={header.end.y}
+            stroke="var(--accent-faint)"
+            strokeWidth={1}
+          />
+
+          {cornerDecorators.map((arms, i) => (
+            <CornerDecorator
+              key={i}
+              {...arms}
+              stroke="var(--accent)"
+              strokeWidth={1.5}
+              radius={3}
+            />
+          ))}
+
+          <DebugPoints
+            points={innerTrapezoid.corners}
+            radius={3}
+            color="#aab4e6"
+          />
+
+          <g transform={board.transform}>
+            <ScandinaviaOrthographic
+              x={map.x}
+              y={map.y}
+              height={map.height}
+              fills={{
+                norway: fill,
+                sweden: fill,
+                denmark: fill,
+                finland: fill,
+              }}
+              transform={`rotate(${map.rotation}, ${map.width * 0.5}, ${map.height * 0.5})`}
+              stroke="var(--accent)"
+              strokeWidth={0.5}
+            />
+          </g>
+        </>
+      );
+    };
+
+    return { drawing };
   })();
 
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
-      className="block max-w-3xl w-full mx-auto"
+      className="block max-w-2xl w-full mx-auto"
       overflow={"visible"}
     >
       <defs>
@@ -165,8 +183,7 @@ export function VisualizeDiagram() {
       </defs>
       {boards.drawing()}
 
-      {map.header()}
-      <g transform={boards.layouts[0].transform}>{map.drawing()}</g>
+      {map.drawing()}
 
       {/* debug: the viewbox's edges */}
       <rect

@@ -4,6 +4,7 @@ import { ConnectDiagram } from "@/features/diagrams/connect/Diagram";
 import { ActDiagram } from "@/features/diagrams/act/Diagram";
 import { VisualizeDiagram } from "../diagrams/visualize/Diagram";
 import { AutomateDiagram } from "@/features/diagrams/automate/Diagram";
+import { SvgPlaceholder } from "@/components/SvgPlaceholder";
 
 const sections = [
   {
@@ -14,7 +15,8 @@ const sections = [
       "While each system may work well on its own, there is often significant room for improvement in how data flows between them.",
       // "We have the expertise to bridge this gap by collecting and transforming data across your existing systems.",
     ],
-    diagram: <ConnectDiagram />,
+    diagram: <SvgPlaceholder label="Connect Step" />,
+    // diagram: <ConnectDiagram />,
   },
   {
     eyebrow: "VISUALIZE",

@@ -12,7 +12,6 @@ export function SectionBase({
   title,
   text,
   diagram,
-  diagramMaxWidth = "50rem",
 }: {
   id?: string; // anchor target; scroll-mt keeps it clear of the nav
   index: number; // 0-based
@@ -27,13 +26,17 @@ export function SectionBase({
   return (
     <section
       id={id}
-      className="flex flex-col min-h-below-nav scroll-mt-18 py-6 mx-4 lg:py-"
+      className="
+        flex flex-col mt-6
+        min-h-below-nav scroll-mt-18 mx-4
+        xl:flex-row
+        "
     >
       <div
         className="
           relative isolate overflow-hidden
-          flex flex-col gap-6 w-full mx-auto
-          max-w-3xl bg.white 
+          flex flex-col gap-6 w-full mx-auto max-w-3xl
+          xl:max-w-2xl
           "
       >
         <EyebrowRule index={index} label={eyebrow} maxIndex={maxIndex} />
@@ -48,8 +51,7 @@ export function SectionBase({
       {diagram && (
         <div
           id={`diagram-${eyebrow.toLowerCase().replaceAll(" ", "-")}`}
-          className="relative w-full mx-auto px-2 mt-8"
-          style={{ maxWidth: diagramMaxWidth }}
+          className="relative w-full mx-auto px-2 mt-16 max-w-3xl"
         >
           {diagram}
         </div>

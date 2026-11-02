@@ -7,12 +7,14 @@ import {
   layoutUnit,
   LitEdgeGradient,
   parallelogramMatrix,
+  polygonPath,
   roundedPolygonPath,
   splitWithGaps,
 } from "@/lib/svg";
 
 import { ScandinaviaOrthographic } from "../shared/maps/ScandinaviaOrthographic";
 import { CornerDecorator } from "./CornerDecorator";
+import { WindowHeader } from "../shared/WindowHeader";
 import { mapLayout } from "./mapLayout";
 
 export function VisualizeDiagram() {
@@ -105,32 +107,48 @@ export function VisualizeDiagram() {
 
   const map = (() => {
     const board = boards.layouts[0];
+    const [topLeft, topRight, bottomRight, bottomLeft] = board.corners;
+
+    const headerHeight = board.height * 0.1;
+
+    // the area under the header: the board's top edge moved down by headerHeight,
+    // which is exactly where WindowHeader's line lands inside the board's transform
+    const area = [
+      { x: topLeft.x, y: topLeft.y + headerHeight },
+      { x: topRight.x, y: topRight.y + headerHeight },
+      bottomRight,
+      bottomLeft,
+    ];
 
     const layout = mapLayout({
-      boardCorners: board.corners,
+      corners: area,
+      unit,
       boardWidth: board.width,
       boardHeight: board.height,
-      radius: boards.radius,
-      unit,
+      top: headerHeight,
     });
 
     const drawing = () => {
-      const { header, underHeader, innerTrapezoid, cornerDecorators, map } =
-        layout;
+      const { innerTrapezoid, cornerDecorators, map } = layout;
       const fill = `url(#${inkId})`;
 
       return (
         <>
-          <path d={underHeader.d} fill="var(--ground)" opacity={0.75} />
-
-          <line
-            x1={header.start.x}
-            y1={header.start.y}
-            x2={header.end.x}
-            y2={header.end.y}
-            stroke="var(--accent-faint)"
-            strokeWidth={1}
+          {/* sharp top corners under the header, bottom corners rounded like the board */}
+          <path
+            d={polygonPath(area, [0, 0, boards.radius, boards.radius])}
+            fill="var(--ground)"
+            opacity={0.75}
           />
+
+          <g transform={board.transform}>
+            <WindowHeader
+              width={board.width}
+              height={headerHeight}
+              itemHeight={headerHeight * 0.2}
+              contentX={layoutUnit(headerHeight) * 4}
+            />
+          </g>
 
           {cornerDecorators.map((arms, i) => (
             <CornerDecorator
@@ -161,7 +179,7 @@ export function VisualizeDiagram() {
               }}
               transform={`rotate(${map.rotation}, ${map.width * 0.5}, ${map.height * 0.5})`}
               stroke="var(--accent)"
-              strokeWidth={0.5}
+              strokeWidth={0.75}
             />
           </g>
         </>
@@ -174,7 +192,7 @@ export function VisualizeDiagram() {
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
-      className="block max-w-2xl w-full mx-auto"
+      className="block w-full"
       overflow={"visible"}
     >
       <defs>

@@ -99,12 +99,13 @@ export function roundedCornerPath(
   return `M ${prev.x} ${prev.y} L ${before.x} ${before.y} Q ${corner.x} ${corner.y} ${after.x} ${after.y} L ${next.x} ${next.y}`;
 }
 
-// closed shape through `points` with every corner rounded
-export function roundedPolygonPath(points: Point[], radius: number) {
+// closed shape through `points`, each corner rounded by its own radius in
+// `radii` (0 keeps that corner sharp)
+export function polygonPath(points: Point[], radii: number[]) {
   const n = points.length;
 
   const corners = points.map((corner, i) =>
-    roundCorner(points[(i - 1 + n) % n], corner, points[(i + 1) % n], radius),
+    roundCorner(points[(i - 1 + n) % n], corner, points[(i + 1) % n], radii[i]),
   );
 
   return (
@@ -114,5 +115,13 @@ export function roundedPolygonPath(points: Point[], radius: number) {
           `${i === 0 ? "M" : "L"} ${before.x} ${before.y} Q ${corner.x} ${corner.y} ${after.x} ${after.y}`,
       )
       .join(" ") + " Z"
+  );
+}
+
+// closed shape through `points` with every corner rounded
+export function roundedPolygonPath(points: Point[], radius: number) {
+  return polygonPath(
+    points,
+    points.map(() => radius),
   );
 }

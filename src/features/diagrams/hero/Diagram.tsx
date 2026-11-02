@@ -23,7 +23,7 @@ import { MenuBoard, type MenuBoardRow } from "../shared/menu-board/MenuBoard";
 import { MenuBoardHeader } from "../shared/menu-board/Header";
 
 import { floorLayout } from "./floor";
-import { Header } from "./dashboard/content/Header";
+import { WindowHeader } from "../shared/WindowHeader";
 import { Dashboard } from "./dashboard/Dashboard";
 import { CascadeBoards } from "../shared/CascadeBoards";
 
@@ -279,10 +279,11 @@ export function HeroDiagram() {
                 <g
                   transform={`translate(${boardLayout.front.x}, ${boardLayout.front.y})`}
                 >
-                  <Header
+                  <WindowHeader
                     width={width}
                     height={headerHeight}
-                    paddingX={paddingX}
+                    itemHeight={headerHeight * 0.2}
+                    contentX={paddingX}
                   />
                   <g transform={`translate(${content.x}, ${content.y})`}>
                     <Dashboard

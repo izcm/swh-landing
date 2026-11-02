@@ -22,7 +22,7 @@ const rules: MenuBoardRow[] = [
 
 export function AutomateDiagram() {
   const viewboxWidth = 540;
-  const viewboxHeight = 360;
+  const viewboxHeight = 380;
 
   // 1/12 of the height
   const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
@@ -99,7 +99,7 @@ export function AutomateDiagram() {
     const translateX = viewboxWidth - groupWidth;
     const translateY = 0;
 
-    const boardLayout = cascade(groupWidth, 0.85);
+    const boardLayout = cascade(groupWidth, 0.9);
 
     const radius = 4; // knob: the boards' and rows' corners
     const spacing = { paddingX: 1, paddingY: 0.5, rowGap: 0.5 }; // in the board's unit
@@ -198,7 +198,7 @@ export function AutomateDiagram() {
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
-      className="block max-w-2xl w-full mx-auto"
+      className="block w-full"
     >
       {/* debug: the viewbox's edges */}
       <rect

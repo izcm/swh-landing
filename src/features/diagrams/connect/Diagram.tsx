@@ -35,7 +35,7 @@ export function ConnectDiagram() {
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       overflow="visible"
-      className="block max-w-3xl w-full mx-auto"
+      className="block w-full"
     >
       {/* debug: the sections' edges as plain lines, all drawn the same way
           (verticals top → bottom, horizontals left → right) */}

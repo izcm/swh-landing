@@ -131,7 +131,7 @@ export function ActDiagram() {
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       // 540 units at up to 672px ≈ 1.24px per unit, close to Connect. centered
-      className="block max-w-2xl w-full mx-auto"
+      className="block w-full"
       overflow={"visible"}
     >
       <defs>

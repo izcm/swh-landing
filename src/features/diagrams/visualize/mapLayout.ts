@@ -1,65 +1,30 @@
 import {
   padVerticalSides,
   placeItemCenter,
-  pointOnLine,
-  roundCorner,
   scaleVector,
   type Point,
 } from "@/lib/svg";
 import { scandinaviaOrthographicBounds } from "../shared/maps/ScandinaviaOrthographic";
 
-// everything on the map board: header line, area under it, corner brackets and
-// the map. `map` is measured inside the board's transform, the rest in picture coordinates
+// the map board's inner trapezoid, corner brackets and the map. `map` is
+// measured inside the board's transform, the rest in picture coordinates
 export function mapLayout({
-  boardCorners,
+  corners,
+  unit,
   boardWidth,
   boardHeight,
-  radius,
-  unit,
+  top,
 }: {
-  boardCorners: Point[];
+  corners: Point[]; // the area under the header: top-left, top-right, bottom-right, bottom-left
+  unit: number;
   boardWidth: number;
   boardHeight: number;
-  radius: number;
-  unit: number;
+  top: number; // where the area starts, measured inside the board's transform
 }) {
-  const [topLeft, topRight, bottomRight, bottomLeft] = boardCorners;
-
-  const header = (() => {
-    const start = pointOnLine(topLeft, bottomLeft, 0.085);
-    const end = pointOnLine(topRight, bottomRight, 0.085);
-    const height = boardHeight * 0.1;
-
-    return { start, end, height };
-  })();
-
-  // the board below the header line, with the board's own rounded bottom corners
-  const underHeader = (() => {
-    const { start, end } = header;
-    const br = roundCorner(end, bottomRight, bottomLeft, radius);
-    const bl = roundCorner(bottomRight, bottomLeft, start, radius);
-
-    const d = [
-      `M ${start.x} ${start.y}`,
-      `L ${end.x} ${end.y}`,
-      `L ${br.before.x} ${br.before.y}`,
-      `Q ${bottomRight.x} ${bottomRight.y} ${br.after.x} ${br.after.y}`,
-      `L ${bl.before.x} ${bl.before.y}`,
-      `Q ${bottomLeft.x} ${bottomLeft.y} ${bl.after.x} ${bl.after.y}`,
-      "Z",
-    ].join(" ");
-
-    return { d };
-  })();
-
   const innerTrapezoid = (() => {
     const padding = unit * 0.5;
-    const corners = padVerticalSides(
-      [header.start, header.end, bottomRight, bottomLeft],
-      padding,
-    );
 
-    return { corners };
+    return { corners: padVerticalSides(corners, padding) };
   })();
 
   // decorator span this amount of inner trapezoid edges
@@ -94,12 +59,12 @@ export function mapLayout({
 
     return {
       x: offsetX,
-      y: header.height + offsetY,
+      y: top + offsetY,
       width,
       height,
       rotation,
     };
   })();
 
-  return { header, underHeader, innerTrapezoid, cornerDecorators, map };
+  return { innerTrapezoid, cornerDecorators, map };
 }

@@ -21,9 +21,13 @@ const sections = [
   {
     eyebrow: "VISUALIZE",
     title: "See the bigger picture",
+    tldr: "We build interactive dashboards.",
     paragraphs: [
-      "Once scattered data is connected and transformed, you can see way more than any individual system can show on its own.",
-      "We build interactive dashboards that present up-to-date information in formats tailored to your business needs.",
+      "Dashboards are a common feature in modern software, providing an overview of important information in one place. At SWH Studio, we're particularly interested in making that information interactive and actionable..",
+      "Rather than presenting static charts and figures, we focus on interactive views where data can be filtered, explored, and broken down into more detail.",
+      "For example, if you want to examine sales trends in a particular region, you could select an area directly on a map and see the related figures and charts update automatically.",
+      // "Once scattered data is connected and transformed, you can see way more than any individual system can show on its own.",
+      // "We build interactive dashboards that present up-to-date information in formats tailored to your business needs.",
       // "Explore information at different levels, spot patterns, and drill down into the details that matter.",
     ],
     diagram: <VisualizeDiagram />,
@@ -32,8 +36,11 @@ const sections = [
     eyebrow: "ACT",
     title: "Turn insight into action",
     paragraphs: [
-      "Better visibility make it easier to spot what needs attention and decide what to do next.",
-      "We build tools that bring your key actions into one place, allowing you to work directly with the information in front of you rather than switching between systems.",
+      // "Better visibility makes it easier to understand what should happen next. Whether that be some deadline closing in and assuring that an employee stays on top of that record, the optimal solution is to have those actions available quickly in front of you instead of switching between systems.",
+      // "These actions may contact several APIs, and might stand for manual labour that span several hours weekly. Having a streamlined solution that does all in one go blablablabla _))) blababl.",
+      // "We have the competence to make custom solutions for your needs, dhofsdjiofkdposfkdopfkopdf.",
+      // "Better visibility make it easier to spot what needs attention and decide what to do next.",
+      // "We build tools that bring your key actions into one place, allowing you to work directly with the information in front of you rather than switching between systems.",
     ],
     diagram: <ActDiagram />,
   },
@@ -87,6 +94,7 @@ function StorySection({
       text={section.paragraphs.map((p) => (
         <p key={p}>{p}</p>
       ))}
+      tldr={section.tldr}
       diagram={section.diagram}
     />
   );

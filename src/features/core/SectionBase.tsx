@@ -11,6 +11,7 @@ export function SectionBase({
   eyebrow,
   title,
   text,
+  tldr,
   diagram,
 }: {
   id?: string; // anchor target; scroll-mt keeps it clear of the nav
@@ -19,6 +20,7 @@ export function SectionBase({
   eyebrow: string;
   title: ReactNode;
   text: ReactNode;
+  tldr?: string; // one-line summary, in a small box under the paragraphs
   diagram?: ReactNode;
   // how wide the diagram can get. any CSS length; 50rem = max-w-200
   diagramMaxWidth?: string;
@@ -36,7 +38,7 @@ export function SectionBase({
         className="
           relative isolate overflow-hidden
           flex flex-col gap-6 w-full mx-auto max-w-3xl
-          xl:max-w-2xl
+          xl:max-w-150
           "
       >
         <EyebrowRule index={index} label={eyebrow} maxIndex={maxIndex} />
@@ -47,6 +49,16 @@ export function SectionBase({
             {text}
           </div>
         </div>
+
+        {/* xl:mt-auto: side by side with the diagram, sits at the column's bottom */}
+        {tldr && (
+          <aside className=" mt-6 rounded border border-faint-accent bg-raised/40 px-4 py-3">
+            <span className="text-xs font-medium uppercase tracking-wider text-accent">
+              TL;DR
+            </span>
+            <p className="mt-1 text-sm text-fg-tinted/90">{tldr}</p>
+          </aside>
+        )}
       </div>
       {diagram && (
         <div

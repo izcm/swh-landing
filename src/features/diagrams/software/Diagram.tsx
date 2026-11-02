@@ -311,7 +311,7 @@ export function SoftwareDiagram() {
 
       <circle
         r={5}
-        fill="var(--accent-deep)"
+        fill="var(--accent-dim)"
         opacity={0.8}
         className="path-dot"
         style={{ offsetPath: cssPath }}
@@ -320,7 +320,7 @@ export function SoftwareDiagram() {
       {/* -6s = half of the 12s loop, so this dot runs half a lap ahead */}
       <circle
         r={5}
-        fill="var(--accent)"
+        fill="var(--accent-dim)"
         opacity={0.8}
         className="path-dot"
         style={{ offsetPath: cssPath, animationDelay: "-6s" }}

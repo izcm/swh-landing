@@ -27,9 +27,9 @@ export function SectionBase({
     <section
       id={id}
       className="
-        flex flex-col mt-6
+        flex flex-col mt-6 gap-6
         min-h-below-nav scroll-mt-18 mx-4
-        xl:flex-row
+        xl:flex-row xl:gap-12
         "
     >
       <div
@@ -51,7 +51,7 @@ export function SectionBase({
       {diagram && (
         <div
           id={`diagram-${eyebrow.toLowerCase().replaceAll(" ", "-")}`}
-          className="relative w-full mx-auto px-2 mt-16 max-w-3xl"
+          className="relative w-full mx-auto px-2 mt-16 max-w-2xl xl:max-w-3xl"
         >
           {diagram}
         </div>

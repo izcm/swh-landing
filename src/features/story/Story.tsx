@@ -53,6 +53,7 @@ const sections = [
 export function Story() {
   return (
     <div className="overflow-clip">
+      {/* page-wide floor tiles, off while each diagram draws its own
       <div
         className="
           sticky top-[calc(100dvh-30rem)]
@@ -60,6 +61,7 @@ export function Story() {
       >
         <div className="floor-grid" aria-hidden />
       </div>
+      */}
 
       {sections.map((section, i) => (
         <StorySection key={`story-${i}`} index={i} section={section} />

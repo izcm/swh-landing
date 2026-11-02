@@ -3,6 +3,7 @@ import {
   alignEnd,
   DebugLines,
   DebugPoints,
+  deg,
   InkFadeGradient,
   layoutUnit,
   LitEdgeGradient,
@@ -16,6 +17,8 @@ import { ScandinaviaOrthographic } from "../shared/maps/ScandinaviaOrthographic"
 import { CornerDecorator } from "./CornerDecorator";
 import { WindowHeader } from "../shared/WindowHeader";
 import { mapLayout } from "./mapLayout";
+import { Floor } from "../shared/floor/Floor";
+import { floorLayout } from "../shared/floor/layout";
 
 export function VisualizeDiagram() {
   const viewboxWidth = 540;
@@ -189,6 +192,21 @@ export function VisualizeDiagram() {
     return { drawing };
   })();
 
+  const floor = (() => {
+    const layout = floorLayout({
+      center: { x: viewboxWidth * 0.5, y: viewboxHeight * 0.9 },
+      tilesPerEdge: 10,
+      angle: deg(15),
+      tileLength: unit * 2,
+    });
+
+    const drawing = () => (
+      <Floor layout={layout} tileOpacity={0.15} fadeStretchX={1.3} />
+    );
+
+    return { drawing };
+  })();
+
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
@@ -199,6 +217,7 @@ export function VisualizeDiagram() {
         <InkFadeGradient id={inkId} />
         <LitEdgeGradient id={edgeId} />
       </defs>
+      {floor.drawing()}
       {boards.drawing()}
 
       {map.drawing()}

@@ -1,4 +1,10 @@
-import { DebugPoints, layoutUnit, polygonPath, type Point } from "@/lib/svg";
+import {
+  DebugPoints,
+  layoutUnit,
+  polygonPath,
+  recessedFills,
+  type Point,
+} from "@/lib/svg";
 import { ScandinaviaOrthographic } from "../shared/maps/ScandinaviaOrthographic";
 import { WindowHeader } from "../shared/WindowHeader";
 import { CornerDecorator } from "./CornerDecorator";
@@ -10,12 +16,10 @@ export function Map({
   board,
   radius,
   unit,
-  mapFill,
 }: {
   board: { corners: Point[]; width: number; height: number; transform: string };
   radius: number;
   unit: number;
-  mapFill: string;
 }) {
   const [topLeft, topRight, bottomRight, bottomLeft] = board.corners;
 
@@ -37,6 +41,25 @@ export function Map({
     boardHeight: board.height,
     top: headerHeight,
   });
+
+  const everyCountry = (fill: string) => ({
+    norway: fill,
+    sweden: fill,
+    denmark: fill,
+    finland: fill,
+  });
+
+  const placement = {
+    x: map.x,
+    y: map.y,
+    height: map.height,
+    transform: `rotate(${map.rotation}, ${map.width * 0.5}, ${map.height * 0.5})`,
+  };
+
+  const countryFills = [
+    ...recessedFills,
+    { fill: "oklch(from var(--accent) 0.08 0.02 h)", opacity: 0.18 },
+  ];
 
   return (
     <>
@@ -69,17 +92,19 @@ export function Map({
       <DebugPoints points={innerTrapezoid} radius={3} color="#aab4e6" />
 
       <g transform={board.transform}>
+        {countryFills.map(({ fill, opacity }, i) => (
+          <ScandinaviaOrthographic
+            key={i}
+            {...placement}
+            fills={everyCountry(fill)}
+            fillOpacity={opacity}
+            stroke="none"
+            strokeWidth={0}
+          />
+        ))}
         <ScandinaviaOrthographic
-          x={map.x}
-          y={map.y}
-          height={map.height}
-          fills={{
-            norway: mapFill,
-            sweden: mapFill,
-            denmark: mapFill,
-            finland: mapFill,
-          }}
-          transform={`rotate(${map.rotation}, ${map.width * 0.5}, ${map.height * 0.5})`}
+          {...placement}
+          fills={everyCountry("none")}
           stroke="var(--accent)"
           strokeWidth={0.75}
         />

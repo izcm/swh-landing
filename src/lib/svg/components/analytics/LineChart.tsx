@@ -6,6 +6,7 @@ type LineChartProps = {
   height: number;
   values: number[]; // each 0-1, normalized — swap for animated values later
   color: string;
+  strokeWidth?: number; // the line's thickness
   dotRadius?: number; // a dot on each point. no dots if left out
   areaOpacity?: number; // fill under the line: this opacity at the top, 0 at the bottom. no fill if left out
   areaRadius?: number; // the fill's corners, rounded off by a clip the size of the chart
@@ -19,6 +20,7 @@ export function LineChart({
   height,
   values,
   color,
+  strokeWidth = 0.5,
   dotRadius,
   areaOpacity,
   areaRadius = 0,
@@ -92,7 +94,7 @@ export function LineChart({
         d={lineD}
         fill="none"
         stroke={color}
-        strokeWidth={0.5}
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
       />

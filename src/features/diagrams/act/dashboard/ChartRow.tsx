@@ -1,16 +1,13 @@
 import {
   ChartGuides,
-  layoutUnit,
-  paddedBox,
   Tube,
   LineChart,
   RecessedPanel,
   splitWithGaps,
   stackWithGaps,
 } from "@/lib/svg";
-import { Gauge } from "../../shared/Gauge";
 
-// first row: two boxes side by side, line chart in the left one, radial gauge in the right
+// first row: two boxes side by side, line chart in the left one
 export function ChartRow({
   width,
   height,
@@ -34,16 +31,6 @@ export function ChartRow({
     [0.65, 0.35],
     gap,
   );
-
-  // right box: like visualize's gauge card, the gauge with its label,
-  // padded in the box's own unit
-  const gaugeCard = (() => {
-    const box = paddedBox(columnSizes[1], height, 1, 0.5, layoutUnit(height)); // knob: 1 across, 0.5 down
-    const labelShare = 0.2; // knob: the label row's share
-    // placeholder: the segments (one tick where each starts) and how full it is
-    const data = { values: [1, 1, 1, 1, 1, 1], value: 1.2 };
-    return { box, labelShare, data };
-  })();
 
   // left box: line chart
   const lineChart = (() => {
@@ -114,22 +101,7 @@ export function ChartRow({
         );
       })()}
     </>,
-    <>
-      {(() => {
-        const { box, labelShare, data } = gaugeCard;
-        return (
-          <g transform={`translate(${box.contentX}, ${box.contentY})`}>
-            <Gauge
-              width={box.contentWidth}
-              height={box.contentHeight}
-              labelShare={labelShare}
-              values={data.values}
-              value={data.value}
-            />
-          </g>
-        );
-      })()}
-    </>,
+    null,
   ];
 
   return (

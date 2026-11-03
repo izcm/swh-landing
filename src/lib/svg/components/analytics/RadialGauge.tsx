@@ -40,16 +40,18 @@ export function RadialGauge({
   return (
     <>
       <g transform={`translate(${x}, ${y})`}>
-        {segments.map((s, i) => (
-          <path
-            key={i}
-            d={arcPath(circle, s.startAngle, s.endAngle)}
-            fill="none"
-            stroke={fill}
-            opacity={segmentOpacity}
-            strokeWidth={thickness}
-          />
-        ))}
+        <g opacity={segmentOpacity}>
+          {segments.map((s, i) => (
+            <path
+              key={i}
+              d={arcPath(circle, s.startAngle, s.endAngle)}
+              fill="none"
+              stroke={fill}
+              strokeWidth={thickness}
+              strokeLinecap="round"
+            />
+          ))}
+        </g>
 
         {/* the full part: bright, from the start up to value */}
         {value > 0 && (
@@ -62,7 +64,7 @@ export function RadialGauge({
           />
         )}
         {/* the ticks: one where each segment starts, a bit inside the arc */}
-        {segments.map((s, i) => {
+        {/* {segments.map((s, i) => {
           const outer = pointOnCircle({
             angle: s.startAngle,
             circle: { ...circle, radius: circle.radius - thickness * 2 },
@@ -83,7 +85,7 @@ export function RadialGauge({
               opacity={0.25}
             />
           );
-        })}
+        })} */}
       </g>
     </>
   );

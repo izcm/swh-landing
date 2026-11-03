@@ -8,7 +8,7 @@ import {
   Tube,
   WindowDots,
 } from "@/lib/svg";
-import { Gauge } from "../../../shared/Gauge";
+import { Gauge } from "../../Gauge";
 import type { ChartData } from "../data";
 import { CardBackground } from "./CardBackground";
 import { TitleTube } from "./header-elements";
@@ -124,14 +124,13 @@ export function BottomRight({
               strokeWidth={strokeWidth * 0.5}
             />
 
-            {/* the left column: the gauge with its label */}
+            {/* the left column: the gauge */}
             <g
               transform={`translate(${card.columns[0].x}, ${card.columns[0].y})`}
             >
               <Gauge
                 width={card.columns[0].width}
                 height={card.columns[0].height}
-                labelShare={0.2} // knob
                 values={chartData.gauge.values}
                 value={chartData.gauge.value}
               />

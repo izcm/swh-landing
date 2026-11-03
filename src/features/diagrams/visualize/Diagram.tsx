@@ -1,21 +1,17 @@
 import { useId } from "react";
 import {
-  addVector,
   alignEnd,
-  DebugLines,
-  DebugPoints,
   deg,
   InkFadeGradient,
   layoutUnit,
   LitEdgeGradient,
-  padVerticalSides,
   parallelogramMatrix,
-  pointOnLine,
   roundedPolygonPath,
   splitWithGaps,
 } from "@/lib/svg";
 
 import { Map } from "./Map";
+import { Dashboard } from "./Dashboard";
 import { Floor } from "../shared/floor/Floor";
 import { floorLayout } from "../shared/floor/layout";
 
@@ -109,12 +105,7 @@ export function VisualizeDiagram() {
 
   const map = (() => {
     const drawing = () => (
-      <Map
-        board={boards.layouts[0]}
-        radius={boards.radius}
-        unit={unit}
-        mapFill={`url(#${inkId})`}
-      />
+      <Map board={boards.layouts[0]} radius={boards.radius} unit={unit} />
     );
 
     return { drawing };
@@ -143,76 +134,8 @@ export function VisualizeDiagram() {
   })();
 
   const dashboard = (() => {
-    const board = boards.layouts[1];
-    // const [topLeft, topRight] = board.corners;
+    const drawing = () => <Dashboard board={boards.layouts[1]} unit={unit} />;
 
-    const innerTrapezoid = padVerticalSides(board.corners, unit * 0.5);
-
-    const v = {
-      x: innerTrapezoid[3].x - innerTrapezoid[0].x,
-      y: innerTrapezoid[3].y - innerTrapezoid[0].y,
-    };
-
-    const height = innerTrapezoid[3].y - innerTrapezoid[0].y;
-
-    const { sizes, starts } = splitWithGaps(
-      height,
-      [0.12, 0.55, 0.33],
-      unit * 0.25,
-    );
-
-    // const corners = (i: number) => {
-    //   const top = starts[i];
-    //   const bottom = starts[i] + sizes[i];
-
-    //   return [
-    //     { x: innerTrapezoid[0].x, y: innerTrapezoid[0].y + top }, // top-left
-    //     { x: innerTrapezoid[1].x, y: innerTrapezoid[1].y + top }, // top-right
-    //     { x: innerTrapezoid[1].x, y: innerTrapezoid[1].y + bottom }, // bottom-right
-    //     { x: innerTrapezoid[0].x, y: innerTrapezoid[0].y + bottom }, // bottom-left
-    //   ];
-    // };
-
-    const [topLeft, topRight, bottomRight, bottomLeft] = innerTrapezoid;
-
-    const corners = (i: number) => {
-      const top = starts[i] / height;
-      const bottom = (starts[i] + sizes[i]) / height;
-
-      return [
-        pointOnLine(topLeft, bottomLeft, top),
-        pointOnLine(topRight, bottomRight, top),
-        pointOnLine(topRight, bottomRight, bottom),
-        pointOnLine(topLeft, bottomLeft, bottom),
-      ];
-    };
-
-    const drawing = () => (
-      <>
-        {sizes.map((_, i) => (
-          <path
-            key={i}
-            d={roundedPolygonPath(corners(i), 4)}
-            fill="none"
-            stroke="var(--accent)"
-          />
-        ))}
-        <DebugPoints
-          points={starts.map((start) => ({
-            x: innerTrapezoid[0].x,
-            y: innerTrapezoid[0].y + start,
-          }))}
-          color="white"
-        />
-        <DebugLines
-          lines={[[innerTrapezoid[0], addVector(innerTrapezoid[0], v)]]}
-          color="#e0457b"
-        />
-        <DebugPoints points={innerTrapezoid} color={"white"} />
-        <DebugPoints points={board.corners} color={"white"} />
-        <rect />;
-      </>
-    );
     return { drawing };
   })();
 

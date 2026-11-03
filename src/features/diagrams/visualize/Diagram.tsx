@@ -1,5 +1,6 @@
 import { useId } from "react";
 import {
+  addVector,
   alignEnd,
   DebugLines,
   DebugPoints,
@@ -7,16 +8,14 @@ import {
   InkFadeGradient,
   layoutUnit,
   LitEdgeGradient,
+  padVerticalSides,
   parallelogramMatrix,
-  polygonPath,
+  pointOnLine,
   roundedPolygonPath,
   splitWithGaps,
 } from "@/lib/svg";
 
-import { ScandinaviaOrthographic } from "../shared/maps/ScandinaviaOrthographic";
-import { CornerDecorator } from "./CornerDecorator";
-import { WindowHeader } from "../shared/WindowHeader";
-import { mapLayout } from "./mapLayout";
+import { Map } from "./Map";
 import { Floor } from "../shared/floor/Floor";
 import { floorLayout } from "../shared/floor/layout";
 
@@ -109,101 +108,111 @@ export function VisualizeDiagram() {
   // const framing _= () =>
 
   const map = (() => {
-    const board = boards.layouts[0];
-    const [topLeft, topRight, bottomRight, bottomLeft] = board.corners;
-
-    const headerHeight = board.height * 0.1;
-
-    // the area under the header: the board's top edge moved down by headerHeight,
-    // which is exactly where WindowHeader's line lands inside the board's transform
-    const area = [
-      { x: topLeft.x, y: topLeft.y + headerHeight },
-      { x: topRight.x, y: topRight.y + headerHeight },
-      bottomRight,
-      bottomLeft,
-    ];
-
-    const layout = mapLayout({
-      corners: area,
-      unit,
-      boardWidth: board.width,
-      boardHeight: board.height,
-      top: headerHeight,
-    });
-
-    const drawing = () => {
-      const { innerTrapezoid, cornerDecorators, map } = layout;
-      const fill = `url(#${inkId})`;
-
-      return (
-        <>
-          {/* sharp top corners under the header, bottom corners rounded like the board */}
-          <path
-            d={polygonPath(area, [0, 0, boards.radius, boards.radius])}
-            fill="var(--ground)"
-            opacity={0.75}
-          />
-
-          <g transform={board.transform}>
-            <WindowHeader
-              width={board.width}
-              height={headerHeight}
-              itemHeight={headerHeight * 0.2}
-              contentX={layoutUnit(headerHeight) * 4}
-            />
-          </g>
-
-          {cornerDecorators.map((arms, i) => (
-            <CornerDecorator
-              key={i}
-              {...arms}
-              stroke="var(--accent)"
-              strokeWidth={1.5}
-              radius={3}
-            />
-          ))}
-
-          <DebugPoints
-            points={innerTrapezoid.corners}
-            radius={3}
-            color="#aab4e6"
-          />
-
-          <g transform={board.transform}>
-            <ScandinaviaOrthographic
-              x={map.x}
-              y={map.y}
-              height={map.height}
-              fills={{
-                norway: fill,
-                sweden: fill,
-                denmark: fill,
-                finland: fill,
-              }}
-              transform={`rotate(${map.rotation}, ${map.width * 0.5}, ${map.height * 0.5})`}
-              stroke="var(--accent)"
-              strokeWidth={0.75}
-            />
-          </g>
-        </>
-      );
-    };
+    const drawing = () => (
+      <Map
+        board={boards.layouts[0]}
+        radius={boards.radius}
+        unit={unit}
+        mapFill={`url(#${inkId})`}
+      />
+    );
 
     return { drawing };
   })();
 
   const floor = (() => {
     const layout = floorLayout({
-      center: { x: viewboxWidth * 0.5, y: viewboxHeight * 0.9 },
-      tilesPerEdge: 10,
-      angle: deg(15),
-      tileLength: unit * 2,
+      center: { x: viewboxWidth * 0.5, y: viewboxHeight * 0.95 },
+      tilesPerEdge: 11,
+      angle: deg(11.25),
+      tileLength: unit * 2.5,
     });
 
     const drawing = () => (
-      <Floor layout={layout} tileOpacity={0.15} fadeStretchX={1.3} />
+      <Floor
+        layout={layout}
+        tileOpacity={0.15}
+        fadeStretchX={1}
+        fadeStretchY={1}
+        fadeStart={0.25}
+        tileStyle="insetTiles"
+      />
     );
 
+    return { drawing };
+  })();
+
+  const dashboard = (() => {
+    const board = boards.layouts[1];
+    // const [topLeft, topRight] = board.corners;
+
+    const innerTrapezoid = padVerticalSides(board.corners, unit * 0.5);
+
+    const v = {
+      x: innerTrapezoid[3].x - innerTrapezoid[0].x,
+      y: innerTrapezoid[3].y - innerTrapezoid[0].y,
+    };
+
+    const height = innerTrapezoid[3].y - innerTrapezoid[0].y;
+
+    const { sizes, starts } = splitWithGaps(
+      height,
+      [0.12, 0.55, 0.33],
+      unit * 0.25,
+    );
+
+    // const corners = (i: number) => {
+    //   const top = starts[i];
+    //   const bottom = starts[i] + sizes[i];
+
+    //   return [
+    //     { x: innerTrapezoid[0].x, y: innerTrapezoid[0].y + top }, // top-left
+    //     { x: innerTrapezoid[1].x, y: innerTrapezoid[1].y + top }, // top-right
+    //     { x: innerTrapezoid[1].x, y: innerTrapezoid[1].y + bottom }, // bottom-right
+    //     { x: innerTrapezoid[0].x, y: innerTrapezoid[0].y + bottom }, // bottom-left
+    //   ];
+    // };
+
+    const [topLeft, topRight, bottomRight, bottomLeft] = innerTrapezoid;
+
+    const corners = (i: number) => {
+      const top = starts[i] / height;
+      const bottom = (starts[i] + sizes[i]) / height;
+
+      return [
+        pointOnLine(topLeft, bottomLeft, top),
+        pointOnLine(topRight, bottomRight, top),
+        pointOnLine(topRight, bottomRight, bottom),
+        pointOnLine(topLeft, bottomLeft, bottom),
+      ];
+    };
+
+    const drawing = () => (
+      <>
+        {sizes.map((_, i) => (
+          <path
+            key={i}
+            d={roundedPolygonPath(corners(i), 4)}
+            fill="none"
+            stroke="var(--accent)"
+          />
+        ))}
+        <DebugPoints
+          points={starts.map((start) => ({
+            x: innerTrapezoid[0].x,
+            y: innerTrapezoid[0].y + start,
+          }))}
+          color="white"
+        />
+        <DebugLines
+          lines={[[innerTrapezoid[0], addVector(innerTrapezoid[0], v)]]}
+          color="#e0457b"
+        />
+        <DebugPoints points={innerTrapezoid} color={"white"} />
+        <DebugPoints points={board.corners} color={"white"} />
+        <rect />;
+      </>
+    );
     return { drawing };
   })();
 
@@ -217,10 +226,14 @@ export function VisualizeDiagram() {
         <InkFadeGradient id={inkId} />
         <LitEdgeGradient id={edgeId} />
       </defs>
+
       {floor.drawing()}
+
       {boards.drawing()}
 
       {map.drawing()}
+
+      {dashboard.drawing()}
 
       {/* debug: the viewbox's edges */}
       <rect

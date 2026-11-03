@@ -31,7 +31,7 @@ export function Gear({ layout }: { layout: ReturnType<typeof gearLayout> }) {
               fill={
                 item.isFront
                   ? "oklch(from var(--accent-ink) l c h)"
-                  : "oklch(from var(--accent) 0.18 0.07 h)"
+                  : "oklch(from var(--accent) 0.2 0.07 h)"
               }
               stroke={
                 item.isFront

@@ -21,23 +21,25 @@ export function mapLayout({
   boardHeight: number;
   top: number; // where the area starts, measured inside the board's transform
 }) {
-  const innerTrapezoid = (() => {
-    const padding = unit * 0.5;
-
-    return { corners: padVerticalSides(corners, padding) };
-  })();
+  const innerTrapezoid = padVerticalSides(corners, unit * 0.5);
 
   // decorator span this amount of inner trapezoid edges
   const bracketArmT = 0.075;
 
-  const cornerDecorators = innerTrapezoid.corners.map((corner, i, all) => {
+  const cornerDecorators = innerTrapezoid.map((corner, i, all) => {
     const next = all[(i + 1) % all.length];
     const prev = all[(i + all.length - 1) % all.length];
 
     return {
       start: corner,
-      u: scaleVector({ x: next.x - corner.x, y: next.y - corner.y }, bracketArmT),
-      v: scaleVector({ x: prev.x - corner.x, y: prev.y - corner.y }, bracketArmT),
+      u: scaleVector(
+        { x: next.x - corner.x, y: next.y - corner.y },
+        bracketArmT,
+      ),
+      v: scaleVector(
+        { x: prev.x - corner.x, y: prev.y - corner.y },
+        bracketArmT,
+      ),
     };
   });
 

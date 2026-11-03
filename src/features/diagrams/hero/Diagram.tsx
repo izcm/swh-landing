@@ -100,7 +100,12 @@ export function HeroDiagram() {
     });
 
     const drawing = (
-      <Floor layout={layout} tileOpacity={0.15} fadeStretchX={1.3} />
+      <Floor
+        layout={layout}
+        tileOpacity={0.15}
+        fadeStretchX={1.3}
+        tileStyle="lines"
+      />
     );
 
     return { ...layout, drawing };

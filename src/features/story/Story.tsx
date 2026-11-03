@@ -1,6 +1,5 @@
 import { SectionBase } from "@/features/core/SectionBase";
 
-import { ConnectDiagram } from "@/features/diagrams/connect/Diagram";
 import { ActDiagram } from "@/features/diagrams/act/Diagram";
 import { VisualizeDiagram } from "../diagrams/visualize/Diagram";
 import { AutomateDiagram } from "@/features/diagrams/automate/Diagram";
@@ -21,11 +20,11 @@ const sections = [
   {
     eyebrow: "VISUALIZE",
     title: "See the bigger picture",
-    tldr: "We build interactive dashboards.",
+    // tldr: "We build interactive dashboards.",
     paragraphs: [
-      "Dashboards are a common feature in modern software, providing an overview of important information in one place. At SWH Studio, we're particularly interested in making that information interactive and actionable..",
+      "Dashboards are a common feature in modern software, providing an overview of important information in one place.",
       "Rather than presenting static charts and figures, we focus on interactive views where data can be filtered, explored, and broken down into more detail.",
-      "For example, if you want to examine sales trends in a particular region, you could select an area directly on a map and see the related figures and charts update automatically.",
+      "For example, if you want to examine trends in a particular region, you could select an area directly on a map and see the related figures and charts update automatically.",
       // "Once scattered data is connected and transformed, you can see way more than any individual system can show on its own.",
       // "We build interactive dashboards that present up-to-date information in formats tailored to your business needs.",
       // "Explore information at different levels, spot patterns, and drill down into the details that matter.",
@@ -94,7 +93,7 @@ function StorySection({
       text={section.paragraphs.map((p) => (
         <p key={p}>{p}</p>
       ))}
-      tldr={section.tldr}
+      // tldr={section.tldr}
       diagram={section.diagram}
     />
   );

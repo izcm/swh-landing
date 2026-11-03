@@ -63,7 +63,7 @@ export function SectionBase({
       {diagram && (
         <div
           id={`diagram-${eyebrow.toLowerCase().replaceAll(" ", "-")}`}
-          className="relative w-full mx-auto px-2 mt-16 max-w-2xl xl:max-w-3xl"
+          className="relative w-full mx-auto px-2 mt-8 max-w-2xl xl:max-w-3xl"
         >
           {diagram}
         </div>

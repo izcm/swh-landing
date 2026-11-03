@@ -58,13 +58,13 @@ export function KPIsCard({ panel, unit }: { panel: Point[]; unit: number }) {
     },
     {
       title: "Transactions",
-      value: "1,284",
+      value: "10,312",
       trend: "▲ +8%",
       chart: [0.3, 0.25, 0.45, 0.4, 0.6, 0.55, 0.75, 0.8],
     },
     {
-      title: "Pending",
-      value: "97",
+      title: "Total (kr)",
+      value: "12.4M",
       trend: "▼ -4%",
       chart: [0.4, 0.55, 0.45, 0.6, 0.5, 0.65, 0.6, 0.7],
     },
@@ -115,6 +115,7 @@ export function KPIsCard({ panel, unit }: { panel: Point[]; unit: number }) {
               values={kpi.chart}
               color="var(--accent-electric)"
               strokeWidth={1.2}
+              areaOpacity={0.1}
             />
           </g>
         );

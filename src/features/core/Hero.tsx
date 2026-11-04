@@ -34,7 +34,7 @@ export default function Hero() {
         <div
           className={cn(
             "flex flex-col gap-4",
-            "text-base leading-relaxed font-light text-fg-tinted/80",
+            "text-base leading-relaxed font-light",
             "sm:text-lg",
           )}
         >

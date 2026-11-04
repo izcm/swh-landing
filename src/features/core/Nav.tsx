@@ -32,15 +32,14 @@ export default function Nav({
         className="
           sticky top-0 z-20
           flex items-center gap-6 px-6 py-3 sm:px-8
-          border-b border-faint-accent
-          bg-ground/80 backdrop-blur
+          backdrop-blur
         "
       >
-        <a href="#" className="text-lg font-semibold tracking-wide text-fg">
-          SWH
+        <a href="#" className="text-xl font-light tracking-tight">
+          SWH Studio
         </a>
 
-        <nav className="flex flex-1 items-center gap-1">
+        <nav className="flex flex-1 justify-end gap-4">
           {tabs.map((tab) => {
             const active = (tab.hash || "story") === current;
 

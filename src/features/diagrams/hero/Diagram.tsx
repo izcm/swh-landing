@@ -344,7 +344,7 @@ export function HeroDiagram() {
           {floor.drawing}
 
           {/* left of the cube: the dashboard */}
-          {dashboard.drawing}
+          {/* {dashboard.drawing} */}
 
           {/* middle: around the centerpiece */}
           {centerpieceDecorators.drawing}
@@ -353,7 +353,7 @@ export function HeroDiagram() {
           {centerpiece.drawing}
 
           {/* right of the cube: the action menu */}
-          {actionMenu.drawing}
+          {/* {actionMenu.drawing} */}
         </g>
       </g>
     </svg>

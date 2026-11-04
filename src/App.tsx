@@ -30,13 +30,15 @@ function App() {
       <Nav
         current={tab}
         tabs={[
-          { label: "Story", hash: "" },
+          { label: "Home", hash: "" },
+          { label: "Services", hash: "services" },
+          { label: "Work", hash: "work" },
           { label: "About", hash: "about" },
         ]}
       />
       {tab === "story" && (
         <>
-          <div className="md:min-h-below-nav-and-dev-banner mb-12 flex flex-col">
+          <div className="md:min-h-below-nav-and-dev-banner mb-12 flex flex-col overflow-x-clip">
             <Hero />
           </div>
           <Story />

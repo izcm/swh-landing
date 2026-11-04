@@ -1,5 +1,5 @@
-// "01 ──────── EYEBROW" rule above a section
-export default function EyebrowRule({
+// "01 / EYEBROW" label above a section
+export default function Eyebrow({
   index,
   label,
   maxIndex,
@@ -12,8 +12,8 @@ export default function EyebrowRule({
   const indexStr = `0${index + 1}`; // out app always has index < 10
 
   return (
-    <div className="flex items-center gap-6">
-      <div className="relative horizontal-line bg-accent-deep rounded-full w-8">
+    <div className="">
+      {/* <div className="relative horizontal-line bg-accent-deep rounded-full w-8">
         <div
           className="
               absolute top-1/2 size-1.5 -translate-x-1/2 
@@ -21,14 +21,14 @@ export default function EyebrowRule({
               accent-dot drop-shadow-[0_0_2px_var(--accent-deep)]"
           style={{ left: `${part}%` }}
         />
-      </div>
+      </div> */}
 
-      <div className="flex gap-3 eyebrow max-sm:text-[13px]">
-        <span className="text-accent-deep">{indexStr}</span>
+      <div className="flex gap-2 font-light text-accent tracking-wider text-[14px] max-sm:text-[13px]">
+        {indexStr}
 
-        <span className="text-fg-tinted opacity-80">/</span>
+        <span className="opacity-80">/</span>
 
-        <span className="text-fg-tinted opacity-80">{label.toUpperCase()}</span>
+        <span className="opacity-80">{label.toUpperCase()}</span>
       </div>
     </div>
   );

@@ -2,13 +2,13 @@
 
   <!-- small cube: just its three faces -->
   <g transform="translate(94.79, 132.36)">
-    <polygon points="0,44.2 94.79,88.4 94.79,206.89 0,162.69" fill="#1d5fbb"/>
-    <polygon points="94.79,88.4 189.58,44.2 189.58,162.69 94.79,206.89" fill="#3d7ddd"/>
-    <polygon points="0,44.2 94.79,0 189.58,44.2 94.79,88.4" fill="#7fb8ff"/>
+    <polygon points="0,44.2 94.79,88.4 94.79,206.89 0,162.69" fill="#2869bb"/>
+    <polygon points="94.79,88.4 189.58,44.2 189.58,162.69 94.79,206.89" fill="#4787dd"/>
+    <polygon points="0,44.2 94.79,0 189.58,44.2 94.79,88.4" fill="#89c1ff"/>
   </g>
 
   <!-- big cube: one even outline -->
-  <g fill="none" stroke="#5b9dff" stroke-width="16" stroke-linejoin="round" stroke-linecap="round">
+  <g fill="none" stroke="#65a7ff" stroke-width="16" stroke-linejoin="round" stroke-linecap="round">
     <polygon points="0,88.4 189.58,0 379.17,88.4 189.58,176.81"/>
     <polyline points="0,88.4 0,325.38 189.58,413.79 379.17,325.38 379.17,88.4"/>
     <line x1="189.58" y1="176.81" x2="189.58" y2="413.79"/>

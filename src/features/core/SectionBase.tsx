@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import EyebrowRule from "./EyebrowRule";
+import Eyebrow from "./Eyebrow";
 
 // a full-height <section>: "01 ──────── EYEBROW" rule, then title + paragraphs.
 // `diagram` renders below that, still in the section
@@ -31,17 +31,17 @@ export function SectionBase({
       className="
         flex flex-col mt-6 gap-6
         min-h-below-nav scroll-mt-18 mx-4
-        xl:flex-row xl:gap-12
+        lg:flex-row lg:gap-12
         "
     >
       <div
         className="
           relative isolate overflow-hidden
           flex flex-col gap-6 w-full mx-auto max-w-3xl
-          xl:max-w-150
+          lg:max-w-150
           "
       >
-        <EyebrowRule index={index} label={eyebrow} maxIndex={maxIndex} />
+        <Eyebrow index={index} label={eyebrow} maxIndex={maxIndex} />
         <h2 className="text-2xl sm:text-3xl font-medium text-fg">{title}</h2>
 
         <div className="flex flex-col justify-between">
@@ -50,7 +50,7 @@ export function SectionBase({
           </div>
         </div>
 
-        {/* xl:mt-auto: side by side with the diagram, sits at the column's bottom */}
+        {/* lg:mt-auto: side by side with the diagram, sits at the column's bottom */}
         {tldr && (
           <aside className=" mt-6 rounded border border-faint-accent bg-raised/40 px-4 py-3">
             <span className="text-xs font-medium uppercase tracking-wider text-accent">
@@ -63,7 +63,7 @@ export function SectionBase({
       {diagram && (
         <div
           id={`diagram-${eyebrow.toLowerCase().replaceAll(" ", "-")}`}
-          className="relative w-full mx-auto px-2 mt-8 max-w-2xl xl:max-w-3xl"
+          className="relative w-full mx-auto px-2 mt-8 max-w-2xl lg:max-w-2xl"
         >
           {diagram}
         </div>

@@ -1,6 +1,7 @@
 /* Inter is loaded in index.css */
 @theme inline {
   --font-sans: "Inter", sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
   --font-mono: var(--font-geist-mono);
 
   --background-image-story-connect: var(--story-connect-bg);
@@ -29,11 +30,11 @@
 
   /* surfaces */
   /* --ground: #060f17; */
-  --ground: #030815;
-  --raised: #0a1328;
-  --lowered: #091020;
-  --elevated: #0c152a;
-  --elevated-alt: #0e172e;
+  --ground: #080e18;
+  --raised: #0b1525;
+  --lowered: #070e1a;
+  --elevated: #101c2e;
+  --elevated-alt: #142139;
 
   --ground-gradient: radial-gradient(
     1200px 600px at 50% -10%,
@@ -62,20 +63,20 @@
   );
 
   /* text / borders */
-  --fg: rgba(238, 242, 245, 0.94);
-  --line: lab(88.79% -2.46 -8.05 / 0.24);
+  --fg: #e9edf6;
+  --line: rgba(129, 166, 211, 0.2);
 
-  --subtle: rgba(200, 214, 225, 0.74);
-  --muted: rgba(174, 191, 204, 0.5);
-  --faint: rgba(174, 191, 204, 0.19);
-  --extra-faint: rgba(174, 191, 204, 0.1);
+  --subtle: rgba(201, 215, 233, 0.76);
+  --muted: rgba(171, 193, 220, 0.48);
+  --faint: rgba(143, 173, 207, 0.2);
+  --extra-faint: rgba(143, 173, 207, 0.09);
 
   /* accent */
-  --accent: #5b9dff;
-  --accent-strong: #8fbfff;
+  --accent: #65a7ff;
+  --accent-strong: #a4cdff;
   --accent-muted: color-mix(in oklab, var(--accent) 45%, var(--muted));
   --accent-deep: color-mix(in oklab, var(--accent) 70%, #1d4ed8);
-  --accent-weak: rgba(91, 157, 255, 0.6);
+  --accent-weak: rgba(101, 167, 255, 0.55);
 
   --weak-opacity: 18%;
 

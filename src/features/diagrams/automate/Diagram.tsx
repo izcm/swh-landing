@@ -22,7 +22,7 @@ const rules: MenuBoardRow[] = [
 
 export function AutomateDiagram() {
   const viewboxWidth = 540;
-  const viewboxHeight = 380;
+  const viewboxHeight = 360;
 
   // 1/12 of the height
   const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);

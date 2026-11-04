@@ -6,30 +6,8 @@
   @apply bg-line w-px self-stretch;
 }
 
-/* raised surface, faint outline, rounded corners — pagination steps, dropdowns, toolbars */
-@utility raised-outline {
-  @apply rounded bg-raised border border-faint;
-}
-
-/* darker raised panel, extra-faint outline — side-panel section cards */
-@utility raised-outline-panel {
-  @apply rounded-lg bg-elevated-gradient border border-extra-faint;
-}
-
-/* focus ring drawn inward instead of outward — for elements whose focus ring
-   must stay within their own bounds (e.g. clipped or tightly packed grids) */
-@utility focus-inset {
-  @apply focus-visible:ring-1! focus-visible:ring-accent! focus-visible:ring-inset!;
-}
-
 @utility eyebrow {
-  @apply font-light text-accent tracking-wider text-[14px];
-}
-
-/* visually disables a non-form element (div/button) driven by aria-disabled
-   — pair with a guarded onClick, since aria-disabled doesn't block clicks */
-@utility disabled-look {
-  @apply aria-disabled:opacity-40 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed;
+  @apply font-light text-accent tracking-wider text-xs;
 }
 
 @utility border-faint-accent {
@@ -41,17 +19,7 @@
   @apply min-h-[calc(100dvh-var(--nav-height))];
 }
 
-/* fills the screen below the sticky nav */
-@utility h-below-nav {
-  @apply min-h-[calc(100dvh-var(--nav-height))];
-}
-
 /* fills the screen below the sticky nav and the dev banner above it */
 @utility min-h-below-nav-and-dev-banner {
   @apply min-h-[calc(100dvh-var(--nav-height)-var(--dev-banner-height))];
-}
-
-/* fills the screen below the sticky nav and the dev banner above it */
-@utility h-below-nav-and-dev-banner {
-  @apply h-[calc(100dvh-var(--nav-height)-var(--dev-banner-height))];
 }

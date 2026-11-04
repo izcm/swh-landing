@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
-import { Nav, Footer, Hero, Story, Demo, About } from "./features";
+import { Nav, Footer, Hero, About } from "./features";
 import { RadialGauge } from "./lib/svg/components/analytics/RadialGauge";
 import { deepShades, Tube } from "./lib/svg";
+import { Services } from "./features/services";
+
+// which tab the url's hash opens
+function tabFromHash() {
+  if (location.hash.startsWith("#about")) return "about";
+  if (location.hash.startsWith("#services")) return "services";
+  return "story";
+}
 
 function App() {
-  const [tab, setTab] = useState<"story" | "about" | "tmp">(
+  const [tab, setTab] = useState<
+    "story" | "about" | "tmp" | "services" | "home"
+  >(
     // "tmp",
-    location.hash.startsWith("#about") ? "about" : "story",
+    tabFromHash(),
   );
 
   useEffect(() => {
-    const onHashChange = () =>
-      setTab(location.hash.startsWith("#about") ? "about" : "story");
+    const onHashChange = () => setTab(tabFromHash());
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
@@ -41,8 +50,14 @@ function App() {
           <div className="md:min-h-below-nav-and-dev-banner mb-12 flex flex-col overflow-x-clip">
             <Hero />
           </div>
-          <Story />
-          <Demo />
+          {/* <Story /> */}
+          {/* <Demo /> */}
+        </>
+      )}
+
+      {tab === "services" && (
+        <>
+          <Services />
         </>
       )}
 

@@ -25,7 +25,7 @@ export default function Hero() {
         <h1
           className={cn(
             "text-4xl font-normal leading-tight text-fg",
-            "sm:text-5xl",
+            "sm:text-6xl",
           )}
         >
           SWH <span className="font-semibold text-accent">Studio.</span>
@@ -55,9 +55,8 @@ export default function Hero() {
           href="#story-connect"
           icon={<ArrowRight size={16} />}
           className={cn(
-            "btn-menu gap-3 px-0",
-            "text-lg font-light tracking-wide text-accent",
-            "xl:mt-3",
+            "btn gap-3 px-0 hover:text-fg",
+            "text-lg font-light text-accent",
           )}
         >
           See what we do

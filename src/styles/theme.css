@@ -72,11 +72,11 @@
   --extra-faint: rgba(143, 173, 207, 0.09);
 
   /* accent */
-  --accent: #65a7ff;
+  --accent: #82bbfd;
   --accent-strong: #a4cdff;
   --accent-muted: color-mix(in oklab, var(--accent) 45%, var(--muted));
   --accent-deep: color-mix(in oklab, var(--accent) 70%, #1d4ed8);
-  --accent-weak: rgba(101, 167, 255, 0.55);
+  --accent-weak: rgba(130, 187, 253, 0.55);
 
   --weak-opacity: 18%;
 

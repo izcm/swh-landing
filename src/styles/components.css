@@ -1,9 +1,3 @@
-/* menu elements that look nicer with bg-ground in dark vs raised in light theme*/
-.menu-surface {
-  @apply rounded border border-faint;
-  background: light-dark(var(--raised), var(--ground));
-}
-
 /* decorative perspective grid "floor" behind a section's content.
    floor-tile.svg is only the stencil (one diamond); the accent color shows
    through it, and the gradient fades the far edge out. The parent needs
@@ -72,9 +66,10 @@
 
   /* BTN SECONDARY STYLES */
   .btn-secondary {
-    color: color-mix(in oklab, var(--fg) 40%, var(--accent));
+    color: color-mix(in oklab, var(--fg) 60%, var(--accent));
     border-color: color-mix(in oklab, var(--accent) 40%, var(--line));
-    background: var(--raised-gradient);
+    /* background: var(--raised-gradient); */
+    background: transparent;
     box-shadow: none;
   }
 
@@ -92,132 +87,5 @@
     color: var(--accent-strong);
     background: color-mix(in oklab, var(--accent) 10%, var(--raised));
     box-shadow: none;
-  }
-
-  /* BTN NEUTRAL STYLES */
-  .btn-neutral {
-    color: var(--fg);
-    border-color: var(--faint);
-    background: linear-gradient(
-      160deg,
-      var(--ground) 0%,
-      color-mix(in oklab, var(--lowered) 92%, var(--accent)) 100%
-    );
-  }
-
-  .btn-neutral:hover {
-    background: color-mix(in oklab, var(--accent) 4%, var(--ground));
-  }
-
-  .btn-neutral:active {
-    background: color-mix(in oklab, var(--accent) 8%, var(--ground));
-  }
-
-  /* BTN INVERTED STYLES — fg fill, base text; the login modal's high-contrast CTA */
-  .btn-inverted {
-    color: var(--ground);
-    border-color: var(--subtle);
-    background: var(--fg);
-  }
-
-  .btn-inverted:hover {
-    background: color-mix(in oklab, var(--fg) 88%, var(--ground));
-  }
-
-  .btn-inverted:active {
-    background: color-mix(in oklab, var(--fg) 85%, var(--ground));
-  }
-
-  .btn-menu {
-    border: none;
-    letter-spacing: normal;
-    /* font-weight: 400; */
-    /* border-color/color transitions come from the shared .btn now —
-       this is the one variant whose hover changes a flat color (not a
-       gradient), so it's the only one that can actually animate it. */
-    transition: background-color 0.15s ease;
-  }
-
-  /* hover: let the accent border carry it; just a whisper of fill (both themes) */
-  .btn-menu:hover {
-    color: var(--accent-strong);
-    border-color: var(--accent);
-    background: color-mix(in oklab, var(--accent) 2%, var(--raised));
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-
-    padding: 4px 8px;
-    border-radius: 5px;
-
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  .badge__dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-  }
-
-  .badge--success {
-    color: var(--success);
-    background: var(--success-weak);
-  }
-
-  .badge--warning {
-    color: var(--warning);
-    background: var(--warning-weak);
-  }
-
-  .badge--danger {
-    color: var(--failure);
-    background: var(--failure-weak);
-  }
-
-  .badge--neutral {
-    color: var(--neutral);
-    background: var(--neutral-weak);
-  }
-
-  .badge--accent {
-    color: var(--accent);
-    background: color-mix(in oklab, var(--accent) 16%, transparent);
-  }
-
-  .badge--advisory {
-    color: var(--advisory);
-    background: var(--advisory-weak);
-  }
-
-  .badge--caution {
-    color: var(--caution);
-    background: var(--caution-weak);
-  }
-
-  .badge--critical {
-    color: var(--critical);
-    background: var(--critical-weak);
-  }
-
-  .badge--safe {
-    color: var(--safe);
-    background: var(--safe-weak);
-  }
-
-  .text-input {
-    --field-bg: light-dark(var(--raised), transparent);
-    @apply rounded;
-    background: var(--field-bg);
-    border: 1px solid var(--faint);
-  }
-
-  .text-input:focus-within {
-    background: color-mix(in oklab, var(--field-bg) 96%, var(--accent));
-    border-color: var(--accent);
   }
 }

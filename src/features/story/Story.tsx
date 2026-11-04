@@ -87,7 +87,6 @@ function StorySection({
     <SectionBase
       id={`story-${section.eyebrow.toLowerCase().replaceAll(" ", "-")}`}
       index={index}
-      maxIndex={sections.length}
       eyebrow={section.eyebrow}
       title={section.title}
       text={section.paragraphs.map((p) => (

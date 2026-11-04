@@ -1,13 +1,10 @@
 import type { ReactNode } from "react";
 
-import Eyebrow from "./Eyebrow";
-
-// a full-height <section>: "01 ──────── EYEBROW" rule, then title + paragraphs.
+// a full-height <section>: "01 / EYEBROW" label, then title + paragraphs.
 // `diagram` renders below that, still in the section
 export function SectionBase({
   id,
   index,
-  maxIndex,
   eyebrow,
   title,
   text,
@@ -16,7 +13,6 @@ export function SectionBase({
 }: {
   id?: string; // anchor target; scroll-mt keeps it clear of the nav
   index: number; // 0-based
-  maxIndex: number;
   eyebrow: string;
   title: ReactNode;
   text: ReactNode;
@@ -41,7 +37,7 @@ export function SectionBase({
           lg:max-w-150
           "
       >
-        <Eyebrow index={index} label={eyebrow} maxIndex={maxIndex} />
+        <span className="eyebrow">{`0${index + 1} / ${eyebrow.toUpperCase()}`}</span>
         <h2 className="text-2xl sm:text-3xl font-medium text-fg">{title}</h2>
 
         <div className="flex flex-col justify-between">

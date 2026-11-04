@@ -64,15 +64,13 @@ export function About() {
   return (
     <>
       <header className="border-b border-faint-accent mx-auto w-full px-6 py-24 mb-12">
-        <span className="eyebrow">ABOUT SWH</span>
+        <span className="eyebrow">THE DEV BEHIND</span>
 
         {/* <h1 className="mt-4 text-4xl text-fg">
           A little about how I <span className="text-accent">work</span>
         </h1> */}
 
-        <h1 className="mt-4 text-4xl text-fg">
-          Introducing our <span className="text-accent">solo dev</span> team
-        </h1>
+        <h1 className="mt-4 text-5xl">Introducing myself</h1>
 
         <p className="mt-6 max-w-150 text-subtle">
           I'm an independent developer focused on integrations, automation and
@@ -103,7 +101,6 @@ export function About() {
             key={about.eyebrow}
             id={`about-${about.eyebrow.toLowerCase().replaceAll(" ", "-")}`}
             index={i}
-            maxIndex={abouts.length}
             eyebrow={about.eyebrow}
             title={about.title}
             text={about.paragraphs.map((p) => (

@@ -1,23 +1,10 @@
-import { Fragment, useId } from "react";
-import {
-  DebugPoints,
-  layoutUnit,
-  polygonPath,
-  recessedFills,
-  type Point,
-} from "@/lib/svg";
-import {
-  ScandinaviaOrthographic,
-  scandinaviaOrthographicBounds,
-} from "../shared/maps/ScandinaviaOrthographic";
+import { useId } from "react";
+import { DebugPoints, layoutUnit, polygonPath, type Point } from "@/lib/svg";
+import { CityMap } from "../shared/maps/CityMap";
 import { WindowHeader } from "../shared/WindowHeader";
 import { CornerDecorator } from "./CornerDecorator";
-import { cities } from "./data";
 import { graticuleLayout } from "./graticuleLayout";
 import { mapLayout } from "./mapLayout";
-
-// blur: the circle's feGaussianBlur stdDeviation. not blurred if left out
-type Ring = { radius: number; opacity: number; blur?: number };
 
 // the map board's contents: its header, the background under it, the corner
 // brackets and the map
@@ -31,7 +18,6 @@ export function Map({
   unit: number;
 }) {
   const [topLeft, topRight, bottomRight, bottomLeft] = board.corners;
-  const blurId = useId();
   const frameClipId = useId();
 
   const headerHeight = board.height * 0.1;
@@ -54,34 +40,8 @@ export function Map({
     top: headerHeight,
   });
 
-  const everyCountry = (fill: string) => ({
-    norway: fill,
-    sweden: fill,
-    denmark: fill,
-    finland: fill,
-  });
-
-  const placement = {
-    x: map.x,
-    y: map.y,
-    height: map.height,
-    transform: `rotate(${map.rotation}, ${map.width * 0.5}, ${map.height * 0.5})`,
-  };
-
-  const countryFills = [
-    ...recessedFills,
-    { fill: "oklch(from var(--accent) 0.08 0.02 h)", opacity: 0.18 },
-  ];
-
-  // the outlines' coordinates, scaled to the size the map is drawn at
-  const toDrawnMap = ({ x, y }: Point) => {
-    const { x: boundsX, y: boundsY, height } = scandinaviaOrthographicBounds;
-    const scale = map.height / height;
-    return { x: (x - boundsX) * scale, y: (y - boundsY) * scale };
-  };
-
-  // the map's spot and rotation, for things drawn on it with toDrawnMap
-  const mapTransform = `translate(${placement.x}, ${placement.y}) ${placement.transform}`;
+  // the map's spot and rotation, for the grid drawn on it
+  const mapTransform = `translate(${map.x}, ${map.y}) rotate(${map.rotation}, ${map.width * 0.5}, ${map.height * 0.5})`;
 
   // the grid's knobs. the closer the pole, the more the lines bend
   const graticule = (() => {
@@ -98,39 +58,6 @@ export function Map({
     });
 
     return { pole, rings, rays };
-  })();
-
-  // the cities' x, y are in the map's own coordinates, so they're scaled to the
-  // size it's drawn at
-  const cityDots = (() => {
-    const radius = unit * 0.07;
-
-    // flat see-through circles stacked under the dot, the biggest the faintest
-    const rings: Ring[] = [
-      { radius: radius * 2, opacity: 0.12 },
-      { radius: radius * 1.4, opacity: 0.25 },
-      { radius, opacity: 1 },
-    ];
-
-    // the busy cities: a bigger sharp dot over one big blurred circle
-    const busyRings: Ring[] = [
-      { radius: radius * 3.5, opacity: 0.6, blur: radius * 1.4 },
-      { radius: radius * 1.4, opacity: 1 },
-    ];
-
-    const veryBusyRings: Ring[] = [
-      { radius: radius * 6, opacity: 0.6, blur: radius * 2.4 },
-      { radius: radius * 1.8, opacity: 1 },
-    ];
-
-    const points = Object.values(cities)
-      .flat()
-      .map(({ x, y, busy, veryBusy }) => ({
-        ...toDrawnMap({ x, y }),
-        rings: veryBusy ? veryBusyRings : busy ? busyRings : rings,
-      }));
-
-    return { points };
   })();
 
   return (
@@ -176,16 +103,13 @@ export function Map({
       <DebugPoints points={innerTrapezoid} radius={3} color="#aab4e6" />
 
       <g transform={board.transform}>
-        {countryFills.map(({ fill, opacity }, i) => (
-          <ScandinaviaOrthographic
-            key={i}
-            {...placement}
-            fills={everyCountry(fill)}
-            fillOpacity={opacity}
-            stroke="none"
-            strokeWidth={0}
-          />
-        ))}
+        <CityMap
+          x={map.x}
+          y={map.y}
+          height={map.height}
+          rotation={map.rotation}
+          dotRadius={unit * 0.07}
+        />
       </g>
 
       <defs>
@@ -222,51 +146,6 @@ export function Map({
               );
             })()}
           </g>
-        </g>
-      </g>
-
-      <g transform={board.transform}>
-        <ScandinaviaOrthographic
-          {...placement}
-          fills={everyCountry("none")}
-          stroke="var(--accent)"
-          strokeWidth={0.75}
-        />
-        {/* city dots */}
-        <g transform={mapTransform}>
-          {cityDots.points.map(({ x, y, rings }, i) => (
-            <g key={i}>
-              {rings.map(({ radius, opacity, blur }, j) => {
-                const filterId = `${blurId}-${i}-${j}`;
-                return (
-                  <Fragment key={j}>
-                    {/* room for the blur: it reaches ~3× its stdDeviation past the circle */}
-                    {blur !== undefined && (
-                      <filter
-                        id={filterId}
-                        x="-100%"
-                        y="-100%"
-                        width="300%"
-                        height="300%"
-                      >
-                        <feGaussianBlur stdDeviation={blur} />
-                      </filter>
-                    )}
-                    <circle
-                      cx={x}
-                      cy={y}
-                      r={radius}
-                      fill="color-mix(in oklch, var(--accent-electric), var(--accent-glow))"
-                      fillOpacity={opacity}
-                      filter={
-                        blur !== undefined ? `url(#${filterId})` : undefined
-                      }
-                    />
-                  </Fragment>
-                );
-              })}
-            </g>
-          ))}
         </g>
       </g>
     </>

@@ -7,7 +7,7 @@
 }
 
 @utility eyebrow {
-  @apply font-light text-accent tracking-wider text-xs;
+  @apply font-light tracking-wider text-fg-tinted text-sm;
 }
 
 @utility border-faint-accent {

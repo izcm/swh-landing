@@ -2,8 +2,10 @@ import type { ReactNode } from "react";
 
 import { AISvg } from "@/features/diagrams/ai/Diagram";
 import { SoftwareDiagram } from "@/features/diagrams/software/Diagram";
-import { IZBLOCKS_URL } from "@/lib/links";
 import { SectionBase } from "@/features/core/SectionBase";
+
+import { IZBLOCKS_URL } from "@/lib/links";
+
 import { ToolboxPanels } from "./Toolbox";
 
 const abouts: {
@@ -14,12 +16,8 @@ const abouts: {
   extra?: ReactNode; // rendered below the text + diagram
 }[] = [
   {
-    eyebrow: "Working together",
-    title: (
-      <>
-        How I <span className="text-accent">work with you</span>
-      </>
-    ),
+    eyebrow: "CO-OPERATE",
+    title: <>My process</>,
     paragraphs: [
       "I start by understanding how your process works today and where the friction is. From there, we map out the smallest useful solution.",
       "Next, I look through my existing toolbox for integrations, components and patterns that can be reused before writing anything custom.",

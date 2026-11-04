@@ -45,7 +45,7 @@ export default function Hero() {
           </p>
 
           <p>
-            With technology evolving faster than ever, our mission is to make it
+            With technology evolving faster than ever, my mission is to make it
             easier for small and medium-sized companies to explore and adopt new
             solutions, including AI.
           </p>

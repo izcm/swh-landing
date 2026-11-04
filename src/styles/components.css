@@ -88,4 +88,15 @@
     background: color-mix(in oklab, var(--accent) 10%, var(--raised));
     box-shadow: none;
   }
+
+  /* just text: subtle, fg on hover */
+  .btn-ghost {
+    border: none;
+    color: var(--subtle);
+  }
+
+  .btn-ghost:hover,
+  .btn-ghost:focus-visible {
+    color: var(--fg);
+  }
 }

@@ -162,7 +162,7 @@ export function Centerpiece({
       <ellipse
         className="float-shadow"
         {...floatShadow}
-        fill="var(--accent-electric)"
+        fill={whiterAccent}
         fillOpacity={0.18}
         style={{ filter: "blur(6px)" }}
       />

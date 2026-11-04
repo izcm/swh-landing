@@ -1,6 +1,12 @@
 import { cn } from "@/lib/cn";
 import { GITHUB_URL } from "@/lib/links";
 
+const links = [
+  { href: "#", label: "Story" },
+  { href: "#about", label: "About" },
+  { href: "#contact", label: "Get in touch" },
+];
+
 export default function Footer() {
   return (
     <footer
@@ -15,20 +21,16 @@ export default function Footer() {
       </a>
 
       <nav className="flex items-center gap-6">
-        <a href="#" className="hover:text-fg">
-          Story
-        </a>
-        <a href="#about" className="hover:text-fg">
-          About
-        </a>
-        <a href="#contact" className="hover:text-fg">
-          Get in touch
-        </a>
+        {links.map(({ href, label }) => (
+          <a key={href} href={href} className="btn btn-ghost">
+            {label}
+          </a>
+        ))}
         <a
           href={GITHUB_URL}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 hover:text-fg"
+          className="btn btn-ghost inline-flex items-center gap-2"
         >
           <GithubIcon className="size-4" />
           GitHub

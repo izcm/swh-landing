@@ -50,7 +50,7 @@ export default function Nav({
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "rounded px-3 py-1.5 text-sm transition-colors",
-                  active ? "text-fg" : "text-subtle hover:text-fg",
+                  active ? "text-fg" : "btn-ghost",
                 )}
               >
                 {tab.label}

@@ -1,10 +1,12 @@
+import { Link } from "react-router";
+
 import { cn } from "@/lib/cn";
 import { GITHUB_URL } from "@/lib/links";
 
 const links = [
-  { href: "#", label: "Story" },
-  { href: "#about", label: "About" },
-  { href: "#contact", label: "Get in touch" },
+  { to: "/", label: "Story" },
+  { to: "/about", label: "About" },
+  { to: "/", label: "Get in touch" },
 ];
 
 export default function Footer() {
@@ -16,15 +18,15 @@ export default function Footer() {
         "sm:flex-row sm:justify-between",
       )}
     >
-      <a href="#" className="text-lg font-semibold tracking-wide text-fg">
+      <Link to="/" className="text-lg font-semibold tracking-wide text-fg">
         SWH
-      </a>
+      </Link>
 
       <nav className="flex items-center gap-6">
-        {links.map(({ href, label }) => (
-          <a key={href} href={href} className="btn btn-ghost">
+        {links.map(({ to, label }) => (
+          <Link key={label} to={to} className="btn btn-ghost">
             {label}
-          </a>
+          </Link>
         ))}
         <a
           href={GITHUB_URL}

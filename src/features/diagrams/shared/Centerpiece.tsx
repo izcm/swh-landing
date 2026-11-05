@@ -163,12 +163,12 @@ export function Centerpiece({
         className="float-shadow"
         {...floatShadow}
         fill={whiterAccent}
-        fillOpacity={0.18}
+        fillOpacity={0.12}
         style={{ filter: "blur(6px)" }}
       />
 
       {/* small cube, with its own slight glow */}
-      <g className="float-bob" style={{ filter: accentGlow(1.5, 8) }}>
+      <g className="float-bob" style={{ filter: accentGlow(3, 24) }}>
         <g
           transform={`translate(${innerCubePos.x}, ${innerCubePos.y - floatLift})`}
         >

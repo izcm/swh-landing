@@ -1,0 +1,22 @@
+.cartesian-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  /* Draw the squares */
+  background-image:
+    linear-gradient(to right, var(--accent) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--accent) 1px, transparent 1px);
+
+  opacity: 0.1;
+
+  background-size: 40px 40px;
+
+  /* Fade toward the edges */
+  mask-image:
+    linear-gradient(to right, transparent, black 15%, black 85%, transparent),
+    linear-gradient(to bottom, transparent, black 15%, black 85%, transparent),
+    radial-gradient(circle at 75% 50%, var(--accent), transparent 80%);
+
+  mask-composite: intersect;
+}

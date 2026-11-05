@@ -99,4 +99,12 @@
   .btn-ghost:focus-visible {
     color: var(--fg);
   }
+
+  .tab-container {
+    @apply mx-auto w-full max-w-360 px-6 py-16;
+  }
+
+  .tab-container > header {
+    @apply mb-10 border-b border-faint-accent pb-8;
+  }
 }

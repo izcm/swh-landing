@@ -1,78 +1,62 @@
 import { useEffect, useState } from "react";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router";
 import { Nav, Footer, Hero, About } from "./features";
 import { RadialGauge } from "./lib/svg/components/analytics/RadialGauge";
 import { deepShades, Tube } from "./lib/svg";
-import { Services } from "./features/services";
+import { Service, Services } from "./features/services";
 
-// which tab the url's hash opens
-function tabFromHash() {
-  if (location.hash.startsWith("#about")) return "about";
-  if (location.hash.startsWith("#services")) return "services";
-  return "story";
-}
-
-function App() {
-  const [tab, setTab] = useState<
-    "story" | "about" | "tmp" | "services" | "home"
-  >(
-    // "tmp",
-    tabFromHash(),
-  );
+function Layout() {
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    const onHashChange = () => setTab(tabFromHash());
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
-  }, []);
-
-  // the hash target (e.g. #demo) only exists once the tab has rendered,
-  // so the browser's native anchor jump misses it — scroll manually
-  useEffect(() => {
-    const target =
-      location.hash && document.getElementById(location.hash.slice(1));
-    if (target) target.scrollIntoView();
-    else window.scrollTo(0, 0);
-  }, [tab]);
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <>
       <Nav
-        current={tab}
         tabs={[
-          { label: "Home", hash: "" },
-          { label: "Services", hash: "services" },
-          { label: "Work", hash: "work" },
-          { label: "About", hash: "about" },
+          { label: "Home", to: "/" },
+          { label: "Services", to: "/services" },
+          { label: "Work", to: "/work" },
+          { label: "About", to: "/about" },
         ]}
       />
-      {tab === "story" && (
-        <>
-          <div className="md:min-h-below-nav-and-dev-banner mb-12 flex flex-col overflow-x-clip">
-            <Hero />
-          </div>
-          {/* <Story /> */}
-          {/* <Demo /> */}
-        </>
-      )}
 
-      {tab === "services" && (
-        <>
-          <Services />
-        </>
-      )}
-
-      {tab === "about" && (
-        <>
-          <About />
-        </>
-      )}
-
-      {tab === "tmp" && <div className="max-w-7xl w-full mx-auto"></div>}
+      <main className="min-h-dvh">
+        <Outlet />
+      </main>
 
       <div className="mt-auto">
         <Footer />
       </div>
     </>
+  );
+}
+
+function Home() {
+  return (
+    <>
+      <div className="md:min-h-below-nav-and-dev-banner mb-12 flex flex-col overflow-x-clip">
+        <Hero />
+      </div>
+      {/* <Story /> */}
+      {/* <Demo /> */}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/services/:id" element={<Service />} />
+        <Route path="/about" element={<About />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+    </Routes>
   );
 }
 

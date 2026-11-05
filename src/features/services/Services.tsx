@@ -1,48 +1,25 @@
-import { SvgPlaceholder } from "@/components/SvgPlaceholder";
-import { GeoVisualization } from "../diagrams/small/GeoVisualization";
-import { GearPair } from "../diagrams/small/GearPair";
-import { ArrowRight, Plus } from "lucide-react";
-
-const sections = [
-  {
-    eyebrow: "INT",
-    title: "Integrations",
-    text: "Connect your existing systems for optimized data flow.",
-    diagram: <SvgPlaceholder label="Integrations" />,
-  },
-  {
-    eyebrow: "VIS",
-    title: "Visualization",
-    text: "Turn complex data into clear, actionable insight.",
-    diagram: <GeoVisualization />,
-  },
-  {
-    eyebrow: "TOOLS",
-    title: "Interactive Tools",
-    text: "Give users the right tools to explore, analyze, and act.",
-    diagram: <SvgPlaceholder label="Interactive Tools" />,
-  },
-  {
-    eyebrow: "AUTO",
-    title: "Automation",
-    text: "Streamline processes and reduce manual work.",
-    diagram: <GearPair />,
-  },
-];
+import { Plus } from "lucide-react";
+import { Link } from "react-router";
+import { ArrowRight } from "../diagrams/shared/ArrowRight";
+import { services } from "./data";
 
 export function Services() {
   return (
-    <div className="mx-auto w-full max-w-360 px-6 py-16">
-      <header className="mb-10 border-b border-faint-accent pb-8 ">
+    <div className="tab-container">
+      <header>
         <span className="eyebrow tracking-[0.25em] font-normal">SERVICES</span>
         <h1 className="mt-3 text-5xl">What I build</h1>
       </header>
 
-      <div className="grid gap-6 xl:grid-cols-2">
-        {sections.map((section, i) => (
+      <div className="grid gap-6 lg:grid-cols-2">
+        {services.map((section, i) => (
           <section
             key={section.eyebrow}
-            className="relative flex h-90 gap-6 border border-faint-accent p-8 rounded-sm"
+            className={`
+              relative flex h-90 gap-6
+              border border-faint-accent
+              p-8 rounded-sm overflor-hidden
+            `}
           >
             {[
               "top-0 left-0",
@@ -58,18 +35,20 @@ export function Services() {
             <div className="flex w-2/5 flex-col gap-3">
               <span className="eyebrow pb-4 text-[14px]">{`0${i + 1} / ${section.eyebrow}`}</span>
               <h2 className="mt-4 text-4xl text-fg">{section.title}</h2>
-              <p className="text-lg font-light text-subtle">{section.text}</p>
+              <p className="font-light text-subtle">{section.short}</p>
 
-              <a
-                href="something"
+              <Link
+                to={`/services/${section.id}`}
                 className="btn btn-ghost self-start mt-auto px-1 inline-flex gap-3"
               >
-                Read more
-                <ArrowRight className="text-fg" strokeWidth={1} />
-              </a>
+                Explore
+                <ArrowRight color="var(--fg)" size={24} strokeWidth={1} />
+              </Link>
             </div>
-            <div className="flex w-3/5 items-center h-full">
-              {section.diagram}
+            <div className="cartesian-grid" />
+
+            <div className="relative z20 w-3/5 items-center h-full shrink-0">
+              {section.smallDiagram}
             </div>
           </section>
         ))}

@@ -75,7 +75,7 @@
   --accent: #82bbfd;
   --accent-strong: #a4cdff;
   --accent-muted: color-mix(in oklab, var(--accent) 45%, var(--muted));
-  --accent-deep: color-mix(in oklab, var(--accent) 70%, #1d4ed8);
+  --accent-deep: oklch(from var(--accent) l calc(c * 1.15) h);
   --accent-weak: rgba(130, 187, 253, 0.55);
 
   --weak-opacity: 18%;

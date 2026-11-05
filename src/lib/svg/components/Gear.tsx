@@ -19,8 +19,8 @@ export function Gear({ layout }: { layout: ReturnType<typeof gearLayout> }) {
                 <path
                   key={j}
                   d={d}
-                  fill="oklch(from var(--accent) 0.18 0.07 h)"
-                  stroke="oklch(from var(--accent-electric) l c h / 0.35)"
+                  fill="var(--accent-glow)"
+                  stroke="var(--accent-glow)"
                   strokeWidth={1}
                 />
               ))}
@@ -28,16 +28,8 @@ export function Gear({ layout }: { layout: ReturnType<typeof gearLayout> }) {
             <path
               d={faceD}
               fillRule="evenodd"
-              fill={
-                item.isFront
-                  ? "oklch(from var(--accent-ink) l c h)"
-                  : "oklch(from var(--accent) 0.2 0.07 h)"
-              }
-              stroke={
-                item.isFront
-                  ? "var(--accent-electric)"
-                  : "oklch(from var(--accent-electric) l c h / 0.35)"
-              }
+              fill={item.isFront ? "var(--accent-ink)" : "var(--accent-glow)"}
+              stroke={"var(--accent-glow)"}
               strokeWidth={item.isFront ? 1.25 : 1}
             />
             {/* decorative ring around the hole, on the front face */}
@@ -47,7 +39,7 @@ export function Gear({ layout }: { layout: ReturnType<typeof gearLayout> }) {
                 cy={center.y}
                 r={holeRingRadius}
                 fill="none"
-                stroke="oklch(from var(--accent-electric) l c h / 0.25)"
+                stroke="none"
                 strokeWidth={1}
               />
             )}

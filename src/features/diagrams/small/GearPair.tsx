@@ -7,17 +7,17 @@ export function GearPair() {
   const gear = (radiusRatio: number) => {
     const radius = viewboxHeight * radiusRatio;
     const teethCount = 8;
-    const holeRadius = radius * 0.55;
+    const holeRadius = radius * 0.65;
     return gearLayout({
       radius,
       teethCount,
       // a gear's "module" (2 · radius / teethCount), made taller
-      toothHeight: ((2 * radius) / teethCount) * 1.25,
-      toothShare: 0.65,
+      toothHeight: ((2 * radius) / teethCount) * 1,
+      toothShare: 0.6,
       toothLean: deg(15),
       holeRadius,
       holeRingRadius: holeRadius * 1.2,
-      depth: radius * 0.25,
+      depth: radius * 0.2,
       tilt: deg(-10),
     });
   };

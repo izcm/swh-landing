@@ -1,27 +1,15 @@
+import { Link, NavLink, useNavigate } from "react-router";
+
 import { cn } from "@/lib/cn";
 
 type NavTab = {
   label: string;
-  hash: string;
+  to: string;
 };
 
-// same as following a #demo link, but also scrolls when the hash is
-// already #demo (no hashchange fires then)
-function goToDemo() {
-  if (location.hash === "#demo") {
-    document.getElementById("demo")?.scrollIntoView({ behavior: "smooth" });
-  } else {
-    location.hash = "demo";
-  }
-}
+export default function Nav({ tabs }: { tabs: NavTab[] }) {
+  const navigate = useNavigate();
 
-export default function Nav({
-  tabs,
-  current,
-}: {
-  tabs: NavTab[];
-  current: string;
-}) {
   return (
     <>
       <div className="bg-linear-to-r from-muted/25 via-muted/10 to-muted/25 ring-1 ring-inset ring-muted py-1.5 text-center text-xs font-semibold tracking-widest text-subtle">
@@ -35,33 +23,31 @@ export default function Nav({
           backdrop-blur
         "
       >
-        <a href="#" className="text-xl font-light tracking-tight">
+        <Link to="/" className="text-xl font-light tracking-tight">
           SWH Studio
-        </a>
+        </Link>
 
         <nav className="flex flex-1 justify-end gap-4">
-          {tabs.map((tab) => {
-            const active = (tab.hash || "story") === current;
-
-            return (
-              <a
-                key={tab.hash}
-                href={`#${tab.hash}`}
-                aria-current={active ? "page" : undefined}
-                className={cn(
+          {tabs.map((tab) => (
+            <NavLink
+              key={tab.to}
+              to={tab.to}
+              end={tab.to === "/"}
+              className={({ isActive }) =>
+                cn(
                   "rounded px-3 py-1.5 text-sm transition-colors",
-                  active ? "text-fg" : "btn-ghost",
-                )}
-              >
-                {tab.label}
-              </a>
-            );
-          })}
+                  isActive ? "text-fg" : "btn-ghost",
+                )
+              }
+            >
+              {tab.label}
+            </NavLink>
+          ))}
         </nav>
 
         <button
           type="button"
-          onClick={goToDemo}
+          onClick={() => navigate("/")}
           className="btn btn-secondary w-24 tracking-wide text-sm"
         >
           Contact

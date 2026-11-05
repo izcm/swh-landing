@@ -1,6 +1,5 @@
 import { ArrowRight } from "lucide-react";
-
-import { IconLink } from "@a2zb/react";
+import { Link } from "react-router";
 
 import { cn } from "@/lib/cn";
 import { HeroDiagram } from "@/features/diagrams/hero/Diagram";
@@ -9,10 +8,10 @@ export default function Hero() {
   return (
     <section
       className={cn(
-        "flex flex-1 flex-col justify-center gap-8",
+        "flex flex-1 flex-col justify-center gap-0",
         "w-full px-4 mt-8 sm:px-8",
         "xl:mx-auto xl:w-[94vw] xl:flex-row xl:items-center",
-        "xl:gap-10 xl:px-0 xl:py-0",
+        "xl:gap-0 xl:px-0 xl:py-0",
       )}
     >
       <div
@@ -51,16 +50,18 @@ export default function Hero() {
           </p>
         </div>
 
-        <IconLink
-          href="#story-connect"
-          icon={<ArrowRight size={16} />}
+        <Link
+          to="/services"
           className={cn(
-            "btn gap-3 px-0 hover:text-fg",
+            "flex btn justify-between no-underline gap-3 px-0 hover:text-fg",
             "text-lg font-light text-accent",
           )}
         >
           See what we do
-        </IconLink>
+          <span aria-hidden="true">
+            <ArrowRight size={16} />
+          </span>
+        </Link>
       </div>
 
       <div

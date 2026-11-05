@@ -7,30 +7,16 @@
 
   --connector-color: color-mix(in oklab, var(--muted), var(--accent) 60%);
 
-  /* --node-color: var(--ground); */
-  --node-color: color-mix(in oklab, var(--raised), var(--ground) 40%);
-  --node-color-deep: color-mix(in oklab, var(--node-color), var(--ground) 80%);
-  --node-border-color: color-mix(in oklab, #335976, var(--accent) 75%);
-  --node-border-color-faint: color-mix(
-    in oklab,
-    var(--node-border-color),
-    transparent 80%
-  );
-
   --platform-wall-fill: oklch(from var(--ground) 0.15 0.04 h / 0.72);
 
   /* https://claude.ai/artifact/VXrcsfxc2pMaoYDg63JeDL */
   /* accent strengths: same hue as --accent, different lightness / chroma */
+  --accent-faint: color-mix(in oklab, var(--accent) 15%, transparent);
   --accent-electric: oklch(from var(--accent) 0.7 0.21 h);
-  --accent-dim: oklch(from var(--accent) 0.5 0.125 h);
-  --accent-ink: oklch(from var(--accent) 0.17 0.052 h);
-  --accent-faint: oklch(from var(--accent) l c h / 0.15);
-  --accent-glow: oklch(from var(--accent) 0.86 0.09 h);
-
-  /* accent neighbours: nearby hues for variety */
-  --accent-lavender: oklch(from var(--accent) 0.66 0.21 calc(h + 28));
-  --accent-cyan: oklch(from var(--accent) 0.8 0.17 calc(h - 25));
-  --accent-teal: oklch(from var(--accent) 0.74 0.16 calc(h - 40));
+  --accent-dim: color-mix(in oklab, var(--accent), var(--ground) 45%);
+  /* --accent-ink: oklch(from var(--accent) 0.45 0.085 h); */
+  --accent-ink: color-mix(in oklab, var(--accent), var(--ground) 40%);
+  --accent-glow: color-mix(in oklab, var(--accent), white 50%);
 }
 
 /* floating cube: bobs up and down; its floor shadow shrinks + fades as it rises.

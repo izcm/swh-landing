@@ -49,8 +49,7 @@ export function WindowPane({
         height={height}
         rx={radius}
         fill="none"
-        stroke="var(--node-border-color)"
-        strokeWidth={strokeWidth}
+        stroke="var(--accent}"
       />
 
       {/* top edge */}

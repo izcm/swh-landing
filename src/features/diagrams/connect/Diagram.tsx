@@ -11,8 +11,8 @@ import { Nodes } from "./nodes/Nodes";
 import { SyncArrows } from "./SyncArrows";
 
 export function ConnectDiagram() {
-  const viewboxWidth = 615;
-  const viewboxHeight = 270;
+  const viewboxWidth = 540;
+  const viewboxHeight = 360;
   // edge slopes in radians: A down to the right, B up to the right
   const angles = { angleA: deg(15), angleB: deg(10) };
 

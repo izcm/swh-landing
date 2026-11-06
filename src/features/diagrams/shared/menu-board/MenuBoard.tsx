@@ -6,7 +6,6 @@ import {
   contentBoxLayout,
   glyphStrokeLucide,
   placeItemCenter,
-  RecessedPanel,
   shortSideUnit,
   splitWithGaps,
   stackWithGaps,
@@ -158,14 +157,12 @@ function MenuRow({
 
   return (
     <>
-      {/* the row: a recessed panel, like act's and visualize's boxes, with its
-          own dim accent border instead of the panel's gradient */}
-      <RecessedPanel width={width} height={h} radius={radius} strokeWidth={0} />
+      {/* the row */}
       <rect
         width={width}
         height={h}
         rx={radius}
-        fill="none"
+        fill="var(--ground)"
         stroke="oklch(from var(--accent) l c h / 0.4)" // knob: 0.4
         strokeWidth={0.75}
       />

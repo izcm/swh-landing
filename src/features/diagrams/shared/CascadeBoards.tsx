@@ -1,6 +1,6 @@
-import { LitPane, type cascadeLayout } from "@/lib/svg";
+import { type cascadeLayout } from "@/lib/svg";
 
-// a cascade's boards, back to front, each a lit pane: the back one
+// a cascade's boards, back to front: the back one
 // `backOpacity` see-through, fading up to solid at the front.
 // drawn in the cascade's own coords: put it inside the caller's
 // <g transform={layout.transform}>, next to whatever sits on the boards
@@ -16,13 +16,16 @@ export function CascadeBoards({
   return (
     <>
       {layout.items.map((board, i) => (
-        <LitPane
+        <rect
           key={i}
           x={board.x}
           y={board.y}
           width={board.width}
           height={board.height}
-          radius={radius}
+          rx={radius}
+          fill="var(--pane-fill)"
+          stroke="var(--accent-glow)"
+          strokeWidth={1}
           opacity={backOpacity + board.depth * (1 - backOpacity)}
         />
       ))}

@@ -8,6 +8,7 @@
   --connector-color: color-mix(in oklab, var(--muted), var(--accent) 60%);
 
   --platform-wall-fill: oklch(from var(--ground) 0.15 0.04 h / 0.72);
+  --pane-fill: color-mix(in oklab, var(--accent-ink) 60%, var(--ground));
 
   /* https://claude.ai/artifact/VXrcsfxc2pMaoYDg63JeDL */
   /* accent strengths: same hue as --accent, different lightness / chroma */

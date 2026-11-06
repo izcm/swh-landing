@@ -1,3 +1,4 @@
+import { FlowPlaceholder } from "@/components/FlowPlaceholder";
 import { SvgPlaceholder } from "@/components/SvgPlaceholder";
 import { GeoVisualization } from "../diagrams/small/GeoVisualization";
 import { GearPair } from "../diagrams/small/GearPair";
@@ -13,7 +14,21 @@ export const services = [
     title: "Integrations",
     short: "Connect your existing systems for optimized data flow.",
     smallDiagram: <SvgPlaceholder label="Integrations" />,
-    bigDiagram: <ConnectDiagram />,
+    heroDiagram: <ConnectDiagram />,
+    exampleFlowDiagram: <FlowPlaceholder label="Integrations example flow" />,
+    exampleText: [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    ],
+    today: [
+      "A business usually run daily operations by using several pieces of software. Maybe an ERP for accounting, Microsoft teams for collaboration, and internal spreadsheets for etc. bookkeeping.",
+      "Each system may work great on its own, where you can gain value is the interaction between them.",
+      "SWH helps you build the bridges between them, unlocking new capabilities. Review the short example below to see how.",
+    ],
+    sisterServices: [
+      "After integrating successfully, several new doors open. Lets put those into two categories: ",
+      "",
+    ],
   },
   {
     id: "visualization",
@@ -21,7 +36,16 @@ export const services = [
     title: "Visualization",
     short: "Turn complex data into clear, actionable insight.",
     smallDiagram: <GeoVisualization />,
-    bigDiagram: <VisualizeDiagram />,
+    heroDiagram: <VisualizeDiagram />,
+    exampleFlowDiagram: <FlowPlaceholder label="Visualization example flow" />,
+    exampleText: [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    ],
+    today: [
+      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
+    ],
   },
   {
     id: "interactive-tools",
@@ -29,7 +53,18 @@ export const services = [
     title: "Interactive Tools",
     short: "Give users the right tools to explore, analyze, and act.",
     smallDiagram: <SvgPlaceholder label="Interactive Tools" />,
-    bigDiagram: <ActDiagram />,
+    heroDiagram: <ActDiagram />,
+    exampleFlowDiagram: (
+      <FlowPlaceholder label="Interactive Tools example flow" />
+    ),
+    exampleText: [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    ],
+    today: [
+      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
+    ],
   },
   {
     id: "automation",
@@ -37,6 +72,15 @@ export const services = [
     title: "Automation",
     short: "Streamline processes and reduce manual work.",
     smallDiagram: <GearPair />,
-    bigDiagram: <AutomateDiagram />,
+    heroDiagram: <AutomateDiagram />,
+    exampleFlowDiagram: <FlowPlaceholder label="Automation example flow" />,
+    exampleText: [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    ],
+    today: [
+      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
+    ],
   },
 ];

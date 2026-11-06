@@ -3,12 +3,12 @@ import { polygonPath, type Point } from "../../logic";
 import { LitEdgeGradient } from "../gradients";
 
 export const recessedFills = [
-  { fill: "oklch(from var(--accent) 0.12 0.02 h)", opacity: 1 },
-  { fill: "var(--accent-ink)", opacity: 0.65 },
-  { fill: "oklch(from var(--accent) 0.32 0.12 h)", opacity: 0.2 },
+  { fill: "var(--ground)", opacity: 1 },
+  { fill: "var(--accent-faint)", opacity: 0.5 },
+  { fill: "var(--accent)", opacity: 0.25 },
 ];
 
-// RecessedPanel's look on any shape: corners in order, each with its own radius
+// a recessed shape: corners in order, each with its own radius
 export function RecessedPolygon({
   points,
   radii,

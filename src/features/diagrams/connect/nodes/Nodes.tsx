@@ -4,7 +4,7 @@ import {
   allStrokes,
   BoxBody,
   glyphStrokeLucide,
-  InkFadeGradient,
+  ElectricFadeGradient,
   LitEdgeGradient,
   roundedPolygonPath,
 } from "@/lib/svg";
@@ -18,8 +18,8 @@ export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
   const { roof, radius, rightFace, leftFace } = box;
   // the roof's border: bright at the top and fading down
   const litEdgeId = useId();
-  // the right wall's ink fade, over its fill
-  const inkId = useId();
+  // the right wall's electric fade, over its fill
+  const electricFadeId = useId();
   // the extra layer on every face: a dark accent, see-through
   const layer = "oklch(from var(--accent) 0.12 0.04 h / 0.2)"; // knob
   // every edge of the box
@@ -34,7 +34,7 @@ export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
     <>
       <defs>
         <LitEdgeGradient id={litEdgeId} />
-        <InkFadeGradient id={inkId} />
+        <ElectricFadeGradient id={electricFadeId} />
       </defs>
 
       {connectNodes.map(({ label, icon: Icon, color }, i) => {
@@ -53,7 +53,7 @@ export function Nodes({ layout }: { layout: ConnectLayout["nodes"] }) {
                 right: [
                   "oklch(from var(--accent) 0.18 0.05 h)",
                   layer,
-                  `url(#${inkId})`,
+                  `url(#${electricFadeId})`,
                 ],
                 left: ["var(--ground)", layer],
                 floor: "oklch(from var(--accent) 0.22 0.08 h)",

@@ -19,7 +19,7 @@ export const innerFloorFill =
 const innerLeftFill = "oklch(from var(--accent) calc(l - 0.2) c h / 0.6)";
 const innerRightFill = "oklch(from var(--accent) calc(l - 0.1) c h / 0.6)";
 
-const faintEdge = "oklch(from var(--accent-electric) l c h / 0.35)";
+const faintEdge = "oklch(from var(--accent-glow) l c h / 0.35)";
 const bluerAccent = "oklch(from var(--accent) calc(l - 0.2) c h)";
 const whiterAccent = "oklch(from var(--accent) calc(l + 0.2) c h)";
 
@@ -122,13 +122,9 @@ export function Centerpiece({
           cy={height / 2}
           r={size * 0.7}
         >
-          <stop
-            offset="0%"
-            stopColor="var(--accent-electric)"
-            stopOpacity={0}
-          />
-          <stop offset="45%" stopColor={bluerAccent} stopOpacity={0.3} />
-          <stop offset="100%" stopColor="var(--accent)" stopOpacity={0.1} />
+          <stop offset="0%" stopColor="var(--accent-glow)" stopOpacity={0} />
+          <stop offset="45%" stopColor={bluerAccent} stopOpacity={0.25} />
+          <stop offset="100%" stopColor="var(--accent)" stopOpacity={0.5} />
         </radialGradient>
 
         {/* corner light masks, one per cube */}
@@ -168,7 +164,7 @@ export function Centerpiece({
       />
 
       {/* small cube, with its own slight glow */}
-      <g className="float-bob" style={{ filter: accentGlow(3, 24) }}>
+      <g className="float-bob" style={{ filter: accentGlow(3, 64) }}>
         <g
           transform={`translate(${innerCubePos.x}, ${innerCubePos.y - floatLift})`}
         >

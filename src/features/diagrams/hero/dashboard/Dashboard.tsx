@@ -4,7 +4,6 @@ import {
   layoutUnit,
   paddedBox,
   placeItemCenter,
-  RecessedPanel,
   splitWithGaps,
 } from "@/lib/svg";
 
@@ -98,10 +97,12 @@ export function Dashboard({
 
         return (
           <g key={i} transform={`translate(${start}, 0)`}>
-            <RecessedPanel
+            <rect
               width={widths[i]}
               height={height}
-              radius={radius}
+              rx={radius}
+              fill="var(--ground)"
+              stroke="var(--accent-faint)"
               strokeWidth={strokeWidth * 0.5}
             />
             <g
@@ -121,7 +122,7 @@ export function Dashboard({
                 y={donut.y}
                 slices={[
                   { value: 0.25, color: "var(--accent)" },
-                  { value: 0.5, color: "var(--accent-electric)" },
+                  { value: 0.5, color: "var(--accent-glow)" },
                   {
                     value: 0.25,
                     color: "var(--accent-deep)",

@@ -2,7 +2,6 @@ import {
   ChartGuides,
   Tube,
   LineChart,
-  RecessedPanel,
   splitWithGaps,
   stackWithGaps,
 } from "@/lib/svg";
@@ -108,10 +107,12 @@ export function ChartRow({
     <>
       {columnStarts.map((columnX, i) => (
         <g key={i} transform={`translate(${columnX}, 0)`}>
-          <RecessedPanel
+          <rect
             width={columnSizes[i]}
             height={height}
-            radius={boxRadius}
+            rx={boxRadius}
+            fill="var(--ground)"
+            stroke="var(--accent-faint)"
             strokeWidth={boxStrokeWidth}
           />
           {columnContent[i]}

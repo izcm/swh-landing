@@ -1,14 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router";
 import { Nav, Footer, Hero, About } from "./features";
-import { RadialGauge } from "./lib/svg/components/analytics/RadialGauge";
-import { deepShades, Tube } from "./lib/svg";
 import { Service, Services } from "./features/services";
 
 function Layout() {
   const { pathname } = useLocation();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 

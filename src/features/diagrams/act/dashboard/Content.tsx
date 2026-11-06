@@ -2,7 +2,6 @@ import {
   alignCenter,
   layoutUnit,
   paddedBox,
-  RecessedPanel,
   splitWithGaps,
 } from "@/lib/svg";
 import {
@@ -86,10 +85,12 @@ export function DashboardContent({
       } = scandinaviaMap;
       return (
         <>
-          <RecessedPanel
+          <rect
             width={panelWidth}
             height={panelHeight}
-            radius={radius}
+            rx={radius}
+            fill="var(--ground)"
+            stroke="var(--accent-faint)"
             strokeWidth={1}
           />
           <ScandinaviaMap

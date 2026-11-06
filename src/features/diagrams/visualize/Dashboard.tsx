@@ -54,7 +54,7 @@ export function Dashboard({
             points={corners(i)}
             radii={[6, 6, 6, 6]}
             strokeWidth={1}
-            fillOpacity={0.5}
+            fillOpacity={0.15}
           />
         </>
       ))}

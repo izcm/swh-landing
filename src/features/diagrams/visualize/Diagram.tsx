@@ -2,7 +2,7 @@ import { useId } from "react";
 import {
   alignEnd,
   deg,
-  InkFadeGradient,
+  ElectricFadeGradient,
   layoutUnit,
   LitEdgeGradient,
   parallelogramMatrix,
@@ -22,7 +22,7 @@ export function VisualizeDiagram() {
   const unit = layoutUnit(viewboxHeight);
 
   // ids for the board's gradients in <defs>
-  const inkId = useId();
+  const electricFadeId = useId();
   const edgeId = useId();
 
   const boards = (() => {
@@ -83,7 +83,8 @@ export function VisualizeDiagram() {
             />
             <path
               d={outline}
-              fill={`url(#${inkId})`}
+              fill="var(--ground)"
+              // fill={`url(#${electricFadeId})`}
               stroke={`url(#${edgeId})`}
               strokeWidth={1}
             />
@@ -146,7 +147,7 @@ export function VisualizeDiagram() {
       overflow={"visible"}
     >
       <defs>
-        <InkFadeGradient id={inkId} />
+        <ElectricFadeGradient id={electricFadeId} />
         <LitEdgeGradient id={edgeId} />
       </defs>
 

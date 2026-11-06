@@ -263,7 +263,6 @@ export function HeroDiagram() {
 
     const start = addVector(cubeFloor.top, {
       x: 0,
-      // y: 0,
       y: -cube.thickness * 0.1,
     });
 
@@ -295,14 +294,14 @@ export function HeroDiagram() {
               x2={line.end.x}
               y2={line.end.y}
               stroke="var(--accent)"
-              strokeWidth={0.75}
+              strokeWidth={1}
               strokeDasharray={dashArray}
             />
           ),
         )}
 
         {/* tiny circles at the lines' ends */}
-        <g style={{ filter: accentGlow(4, 50) }}>
+        <g style={{ filter: accentGlow(4, 25) }}>
           {[verticalLine.start, verticalLine.end, end1, end2].map(
             (point, i) => (
               <circle
@@ -310,7 +309,7 @@ export function HeroDiagram() {
                 cx={point.x}
                 cy={point.y}
                 r={dotRadius}
-                fill="var(--accent)"
+                fill="var(--accent-glow)"
               />
             ),
           )}

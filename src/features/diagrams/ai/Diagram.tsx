@@ -7,7 +7,6 @@ import {
   alignCenter,
   deg,
   glyphStroke,
-  LitPane,
   paddedBox,
   spaceBetween,
   toDegrees,
@@ -176,15 +175,18 @@ export function AISvg() {
                   fill={isFront ? "var(--node-color-deep)" : undefined}
                   strokeWidth={isFront ? 0 : undefined} // trying: no border on the front editor
                 >
-                  {/* the front editor's background: the lit pane, then a faint
+                  {/* the front editor's background: the pane, then a faint
                       highlight along the top edge. AppWindow draws in a 300 × 200
                       box, and glyphStroke turns parent units into that box's units */}
                   {isFront && (
                     <>
-                      <LitPane
+                      <rect
                         width={300}
                         height={200}
-                        radius={editorBox.item.radius}
+                        rx={editorBox.item.radius}
+                        fill="var(--pane-fill)"
+                        stroke="var(--accent-ink)"
+                        strokeWidth={1}
                       />
                       <line
                         x1={8}

@@ -5,7 +5,6 @@ import {
   Tube,
   glyphStrokeLucide,
   listItemLayout,
-  RecessedPanel,
   splitWithGaps,
 } from "@/lib/svg";
 
@@ -75,10 +74,12 @@ export function List({
   return rows.starts.map((rowY, i) => (
     <g key={i} transform={`translate(0, ${rowY})`}>
       {/* background */}
-      <RecessedPanel
+      <rect
         width={width}
         height={rowHeight}
-        radius={Math.min(radius, rowHeight / 4)}
+        rx={Math.min(radius, rowHeight / 4)}
+        fill="var(--ground)"
+        stroke="var(--accent-faint)"
         strokeWidth={0.1}
       />
       {/* the selected row: a faint electric fill and a bright 1px border */}

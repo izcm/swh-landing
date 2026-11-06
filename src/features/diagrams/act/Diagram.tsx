@@ -6,7 +6,6 @@ import {
   alignEnd,
   cascadeLayout,
   deg,
-  LitPane,
   paddedBox,
 } from "@/lib/svg";
 import { MenuBoard, type MenuBoardRow } from "../shared/menu-board/MenuBoard";
@@ -24,7 +23,7 @@ export function ActDiagram() {
   // 540 units at our 672px ≈ 1.24px per unit, close to Connect's 784px / 650 units
   // ≈ 1.2px per unit, so strokes and radii come out about as thick as Connect's
   const viewboxWidth = 540;
-  const viewboxHeight = 340; // we have overflow visible btw
+  const viewboxHeight = 360; // we have overflow visible btw
 
   // same unit as Connect: 1/12 of the height
   const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
@@ -164,8 +163,15 @@ export function ActDiagram() {
             transform={`translate(${win.x}, ${win.y})`}
             opacity={0.6 + win.depth * 0.4}
           >
-            {/* the lit pane, then a faint highlight along the top edge */}
-            <LitPane width={win.width} height={win.height} radius={radius} />
+            {/* the pane, then a faint highlight along the top edge */}
+            <rect
+              width={win.width}
+              height={win.height}
+              rx={radius}
+              fill="var(--pane-fill)"
+              stroke="var(--accent-ink)"
+              strokeWidth={1}
+            />
             <line
               x1={radius}
               y1={1}

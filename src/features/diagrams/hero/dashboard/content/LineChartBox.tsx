@@ -1,7 +1,6 @@
 import {
   ChartGuides,
   LineChart,
-  RecessedPanel,
   stackWithGaps,
   Tube,
 } from "@/lib/svg";
@@ -37,10 +36,12 @@ export function LineChartBox({
 
   return (
     <g>
-      <RecessedPanel
+      <rect
         width={width}
         height={height}
-        radius={radius}
+        rx={radius}
+        fill="var(--ground)"
+        stroke="var(--accent-faint)"
         strokeWidth={strokeWidth}
       />
       <ChartGuides

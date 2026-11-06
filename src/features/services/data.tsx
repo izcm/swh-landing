@@ -1,11 +1,9 @@
 import { FlowPlaceholder } from "@/components/FlowPlaceholder";
 import { SvgPlaceholder } from "@/components/SvgPlaceholder";
-import { ConnectingNodes } from "../diagrams/connect/ConnectingNodes";
-import { GeoVisualization } from "../diagrams/visualize/GeoVisualization";
-import { GearPair } from "../diagrams/automate/GearPair";
-import { AutomateDiagram } from "../diagrams/automate/Diagram";
-import { ConnectDiagram } from "../diagrams/connect/Diagram";
-import { VisualizeDiagram } from "../diagrams/visualize/Diagram";
+
+import { ConnectDiagram, Nodes } from "../diagrams/connect";
+import { GeoVisualization, VisualizeDiagram } from "../diagrams/visualize";
+import { AutomateDiagram, GearPair } from "../diagrams/automate";
 
 export const services = [
   {
@@ -14,13 +12,13 @@ export const services = [
     title: "Integrations",
     short: "Connect your existing systems for optimized data flow.",
     smallDiagram: (
-      <ConnectingNodes
+      <Nodes
         width="100%"
         height="100%"
         viewboxWidth={320}
         viewboxHeight={240}
         strokeWidth={1}
-        shares={{ nodes: 1 / 3, connectors: 1 / 3, centerpiece: 1 / 3 }}
+        shares={{ nodes: 1 / 3, connectors: 1 / 3, cube: 1 / 3 }}
       />
     ),
     heroDiagram: <ConnectDiagram />,
@@ -32,7 +30,7 @@ export const services = [
     today: [
       "A business usually run daily operations by using several pieces of software. Maybe an ERP for accounting, Microsoft teams for collaboration, and internal spreadsheets for etc. bookkeeping.",
       "Each system may work great on its own, where you can gain value is the interaction between them.",
-      "SWH helps you build the bridges between them, unlocking new capabilities. Review the short example below to see how.",
+      "SWH helps you build these connections, unlocking new capabilities. Review the short example below to see how.",
     ],
     sisterServices: [
       "After integrating successfully, several new doors open. Lets put those into two categories: ",

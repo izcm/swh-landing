@@ -1,30 +1,46 @@
-import { innerRoofFill } from "@/features/diagrams/shared/centerpiece/Centerpiece";
+import { deg, SyncArrows } from "@/lib/svg";
 
-import { ConnectingNodes } from "./ConnectingNodes";
-import { connectingNodesAngles } from "./connectingNodesLayout";
+import { Floor, tileStyleNames } from "../shared/floor/Floor";
+import {
+  serviceFloorLayout,
+  serviceFloorLook,
+} from "../shared/floor/serviceFloorLayout";
+import { Nodes } from "./nodes/Nodes";
+import { nodesAngles } from "./nodes/layout";
 import { DataGrid } from "./DataGrid";
-import { connectLayout } from "./connectLayout";
-import { SyncArrows } from "./SyncArrows";
+import { connectLayout } from "./layout";
 
 export function ConnectDiagram() {
   const viewboxWidth = 540;
   const viewboxHeight = 360;
-  const angles = connectingNodesAngles;
+  const angles = nodesAngles;
 
-  const { connectingNodes, dataGrid, centerpiece, syncArrows, connectors } =
-    connectLayout({
-      viewboxWidth,
-      viewboxHeight,
-      angles,
-    });
+  const { nodes, dataGrid, cube, syncArrows, connectors } = connectLayout({
+    viewboxWidth,
+    viewboxHeight,
+    angles,
+  });
 
   // debug: where each section starts and ends, left to right
-  const sectionEdges = [
-    0,
-    centerpiece.translateX,
-    dataGrid.translateX,
-    viewboxWidth,
-  ];
+  const sectionEdges = [0, cube.translateX, dataGrid.translateX, viewboxWidth];
+
+  const floor = (() => {
+    const layout = serviceFloorLayout({
+      viewboxWidth,
+      viewboxHeight,
+      angle: deg(15),
+    });
+
+    const drawing = () => (
+      <Floor
+        layout={layout}
+        {...serviceFloorLook}
+        tileStyle={tileStyleNames[5]}
+      />
+    );
+
+    return { drawing };
+  })();
 
   return (
     <svg
@@ -32,6 +48,8 @@ export function ConnectDiagram() {
       overflow="visible"
       className="block w-full"
     >
+      {floor.drawing()}
+
       {/* debug: the sections' edges as plain lines, all drawn the same way
           (verticals top → bottom, horizontals left → right) */}
       <g
@@ -47,32 +65,32 @@ export function ConnectDiagram() {
         ))}
       </g>
 
-      {/* the second connector: from the centerpiece's right wall down to the data grid */}
+      {/* the second connector: from the cube's right wall down to the data grid */}
       <path
-        d={`M ${connectors.centerpieceOut.x} ${connectors.centerpieceOut.y} L ${connectors.dataGridIn.x} ${connectors.dataGridIn.y}`}
+        d={`M ${connectors.cubeOut.x} ${connectors.cubeOut.y} L ${connectors.dataGridIn.x} ${connectors.dataGridIn.y}`}
         stroke="var(--accent-dim)"
         strokeWidth={1}
         fill="none"
         strokeDasharray="8 12"
       />
 
-      {/* left + middle: the nodes, their connectors and the centerpiece */}
-      <ConnectingNodes
-        x={connectingNodes.translateX}
-        y={connectingNodes.translateY}
-        width={connectingNodes.width}
-        height={connectingNodes.height}
-        viewboxWidth={connectingNodes.width}
-        viewboxHeight={connectingNodes.height}
+      {/* left + middle: the nodes, their connectors and the cube */}
+      <Nodes
+        x={nodes.translateX}
+        y={nodes.translateY}
+        width={nodes.width}
+        height={nodes.height}
+        viewboxWidth={nodes.width}
+        viewboxHeight={nodes.height}
         strokeWidth={1}
-        shares={connectingNodes.shares}
+        shares={nodes.shares}
       />
 
       {/* debug: the connectors' ends: where each line leaves and arrives */}
       {[
         ...connectors.nodesOut,
-        ...connectors.innerCubeIns,
-        connectors.centerpieceOut,
+        ...connectors.cubeIns,
+        connectors.cubeOut,
         connectors.dataGridIn,
       ].map((p, i) => (
         <circle
@@ -85,12 +103,11 @@ export function ConnectDiagram() {
         />
       ))}
 
-      {/* under the centerpiece: two arrows spinning round a circle */}
+      {/* under the cube: two arrows spinning round a circle */}
       {/* <SyncArrows
         {...syncArrows}
         duration={12}
-        // the inner cube's color, more opaque
-        color={`oklch(from ${innerRoofFill} l c h / 0.55)`}
+        color="oklch(from var(--accent-ink) l c h / 0.55)"
       /> */}
 
       {/* right: the data grid */}

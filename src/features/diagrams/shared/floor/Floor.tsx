@@ -56,32 +56,36 @@ export const tileStyles = {
     );
   },
 
-  cornerDots: ({ tile }: TileCell) => (
-    <>
-      <path d={tile.d} {...line} strokeWidth={0.75} />
-      {Object.values(tile.corners).map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r={2} fill="var(--accent)" />
-      ))}
-    </>
-  ),
+  // cornerDots: ({ tile }: TileCell) => (
+  //   <>
+  //     <path d={tile.d} {...line} strokeWidth={0.75} />
+  //     {Object.values(tile.corners).map((p, i) => (
+  //       <circle key={i} cx={p.x} cy={p.y} r={2} fill="var(--accent)" />
+  //     ))}
+  //   </>
+  // ),
 
-  glowLines: ({ tile, glowId }: TileCell) => (
-    <>
-      <path
-        d={tile.d}
-        {...line}
-        strokeWidth={3}
-        opacity={0.6}
-        filter={`url(#${glowId})`}
-      />
-      <path d={tile.d} {...line} />
-    </>
-  ),
+  // glowLines: ({ tile, glowId }: TileCell) => (
+  //   <>
+  //     <path
+  //       d={tile.d}
+  //       {...line}
+  //       strokeWidth={3}
+  //       opacity={0.6}
+  //       filter={`url(#${glowId})`}
+  //     />
+  //     <path d={tile.d} {...line} />
+  //   </>
+  // ),
 
   dashed: ({ tile }: TileCell) => (
     <path d={tile.d} {...line} strokeDasharray="4 3" />
   ),
 };
+
+export const tileStyleNames = Object.keys(
+  tileStyles,
+) as (keyof typeof tileStyles)[];
 
 // the tiles from floorLayout, faded out toward the floor's edges
 export function Floor({

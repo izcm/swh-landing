@@ -1,0 +1,1 @@
+export { ActDiagram } from "./Diagram";

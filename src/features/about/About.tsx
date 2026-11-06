@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
-import { AISvg } from "@/features/diagrams/ai/Diagram";
-import { SoftwareDiagram } from "@/features/diagrams/software/Diagram";
+import { AISvg } from "@/features/diagrams/ai";
+import { SoftwareDiagram } from "@/features/diagrams/software";
 import { SectionBase } from "@/features/core/SectionBase";
 
 import { IZBLOCKS_URL } from "@/lib/links";

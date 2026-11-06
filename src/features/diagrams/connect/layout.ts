@@ -5,7 +5,7 @@ import {
   dropAlongEdge,
   paddedBox,
 } from "@/lib/svg";
-import { connectingNodesLayout } from "./connectingNodesLayout";
+import { nodesLayout } from "./nodes/layout";
 
 type Angles = { angleA: number; angleB: number };
 
@@ -24,7 +24,7 @@ export function connectLayout({
 
   // right: the data grid, two tilted windows flush with the right edge
   const dataGrid = (() => {
-    const groupWidth = viewboxWidth * 0.36;
+    const groupWidth = viewboxWidth * 0.4;
 
     // the three windows that are stacked behind eachother to the right side of diagram
     const stackLayout = cascadeLayout({
@@ -44,31 +44,31 @@ export function connectLayout({
     return { groupWidth, groupHeight, translateX, translateY, stackLayout };
   })();
 
-  // left + middle: the nodes and the centerpiece, in the space left of the data grid
-  const connectingNodes = (() => {
-    const width = viewboxWidth * 0.7;
+  // left + middle: the nodes and the cube, in the space left of the data grid
+  const nodes = (() => {
+    const width = viewboxWidth * 0.75;
     const height = viewboxHeight * 0.75;
     const translateX = 0;
     const translateY = 0;
-    const shares = { nodes: 0.4, connectors: 0.25, centerpiece: 0.35 };
-    const layout = connectingNodesLayout({ width, height, angles, shares });
+    const shares = { nodes: 0.35, connectors: 0.3, cube: 0.35 };
+    const layout = nodesLayout({ width, height, angles, shares });
 
     return { width, height, translateX, translateY, shares, layout };
   })();
 
-  const { centerpiece } = connectingNodes.layout;
+  const { cube } = nodes.layout;
 
-  // under the centerpiece: two arrows chasing each other round a circle
+  // under the cube: two arrows chasing each other round a circle
   const syncArrows = (() => {
-    const { cube } = centerpiece.layout;
+    const { metrics } = cube;
     const radius = unit; // knob
     const gap = unit * 0.5; // knob: cube's bottom → top of the circle
     // lying flat on the same floor as the cube: squashed by its roof's slope
-    const squash = Math.tan(centerpiece.angle);
+    const squash = Math.tan(cube.angle);
 
     return {
-      cx: centerpiece.x + cube.size / 2,
-      cy: centerpiece.y + cube.height + gap + radius * squash,
+      cx: cube.x + metrics.size / 2,
+      cy: cube.y + metrics.height + gap + radius * squash,
       squash,
       radius,
       count: 2,
@@ -80,23 +80,23 @@ export function connectLayout({
   })();
 
   const connectors = (() => {
-    const { centerpieceOut } = connectingNodes.layout.connectors;
+    const { cubeOut } = nodes.layout.connectors;
 
-    // from centerpieceOut, falling at angleA to the data grid's left edge
-    const run = dataGrid.translateX - centerpieceOut.x;
+    // from cubeOut, falling at angleA to the data grid's left edge
+    const run = dataGrid.translateX - cubeOut.x;
     const dataGridIn = {
       x: dataGrid.translateX,
-      y: centerpieceOut.y + dropAlongEdge({ run, angle: angles.angleA }),
+      y: cubeOut.y + dropAlongEdge({ run, angle: angles.angleA }),
     };
 
-    return { ...connectingNodes.layout.connectors, dataGridIn };
+    return { ...nodes.layout.connectors, dataGridIn };
   })();
 
   return {
     unit,
-    connectingNodes,
+    nodes,
     dataGrid,
-    centerpiece,
+    cube,
     syncArrows,
     connectors,
   };

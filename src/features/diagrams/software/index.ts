@@ -1,0 +1,1 @@
+export { SoftwareDiagram } from "./Diagram";

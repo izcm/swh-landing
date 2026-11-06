@@ -1,4 +1,4 @@
-import { arcPath, pointOnCircle } from "@/lib/svg";
+import { arcPath, pointOnCircle } from "../logic";
 
 // arrows chasing each other round a circle, like a refresh icon, spinning
 // clockwise. drawn around (cx, cy), squashed top to bottom by `squash` so it

@@ -9,6 +9,11 @@ import {
   gearLayout,
   paddedBox,
 } from "@/lib/svg";
+import { Floor, tileStyleNames } from "../shared/floor/Floor";
+import {
+  serviceFloorLayout,
+  serviceFloorLook,
+} from "../shared/floor/serviceFloorLayout";
 import { MenuBoard, type MenuBoardRow } from "../shared/menu-board/MenuBoard";
 import { ActionCards } from "./ActionCards";
 import { AutomationRulesHeader } from "./AutomationRulesHeader";
@@ -195,11 +200,32 @@ export function AutomateDiagram() {
     };
   })();
 
+  const floor = (() => {
+    const layout = serviceFloorLayout({
+      viewboxWidth,
+      viewboxHeight,
+      angle: deg(11.25),
+    });
+
+    const drawing = () => (
+      <Floor
+        layout={layout}
+        {...serviceFloorLook}
+        tileStyle={tileStyleNames[1]}
+      />
+    );
+
+    return { drawing };
+  })();
+
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
+      overflow="visible"
       className="block w-full"
     >
+      {floor.drawing()}
+
       {/* debug: the viewbox's edges */}
       <rect
         className="svg-debug"

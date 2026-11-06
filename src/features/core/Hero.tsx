@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 
 import { cn } from "@/lib/cn";
-import { HeroDiagram } from "@/features/diagrams/hero/Diagram";
+import { HeroDiagram } from "@/features/diagrams/hero";
 
 export default function Hero() {
   return (
@@ -57,7 +57,7 @@ export default function Hero() {
             "text-lg font-light text-accent",
           )}
         >
-          See what we do
+          See what I build
           <span aria-hidden="true">
             <ArrowRight size={16} />
           </span>

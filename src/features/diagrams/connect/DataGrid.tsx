@@ -5,7 +5,7 @@ import {
   Tube,
   WindowPane,
 } from "@/lib/svg";
-import type { ConnectLayout } from "./connectLayout";
+import type { ConnectLayout } from "./layout";
 
 // the right box: two tilted windows, the front one holding a table of pills.
 // the windows' stack and position come from connectLayout

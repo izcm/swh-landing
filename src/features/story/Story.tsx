@@ -1,8 +1,8 @@
 import { SectionBase } from "@/features/core/SectionBase";
 
-import { ActDiagram } from "@/features/diagrams/act/Diagram";
-import { VisualizeDiagram } from "../diagrams/visualize/Diagram";
-import { AutomateDiagram } from "@/features/diagrams/automate/Diagram";
+import { ActDiagram } from "@/features/diagrams/act";
+import { VisualizeDiagram } from "../diagrams/visualize";
+import { AutomateDiagram } from "@/features/diagrams/automate";
 import { SvgPlaceholder } from "@/components/SvgPlaceholder";
 
 const sections = [
@@ -23,7 +23,7 @@ const sections = [
     // tldr: "We build interactive dashboards.",
     paragraphs: [
       "Dashboards are a common feature in modern software, providing an overview of important information in one place.",
-      "Rather than presenting static charts and figures, we focus on interactive views where data can be filtered, explored, and broken down into more detail.",
+      "Rather than presenting static charts and figures, I focus on interactive views where data can be filtered, explored, and broken down into more detail.",
       "For example, if you want to examine trends in a particular region, you could select an area directly on a map and see the related figures and charts update automatically.",
       // "Once scattered data is connected and transformed, you can see way more than any individual system can show on its own.",
       // "We build interactive dashboards that present up-to-date information in formats tailored to your business needs.",
@@ -50,7 +50,7 @@ const sections = [
     paragraphs: [
       "Think of the manual steps involved in moving information from one system to another, checking for updates, or following up on tasks.",
       "When your systems work together, new opportunities for automation emerge. Repetitive tasks that once required manual effort can happen automatically.",
-      "We help you define rulesets and automated workers that execute tasks like clockwork.",
+      "I help you define rulesets and automated workers that execute tasks like clockwork.",
     ],
     diagram: <AutomateDiagram />,
   },

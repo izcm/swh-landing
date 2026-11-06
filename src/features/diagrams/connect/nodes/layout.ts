@@ -1,31 +1,33 @@
 import {
+  addVector,
   boxCorners,
   deg,
   dropAlongEdge,
+  isoCubeMetrics,
   layoutUnit,
   parallelogramMatrix,
   pointOnLine,
   spaceEvenly,
   splitWithGaps,
 } from "@/lib/svg";
-import { centerpieceLayout } from "../shared/centerpiece/centerpieceLayout";
-import { connectNodes } from "./connectNodes";
+import { connectorPaths } from "./connectors";
+import { nodeData } from "./data";
 
 type Angles = { angleA: number; angleB: number };
 
 // edge slopes in radians: A down to the right, B up to the right
-export const connectingNodesAngles: Angles = {
+export const nodesAngles: Angles = {
   angleA: deg(15),
   angleB: deg(10),
 };
 
-export type ConnectingNodesShares = {
+export type NodesShares = {
   nodes: number;
   connectors: number;
-  centerpiece: number;
+  cube: number;
 };
 
-export function connectingNodesLayout({
+export function nodesLayout({
   width,
   height,
   angles,
@@ -34,15 +36,15 @@ export function connectingNodesLayout({
   width: number;
   height: number;
   angles: Angles;
-  shares: ConnectingNodesShares;
+  shares: NodesShares;
 }) {
   const unit = layoutUnit(height);
 
-  // left to right: the nodes, the connectors, the centerpiece
+  // left to right: the nodes, the connectors, the cube
   const columns = (() => {
     const { sizes, starts } = splitWithGaps(
       width,
-      [shares.nodes, shares.connectors, shares.centerpiece],
+      [shares.nodes, shares.connectors, shares.cube],
       0,
     );
     return { sizes, starts };
@@ -55,7 +57,7 @@ export function connectingNodesLayout({
     // -- BOX · one shape, used for every node, as wide as groupWidth --
     const box = (() => {
       const thickness = unit * 2;
-      const radius = 12;
+      const radius = 6;
 
       const lengthA = unit * 2; // knob: roof.left → roof.bottom
       // roof.bottom → roof.right: the rest of groupWidth
@@ -101,10 +103,10 @@ export function connectingNodesLayout({
     })();
 
     // each box's top (the roof's top corner), spread evenly down the column
-    const boxYs = connectNodes.map((_, i) =>
+    const boxYs = nodeData.map((_, i) =>
       spaceEvenly({
         index: i,
-        itemCount: connectNodes.length,
+        itemCount: nodeData.length,
         itemSize: box.height, // the whole box, floor included
         start: 0,
         end: height,
@@ -121,32 +123,43 @@ export function connectingNodesLayout({
   })();
 
   // each node's connector start: the middle of its back wall (facing the
-  // centerpiece). before the centerpiece, which lines up with the middle one
+  // cube). before the cube, which lines up with the middle one
   const nodesOut = (() => {
     const { roof, floor } = nodes.box;
     const backWallCenter = pointOnLine(roof.top, floor.right, 0.5);
 
     return nodes.boxYs.map((boxY) => ({
-      x: backWallCenter.x,
+      x: floor.right.x,
       y: boxY + backWallCenter.y,
     }));
   })();
 
-  // right: the centerpiece, filling the last column
-  const centerpiece = (() => {
+  // right: the empty cube, filling the last column
+  const cube = (() => {
     const groupWidth = columns.sizes[2];
     const translateX = columns.starts[2];
 
     const angle = deg(20);
-    const layout = centerpieceLayout({ size: groupWidth, angle });
+    const radius = 3;
+    const metrics = isoCubeMetrics(groupWidth, groupWidth * 0.625, {
+      angleA: angle,
+      angleB: angle,
+    });
+    const { roof, floor } = boxCorners({
+      lengthA: metrics.a.edgeLength,
+      lengthB: metrics.b.edgeLength,
+      angleA: metrics.a.angle,
+      angleB: metrics.b.angle,
+      thickness: metrics.thickness,
+    });
 
     const x = translateX;
 
     // its left wall's middle sits on HR's connector line, which rises at the
     // cube's angleB (so it meets the wall head-on)
     const leftWallMiddle = {
-      x: layout.cube.a.run / 2,
-      y: layout.cube.depth * 1.5 + layout.cube.thickness / 2,
+      x: metrics.a.run / 2,
+      y: metrics.depth * 1.5 + metrics.thickness / 2,
     };
     const middleNodeOut = nodesOut[Math.floor(nodesOut.length / 2)];
     // how much higher the wall's middle is than HR's point
@@ -156,100 +169,55 @@ export function connectingNodesLayout({
     });
     const y = middleNodeOut.y - rise - leftWallMiddle.y;
 
-    return { groupWidth, translateX, angle, layout, x, y };
+    return {
+      groupWidth,
+      translateX,
+      angle,
+      radius,
+      metrics,
+      roof,
+      floor,
+      x,
+      y,
+    };
   })();
 
-  // the connectors' ends: nodesOut → centerpieceIns, plus centerpieceOut for
-  // whatever the caller connects the centerpiece to
+  // the connectors' ends: nodesOut → cubeIns, plus cubeOut for
+  // whatever the caller connects the cube to
   const connectors = (() => {
-    // the cube's corners, where it's drawn
-    const { cube } = centerpiece.layout;
-    const { roof, floor } = boxCorners({
-      lengthA: cube.a.edgeLength,
-      lengthB: cube.b.edgeLength,
-      angleA: cube.a.angle,
-      angleB: cube.b.angle,
-      thickness: cube.thickness,
-      x: centerpiece.x,
-      y: centerpiece.y,
-    });
+    const { metrics, roof, floor } = cube;
+    const cubeAt = { x: cube.x, y: cube.y };
 
     // the middle of the cube's left wall
-    const leftWallCenter = pointOnLine(roof.left, floor.bottom, 0.5);
+    const leftWallCenter = addVector(
+      pointOnLine(roof.left, floor.bottom, 0.5),
+      cubeAt,
+    );
 
     // one in per node, stacked straight up and down the left wall, the same
     // distance apart, centered on the wall's middle. top node → top in
-    const inGap = cube.thickness * 0.12; // knob: between two ins, as a share of the wall's height
+    const inGap = metrics.thickness * 0.12; // knob: between two ins, as a share of the wall's height
     const middle = (nodesOut.length - 1) / 2;
-    const centerpieceIns = nodesOut.map((_, i) => ({
-      x: leftWallCenter.x,
+    const cubeIns = nodesOut.map((_, i) => ({
+      x: cube.x + floor.left.x,
       y: leftWallCenter.y + (i - middle) * inGap,
     }));
 
-    // where the node connectors end: one spot per node on the inner cube's left
-    // edge (its far-left vertical edge), inGap apart, centered on the edge's middle
-    const { innerCube, innerCubePos, floatLift } = centerpiece.layout;
-    const innerLeftEdgeMiddle = {
-      x: centerpiece.x + innerCubePos.x,
-      y:
-        centerpiece.y +
-        innerCubePos.y -
-        floatLift +
-        innerCube.depth +
-        innerCube.thickness / 2,
-    };
-    const innerCubeIns = nodesOut.map((_, i) => ({
-      x: innerLeftEdgeMiddle.x,
-      y: innerLeftEdgeMiddle.y + (i - middle) * inGap,
-    }));
-
     // the middle of the cube's right wall
-    const centerpieceOut = pointOnLine(roof.bottom, floor.right, 0.5);
-
-    const nodeConnectors = nodesOut.map((out, i) => {
-      const centerpieceIn = centerpieceIns[i];
-      const innerCubeIn = innerCubeIns[i];
-      const line = {
-        dx: centerpieceIn.x - out.x,
-        dy: centerpieceIn.y - out.y,
-      };
-
-      // knob: each flat piece before and after the curve, as a share of dx
-      const straight = line.dx * 0.3;
-
-      // where the curve starts and ends
-      const curveStart = { x: out.x + straight, y: out.y };
-      const curveEnd = { x: centerpieceIn.x - straight, y: centerpieceIn.y };
-
-      const c1 = {
-        x: out.x + line.dx * 0.6,
-        y: out.y,
-      };
-
-      const c2 = {
-        x: out.x + line.dx * 0.3,
-        y: centerpieceIn.y,
-      };
-
-      return [
-        `M ${out.x} ${out.y}`,
-        `L ${curveStart.x} ${curveStart.y}`,
-        `C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${curveEnd.x} ${curveEnd.y}`,
-        // `L ${centerpieceIn.x} ${centerpieceIn.y}`,
-        `L ${innerCubeIn.x} ${innerCubeIn.y}`,
-      ].join(" ");
-    });
+    const cubeOut = addVector(
+      pointOnLine(roof.bottom, floor.right, 0.5),
+      cubeAt,
+    );
 
     return {
       nodesOut,
-      centerpieceIns,
-      innerCubeIns,
-      centerpieceOut,
-      nodeConnectors,
+      cubeIns,
+      cubeOut,
+      nodeConnectors: connectorPaths(nodesOut, cubeIns),
     };
   })();
 
-  return { unit, nodes, centerpiece, connectors };
+  return { unit, nodes, cube, connectors };
 }
 
-export type ConnectingNodesLayout = ReturnType<typeof connectingNodesLayout>;
+export type NodesLayout = ReturnType<typeof nodesLayout>;

@@ -1,9 +1,9 @@
 import { Box, FileSpreadsheet, Mailbox, type LucideIcon } from "lucide-react";
 
-export type ConnectNode = { label: string; icon: LucideIcon; color: string };
+export type NodeData = { label: string; icon: LucideIcon; color: string };
 
 // one box per node, top to bottom
-export const connectNodes: ConnectNode[] = [
+export const nodeData: NodeData[] = [
   {
     label: "Accounting",
     icon: FileSpreadsheet,

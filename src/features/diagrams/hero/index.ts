@@ -1,0 +1,1 @@
+export { HeroDiagram } from "./Diagram";

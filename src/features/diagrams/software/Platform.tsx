@@ -1,8 +1,13 @@
 import { useId } from "react";
-import { EdgeGradient } from "../../styles";
-import { BoxBody } from "../iso";
-import { accentGlow, gridLines, type Point } from "../../logic";
-import { boxCorners, type BoxSize } from "../../layouts";
+import {
+  accentGlow,
+  BoxBody,
+  boxCorners,
+  gridLines,
+  type BoxSize,
+  type Point,
+} from "@/lib/svg";
+import { EdgeGradient } from "../shared/gradients";
 import { platformGridStyle, platformStyle } from "./platformStyle";
 
 type PlatformProps = Partial<Point> &

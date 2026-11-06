@@ -17,7 +17,7 @@ function Layout() {
           { label: "Home", to: "/" },
           { label: "Services", to: "/services" },
           { label: "Work", to: "/work" },
-          { label: "About", to: "/about" },
+          // { label: "About", to: "/about" },
         ]}
       />
 
@@ -51,7 +51,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
         <Route path="/services/:id" element={<Service />} />
-        <Route path="/about" element={<About />} />
+        {/* <Route path="/about" element={<About />} /> */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

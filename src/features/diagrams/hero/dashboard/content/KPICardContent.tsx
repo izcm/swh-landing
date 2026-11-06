@@ -35,7 +35,7 @@ export function KPICardContent({
         width={width}
         height={lineHeight}
         level={0.85}
-        fill="var(--accent-electric)"
+        fill="var(--accent)"
         fillOpacity={0.6}
       />
       {/* subtitle: dim, shorter */}
@@ -44,7 +44,7 @@ export function KPICardContent({
         width={width}
         height={lineHeight}
         level={0.5}
-        fill="var(--accent-electric)"
+        fill="var(--accent)"
         fillOpacity={0.38}
       />
       {/* filled tube: a faint accent track, partly filled */}

@@ -4,7 +4,7 @@ import {
   scaleVector,
   type Point,
 } from "@/lib/svg";
-import { scandinaviaOrthographicBounds } from "../shared/maps/ScandinaviaOrthographic";
+import { scandinaviaOrthographicBounds } from "./ScandinaviaOrthographic";
 
 // the map board's inner trapezoid, corner brackets and the map. `map` is
 // measured inside the board's transform, the rest in picture coordinates

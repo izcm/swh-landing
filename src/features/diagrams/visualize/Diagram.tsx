@@ -2,18 +2,17 @@ import { useId } from "react";
 import {
   alignEnd,
   deg,
-  ElectricFadeGradient,
   layoutUnit,
-  LitEdgeGradient,
   parallelogramMatrix,
   roundedPolygonPath,
   splitWithGaps,
 } from "@/lib/svg";
 
-import { Map } from "./Map";
-import { Dashboard } from "./Dashboard";
+import { Map } from "./map/Map";
+import { Dashboard } from "./dashboard/Dashboard";
 import { Floor } from "../shared/floor/Floor";
-import { floorLayout } from "../shared/floor/layout";
+import { floorLayout } from "../shared/floor/floorLayout";
+import { AccentFadeGradient, LitEdgeGradient } from "../shared/gradients";
 
 export function VisualizeDiagram() {
   const viewboxWidth = 540;
@@ -22,7 +21,7 @@ export function VisualizeDiagram() {
   const unit = layoutUnit(viewboxHeight);
 
   // ids for the board's gradients in <defs>
-  const electricFadeId = useId();
+  const accentFadeId = useId();
   const edgeId = useId();
 
   const boards = (() => {
@@ -84,7 +83,7 @@ export function VisualizeDiagram() {
             <path
               d={outline}
               fill="var(--ground)"
-              // fill={`url(#${electricFadeId})`}
+              // fill={`url(#${accentFadeId})`}
               stroke={`url(#${edgeId})`}
               strokeWidth={1}
             />
@@ -147,7 +146,7 @@ export function VisualizeDiagram() {
       overflow={"visible"}
     >
       <defs>
-        <ElectricFadeGradient id={electricFadeId} />
+        <AccentFadeGradient id={accentFadeId} />
         <LitEdgeGradient id={edgeId} />
       </defs>
 

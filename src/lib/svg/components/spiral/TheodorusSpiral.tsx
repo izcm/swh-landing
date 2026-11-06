@@ -93,7 +93,7 @@ export function TheodorusSpiral({
         <path
           d={edgeSmooth}
           fill="none"
-          stroke="var(--connector-color)"
+          stroke="var(--accent-dim)"
           strokeWidth={unit * 0.09}
           strokeDasharray={`${unit * 0.09 * 8} ${unit * 0.09 * 12}`}
         />

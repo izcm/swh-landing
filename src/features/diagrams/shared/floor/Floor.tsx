@@ -1,5 +1,5 @@
 import { useId } from "react";
-import type { floorLayout } from "./layout";
+import type { floorLayout } from "./floorLayout";
 
 type TileCell = {
   tile: ReturnType<typeof floorLayout>["tile"];

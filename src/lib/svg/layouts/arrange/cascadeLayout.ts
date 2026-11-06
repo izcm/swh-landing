@@ -25,7 +25,7 @@ export function cascadeLayout({
   // item i's x. "right": count backwards so the back item is furthest right
   const windowX = (i: number) => (side === "right" ? count - 1 - i : i) * gapX;
 
-  // keep AppWindow's 300:200 aspect ratio
+  // keep CodeEditor's 300:200 aspect ratio
   const itemWidth = groupWidth - gapX * (count - 1);
   const itemHeight = itemWidth * heightToWidthRatio;
 

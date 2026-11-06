@@ -1,4 +1,5 @@
-import { alignCenter, alignEnd, WindowDots } from "@/lib/svg";
+import { alignCenter, alignEnd } from "@/lib/svg";
+import { WindowDots } from "./WindowDots";
 
 // a window's header strip: an outlined tube on the left, window
 // dots on the right, and a line along its bottom. drawn from (0, 0)

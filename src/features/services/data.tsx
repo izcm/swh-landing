@@ -1,8 +1,8 @@
 import { FlowPlaceholder } from "@/components/FlowPlaceholder";
 import { SvgPlaceholder } from "@/components/SvgPlaceholder";
-import { GeoVisualization } from "../diagrams/small/GeoVisualization";
-import { GearPair } from "../diagrams/small/GearPair";
-import { ActDiagram } from "../diagrams/act/Diagram";
+import { ConnectingNodes } from "../diagrams/connect/ConnectingNodes";
+import { GeoVisualization } from "../diagrams/visualize/GeoVisualization";
+import { GearPair } from "../diagrams/automate/GearPair";
 import { AutomateDiagram } from "../diagrams/automate/Diagram";
 import { ConnectDiagram } from "../diagrams/connect/Diagram";
 import { VisualizeDiagram } from "../diagrams/visualize/Diagram";
@@ -13,7 +13,16 @@ export const services = [
     eyebrow: "INT",
     title: "Integrations",
     short: "Connect your existing systems for optimized data flow.",
-    smallDiagram: <SvgPlaceholder label="Integrations" />,
+    smallDiagram: (
+      <ConnectingNodes
+        width="100%"
+        height="100%"
+        viewboxWidth={320}
+        viewboxHeight={240}
+        strokeWidth={1}
+        shares={{ nodes: 1 / 3, connectors: 1 / 3, centerpiece: 1 / 3 }}
+      />
+    ),
     heroDiagram: <ConnectDiagram />,
     exampleFlowDiagram: <FlowPlaceholder label="Integrations example flow" />,
     exampleText: [
@@ -53,7 +62,7 @@ export const services = [
     title: "Interactive Tools",
     short: "Give users the right tools to explore, analyze, and act.",
     smallDiagram: <SvgPlaceholder label="Interactive Tools" />,
-    heroDiagram: <ActDiagram />,
+    heroDiagram: <SvgPlaceholder label="Interactive Tools" />,
     exampleFlowDiagram: (
       <FlowPlaceholder label="Interactive Tools example flow" />
     ),

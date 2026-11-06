@@ -1,7 +1,7 @@
 import { useId } from "react";
 
 // one window's pane, the look hero and connect use: a dark surface with a soft
-// gradient, a faint electric tint, a border and an electric line along the top
+// gradient, a faint accent tint, a border and an accent line along the top
 // edge. everything inside starts at (0, 0) = the window's top-left
 export function WindowPane({
   width,
@@ -34,12 +34,12 @@ export function WindowPane({
         fill={`url(#${gradientId})`}
       />
 
-      {/* tiny electric tint */}
+      {/* tiny accent tint */}
       <rect
         width={width}
         height={height}
         rx={radius}
-        fill="var(--accent-electric)"
+        fill="var(--accent)"
         fillOpacity={0.01}
       />
 
@@ -58,7 +58,7 @@ export function WindowPane({
         y1={strokeWidth / 2}
         x2={width - radius - 8}
         y2={strokeWidth / 2}
-        stroke="var(--accent-electric)"
+        stroke="var(--accent)"
         strokeWidth={strokeWidth * 1.5}
       />
     </>

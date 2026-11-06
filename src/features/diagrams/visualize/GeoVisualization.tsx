@@ -1,6 +1,6 @@
 import { alignCenter, layoutUnit } from "@/lib/svg";
-import { CityMap } from "../shared/maps/CityMap";
-import { scandinaviaOrthographicBounds } from "../shared/maps/ScandinaviaOrthographic";
+import { CityMap } from "./map/CityMap";
+import { scandinaviaOrthographicBounds } from "./map/ScandinaviaOrthographic";
 
 export function GeoVisualization() {
   const viewboxWidth = 320;

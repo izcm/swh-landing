@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { Card } from "@/components/Card";
-import { ArrowRight } from "../diagrams/shared/ArrowRight";
+import { ArrowRight } from "./ArrowRight";
 import { services } from "./data";
 
 export function Services() {

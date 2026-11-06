@@ -84,7 +84,7 @@ export function LineChart({
           y1={selected.y}
           x2={selected.x}
           y2={height}
-          stroke="var(--accent-electric)"
+          stroke="var(--accent)"
           strokeOpacity={0.5}
           strokeWidth={1}
         />
@@ -111,7 +111,7 @@ export function LineChart({
           const isMin = value < prev && value < next;
           if (!isMax && !isMin) return null;
 
-          const fill = isMax ? "var(--accent-electric)" : "var(--accent-deep)";
+          const fill = isMax ? "var(--accent)" : "var(--accent-deep)";
 
           return (
             <g key={i}>

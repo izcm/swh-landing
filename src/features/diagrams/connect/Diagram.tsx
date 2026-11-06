@@ -1,22 +1,17 @@
-import { deg } from "@/lib/svg";
+import { innerRoofFill } from "@/features/diagrams/shared/centerpiece/Centerpiece";
 
-import {
-  Centerpiece,
-  innerRoofFill,
-} from "@/features/diagrams/shared/Centerpiece";
-
+import { ConnectingNodes } from "./ConnectingNodes";
+import { connectingNodesAngles } from "./connectingNodesLayout";
 import { DataGrid } from "./DataGrid";
-import { connectLayout } from "./layout";
-import { Nodes } from "./nodes/Nodes";
+import { connectLayout } from "./connectLayout";
 import { SyncArrows } from "./SyncArrows";
 
 export function ConnectDiagram() {
   const viewboxWidth = 540;
   const viewboxHeight = 360;
-  // edge slopes in radians: A down to the right, B up to the right
-  const angles = { angleA: deg(15), angleB: deg(10) };
+  const angles = connectingNodesAngles;
 
-  const { nodes, dataGrid, centerpiece, syncArrows, connectors } =
+  const { connectingNodes, dataGrid, centerpiece, syncArrows, connectors } =
     connectLayout({
       viewboxWidth,
       viewboxHeight,
@@ -52,30 +47,26 @@ export function ConnectDiagram() {
         ))}
       </g>
 
-      {/* the connectors: a straight line from each node to the centerpiece's
-          left wall, the same style as the hero's */}
-      {connectors.nodeConnectors.map((path, i) => (
-        <path
-          key={i}
-          d={path}
-          stroke="var(--connector-color)"
-          strokeWidth={1}
-          fill="none"
-          strokeDasharray="8 12"
-        />
-      ))}
-
       {/* the second connector: from the centerpiece's right wall down to the data grid */}
       <path
         d={`M ${connectors.centerpieceOut.x} ${connectors.centerpieceOut.y} L ${connectors.dataGridIn.x} ${connectors.dataGridIn.y}`}
-        stroke="var(--connector-color)"
+        stroke="var(--accent-dim)"
         strokeWidth={1}
         fill="none"
         strokeDasharray="8 12"
       />
 
-      {/* left: the nodes */}
-      <Nodes layout={nodes} />
+      {/* left + middle: the nodes, their connectors and the centerpiece */}
+      <ConnectingNodes
+        x={connectingNodes.translateX}
+        y={connectingNodes.translateY}
+        width={connectingNodes.width}
+        height={connectingNodes.height}
+        viewboxWidth={connectingNodes.width}
+        viewboxHeight={connectingNodes.height}
+        strokeWidth={1}
+        shares={connectingNodes.shares}
+      />
 
       {/* debug: the connectors' ends: where each line leaves and arrives */}
       {[
@@ -93,23 +84,14 @@ export function ConnectDiagram() {
           fill="#ff4fa3" // pink
         />
       ))}
-      {/* middle: the centerpiece */}
-      <Centerpiece
-        x={centerpiece.x}
-        y={centerpiece.y}
-        {...centerpiece.layout}
-        angle={centerpiece.angle}
-        cubeStrokeWeight={0.5} // knob
-        innerCubeStrokeWeight={0.4} // knob
-      />
 
       {/* under the centerpiece: two arrows spinning round a circle */}
-      <SyncArrows
+      {/* <SyncArrows
         {...syncArrows}
         duration={12}
         // the inner cube's color, more opaque
         color={`oklch(from ${innerRoofFill} l c h / 0.55)`}
-      />
+      /> */}
 
       {/* right: the data grid */}
       <DataGrid layout={dataGrid} />

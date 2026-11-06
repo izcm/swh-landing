@@ -7,13 +7,13 @@ export const connectNodes: ConnectNode[] = [
   {
     label: "Accounting",
     icon: FileSpreadsheet,
-    color: "var(--accent-electric)",
+    color: "var(--accent)",
   },
   {
     label: "Mailbox",
     icon: Mailbox,
     color:
-      "oklch(from var(--accent-electric) calc(l + 0.08) calc(c - 0.06) calc(h - 10))",
+      "oklch(from var(--accent) calc(l + 0.08) calc(c - 0.06) calc(h - 10))",
   },
   { label: "Others", icon: Box, color: "var(--accent-glow)" },
 ];

@@ -1,8 +1,4 @@
-import { useId } from "react";
 import {
-  AccentBarGradient,
-  AppWindow,
-  WindowDots,
   accentGlow,
   alignCenter,
   deg,
@@ -11,7 +7,7 @@ import {
   spaceBetween,
   toDegrees,
 } from "@/lib/svg";
-import { EditorCode } from "./editor/EditorCode";
+import { CodeEditor } from "./editor/CodeEditor";
 
 export function AISvg() {
   const viewboxWidth = 600;
@@ -25,14 +21,6 @@ export function AISvg() {
 
   // header strip at the top of each editor window (dots sit in it, code starts below it)
   const editorHeaderHeight = unit * 0.8;
-
-  const dots = (() => {
-    const radius = editorHeaderHeight * 0.13;
-    const gap = radius * 2.4;
-    // first dot as far in from the left as from the top
-    const translateX = editorHeaderHeight / 2 - radius;
-    return { radius, gap, translateX };
-  })();
 
   // preserve CodeEditor's 300:200 aspect ratio
   const editorBox = (() => {
@@ -74,7 +62,6 @@ export function AISvg() {
   })();
 
   // AI suggestion panel, placed relative to the front editor (in the tilted group's coords)
-  const suggestionGradientId = useId();
   const suggestion = (() => {
     const { count, gapX, gapY } = editorBox.stack;
     const front = { x: (count - 1) * gapX, y: (count - 1) * gapY };
@@ -118,26 +105,7 @@ export function AISvg() {
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       // className="w-full h-auto"
     >
-      {/* <rect
-        x={0}
-        y={0}
-        width={viewboxWidth}
-        height={viewboxHeight}
-        fill="none"
-        stroke="red"
-      /> */}
-
       <g transform={`translate(${paddingX}, ${paddingY})`}>
-        {/* debug: editor's skewed bounding box */}
-        {/* <rect
-          x={0}
-          y={editorBox.translateY}
-          width={editorBox.width}
-          height={editorBox.resolvedHeight}
-          fill="none"
-          stroke="red"
-        /> */}
-
         <g
           transform={`translate(0, ${editorBox.translateY + editorBox.skew.addedHeight}) skewY(${-toDegrees(editorBox.skew.angle)})`}
         >
@@ -163,29 +131,26 @@ export function AISvg() {
                   filter: accentGlow(4, 12),
                 }}
               >
-                <AppWindow
+                <CodeEditor
                   x={i * gapX}
                   y={i * gapY}
                   width={editorBox.item.width}
                   height={editorBox.item.height}
                   viewboxWidth={300}
                   viewboxHeight={200}
+                  headerHeight={editorHeaderHeight}
                   radius={6}
                   ghost={!isFront}
-                  fill={isFront ? "var(--node-color-deep)" : undefined}
                   strokeWidth={isFront ? 0 : undefined} // trying: no border on the front editor
                 >
-                  {/* the front editor's background: the pane, then a faint
-                      highlight along the top edge. AppWindow draws in a 300 × 200
-                      box, and glyphStroke turns parent units into that box's units */}
                   {isFront && (
                     <>
                       <rect
                         width={300}
                         height={200}
                         rx={editorBox.item.radius}
-                        fill="var(--pane-fill)"
-                        stroke="var(--accent-ink)"
+                        fill="var(--ground)"
+                        stroke="none"
                         strokeWidth={1}
                       />
                       <line
@@ -193,7 +158,7 @@ export function AISvg() {
                         y1={1.5}
                         x2={292}
                         y2={1.5}
-                        stroke="var(--accent-electric)"
+                        stroke="var(--accent)"
                         strokeOpacity={0.25}
                         strokeWidth={glyphStroke(
                           editorBox.item.width,
@@ -203,21 +168,7 @@ export function AISvg() {
                       />
                     </>
                   )}
-                  <g transform={`translate(${dots.translateX}, 0)`}>
-                    <WindowDots
-                      height={editorHeaderHeight}
-                      radius={dots.radius}
-                      gap={dots.gap}
-                    />
-                  </g>
-                  {isFront && (
-                    <EditorCode
-                      width={300}
-                      height={200}
-                      headerHeight={editorHeaderHeight}
-                    />
-                  )}
-                </AppWindow>
+                </CodeEditor>
               </g>
             );
           })}
@@ -229,17 +180,13 @@ export function AISvg() {
               y={suggestion.y}
               width={suggestion.width}
               height={suggestion.height}
-              rx="var(--rx-node-md)"
-              fill="oklch(from var(--accent) 0.18 0.06 h)"
+              rx={8}
+              fill="oklch(from var(--accent) 0.18 0.06 h"
               fillOpacity={0.8}
               stroke="color-mix(in oklab, var(--accent) 40%, transparent)"
               strokeWidth={0.8}
               style={{ filter: accentGlow(6, 18) }}
             />
-
-            <defs>
-              <AccentBarGradient id={suggestionGradientId} />
-            </defs>
 
             {suggestion.lines.map((line, i) => (
               <rect
@@ -249,7 +196,7 @@ export function AISvg() {
                 width={line.width}
                 height={suggestion.barHeight}
                 rx={suggestion.barHeight / 2}
-                fill={`url(#${suggestionGradientId})`}
+                fill="var(--accent-bright)"
                 style={{
                   filter:
                     "drop-shadow(0 0 2.5px color-mix(in oklab, var(--accent) 45%, transparent))",

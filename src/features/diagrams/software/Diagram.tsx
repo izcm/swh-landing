@@ -3,13 +3,10 @@ import { useId } from "react";
 import {
   addVector,
   ISOCube,
-  Platform,
-  platformStyle,
   IsoCubeShadow,
   accentGlow,
   allFills,
   allStrokes,
-  EdgeGradient,
   glassCube,
   glassEdgeOpacity,
   glassGlow,
@@ -22,6 +19,9 @@ import {
   type BoxLook,
   type Point,
 } from "@/lib/svg";
+import { EdgeGradient } from "../shared/gradients";
+import { Platform } from "./Platform";
+import { platformStyle } from "./platformStyle";
 
 export function SoftwareDiagram() {
   const viewboxWidth = 500;
@@ -304,7 +304,7 @@ export function SoftwareDiagram() {
       <path
         d={arcConnector}
         fill="none"
-        stroke="var(--connector-color)"
+        stroke="var(--accent-dim)"
         strokeWidth={1}
         strokeDasharray="8 12"
       />

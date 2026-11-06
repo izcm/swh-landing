@@ -1,6 +1,6 @@
 import { useId } from "react";
-import { polygonPath, type Point } from "../../logic";
-import { LitEdgeGradient } from "../gradients";
+import { polygonPath, type Point } from "@/lib/svg";
+import { LitEdgeGradient } from "../../shared/gradients";
 
 export const recessedFills = [
   { fill: "var(--ground)", opacity: 1 },

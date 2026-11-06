@@ -1,7 +1,7 @@
 import { useId } from "react";
 import { DebugPoints, layoutUnit, polygonPath, type Point } from "@/lib/svg";
-import { CityMap } from "../shared/maps/CityMap";
-import { WindowHeader } from "../shared/WindowHeader";
+import { CityMap } from "./CityMap";
+import { WindowHeader } from "../../shared/window/WindowHeader";
 import { CornerDecorator } from "./CornerDecorator";
 import { graticuleLayout } from "./graticuleLayout";
 import { mapLayout } from "./mapLayout";

@@ -3,16 +3,16 @@
 - When a part of a diagram should be reusable, share the **layout function**
   (the geometry: positions, sizes, bounding box) in `lib/svg`. The component
   that draws it stays in its diagram's folder and draws its own look (glass,
-  rows, ink). Example: `platformCardLayout` lives in `lib/svg/layouts/3d/platform/` and
-  is shared, while `FloatingMenu` lives in `act/platform/` and belongs only to
-  the act diagram.
+  rows, ink). Example: `cascadeLayout` lives in `lib/svg/layouts/arrange/` and
+  is shared, while `ActionCards` lives in `automate/` and belongs only to
+  the automate diagram.
 - Don't add content slots or extra props (like `cardContent` or an `ink` box)
   just to make a drawing component generic.
 - Don't extract a reusable menu, row or other part until a second caller
   actually needs it. Then pull it out of working code.
 - Name the drawing component after what it shows in the diagram
-  (`FloatingMenu`), and give the caller's section the same name
-  (`const floatingMenu = (() => …)()`).
+  (`ActionCards`), and give the caller's section the same name
+  (`const actionCards = (() => …)()`).
 
 ## SVG components: no hardcoded knobs
 

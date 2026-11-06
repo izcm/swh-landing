@@ -34,10 +34,10 @@ export function CityMap({
     scandinaviaOrthographicBounds.height;
 
   const everyCountry = (fill: string) => ({
-    norway: `url(#${landId})`,
-    sweden: `url(#${landId})`,
+    norway: fill,
+    sweden: fill,
     denmark: fill,
-    finland: `url(#${landId})`,
+    finland: fill,
   });
 
   const placement = {
@@ -48,7 +48,7 @@ export function CityMap({
   };
 
   const countryFills = [
-    { fill: "oklch(from var(--accent) 0.45 0.1 h)", opacity: 1 },
+    { fill: "oklch(from var(--accent-dim) l c h)", opacity: 1 },
   ];
 
   // the outlines' coordinates, scaled to the size the map is drawn at
@@ -102,10 +102,15 @@ export function CityMap({
     <>
       <defs>
         <radialGradient id={landId} cx={0.5} cy={0} r={1}>
-          <stop offset={0} stopColor="oklch(from var(--accent) 0.18 0.06 h)" />
+          <stop
+            offset={0}
+            stopColor="oklch(from var(--ground) l c h)"
+            stopOpacity={1}
+          />
           <stop
             offset={1}
-            stopColor="oklch(from var(--accent) 0.6 0.12 h / 0.3)"
+            stopColor="oklch(from var(--accent-dim) l c h)"
+            stopOpacity={1}
           />
         </radialGradient>
       </defs>
@@ -115,7 +120,7 @@ export function CityMap({
           key={i}
           {...placement}
           fills={everyCountry(fill)}
-          fillOpacity={opacity}
+          fillOpacity={1}
           stroke="none"
           strokeWidth={0}
         />
@@ -124,7 +129,7 @@ export function CityMap({
       <ScandinaviaOrthographic
         {...placement}
         fills={everyCountry("none")}
-        stroke="var(--accent)"
+        stroke="var(--accent-glow)"
         strokeWidth={0.75}
       />
 
@@ -152,7 +157,7 @@ export function CityMap({
                     cx={x}
                     cy={y}
                     r={radius}
-                    fill="color-mix(in oklch, var(--accent-electric), var(--accent-glow))"
+                    fill="color-mix(in oklch, var(--accent), var(--accent-glow))"
                     fillOpacity={opacity}
                     filter={
                       blur !== undefined ? `url(#${filterId})` : undefined

@@ -37,7 +37,7 @@ export function SidePanel({
           cx={dot.cx}
           cy={dot.cy}
           r={dot.radius}
-          fill="var(--accent-electric)"
+          fill="var(--accent)"
           fillOpacity={isSelected ? 0.85 : 0.35}
         />
         <Tube
@@ -45,7 +45,7 @@ export function SidePanel({
           y={text.y + text.lineStarts[0]}
           width={textWidth * labelLengths[i]}
           height={text.lineHeights[0]}
-          fill="var(--accent-electric)"
+          fill="var(--accent)"
           fillOpacity={isSelected ? 0.85 : 0.15}
         />
       </g>

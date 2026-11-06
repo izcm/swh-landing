@@ -1,4 +1,4 @@
-import { allFills } from "../iso";
+import { allFills } from "@/lib/svg";
 
 // the platform look: solid accent roof, dark walls, a floor, soft glow.
 // (what ISOCube's defaults used to be, before they became glassCube)

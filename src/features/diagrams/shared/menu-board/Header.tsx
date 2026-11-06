@@ -31,7 +31,7 @@ export function MenuBoardHeader({
         x={header.icon.x}
         y={header.icon.y}
         size={header.iconSize}
-        stroke="var(--accent-electric)"
+        stroke="var(--accent)"
         strokeWidth={glyphStrokeLucide(header.iconSize, 0.9)}
       />
       <text

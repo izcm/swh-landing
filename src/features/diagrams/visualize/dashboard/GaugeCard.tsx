@@ -6,7 +6,7 @@ import {
   Tube,
   type Point,
 } from "@/lib/svg";
-import { Gauge } from "../Gauge";
+import { Gauge } from "./Gauge";
 import { skewAtT } from "./skewAtT";
 
 // the gauge on the left and a legend of dot + filled tube rows on the right,

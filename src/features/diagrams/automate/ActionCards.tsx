@@ -84,7 +84,7 @@ export function ActionCards({
                   x={icon.x}
                   y={icon.y}
                   size={icon.size}
-                  stroke="var(--accent-electric)"
+                  stroke="var(--accent)"
                   strokeWidth={glyphStrokeLucide(icon.size, 1)}
                 />
                 {/* label */}

@@ -1,23 +1,15 @@
-/* Shared between map.css and local-icons.css: values and animation common
-   to any node+connector diagram, regardless of that diagram's own style.
-   Diagram-specific stuff (sizing, unique colors) stays in its own file. */
 :root {
-  --rx-node-md: 8;
-  --rx-node-xxs: 2;
-
-  --connector-color: color-mix(in oklab, var(--muted), var(--accent) 60%);
-
   --platform-wall-fill: oklch(from var(--ground) 0.15 0.04 h / 0.72);
   --pane-fill: color-mix(in oklab, var(--accent-ink) 60%, var(--ground));
 
   /* https://claude.ai/artifact/VXrcsfxc2pMaoYDg63JeDL */
   /* accent strengths: same hue as --accent, different lightness / chroma */
   --accent-faint: color-mix(in oklab, var(--accent) 15%, transparent);
-  --accent-electric: oklch(from var(--accent) 0.7 0.21 h);
   --accent-dim: color-mix(in oklab, var(--accent), var(--ground) 45%);
   /* --accent-ink: oklch(from var(--accent) 0.45 0.085 h); */
   --accent-ink: color-mix(in oklab, var(--accent), var(--ground) 40%);
   --accent-glow: color-mix(in oklab, var(--accent), white 50%);
+  --accent-bright: color-mix(in oklab, var(--accent), var(--accent-glow));
 }
 
 /* floating cube: bobs up and down; its floor shadow shrinks + fades as it rises.

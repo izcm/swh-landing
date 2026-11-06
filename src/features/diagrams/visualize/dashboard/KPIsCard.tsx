@@ -104,7 +104,7 @@ export function KPIsCard({ panel, unit }: { panel: Point[]; unit: number }) {
               <tspan
                 dx={trend.dx}
                 fontSize={trend.fontSize}
-                fill="var(--accent-electric)"
+                fill="var(--accent)"
               >
                 {kpi.trend}
               </tspan>
@@ -113,7 +113,7 @@ export function KPIsCard({ panel, unit }: { panel: Point[]; unit: number }) {
             <LineChart
               {...chart}
               values={kpi.chart}
-              color="var(--accent-electric)"
+              color="var(--accent)"
               strokeWidth={1.2}
               areaOpacity={0.1}
             />

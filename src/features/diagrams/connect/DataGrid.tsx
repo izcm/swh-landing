@@ -5,7 +5,7 @@ import {
   Tube,
   WindowPane,
 } from "@/lib/svg";
-import type { ConnectLayout } from "./layout";
+import type { ConnectLayout } from "./connectLayout";
 
 // the right box: two tilted windows, the front one holding a table of pills.
 // the windows' stack and position come from connectLayout
@@ -54,13 +54,13 @@ export function DataGrid({ layout }: { layout: ConnectLayout["dataGrid"] }) {
     [0.65, 0.65, 0.8, 0.6, 0.8, 0.6, 0.7],
     [0.6, 0.8, 0.6, 0.65, 0.8, 0.6, 0.8],
   ];
-  // shades of --accent-electric and --accent-deep, brightest first.
+  // shades of --accent and --accent-deep, brightest first.
   // l = lightness, c = chroma (how colorful), h = hue
   const pillColors = [
-    // 0: electric, lighter + a bit toward cyan
-    "oklch(from var(--accent-electric) calc(l + 0.08) calc(c - 0.06) calc(h - 10))",
-    // 1: electric as is
-    "oklch(from var(--accent-electric) l c h)",
+    // 0: accent, lighter + a bit toward cyan
+    "oklch(from var(--accent) calc(l + 0.08) calc(c - 0.06) calc(h - 10))",
+    // 1: accent as is
+    "oklch(from var(--accent) l c h)",
     // 2: deep as is
     "oklch(from var(--accent-deep) l c h)",
     // 3: deep, darker

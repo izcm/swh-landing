@@ -15,8 +15,8 @@ import {
 } from "@/lib/svg";
 
 // the big glass cube with the small one inside, shared with connect
-import { Centerpiece } from "@/features/diagrams/shared/Centerpiece";
-import { centerpieceLayout } from "@/features/diagrams/shared/centerpieceLayout";
+import { Centerpiece } from "@/features/diagrams/shared/centerpiece/Centerpiece";
+import { centerpieceLayout } from "@/features/diagrams/shared/centerpiece/centerpieceLayout";
 
 import { Dashboard } from "./dashboard/Dashboard";
 
@@ -24,9 +24,9 @@ import { MenuBoard, type MenuBoardRow } from "../shared/menu-board/MenuBoard";
 import { MenuBoardHeader } from "../shared/menu-board/Header";
 
 import { Floor } from "../shared/floor/Floor";
-import { floorLayout } from "../shared/floor/layout";
+import { floorLayout } from "../shared/floor/floorLayout";
 
-import { WindowHeader } from "../shared/WindowHeader";
+import { WindowHeader } from "../shared/window/WindowHeader";
 import { CascadeBoards } from "../shared/CascadeBoards";
 
 const heroAngle = deg(25);

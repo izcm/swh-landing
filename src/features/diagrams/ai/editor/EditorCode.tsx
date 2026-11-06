@@ -1,10 +1,10 @@
-import { useEffect, useId, useState } from "react";
-import { AccentBarGradient, spaceBetween } from "@/lib/svg";
+import { useEffect, useState } from "react";
+import { spaceBetween } from "@/lib/svg";
 
-// fake code: line numbers + animated bars. meant to be a child of AppWindow,
+// fake code: line numbers + animated bars. meant to be a child of CodeEditor,
 // given the same viewboxWidth / viewboxHeight as that window
 export function EditorCode({
-  width, // the area it fills (in an AppWindow: that window's viewbox size)
+  width, // the area it fills (in a CodeEditor: that window's viewbox size)
   height,
   headerHeight, // the window's header strip; code starts below it
 }: {
@@ -30,8 +30,6 @@ export function EditorCode({
     return () => cancelAnimationFrame(id);
   }, []);
 
-  const barGradientId = useId();
-
   const fontSize = 12;
 
   const code = (() => {
@@ -53,10 +51,6 @@ export function EditorCode({
 
   return (
     <g transform={`translate(${code.paddingX}, ${code.translateY})`}>
-      <defs>
-        <AccentBarGradient id={barGradientId} />
-      </defs>
-
       {Array.from({ length: code.lineCount }).map((_, i) => {
         const y = spaceBetween({
           index: i,
@@ -137,7 +131,7 @@ export function EditorCode({
                 width={firstFill}
                 height={6}
                 rx={3}
-                fill={`url(#${barGradientId})`}
+                fill="var(--accent-bright)"
                 style={{
                   transform: `scaleX(${tubeScale})`,
                   transformBox: "fill-box",
@@ -164,7 +158,7 @@ export function EditorCode({
                     width={second.fill}
                     height={6}
                     rx={3}
-                    fill={`url(#${barGradientId})`}
+                    fill="var(--accent-glow)"
                     opacity={tubeOpacity}
                   />
                 </>

@@ -1,43 +1,63 @@
 import {
-  alignEnd,
-  cascadeLayout,
+  boxCorners,
   deg,
   dropAlongEdge,
-  paddedBox,
+  layoutUnit,
   parallelogramMatrix,
-  boxCorners,
   pointOnLine,
   spaceEvenly,
+  splitWithGaps,
 } from "@/lib/svg";
-import { centerpieceLayout } from "@/features/diagrams/shared/centerpieceLayout";
-import { connectNodes } from "./nodes/nodes";
+import { centerpieceLayout } from "../shared/centerpiece/centerpieceLayout";
+import { connectNodes } from "./connectNodes";
 
 type Angles = { angleA: number; angleB: number };
 
-// every section's size and position, worked out once from the viewbox + angles
-export function connectLayout({
-  viewboxWidth,
-  viewboxHeight,
+// edge slopes in radians: A down to the right, B up to the right
+export const connectingNodesAngles: Angles = {
+  angleA: deg(15),
+  angleB: deg(10),
+};
+
+export type ConnectingNodesShares = {
+  nodes: number;
+  connectors: number;
+  centerpiece: number;
+};
+
+export function connectingNodesLayout({
+  width,
+  height,
   angles,
+  shares,
 }: {
-  viewboxWidth: number;
-  viewboxHeight: number;
+  width: number;
+  height: number;
   angles: Angles;
+  shares: ConnectingNodesShares;
 }) {
-  // 1/12 of the height
-  const { unit } = paddedBox(viewboxWidth, viewboxHeight, 0);
+  const unit = layoutUnit(height);
+
+  // left to right: the nodes, the connectors, the centerpiece
+  const columns = (() => {
+    const { sizes, starts } = splitWithGaps(
+      width,
+      [shares.nodes, shares.connectors, shares.centerpiece],
+      0,
+    );
+    return { sizes, starts };
+  })();
 
   // left: the nodes, one box per node, top to bottom
   const nodes = (() => {
-    const groupWidth = viewboxWidth * 0.24;
-    const groupHeight = viewboxHeight;
+    const groupWidth = columns.sizes[0];
 
     // -- BOX · one shape, used for every node, as wide as groupWidth --
     const box = (() => {
-      const thickness = unit * 1.6;
+      const thickness = unit * 2;
       const radius = 12;
 
-      const lengthA = unit * 1.8; // knob: roof.left → roof.bottom
+      const lengthA = unit * 2; // knob: roof.left → roof.bottom
       // roof.bottom → roof.right: the rest of groupWidth
       const lengthB =
         (groupWidth - lengthA * Math.cos(angles.angleA)) /
@@ -87,33 +107,17 @@ export function connectLayout({
         itemCount: connectNodes.length,
         itemSize: box.height, // the whole box, floor included
         start: 0,
-        end: groupHeight,
+        end: height,
       }),
     );
 
-    return { groupWidth, groupHeight, box, content, boxYs };
-  })();
-
-  // right: the data grid, two tilted windows flush with the right edge
-  const dataGrid = (() => {
-    const groupWidth = viewboxWidth * 0.36;
-
-    // the three windows that are stacked behind eachother to the right side of diagram
-    const stackLayout = cascadeLayout({
+    return {
       groupWidth,
-      heightToWidthRatio: 0.85,
-      angle: angles.angleA,
-      count: 3,
-      gapX: 15,
-      gapY: 15,
-      side: "right",
-    });
-    const groupHeight = stackLayout.stackHeight;
-
-    const translateX = viewboxWidth - groupWidth; // flush with the right edge
-    const { offset: translateY } = alignEnd(viewboxHeight, groupHeight); // flush with the bottom edge
-
-    return { groupWidth, groupHeight, translateX, translateY, stackLayout };
+      groupHeight: height,
+      box,
+      content,
+      boxYs,
+    };
   })();
 
   // each node's connector start: the middle of its back wall (facing the
@@ -128,16 +132,15 @@ export function connectLayout({
     }));
   })();
 
-  // middle: the centerpiece, in the space left between the nodes and the windows
+  // right: the centerpiece, filling the last column
   const centerpiece = (() => {
-    const groupWidth = viewboxWidth - nodes.groupWidth - dataGrid.groupWidth;
-    const translateX = nodes.groupWidth; // right after the nodes
+    const groupWidth = columns.sizes[2];
+    const translateX = columns.starts[2];
 
     const angle = deg(20);
-    const layout = centerpieceLayout({ size: unit * 4.2, angle });
+    const layout = centerpieceLayout({ size: groupWidth, angle });
 
-    const centerX = translateX + groupWidth * 0.55;
-    const x = centerX - layout.cube.size * 0.5;
+    const x = translateX;
 
     // its left wall's middle sits on HR's connector line, which rises at the
     // cube's angleB (so it meets the wall head-on)
@@ -156,29 +159,8 @@ export function connectLayout({
     return { groupWidth, translateX, angle, layout, x, y };
   })();
 
-  // under the centerpiece: two arrows chasing each other round a circle
-  const syncArrows = (() => {
-    const { cube } = centerpiece.layout;
-    const radius = unit; // knob
-    const gap = unit * 0.5; // knob: cube's bottom → top of the circle
-    // lying flat on the same floor as the cube: squashed by its roof's slope
-    const squash = Math.tan(centerpiece.angle);
-
-    return {
-      cx: centerpiece.x + cube.size / 2,
-      cy: centerpiece.y + cube.height + gap + radius * squash,
-      squash,
-      radius,
-      count: 2,
-      thickness: unit * 0.12, // knob
-      gapAngle: deg(40), // knob
-      headLength: unit * 0.35, // knob
-      headWidth: unit * 0.35, // knob
-    };
-  })();
-
-  // the connectors' ends, in viewbox coordinates:
-  // nodesOut → centerpieceIns, centerpieceOut → dataGridIn
+  // the connectors' ends: nodesOut → centerpieceIns, plus centerpieceOut for
+  // whatever the caller connects the centerpiece to
   const connectors = (() => {
     // the cube's corners, where it's drawn
     const { cube } = centerpiece.layout;
@@ -224,13 +206,6 @@ export function connectLayout({
     // the middle of the cube's right wall
     const centerpieceOut = pointOnLine(roof.bottom, floor.right, 0.5);
 
-    // from centerpieceOut, falling at angleA to the data grid's left edge
-    const run = dataGrid.translateX - centerpieceOut.x;
-    const dataGridIn = {
-      x: dataGrid.translateX,
-      y: centerpieceOut.y + dropAlongEdge({ run, angle: angles.angleA }),
-    };
-
     const nodeConnectors = nodesOut.map((out, i) => {
       const centerpieceIn = centerpieceIns[i];
       const innerCubeIn = innerCubeIns[i];
@@ -270,12 +245,11 @@ export function connectLayout({
       centerpieceIns,
       innerCubeIns,
       centerpieceOut,
-      dataGridIn,
       nodeConnectors,
     };
   })();
 
-  return { unit, nodes, dataGrid, centerpiece, syncArrows, connectors };
+  return { unit, nodes, centerpiece, connectors };
 }
 
-export type ConnectLayout = ReturnType<typeof connectLayout>;
+export type ConnectingNodesLayout = ReturnType<typeof connectingNodesLayout>;

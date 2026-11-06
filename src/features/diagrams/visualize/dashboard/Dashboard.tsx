@@ -4,13 +4,13 @@ import {
   DebugPoints,
   padVerticalSides,
   pointOnLine,
-  RecessedPolygon,
   splitWithGaps,
   type Point,
 } from "@/lib/svg";
-import { RegionSelect } from "./dashboard/RegionSelect";
-import { KPIsCard } from "./dashboard/KPIsCard";
-import { GaugeCard } from "./dashboard/GaugeCard";
+import { RecessedPolygon } from "./RecessedPolygon";
+import { RegionSelect } from "./RegionSelect";
+import { KPIsCard } from "./KPIsCard";
+import { GaugeCard } from "./GaugeCard";
 
 // the dashboard board's contents: three recessed panels, the KPI rows in the
 // middle one and the gauge in the bottom one

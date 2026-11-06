@@ -32,7 +32,7 @@ export function RegionSelect({
           x={icon.x}
           y={-icon.size * 0.5}
           size={icon.size}
-          stroke="var(--accent-electric)"
+          stroke="var(--accent)"
           strokeWidth={glyphStrokeLucide(icon.size, 1)}
         />
         {/* label */}
@@ -50,7 +50,7 @@ export function RegionSelect({
           x={chevron.x}
           y={-chevron.size * 0.5}
           size={chevron.size}
-          stroke="var(--accent-electric)"
+          stroke="var(--accent)"
           strokeOpacity={0.6}
           strokeWidth={glyphStrokeLucide(chevron.size, 1.2)}
         />

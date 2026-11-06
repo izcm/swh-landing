@@ -171,7 +171,7 @@ function MenuRow({
         x={icon.x}
         y={icon.y}
         size={icon.size}
-        stroke="var(--accent-electric)"
+        stroke="var(--accent)"
         strokeWidth={glyphStrokeLucide(icon.size, 1)}
       />
       {/* the row's text, one <text> per line */}
@@ -193,7 +193,7 @@ function MenuRow({
         x={chevron.x}
         y={chevron.y}
         size={chevron.size}
-        stroke="var(--accent-electric)"
+        stroke="var(--accent)"
         strokeOpacity={0.6}
         strokeWidth={glyphStrokeLucide(chevron.size, 1.2)}
       />

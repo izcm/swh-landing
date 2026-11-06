@@ -13,8 +13,11 @@ export function Services() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         {services.map((section, i) => (
-          <Card key={section.eyebrow} className="flex h-90 gap-6">
-            <div className="flex w-2/5 flex-col gap-3">
+          <Card
+            key={section.eyebrow}
+            className="flex flex-col gap-6 sm:h-90 sm:flex-row"
+          >
+            <div className="flex flex-col gap-3 sm:w-2/5">
               <span className="eyebrow pb-4 text-[14px]">{`0${i + 1} / ${section.eyebrow}`}</span>
               <h2 className="mt-4 text-4xl text-fg">{section.title}</h2>
               <p className="font-light text-subtle">{section.short}</p>
@@ -29,7 +32,7 @@ export function Services() {
             </div>
             <div className="cartesian-grid" />
 
-            <div className="relative z20 w-3/5 items-center h-full shrink-0">
+            <div className="relative z20 order-first h-48 w-full shrink-0 items-center sm:order-0 sm:h-full sm:w-3/5">
               {section.smallDiagram}
             </div>
           </Card>

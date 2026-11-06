@@ -1,10 +1,4 @@
-import {
-  layoutUnit,
-  placeItemCenter,
-  stackWithGaps,
-  Tube,
-  WindowPane,
-} from "@/lib/svg";
+import { layoutUnit, placeItemCenter, stackWithGaps, Tube } from "@/lib/svg";
 import type { ConnectLayout } from "./layout";
 
 // the right box: two tilted windows, the front one holding a table of pills.
@@ -54,25 +48,17 @@ export function DataGrid({ layout }: { layout: ConnectLayout["dataGrid"] }) {
     [0.65, 0.65, 0.8, 0.6, 0.8, 0.6, 0.7],
     [0.6, 0.8, 0.6, 0.65, 0.8, 0.6, 0.8],
   ];
-  // shades of --accent and --accent-deep, brightest first.
-  // l = lightness, c = chroma (how colorful), h = hue
   const pillColors = [
-    // 0: accent, lighter + a bit toward cyan
-    "oklch(from var(--accent) calc(l + 0.08) calc(c - 0.06) calc(h - 10))",
-    // 1: accent as is
-    "oklch(from var(--accent) l c h)",
-    // 2: deep as is
-    "oklch(from var(--accent-deep) l c h)",
-    // 3: deep, darker
-    "oklch(from var(--accent-deep) calc(l - 0.08) calc(c * 0.85) h)",
-    // 4: deep, darkest + greyer
-    "oklch(from var(--accent-deep) calc(l - 0.16) calc(c * 0.6) h)",
+    "var(--muted)",
+    "var(--accent)",
+    "var(--accent-bright)",
+    "var(--accent-glow)",
   ];
-  // which pillColors shade each pill gets, one array per column
+  // which pillColors color each pill gets, one array per column
   const pillShades = [
-    [1, 0, 2, 1, 0, 4, 2],
-    [3, 4, 0, 3, 0, 1, 4],
-    [4, 1, 4, 2, 1, 4, 0],
+    [0, 1, 0, 0, 2, 0, 0],
+    [0, 0, 3, 0, 0, 1, 0],
+    [2, 0, 0, 1, 0, 0, 3],
   ];
 
   // drawn inside the front window
@@ -135,7 +121,7 @@ export function DataGrid({ layout }: { layout: ConnectLayout["dataGrid"] }) {
               height={pillHeight}
               level={pillWidths[c][r]}
               fill={pillColors[pillShades[c][r]]}
-              fillOpacity={0.75}
+              fillOpacity={0.8}
             />
           )),
         )}
@@ -152,12 +138,15 @@ export function DataGrid({ layout }: { layout: ConnectLayout["dataGrid"] }) {
         <g
           key={i}
           transform={`translate(${win.x}, ${win.y})`}
-          opacity={0.6 + win.depth * 0.4}
+          // opacity={0.6 + win.depth * 0.4}
+          opacity={1}
         >
-          <WindowPane
+          <rect
             width={win.width}
             height={win.height}
-            radius={3}
+            rx={3}
+            fill="var(--pane-fill)"
+            stroke="var(--accent-ink)"
             strokeWidth={0.8}
           />
           {win.isFront && frontContent}

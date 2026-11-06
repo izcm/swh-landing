@@ -19,6 +19,7 @@ function ServiceNav() {
           <NavLink
             key={service.id}
             to={`/services/${service.id}`}
+            state={{ keepScroll: true }}
             className={({ isActive }) =>
               cn(
                 "rounded-sm border px-4 py-2 text-[11px] font-normal uppercase tracking-[0.2em] transition-colors",

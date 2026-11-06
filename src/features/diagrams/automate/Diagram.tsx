@@ -57,7 +57,7 @@ export function AutomateDiagram() {
     const translateY = 0; // flush with the top edge
     const drawing = (
       <g transform={`translate(${translateX}, ${translateY})`}>
-        <Gear layout={layout} />
+        <Gear layout={layout} frontFill="var(--accent-ink)" />
       </g>
     );
     return { layout, translateX, translateY, drawing };
@@ -69,7 +69,7 @@ export function AutomateDiagram() {
     const translateY = 0;
     const drawing = (
       <g transform={`translate(${translateX}, ${translateY})`}>
-        <Gear layout={layout} />
+        <Gear layout={layout} frontFill="var(--accent-ink)" />
       </g>
     );
     return { layout, translateX, translateY, drawing };

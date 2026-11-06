@@ -65,15 +65,6 @@ export function ConnectDiagram() {
         ))}
       </g>
 
-      {/* the second connector: from the cube's right wall down to the data grid */}
-      <path
-        d={`M ${connectors.cubeOut.x} ${connectors.cubeOut.y} L ${connectors.dataGridIn.x} ${connectors.dataGridIn.y}`}
-        stroke="var(--accent-dim)"
-        strokeWidth={1}
-        fill="none"
-        strokeDasharray="8 12"
-      />
-
       {/* left + middle: the nodes, their connectors and the cube */}
       <Nodes
         x={nodes.translateX}
@@ -85,6 +76,15 @@ export function ConnectDiagram() {
         strokeWidth={1}
         shares={nodes.shares}
       />
+
+      {/* the second connector: from the cube's right wall down to the data grid */}
+      {/* <path
+        d={`M ${connectors.cubeOut.x} ${connectors.cubeOut.y} L ${connectors.dataGridIn.x} ${connectors.dataGridIn.y}`}
+        stroke="var(--accent-dim)"
+        strokeWidth={1}
+        fill="none"
+        strokeDasharray="8 12"
+      /> */}
 
       {/* debug: the connectors' ends: where each line leaves and arrives */}
       {[

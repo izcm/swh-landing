@@ -80,13 +80,18 @@ export function connectLayout({
   })();
 
   const connectors = (() => {
-    const { cubeOut } = nodes.layout.connectors;
+    const { stackLayout, translateX, translateY } = dataGrid;
+    const [backWindow] = stackLayout.items;
 
-    // from cubeOut, falling at angleA to the data grid's left edge
-    const run = dataGrid.translateX - cubeOut.x;
+    // the middle of the back window's top edge
+    const topMiddleX = backWindow.x + backWindow.width * 0.5;
     const dataGridIn = {
-      x: dataGrid.translateX,
-      y: cubeOut.y + dropAlongEdge({ run, angle: angles.angleA }),
+      x: translateX + topMiddleX,
+      y:
+        translateY +
+        stackLayout.toTop +
+        backWindow.y +
+        dropAlongEdge({ run: topMiddleX, angle: stackLayout.angle }),
     };
 
     return { ...nodes.layout.connectors, dataGridIn };

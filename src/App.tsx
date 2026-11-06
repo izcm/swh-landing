@@ -4,11 +4,13 @@ import { Nav, Footer, Hero } from "./features";
 import { Service, Services } from "./features/services";
 
 function Layout() {
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
 
   useLayoutEffect(() => {
+    if (state?.keepScroll) return;
+
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, state]);
 
   return (
     <>

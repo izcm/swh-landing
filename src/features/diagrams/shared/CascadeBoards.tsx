@@ -24,7 +24,7 @@ export function CascadeBoards({
           height={board.height}
           rx={radius}
           fill="var(--pane-fill)"
-          stroke="var(--accent-glow)"
+          stroke="var(--accent-ink)"
           strokeWidth={1}
           opacity={backOpacity + board.depth * (1 - backOpacity)}
         />

@@ -1,6 +1,6 @@
 :root {
   --platform-wall-fill: oklch(from var(--ground) 0.15 0.04 h / 0.72);
-  --pane-fill: color-mix(in oklab, var(--accent-ink) 60%, var(--ground));
+  --pane-fill: color-mix(in oklab, var(--accent) 5%, var(--ground));
 
   /* https://claude.ai/artifact/VXrcsfxc2pMaoYDg63JeDL */
   /* accent strengths: same hue as --accent, different lightness / chroma */

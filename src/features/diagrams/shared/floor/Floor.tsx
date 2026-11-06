@@ -14,8 +14,11 @@ const line = { fill: "none", stroke: "var(--accent)", strokeWidth: 1 };
 export const tileStyles = {
   lines: ({ tile }: TileCell) => <path d={tile.d} {...line} />,
 
-  checkerboard: ({ tile, fill }: TileCell) => (
-    <path d={tile.d} {...line} fill={fill} />
+  twoTone: ({ tile, width, height, fill }: TileCell) => (
+    <>
+      <rect width={width} height={height} fill={fill} opacity={0.4} />
+      <path d={tile.d} {...line} fill={fill} />
+    </>
   ),
 
   filled: ({ tile, width, height, fill }: TileCell) => (
@@ -25,11 +28,8 @@ export const tileStyles = {
     </>
   ),
 
-  twoTone: ({ tile, width, height, fill }: TileCell) => (
-    <>
-      <rect width={width} height={height} fill={fill} opacity={0.4} />
-      <path d={tile.d} {...line} fill={fill} />
-    </>
+  checkerboard: ({ tile, fill }: TileCell) => (
+    <path d={tile.d} {...line} fill={fill} />
   ),
 
   insetTiles: ({ tile, width, height, fill }: TileCell) => {

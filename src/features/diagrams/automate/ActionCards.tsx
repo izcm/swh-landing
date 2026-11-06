@@ -75,7 +75,11 @@ export function ActionCards({
           <g key={i} transform={`translate(0, ${stack.starts[i]})`}>
             <g transform={layout.transform}>
               {/* the cards, back to front. the back one fades a bit */}
-              <CascadeBoards layout={layout} radius={radius} backOpacity={0.6} />
+              <CascadeBoards
+                layout={layout}
+                radius={radius}
+                backOpacity={0.6}
+              />
 
               {/* the front card's content */}
               <g transform={`translate(${front.x}, ${front.y})`}>
@@ -93,8 +97,7 @@ export function ActionCards({
                   y={text.y}
                   dominantBaseline="central"
                   fontSize={text.fontSize}
-                  fill="var(--accent-glow)"
-                  fillOpacity={0.8}
+                  fill="var(--color-fg-tinted)"
                 >
                   {label}
                 </text>

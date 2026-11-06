@@ -2,7 +2,7 @@ import { Settings } from "lucide-react";
 import { WindowDots } from "../shared/window/WindowDots";
 import { MenuBoardHeader } from "../shared/menu-board/Header";
 
-// the automate rule board's header: gear icon + title on the left, the
+// the automation rule board's header: gear icon + title on the left, the
 // window dots at the right end. drawn in a width × height box from (0, 0)
 export function AutomationRulesHeader({
   width,

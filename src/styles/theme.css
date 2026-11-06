@@ -4,10 +4,10 @@
   --font-serif: "Cormorant Garamond", serif;
   --font-mono: var(--font-geist-mono);
 
-  --background-image-story-connect: var(--story-connect-bg);
-  --background-image-story-visualize: var(--story-visualize-bg);
-  --background-image-story-act: var(--story-act-bg);
-  --background-image-story-automate: var(--story-automate-bg);
+  --background-image-story-integrations: var(--story-integrations-bg);
+  --background-image-story-visualizations: var(--story-visualizations-bg);
+  --background-image-story-interactive-tools: var(--story-interactive-tools-bg);
+  --background-image-story-automation: var(--story-automation-bg);
 
   /* text color with a touch of accent */
   --color-fg-tinted: color-mix(in oklab, var(--fg), var(--accent) 40%);

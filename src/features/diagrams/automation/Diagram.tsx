@@ -25,7 +25,7 @@ const rules: MenuBoardRow[] = [
   { icon: Box, lines: ["Create follow-up task"] },
 ];
 
-export function AutomateDiagram() {
+export function AutomationDiagram() {
   const viewboxWidth = 540;
   const viewboxHeight = 360;
 

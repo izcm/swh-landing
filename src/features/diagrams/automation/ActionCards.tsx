@@ -17,7 +17,7 @@ const actions: { icon: LucideIcon; label: string }[] = [
   { icon: CircleCheck, label: "Create task" },
 ];
 
-// the automate diagram's actions: one small cascade of cards per action,
+// the automation diagram's actions: one small cascade of cards per action,
 // stacked down to fill `height`. the front card shows the icon, the label
 // and a glowing dot. drawn with the group's top-left at (0, 0)
 export function ActionCards({

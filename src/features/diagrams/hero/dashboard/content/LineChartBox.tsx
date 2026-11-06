@@ -5,8 +5,8 @@ import {
   Tube,
 } from "@/lib/svg";
 
-// the line chart's box: same look as act's ChartRow, its own curve, nothing
-// selected, with a title + subtitle in its top-left corner. drawn from (0, 0)
+// the line chart's box: its own curve, nothing selected, with a title +
+// subtitle in its top-left corner. drawn from (0, 0)
 export function LineChartBox({
   width,
   height,
@@ -22,7 +22,7 @@ export function LineChartBox({
   strokeWidth: number; // the box's border thickness
   values: number[]; // the line's points, each 0-1
 }) {
-  // title + subtitle lines in the box's top-left corner, like act's ChartRow.
+  // title + subtitle lines in the box's top-left corner.
   // sized from this diagram's unit
   const chartLabels = (() => {
     const inset = unit * 0.5; // from the box's top and left edges

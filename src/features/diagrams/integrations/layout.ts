@@ -10,7 +10,7 @@ import { nodesLayout } from "./nodes/layout";
 type Angles = { angleA: number; angleB: number };
 
 // every section's size and position, worked out once from the viewbox + angles
-export function connectLayout({
+export function integrationsLayout({
   viewboxWidth,
   viewboxHeight,
   angles,
@@ -107,4 +107,4 @@ export function connectLayout({
   };
 }
 
-export type ConnectLayout = ReturnType<typeof connectLayout>;
+export type IntegrationsLayout = ReturnType<typeof integrationsLayout>;

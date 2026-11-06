@@ -1,24 +1,24 @@
 import { SectionBase } from "@/features/core/SectionBase";
 
-import { ActDiagram } from "@/features/diagrams/act";
-import { VisualizeDiagram } from "../diagrams/visualize";
-import { AutomateDiagram } from "@/features/diagrams/automate";
+import { InteractiveToolsDiagram } from "@/features/diagrams/interactive-tools";
+import { VisualizationsDiagram } from "../diagrams/visualizations";
+import { AutomationDiagram } from "@/features/diagrams/automation";
 import { SvgPlaceholder } from "@/components/SvgPlaceholder";
 
 const sections = [
   {
-    eyebrow: "CONNECT",
+    eyebrow: "INTEGRATIONS",
     title: "Extend what your data can do",
     paragraphs: [
       "Most businesses use several robust systems to run their day-to-day operations — accounting software, industry-specific tools, etc.",
       "While each system may work well on its own, there is often significant room for improvement in how data flows between them.",
       // "We have the expertise to bridge this gap by collecting and transforming data across your existing systems.",
     ],
-    diagram: <SvgPlaceholder label="Connect Step" />,
-    // diagram: <ConnectDiagram />,
+    diagram: <SvgPlaceholder label="Integrations Step" />,
+    // diagram: <IntegrationsDiagram />,
   },
   {
-    eyebrow: "VISUALIZE",
+    eyebrow: "VISUALIZATIONS",
     title: "See the bigger picture",
     // tldr: "We build interactive dashboards.",
     paragraphs: [
@@ -29,10 +29,10 @@ const sections = [
       // "We build interactive dashboards that present up-to-date information in formats tailored to your business needs.",
       // "Explore information at different levels, spot patterns, and drill down into the details that matter.",
     ],
-    diagram: <VisualizeDiagram />,
+    diagram: <VisualizationsDiagram />,
   },
   {
-    eyebrow: "ACT",
+    eyebrow: "INTERACTIVE TOOLS",
     title: "Turn insight into action",
     paragraphs: [
       // "Better visibility makes it easier to understand what should happen next. Whether that be some deadline closing in and assuring that an employee stays on top of that record, the optimal solution is to have those actions available quickly in front of you instead of switching between systems.",
@@ -41,18 +41,18 @@ const sections = [
       // "Better visibility make it easier to spot what needs attention and decide what to do next.",
       // "We build tools that bring your key actions into one place, allowing you to work directly with the information in front of you rather than switching between systems.",
     ],
-    diagram: <ActDiagram />,
+    diagram: <InteractiveToolsDiagram />,
   },
 
   {
-    eyebrow: "AUTOMATE",
+    eyebrow: "AUTOMATION",
     title: "Let routine work take care of itself",
     paragraphs: [
       "Think of the manual steps involved in moving information from one system to another, checking for updates, or following up on tasks.",
       "When your systems work together, new opportunities for automation emerge. Repetitive tasks that once required manual effort can happen automatically.",
       "I help you define rulesets and automated workers that execute tasks like clockwork.",
     ],
-    diagram: <AutomateDiagram />,
+    diagram: <AutomationDiagram />,
   },
 ];
 

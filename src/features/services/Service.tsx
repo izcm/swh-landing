@@ -44,12 +44,12 @@ export function Service() {
   if (!section) return <Navigate to="/services" replace />;
 
   return (
-    <div className="tab-container max-w-5xl overflow-clip ">
+    <div className="tab-container max-w-5xl">
       <ServiceNav />
       <header className="mt-10">
         <h1 className="text-6xl">{section.title}</h1>
       </header>
-      <div className="max-w-5xl mx-auto overflow-clip pb-20">
+      <div className="max-w-5xl mx-auto pb-20">
         <div className="max-w-2xl mx-auto">{section.heroDiagram}</div>
       </div>
 

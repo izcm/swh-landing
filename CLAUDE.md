@@ -4,8 +4,8 @@
   (the geometry: positions, sizes, bounding box) in `lib/svg`. The component
   that draws it stays in its diagram's folder and draws its own look (glass,
   rows, ink). Example: `cascadeLayout` lives in `lib/svg/layouts/arrange/` and
-  is shared, while `ActionCards` lives in `automate/` and belongs only to
-  the automate diagram.
+  is shared, while `ActionCards` lives in `automation/` and belongs only to
+  the automation diagram.
 - Don't add content slots or extra props (like `cardContent` or an `ink` box)
   just to make a drawing component generic.
 - Don't extract a reusable menu, row or other part until a second caller

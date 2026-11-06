@@ -8,14 +8,14 @@ import {
 import { Nodes } from "./nodes/Nodes";
 import { nodesAngles } from "./nodes/layout";
 import { DataGrid } from "./DataGrid";
-import { connectLayout } from "./layout";
+import { integrationsLayout } from "./layout";
 
-export function ConnectDiagram() {
+export function IntegrationsDiagram() {
   const viewboxWidth = 540;
   const viewboxHeight = 360;
   const angles = nodesAngles;
 
-  const { nodes, dataGrid, cube, syncArrows, connectors } = connectLayout({
+  const { nodes, dataGrid, cube, syncArrows, connectors } = integrationsLayout({
     viewboxWidth,
     viewboxHeight,
     angles,

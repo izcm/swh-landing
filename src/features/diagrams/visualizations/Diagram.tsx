@@ -17,7 +17,7 @@ import {
 } from "../shared/floor/serviceFloorLayout";
 import { AccentFadeGradient, LitEdgeGradient } from "../shared/gradients";
 
-export function VisualizeDiagram() {
+export function VisualizationsDiagram() {
   const viewboxWidth = 540;
   const viewboxHeight = 360;
 

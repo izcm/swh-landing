@@ -94,6 +94,7 @@ export function Floor({
   fadeStretchX,
   fadeStretchY = 1,
   fadeStart = 0,
+  fadeMiddle,
   tileFill = "color-mix(in oklab, var(--accent) 15%, transparent)",
   tileStyle = "lines",
 }: {
@@ -102,6 +103,7 @@ export function Floor({
   fadeStretchX: number;
   fadeStretchY?: number;
   fadeStart?: number; // 0–1
+  fadeMiddle: number; // the opacity halfway through the fade
   tileFill?: string;
   tileStyle?: keyof typeof tileStyles;
 }) {
@@ -132,7 +134,7 @@ export function Floor({
           <stop
             offset={fadeStart + (1 - fadeStart) * 0.5}
             stopColor="white"
-            stopOpacity={0.75}
+            stopOpacity={fadeMiddle}
           />
           <stop offset={1} stopColor="white" stopOpacity={0} />
         </radialGradient>

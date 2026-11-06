@@ -1,9 +1,9 @@
 import { layoutUnit, placeItemCenter, stackWithGaps, Tube } from "@/lib/svg";
-import type { ConnectLayout } from "./layout";
+import type { IntegrationsLayout } from "./layout";
 
 // the right box: two tilted windows, the front one holding a table of pills.
-// the windows' stack and position come from connectLayout
-export function DataGrid({ layout }: { layout: ConnectLayout["dataGrid"] }) {
+// the windows' stack and position come from integrationsLayout
+export function DataGrid({ layout }: { layout: IntegrationsLayout["dataGrid"] }) {
   const { translateX, translateY, stackLayout } = layout;
 
   const { item } = stackLayout;

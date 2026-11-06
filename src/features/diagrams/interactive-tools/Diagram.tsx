@@ -5,4 +5,4 @@
 //   { icon: Eye, lines: ["Track item"] },
 // ];
 
-export function ActDiagram() {}
+export function InteractiveToolsDiagram() {}

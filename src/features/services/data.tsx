@@ -1,9 +1,9 @@
 import { FlowPlaceholder } from "@/components/FlowPlaceholder";
 import { SvgPlaceholder } from "@/components/SvgPlaceholder";
 
-import { ConnectDiagram, Nodes } from "../diagrams/connect";
-import { GeoVisualization, VisualizeDiagram } from "../diagrams/visualize";
-import { AutomateDiagram, GearPair } from "../diagrams/automate";
+import { IntegrationsDiagram, Nodes } from "../diagrams/integrations";
+import { GeoVisualization, VisualizationsDiagram } from "../diagrams/visualizations";
+import { AutomationDiagram, GearPair } from "../diagrams/automation";
 
 export const services = [
   {
@@ -21,7 +21,7 @@ export const services = [
         shares={{ nodes: 1 / 3, connectors: 1 / 3, cube: 1 / 3 }}
       />
     ),
-    heroDiagram: <ConnectDiagram />,
+    heroDiagram: <IntegrationsDiagram />,
     exampleFlowDiagram: <FlowPlaceholder label="Integrations example flow" />,
     exampleText: [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -43,7 +43,7 @@ export const services = [
     title: "Visualization",
     short: "Turn complex data into clear, actionable insight.",
     smallDiagram: <GeoVisualization />,
-    heroDiagram: <VisualizeDiagram />,
+    heroDiagram: <VisualizationsDiagram />,
     exampleFlowDiagram: <FlowPlaceholder label="Visualization example flow" />,
     exampleText: [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -79,7 +79,7 @@ export const services = [
     title: "Automation",
     short: "Streamline processes and reduce manual work.",
     smallDiagram: <GearPair />,
-    heroDiagram: <AutomateDiagram />,
+    heroDiagram: <AutomationDiagram />,
     exampleFlowDiagram: <FlowPlaceholder label="Automation example flow" />,
     exampleText: [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",

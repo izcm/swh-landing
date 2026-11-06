@@ -14,7 +14,7 @@ import {
   scaleVector,
 } from "@/lib/svg";
 
-// the big glass cube with the small one inside, shared with connect
+// the big glass cube with the small one inside
 import { Centerpiece } from "@/features/diagrams/shared/centerpiece/Centerpiece";
 import { centerpieceLayout } from "@/features/diagrams/shared/centerpiece/centerpieceLayout";
 
@@ -104,6 +104,7 @@ export function HeroDiagram() {
         layout={layout}
         tileOpacity={0.15}
         fadeStretchX={1.3}
+        fadeMiddle={0.75}
         tileStyle="lines"
       />
     );
@@ -123,7 +124,7 @@ export function HeroDiagram() {
 
     const boardLayout = cascadeLayout({
       groupWidth: unit * 4, // knob
-      heightToWidthRatio: 1.45, // knob: taller than act's board, it has 4 rows
+      heightToWidthRatio: 1.45, // knob: taller than interactive-tools' board, it has 4 rows
       // slants down to the right, like the cube's left face
       angle: heroAngle,
       count: 2, // knob

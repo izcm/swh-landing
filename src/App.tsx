@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router";
-import { Nav, Footer, Hero, About } from "./features";
+import { Nav, Footer, Hero } from "./features";
 import { Service, Services } from "./features/services";
 
 function Layout() {

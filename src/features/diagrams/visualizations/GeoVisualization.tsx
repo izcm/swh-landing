@@ -1,8 +1,9 @@
+import { cn } from "@/lib/cn";
 import { alignCenter, layoutUnit } from "@/lib/svg";
 import { CityMap } from "./map/CityMap";
 import { scandinaviaOrthographicBounds } from "./map/ScandinaviaOrthographic";
 
-export function GeoVisualization() {
+export function GeoVisualization({ className }: { className?: string }) {
   const viewboxWidth = 320;
   const viewboxHeight = 240;
 
@@ -35,6 +36,7 @@ export function GeoVisualization() {
       height="100%"
       overflow="visible"
       preserveAspectRatio="xMidYMid meet"
+      className={cn(className)}
     >
       {cityMap.drawing()}
       {/* Diagram */}

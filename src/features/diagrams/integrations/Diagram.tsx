@@ -1,3 +1,4 @@
+import { cn } from "@/lib/cn";
 import { deg, SyncArrows } from "@/lib/svg";
 
 import { Floor, tileStyleNames } from "../shared/floor/Floor";
@@ -10,7 +11,7 @@ import { nodesAngles } from "./nodes/layout";
 import { DataGrid } from "./DataGrid";
 import { integrationsLayout } from "./layout";
 
-export function IntegrationsDiagram() {
+export function IntegrationsDiagram({ className }: { className?: string }) {
   const viewboxWidth = 540;
   const viewboxHeight = 360;
   const angles = nodesAngles;
@@ -46,7 +47,7 @@ export function IntegrationsDiagram() {
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       overflow="visible"
-      className="block w-full"
+      className={cn("block w-full", className)}
     >
       {floor.drawing()}
 

@@ -1,5 +1,6 @@
 import { Box, FileText, User } from "lucide-react";
 
+import { cn } from "@/lib/cn";
 import {
   alignCenter,
   cascadeLayout,
@@ -25,7 +26,7 @@ const rules: MenuBoardRow[] = [
   { icon: Box, lines: ["Create follow-up task"] },
 ];
 
-export function AutomationDiagram() {
+export function AutomationDiagram({ className }: { className?: string }) {
   const viewboxWidth = 540;
   const viewboxHeight = 360;
 
@@ -222,7 +223,7 @@ export function AutomationDiagram() {
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       overflow="visible"
-      className="block w-full"
+      className={cn("block w-full", className)}
     >
       {floor.drawing()}
 

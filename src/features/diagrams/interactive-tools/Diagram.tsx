@@ -1,3 +1,5 @@
+import { cn } from "@/lib/cn";
+
 // // the menu board's rows: one per action
 // const actions: MenuBoardRow[] = [
 //   { icon: Plus, lines: ["Create task"] },
@@ -5,4 +7,6 @@
 //   { icon: Eye, lines: ["Track item"] },
 // ];
 
-export function InteractiveToolsDiagram() {}
+export function InteractiveToolsDiagram({ className }: { className?: string }) {
+  return <div className={cn(className)}>hello</div>;
+}

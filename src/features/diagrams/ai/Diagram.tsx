@@ -1,3 +1,4 @@
+import { cn } from "@/lib/cn";
 import {
   accentGlow,
   alignCenter,
@@ -9,7 +10,7 @@ import {
 } from "@/lib/svg";
 import { CodeEditor } from "./editor/CodeEditor";
 
-export function AISvg() {
+export function AISvg({ className }: { className?: string }) {
   const viewboxWidth = 600;
   const viewboxHeight = 400;
 
@@ -104,6 +105,7 @@ export function AISvg() {
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       // className="w-full h-auto"
+      className={cn(className)}
     >
       <g transform={`translate(${paddingX}, ${paddingY})`}>
         <g

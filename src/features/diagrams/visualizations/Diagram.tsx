@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { cn } from "@/lib/cn";
 import {
   alignEnd,
   deg,
@@ -17,7 +18,7 @@ import {
 } from "../shared/floor/serviceFloorLayout";
 import { AccentFadeGradient, LitEdgeGradient } from "../shared/gradients";
 
-export function VisualizationsDiagram() {
+export function VisualizationsDiagram({ className }: { className?: string }) {
   const viewboxWidth = 540;
   const viewboxHeight = 360;
 
@@ -141,7 +142,7 @@ export function VisualizationsDiagram() {
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
-      className="block w-full"
+      className={cn("block w-full", className)}
       overflow={"visible"}
     >
       <defs>

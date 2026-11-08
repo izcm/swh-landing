@@ -23,11 +23,12 @@ export default function Hero() {
       >
         <h1
           className={cn(
-            "text-4xl font-normal leading-tight text-fg",
+            "text-4xl font-normal leading-tight text-fg ",
             "sm:text-6xl",
           )}
         >
-          SWH <span className="font-semibold text-accent">Studio.</span>
+          SWH{" "}
+          <span className="font-normal text-accent pretty-text">Studio.</span>
         </h1>
 
         <div

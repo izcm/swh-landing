@@ -1,29 +1,29 @@
 import { useId } from "react";
 
+import { cn } from "@/lib/cn";
 import {
   addVector,
-  ISOCube,
-  IsoCubeShadow,
-  accentGlow,
-  allFills,
-  allStrokes,
-  glassCube,
-  glassEdgeOpacity,
-  glassGlow,
+  boxCorners,
+  deg,
   isoFloorCenter,
   isoCubeMetrics,
   isoRoofCenter,
+  layoutUnit,
   paddedBox,
   scaleVector,
   standOn,
-  type BoxLook,
   type Point,
 } from "@/lib/svg";
+import { Floor, tileStyleNames } from "../shared/floor/Floor";
+import { floorLayout } from "../shared/floor/floorLayout";
 import { EdgeGradient } from "../shared/gradients";
-import { Platform } from "./Platform";
-import { platformStyle } from "./platformStyle";
+import { BoxedCube } from "./BoxedCube";
+import { ConnectorRing } from "./ConnectorRing";
+import { CubeStack, cubeStackLayout } from "./CubeStack";
+import { glassEdgeOpacity } from "./glass";
+import { PlatformCubes } from "./PlatformCubes";
 
-export function SoftwareDiagram() {
+export function SoftwareDiagram({ className }: { className?: string }) {
   const viewboxWidth = 500;
   const viewboxHeight = 400;
 
@@ -31,37 +31,49 @@ export function SoftwareDiagram() {
   const cubeSize = viewboxWidth / 8;
   const cube = isoCubeMetrics(viewboxWidth / 8);
 
-  const half = cube.size / 2;
-  const { depth, edgeLength: rise } = isoCubeMetrics(cubeSize);
-
-  // the glass cubes' halo, put on the <g> around each group of cubes
-  const glassGlowFilter = accentGlow(glassGlow.blur, glassGlow.strength);
-
   const { contentX, contentY, contentWidth, contentHeight, unit } = paddedBox(
     viewboxWidth,
     viewboxHeight,
     0.5,
   );
 
-  const top = (() => {
+  const glassEdgeId = useId();
+  const glassEdge = `url(#${glassEdgeId})`;
+  const glassStrokes = {
+    roof: glassEdge,
+    left: glassEdge,
+    right: glassEdge,
+    middle: glassEdge,
+    floor: glassEdge,
+  };
+
+  const cubeStack = (() => {
     const positions = {
       x: contentX + contentWidth * 0.4,
       y: contentY,
     };
-    // width = 2 cubes across. each cube's width is the long side of the
-    // triangle you get by splitting its floor diamond in half — that's cubeSize
-    const groupWidth = cubeSize * 2;
-    const groupHeight = cube.height * 2 - cube.depth / 2;
+    const { groupWidth, groupHeight } = cubeStackLayout(cubeSize);
+
+    const drawing = () => (
+      <CubeStack
+        x={positions.x}
+        y={positions.y}
+        size={cubeSize}
+        strokes={glassStrokes}
+        bob={{ dist: "-4px", duration: "5s", delay: "-1.5s" }}
+      />
+    );
 
     return {
       positions,
       cubeSize,
       groupWidth,
       groupHeight,
+      drawing,
     };
   })();
 
-  const bottomLeft = (() => {
+  const boxedCube = (() => {
     // one lg cube: width = size, height = roof diamond + walls
     const bigCubeDim = {
       size: 160,
@@ -69,6 +81,13 @@ export function SoftwareDiagram() {
     };
 
     const bigCube = isoCubeMetrics(bigCubeDim.size, bigCubeDim.thickness);
+    const { roof: bigCubeRoof } = boxCorners({
+      lengthA: bigCube.a.edgeLength,
+      lengthB: bigCube.b.edgeLength,
+      angleA: bigCube.a.angle,
+      angleB: bigCube.b.angle,
+      thickness: bigCube.thickness,
+    });
 
     const groupWidth = bigCubeDim.size;
     const groupHeight = bigCube.depth * 2 + bigCubeDim.thickness;
@@ -84,23 +103,40 @@ export function SoftwareDiagram() {
     // that is its container which is 90 size
     // and its confusing cuz this isnt hyst the corners in the cube
 
+    const positions = {
+      x: contentX + 20,
+      y: contentY + contentHeight - groupHeight - contentHeight * 0.08,
+    };
+    // how far the small cube floats above the floor
+    const floatLift = 12;
+
+    const drawing = () => (
+      <BoxedCube
+        x={positions.x}
+        y={positions.y}
+        bigCube={bigCube}
+        bigCubeRoof={bigCubeRoof}
+        smallCube={smallCube}
+        smallCubePos={smallCubePos}
+        floatLift={floatLift}
+      />
+    );
+
     return {
-      positions: {
-        x: contentX + 20,
-        y: contentY + contentHeight - groupHeight - contentHeight * 0.08,
-      },
+      positions,
       bigCube,
+      bigCubeRoof,
       groupWidth,
       groupHeight,
 
       smallCube,
       smallCubePos,
-      // how far the small cube floats above the floor
-      floatLift: 12,
+      floatLift,
+      drawing,
     };
   })();
 
-  const bottomRight = (() => {
+  const platformCubes = (() => {
     // will later add a second element that is why we separate cubeGroup to its own inner object
     const cubeGroup = {
       size: cubeSize * 2,
@@ -119,11 +155,28 @@ export function SoftwareDiagram() {
     const groupWidth = platform.size;
     const groupHeight = platformY + platform.height;
 
+    const positions = {
+      x: contentX + contentWidth - groupWidth,
+      y: contentY + contentHeight - groupHeight,
+    };
+
+    const drawing = () => (
+      <PlatformCubes
+        x={positions.x}
+        y={positions.y}
+        platform={platform}
+        platformY={platformY}
+        cubeOffsetX={cubeOffsetX}
+        cubeSize={cubeSize}
+        strokes={glassStrokes}
+        grid={{ across: 4, along: 4 }}
+        bob={{ dist: "-3px", duration: "6s", delay: "-3s" }}
+        shadowDrop={14}
+      />
+    );
+
     return {
-      positions: {
-        x: contentX + contentWidth - groupWidth,
-        y: contentY + contentHeight - groupHeight,
-      },
+      positions,
       platform,
       cubeOffsetX,
       platformY,
@@ -131,161 +184,181 @@ export function SoftwareDiagram() {
       cubeGroup,
       groupHeight,
       groupWidth,
+      drawing,
     };
   })();
 
-  // all connectors ride one big ellipse, so together they read as one ring.
-  // ringSquash = ellipse height / width. center + squash fitted so every
-  // connector end sits roughly on the same ellipse
-  const ringCenter = {
-    x: contentX + contentWidth * 0.52,
-    y: contentY + contentHeight * 0.54,
-  };
-  const ringSquash = 0.73;
+  const connectorRing = (() => {
+    // all connectors ride one big ellipse, so together they read as one ring.
+    // ringSquash = ellipse height / width. center + squash fitted so every
+    // connector end sits roughly on the same ellipse
+    const ringCenter = {
+      x: contentX + contentWidth * 0.52,
+      y: contentY + contentHeight * 0.54,
+    };
+    const ringSquash = 0.73;
 
-  // curve that bends around ringCenter like a piece of the ellipse.
-  // we stretch y by 1/ringSquash so the ellipse becomes a circle, do the
-  // circle recipe there, then squash back.
-  // circle recipe: each control point sticks out along the tangent at its end,
-  // (4/3)·tan(angle/4)·radius long
-  // https://claude.ai/artifact/LQfSTqQXJPXoXUEaQqzVCb
-  function arc(from: Point, to: Point) {
-    const toCircle = (p: Point) => ({
-      x: p.x - ringCenter.x,
-      y: (p.y - ringCenter.y) / ringSquash,
-    });
-    const fromCircle = (p: Point) => ({
-      x: ringCenter.x + p.x,
-      y: ringCenter.y + p.y * ringSquash,
-    });
+    // curve that bends around ringCenter like a piece of the ellipse.
+    // we stretch y by 1/ringSquash so the ellipse becomes a circle, do the
+    // circle recipe there, then squash back.
+    // circle recipe: each control point sticks out along the tangent at its end,
+    // (4/3)·tan(angle/4)·radius long
+    // https://claude.ai/artifact/LQfSTqQXJPXoXUEaQqzVCb
+    function arc(from: Point, to: Point) {
+      const toCircle = (p: Point) => ({
+        x: p.x - ringCenter.x,
+        y: (p.y - ringCenter.y) / ringSquash,
+      });
+      const fromCircle = (p: Point) => ({
+        x: ringCenter.x + p.x,
+        y: ringCenter.y + p.y * ringSquash,
+      });
 
-    const a = toCircle(from);
-    const b = toCircle(to);
-    const angle = Math.abs(
-      Math.atan2(a.x * b.y - a.y * b.x, a.x * b.x + a.y * b.y),
-    );
-    const k = (4 / 3) * Math.tan(angle / 4);
+      const a = toCircle(from);
+      const b = toCircle(to);
+      const angle = Math.abs(
+        Math.atan2(a.x * b.y - a.y * b.x, a.x * b.x + a.y * b.y),
+      );
+      const k = (4 / 3) * Math.tan(angle / 4);
 
-    // tangent at p = radius turned 90°, flipped to face `towards`
-    const handle = (p: Point, towards: Point) => {
-      let t = { x: -p.y, y: p.x };
-      if (t.x * (towards.x - p.x) + t.y * (towards.y - p.y) < 0) {
-        t = scaleVector(t, -1);
-      }
-      return fromCircle(addVector(p, scaleVector(t, k)));
+      // tangent at p = radius turned 90°, flipped to face `towards`
+      const handle = (p: Point, towards: Point) => {
+        let t = { x: -p.y, y: p.x };
+        if (t.x * (towards.x - p.x) + t.y * (towards.y - p.y) < 0) {
+          t = scaleVector(t, -1);
+        }
+        return fromCircle(addVector(p, scaleVector(t, k)));
+      };
+
+      const c1 = handle(a, b);
+      const c2 = handle(b, a);
+
+      return `M ${from.x} ${from.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${to.x} ${to.y}`;
+      // return connector(from, to, handle(a, b), handle(b, a));
+    }
+
+    // loop: cube stack → platform cubes → boxed cube → cube stack
+
+    // the cube stack's sides, halfway down
+    const cubeStackExitY = cubeStack.positions.y + cubeStack.groupHeight * 0.5;
+
+    // 1. cube stack → platform cubes
+
+    // the cube stack's right side
+    const cubeStackOut = {
+      x: cubeStack.positions.x + cubeStack.groupWidth,
+      y: cubeStackExitY,
     };
 
-    const c1 = handle(a, b);
-    const c2 = handle(b, a);
+    // on the platform's top, 80% of the way from its center (s/2, d)
+    // to the middle of its top-right edge (s*0.75, d/2)
+    const platformCubesIn = {
+      x: platformCubes.positions.x + platformCubes.platform.size * 0.7,
+      y:
+        platformCubes.positions.y +
+        platformCubes.platformY +
+        platformCubes.platform.depth * 0.6,
+    };
 
-    return `M ${from.x} ${from.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${to.x} ${to.y}`;
-    // return connector(from, to, handle(a, b), handle(b, a));
-  }
+    // out of the cube stack's right side → down onto the platform cubes' platform
+    const cubeStackToPlatformCubes = arc(cubeStackOut, platformCubesIn);
 
-  // loop: top → bottom-right → bottom-left → top
+    // 2. platform cubes → boxed cube
 
-  // top group's sides, halfway down
-  const topExitY = top.positions.y + top.groupHeight * 0.5;
+    // halfway along the platform cubes' platform's floor.left → floor.bottom edge
+    const platformCubesOut = {
+      x: platformCubes.positions.x + (platformCubes.platform.size / 2) * 0.5,
+      y:
+        platformCubes.positions.y +
+        platformCubes.platformY +
+        platformCubes.platform.depth * 1.4 +
+        platformCubes.platform.thickness,
+    };
 
-  // 1. top → bottom-right
+    // halfway along the boxed cube's floor.bottom → floor.right edge
+    const boxedCubeIn = {
+      x: boxedCube.positions.x + boxedCube.bigCube.size * 0.75,
+      y:
+        boxedCube.positions.y +
+        boxedCube.bigCube.height -
+        boxedCube.bigCube.depth / 2,
+    };
 
-  // top group's right side
-  const topOut = { x: top.positions.x + top.groupWidth, y: topExitY };
+    // bows down under the gap between the platform cubes and the boxed cube
+    const platformCubesToBoxedCube = arc(platformCubesOut, boxedCubeIn);
 
-  // on the platform's top, 80% of the way from its center (s/2, d)
-  // to the middle of its top-right edge (s*0.75, d/2)
-  const bottomRightIn = {
-    x: bottomRight.positions.x + bottomRight.platform.size * 0.7,
-    y:
-      bottomRight.positions.y +
-      bottomRight.platformY +
-      bottomRight.platform.depth * 0.6,
-  };
+    // 3. boxed cube → cube stack
 
-  // out of the top group's right side → down onto bottom-right's platform
-  const topToBottomRight = arc(topOut, bottomRightIn);
+    // halfway along the boxed cube's roof.left → roof.top edge
+    const boxedCubeOut = {
+      x: boxedCube.positions.x + boxedCube.groupWidth * 0.25,
+      y: boxedCube.positions.y + boxedCube.bigCube.depth / 2,
+    };
 
-  // 2. bottom-right → bottom-left
+    // the cube stack's left side
+    const cubeStackIn = { x: cubeStack.positions.x, y: cubeStackExitY };
 
-  // halfway along bottom-right platform's floor.left → floor.bottom edge
-  const bottomRightOut = {
-    x: bottomRight.positions.x + (bottomRight.platform.size / 2) * 0.5,
-    y:
-      bottomRight.positions.y +
-      bottomRight.platformY +
-      bottomRight.platform.depth * 1.4 +
-      bottomRight.platform.thickness,
-  };
+    // up out of the boxed cube's top → into the cube stack's left side
+    const boxedCubeToCubeStack = arc(boxedCubeOut, cubeStackIn);
 
-  // halfway along bottom-left cube's floor.bottom → floor.right edge
-  const bottomLeftIn = {
-    x: bottomLeft.positions.x + bottomLeft.bigCube.size * 0.75,
-    y:
-      bottomLeft.positions.y +
-      bottomLeft.bigCube.height -
-      bottomLeft.bigCube.depth / 2,
-  };
+    // for smooth animations -> connect the ins and outs
+    const platformCubesInToOut = arc(platformCubesIn, platformCubesOut);
+    const boxedCubeInToOut = arc(boxedCubeIn, boxedCubeOut);
+    const cubeStackInToOut = arc(cubeStackIn, cubeStackOut);
 
-  // bows down under the gap between the two bottom groups
-  const bottomRightToBottomLeft = arc(bottomRightOut, bottomLeftIn);
+    // what you see: only the three connectors between groups
+    const arcConnector = [
+      cubeStackToPlatformCubes,
+      platformCubesToBoxedCube,
+      boxedCubeToCubeStack,
+    ].join(" ");
 
-  // 3. bottom-left → top
+    // what the dot rides: also the hidden in → out pieces, so it never jumps
+    const motionPath = [
+      cubeStackToPlatformCubes,
+      platformCubesInToOut,
+      platformCubesToBoxedCube,
+      boxedCubeInToOut,
+      boxedCubeToCubeStack,
+      cubeStackInToOut,
+    ].join(" ");
 
-  // halfway along bottom-left cube's roof.left → roof.top edge
-  const bottomLeftOut = {
-    x: bottomLeft.positions.x + bottomLeft.groupWidth * 0.25,
-    y: bottomLeft.positions.y + bottomLeft.bigCube.depth / 2,
-  };
+    const drawing = () => (
+      <ConnectorRing arcConnector={arcConnector} motionPath={motionPath} />
+    );
 
-  // top group's left side
-  const topIn = { x: top.positions.x, y: topExitY };
+    return { arcConnector, motionPath, drawing };
+  })();
 
-  // up out of bottom-left's top → into the top group's left side
-  const bottomLeftToTop = arc(bottomLeftOut, topIn);
+  const floor = (() => {
+    const layout = floorLayout({
+      center: { x: viewboxWidth * 0.5, y: viewboxHeight * 0.6 },
+      tilesPerEdge: 11,
+      angle: deg(30),
+      tileLength: layoutUnit(viewboxHeight) * 2.5,
+    });
 
-  // for smooth animations -> connect the ins and outs
-  const bottomRightInBottomRightOut = arc(bottomRightIn, bottomRightOut);
-  const bottomLeftInBottomLeftOut = arc(bottomLeftIn, bottomLeftOut);
-  const topInTopOut = arc(topIn, topOut);
+    const drawing = () => (
+      <Floor
+        layout={layout}
+        tileOpacity={0.1}
+        fadeStretchX={0.5}
+        fadeStretchY={0.5}
+        fadeStart={0.2}
+        fadeMiddle={0.4}
+        tileStyle={tileStyleNames[1]}
+      />
+    );
 
-  // what you see: only the three connectors between groups
-  const arcConnector = [
-    topToBottomRight,
-    bottomRightToBottomLeft,
-    bottomLeftToTop,
-  ].join(" ");
-
-  // what the dot rides: also the hidden in → out pieces, so it never jumps
-  const motionPath = [
-    topToBottomRight,
-    bottomRightInBottomRightOut,
-    bottomRightToBottomLeft,
-    bottomLeftInBottomLeftOut,
-    bottomLeftToTop,
-    topInTopOut,
-  ].join(" ");
-
-  // CSS wants the path wrapped as path("...")
-  const cssPath = `path("${motionPath}")`;
-
-  const glassEdgeId = useId();
-  const glassEdge = `url(#${glassEdgeId})`;
-  const glassStrokes = {
-    roof: glassEdge,
-    left: glassEdge,
-    right: glassEdge,
-    middle: glassEdge,
-    floor: glassEdge,
-  };
-
-  const bigCubeEdgeId = useId();
-  const bigCubeEdge = `url(#${bigCubeEdgeId})`;
-
-  // was / 0.8 drawn twice; one layer at 0.96 looks the same
-  const floatingCubeEdge = "oklch(from var(--accent) 0.85 0.12 h / 0.96)";
+    return { drawing };
+  })();
 
   return (
-    <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}>
+    <svg
+      viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
+      overflow="visible"
+      className={cn(className)}
+    >
       <defs>
         <EdgeGradient
           id={glassEdgeId}
@@ -293,235 +366,13 @@ export function SoftwareDiagram() {
           height={cube.height}
           opacity={glassEdgeOpacity}
         />
-        <EdgeGradient
-          id={bigCubeEdgeId}
-          width={bottomLeft.bigCube.size}
-          height={bottomLeft.bigCube.height}
-          opacity={platformStyle.edgeOpacity}
-        />
       </defs>
 
-      <path
-        d={arcConnector}
-        fill="none"
-        stroke="var(--accent-dim)"
-        strokeWidth={1}
-        strokeDasharray="8 12"
-      />
-
-      <circle
-        r={5}
-        fill="var(--accent-dim)"
-        opacity={0.8}
-        className="path-dot"
-        style={{ offsetPath: cssPath }}
-      />
-
-      {/* -6s = half of the 12s loop, so this dot runs half a lap ahead */}
-      <circle
-        r={5}
-        fill="var(--accent-dim)"
-        opacity={0.8}
-        className="path-dot"
-        style={{ offsetPath: cssPath, animationDelay: "-6s" }}
-      />
-
-      {/* top */}
-      <g transform={`translate(${top.positions.x}, ${top.positions.y})`}>
-        <CubeBase
-          size={cubeSize}
-          y={cube.edgeLength - cube.depth / 2}
-          strokes={glassStrokes}
-        />
-
-        {/* TOP CUBE — straddles the top seam, lifts a little off the base */}
-        <g
-          className="float-bob"
-          style={
-            {
-              "--float-dist": "-4px",
-              "--float-duration": "5s",
-              "--float-delay": "-1.5s",
-            } as React.CSSProperties
-          }
-        >
-          <g style={{ filter: glassGlowFilter }}>
-            <ISOCube
-              {...glassCube}
-              strokes={glassStrokes}
-              size={cubeSize}
-              x={half * 1.5}
-              y={0}
-            />
-          </g>
-        </g>
-      </g>
-
-      {/* bottom-left */}
-      <g
-        transform={`translate(${bottomLeft.positions.x}, ${bottomLeft.positions.y})`}
-      >
-        <g
-          opacity={1}
-          style={{
-            filter: accentGlow(
-              platformStyle.glow.blur,
-              platformStyle.glow.strength,
-            ),
-          }}
-        >
-          <ISOCube
-            strokeWidth={platformStyle.strokeWidth}
-            size={bottomLeft.bigCube.size}
-            thickness={bottomLeft.bigCube.thickness}
-            radius={4}
-            fills={{
-              ...allFills("oklch(from var(--accent) 0.15 0.06 h / 0.3)"),
-              floor: "oklch(from var(--accent) 0.2 0.06 h)",
-            }}
-            strokes={{ ...allStrokes(bigCubeEdge), back: [] }}
-          />
-        </g>
-        {/* shadow on the floor, under the floating cube. iso-flattened ellipse */}
-        <ellipse
-          className="float-shadow"
-          cx={bottomLeft.bigCube.size / 2}
-          cy={bottomLeft.bigCube.thickness + bottomLeft.bigCube.depth}
-          rx={bottomLeft.smallCube.size * 0.4}
-          ry={bottomLeft.smallCube.size * 0.4 * Math.tan(Math.PI / 6)}
-          fill="black"
-          opacity={0.4}
-          style={{ filter: "blur(4px)" }}
-        />
-        <g className="float-bob">
-          <g style={{ filter: glassGlowFilter }}>
-            <ISOCube
-              {...glassCube}
-              x={bottomLeft.smallCubePos.x}
-              y={bottomLeft.smallCubePos.y - bottomLeft.floatLift}
-              size={cube.size}
-              fills={{
-                ...allFills("oklch(from var(--accent) 0.4 0.12 h / 0.8)"),
-                floor: [],
-              }}
-              strokes={allStrokes(floatingCubeEdge)}
-            />
-          </g>
-        </g>
-      </g>
-
-      {/* bottom-right */}
-      <g
-        transform={`translate(${bottomRight.positions.x}, ${bottomRight.positions.y})`}
-      >
-        {/* shadow under the platform, in step with the bob below */}
-        <IsoCubeShadow
-          {...bottomRight.platform}
-          y={bottomRight.platformY}
-          drop={14}
-          duration="6s"
-          delay="-3s"
-        />
-
-        {/* platform + its cubes drift together, slow and small */}
-        <g
-          className="float-bob"
-          style={
-            {
-              "--float-dist": "-3px",
-              "--float-duration": "6s",
-              "--float-delay": "-3s",
-            } as React.CSSProperties
-          }
-        >
-          {/* PLATFORM */}
-          <g transform={`translate(0, ${bottomRight.platformY})`}>
-            <Platform
-              lengthA={bottomRight.platform.a.edgeLength}
-              lengthB={bottomRight.platform.b.edgeLength}
-              angleA={bottomRight.platform.a.angle}
-              angleB={bottomRight.platform.b.angle}
-              thickness={bottomRight.platform.thickness}
-              grid={{ across: 4, along: 4 }}
-            />
-          </g>
-
-          {/* GROUP OF CUBES */}
-          <g transform={`translate(${bottomRight.cubeOffsetX})`}>
-            <CubeBase size={cubeSize} y={rise} strokes={glassStrokes} />
-
-            {/* TOP ROW — two cubes on the top cells */}
-            <g style={{ filter: glassGlowFilter }}>
-              <ISOCube
-                {...glassCube}
-                strokes={glassStrokes}
-                size={cubeSize}
-                x={half}
-                y={0}
-              />
-              <ISOCube
-                {...glassCube}
-                strokes={glassStrokes}
-                size={cubeSize}
-                x={cubeSize}
-                y={depth}
-              />
-            </g>
-          </g>
-        </g>
-      </g>
+      {floor.drawing()}
+      {connectorRing.drawing()}
+      {cubeStack.drawing()}
+      {boxedCube.drawing()}
+      {platformCubes.drawing()}
     </svg>
-  );
-}
-
-// the shared 2x2 base, drawn top to bottom. y = where the top cube sits
-function CubeBase({
-  size,
-  y = 0,
-  strokes,
-}: {
-  size: number;
-  y?: number;
-  strokes: BoxLook["strokes"];
-}) {
-  const { depth } = isoCubeMetrics(size);
-  const half = size / 2;
-
-  return (
-    <g style={{ filter: accentGlow(glassGlow.blur, glassGlow.strength) }}>
-      <ISOCube
-        {...glassCube}
-        strokes={strokes}
-        size={size}
-        x={half}
-        y={y}
-        fills={{
-          ...allFills("oklch(from var(--accent) 0.18 0.06 h)"),
-          floor: [],
-        }}
-      />{" "}
-      {/* hack to hide animation dot when behind cluster in top group */}
-      <ISOCube
-        {...glassCube}
-        strokes={strokes}
-        size={size}
-        x={0}
-        y={y + depth}
-      />
-      <ISOCube
-        {...glassCube}
-        strokes={strokes}
-        size={size}
-        x={size}
-        y={y + depth}
-      />
-      <ISOCube
-        {...glassCube}
-        strokes={strokes}
-        size={size}
-        x={half}
-        y={y + depth * 2}
-      />
-    </g>
   );
 }

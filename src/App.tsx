@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router";
-import { Nav, Footer, Hero } from "./features";
+import { Nav, Footer, Hero, Work } from "./features";
 import { Service, Services } from "./features/services";
 
 function Layout() {
@@ -53,6 +53,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
         <Route path="/services/:id" element={<Service />} />
+        <Route path="/work" element={<Work />} />
         {/* <Route path="/about" element={<About />} /> */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

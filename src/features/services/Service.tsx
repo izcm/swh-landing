@@ -1,8 +1,8 @@
 import { Link, Navigate, NavLink, useParams } from "react-router";
 
-import { Card } from "@/components/Card";
 import { cn } from "@/lib/cn";
-import { services } from "./data";
+import { services } from "./data/services";
+import { ExampleBox } from "./ExampleBox";
 
 function ServiceNav() {
   return (
@@ -44,7 +44,7 @@ export function Service() {
   if (!section) return <Navigate to="/services" replace />;
 
   return (
-    <div className="tab-container max-w-5xl">
+    <div className="tab-container max-w-4xl">
       <ServiceNav />
       <header className="mt-10">
         <h1 className="text-6xl">{section.title}</h1>
@@ -55,24 +55,17 @@ export function Service() {
 
       <section className="mt-16">
         <span className="eyebrow tracking-[0.25em] font-normal">TODAY</span>
-        <div className="mt-3 flex flex-col gap-3 text-xl leading-relaxed font-light text-subtle">
+        <div className="mt-3 flex flex-col gap-3 text-lg leading-relaxed font-light text-subtle">
           {section.today.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
       </section>
 
-      <Card className="mt-12 flex flex-col gap-8">
-        {section.exampleFlowDiagram}
-        <div>
-          <span className="eyebrow tracking-[0.25em] font-normal">EXAMPLE</span>
-          <div className="mt-3 flex flex-col gap-3 font-light text-subtle">
-            {section.exampleText.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
-        </div>
-      </Card>
+      <ExampleBox
+        examplePart={section.examplePart}
+        diagram={section.exampleDiagram}
+      />
     </div>
   );
 }

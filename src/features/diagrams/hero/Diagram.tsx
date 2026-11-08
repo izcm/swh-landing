@@ -1,5 +1,7 @@
 import { CirclePlay, Mail, Plus, RefreshCw, Zap } from "lucide-react";
 
+import { cn } from "@/lib/cn";
+
 // shared svg helpers
 import {
   accentGlow,
@@ -40,7 +42,7 @@ const actions: MenuBoardRow[] = [
 ];
 
 // debug lines have className="svg-debug". show/hide them in diagram.css
-export function HeroDiagram() {
+export function HeroDiagram({ className }: { className?: string }) {
   const viewboxWidth = 900;
   const viewboxHeight = 600;
 
@@ -322,7 +324,11 @@ export function HeroDiagram() {
   })();
 
   return (
-    <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`} overflow="visible">
+    <svg
+      viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
+      overflow="visible"
+      className={cn(className)}
+    >
       {/* everything inside starts at the content box's top-left */}
       <g transform={`translate(${contentX}, ${contentY})`}>
         {/* debug: content box (inside the padding) */}

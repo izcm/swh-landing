@@ -1,5 +1,5 @@
 :root {
-  --platform-wall-fill: oklch(from var(--ground) 0.15 0.04 h / 0.72);
+  --platform-wall-fill: color-mix(in oklab, var(--ground) 72%, transparent);
   --pane-fill: color-mix(in oklab, var(--accent) 5%, var(--ground));
 
   /* https://claude.ai/artifact/VXrcsfxc2pMaoYDg63JeDL */

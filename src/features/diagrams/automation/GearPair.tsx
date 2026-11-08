@@ -1,6 +1,7 @@
+import { cn } from "@/lib/cn";
 import { alignCenter, deg, Gear, gearLayout } from "@/lib/svg";
 
-export function GearPair() {
+export function GearPair({ className }: { className?: string }) {
   const viewboxWidth = 320;
   const viewboxHeight = 240;
 
@@ -65,6 +66,7 @@ export function GearPair() {
       height="100%"
       overflow="visible"
       preserveAspectRatio="xMidYMid meet"
+      className={cn(className)}
     >
       <g
         transform={`translate(${gearPair.translateX}, ${gearPair.translateY})`}

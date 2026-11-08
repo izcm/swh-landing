@@ -14,7 +14,7 @@ const sections = [
       "While each system may work well on its own, there is often significant room for improvement in how data flows between them.",
       // "We have the expertise to bridge this gap by collecting and transforming data across your existing systems.",
     ],
-    diagram: <SvgPlaceholder label="Integrations Step" />,
+    diagram: <SvgPlaceholder label="Integrations Step" width={480} height={300} />,
     // diagram: <IntegrationsDiagram />,
   },
   {

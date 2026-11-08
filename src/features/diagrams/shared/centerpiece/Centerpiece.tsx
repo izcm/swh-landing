@@ -4,7 +4,6 @@ import {
   ISOCube,
   accentGlow,
   allFills,
-  glassCube,
   isoCubeMetrics,
   type Point,
 } from "@/lib/svg";
@@ -59,7 +58,7 @@ export function Centerpiece({
     thickness,
     angle,
     strokeWidth: cubeStrokeWeight,
-    radius: 0,
+    radius: 2,
   };
 
   // the small cube's light on the floor, under it. iso-flattened ellipse
@@ -169,7 +168,7 @@ export function Centerpiece({
           transform={`translate(${innerCubePos.x}, ${innerCubePos.y - floatLift})`}
         >
           <ISOCube
-            {...glassCube}
+            radius={0}
             size={innerCube.size}
             thickness={innerCube.thickness}
             angle={angle}

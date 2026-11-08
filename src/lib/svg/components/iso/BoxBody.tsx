@@ -173,7 +173,10 @@ export function BoxBody({
         />
       ))}
 
-      {/* walls: left and right faces meeting at the middle edge */}
+      {/* walls: each has 4 corners, two roof corners and the two floor
+          corners straight below them.
+          left: roof.left, roof.bottom, floor.bottom, floor.left.
+          right: roof.bottom, roof.right, floor.right, floor.bottom */}
       {[fills.left ?? []].flat().map((fill, i) => (
         <polygon
           key={i}
@@ -228,7 +231,7 @@ export function BoxBody({
           strokeWidth={strokeWidth}
         />
       ))}
-      {/* the middle edge: roof.bottom down to floor.bottom */}
+      {/* the edge from roof.bottom down to floor.bottom */}
       {[strokes.middle ?? []].flat().map((stroke, i) => (
         <line
           key={i}
@@ -252,6 +255,7 @@ export function BoxBody({
           fill="none"
           stroke={stroke}
           strokeWidth={strokeWidth}
+          strokeLinejoin="round"
         />
       ))}
     </>

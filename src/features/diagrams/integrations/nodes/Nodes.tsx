@@ -1,5 +1,6 @@
 import { useId } from "react";
 
+import { cn } from "@/lib/cn";
 import {
   allFills,
   allStrokes,
@@ -30,6 +31,7 @@ export function Nodes({
   viewboxHeight,
   strokeWidth,
   shares,
+  className,
 }: {
   x?: number;
   y?: number;
@@ -39,6 +41,7 @@ export function Nodes({
   viewboxHeight: number;
   strokeWidth: number;
   shares: NodesShares;
+  className?: string;
 }) {
   const { nodes, cube, connectors } = nodesLayout({
     width: viewboxWidth,
@@ -56,6 +59,7 @@ export function Nodes({
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
       overflow="visible"
       preserveAspectRatio="xMidYMid meet"
+      className={cn(className)}
     >
       {connectors.nodeConnectors.map((path, i) => (
         <path

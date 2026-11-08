@@ -1,14 +1,17 @@
 import { useId } from "react";
 
 import { cn } from "@/lib/cn";
+import { Floor } from "../shared/floor/Floor";
 import { EdgeGradient } from "../shared/gradients";
 import { CubeStack, cubeStackLayout } from "./CubeStack";
+import { softwareFloorLayout, softwareFloorLook } from "./floor";
 import { glassEdgeOpacity } from "./glass";
 
 // the software diagram's small version: only the cube stack
 export function CubeStackDiagram({ className }: { className?: string }) {
   const cubeSize = 62.5;
-  const { cube, groupWidth, groupHeight } = cubeStackLayout(cubeSize);
+  const { cube, groupWidth, groupHeight, floorCenter } =
+    cubeStackLayout(cubeSize);
 
   const viewboxWidth = groupWidth;
   const viewboxHeight = groupHeight;
@@ -37,6 +40,17 @@ export function CubeStackDiagram({ className }: { className?: string }) {
     return { drawing };
   })();
 
+  const floor = (() => {
+    const layout = softwareFloorLayout({
+      center: floorCenter,
+      cubeSize: cubeSize,
+    });
+
+    const drawing = () => <Floor layout={layout} {...softwareFloorLook} />;
+
+    return { drawing };
+  })();
+
   return (
     <svg
       viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`}
@@ -55,6 +69,7 @@ export function CubeStackDiagram({ className }: { className?: string }) {
         />
       </defs>
 
+      {floor.drawing()}
       {cubeStack.drawing()}
     </svg>
   );

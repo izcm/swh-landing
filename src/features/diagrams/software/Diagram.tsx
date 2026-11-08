@@ -4,22 +4,20 @@ import { cn } from "@/lib/cn";
 import {
   addVector,
   boxCorners,
-  deg,
   isoFloorCenter,
   isoCubeMetrics,
   isoRoofCenter,
-  layoutUnit,
   paddedBox,
   scaleVector,
   standOn,
   type Point,
 } from "@/lib/svg";
-import { Floor, tileStyleNames } from "../shared/floor/Floor";
-import { floorLayout } from "../shared/floor/floorLayout";
+import { Floor } from "../shared/floor/Floor";
 import { EdgeGradient } from "../shared/gradients";
 import { BoxedCube } from "./BoxedCube";
 import { ConnectorRing } from "./ConnectorRing";
 import { CubeStack, cubeStackLayout } from "./CubeStack";
+import { softwareFloorLayout, softwareFloorLook } from "./floor";
 import { glassEdgeOpacity } from "./glass";
 import { PlatformCubes } from "./PlatformCubes";
 
@@ -331,24 +329,12 @@ export function SoftwareDiagram({ className }: { className?: string }) {
   })();
 
   const floor = (() => {
-    const layout = floorLayout({
+    const layout = softwareFloorLayout({
       center: { x: viewboxWidth * 0.5, y: viewboxHeight * 0.6 },
-      tilesPerEdge: 11,
-      angle: deg(30),
-      tileLength: layoutUnit(viewboxHeight) * 2.5,
+      cubeSize,
     });
 
-    const drawing = () => (
-      <Floor
-        layout={layout}
-        tileOpacity={0.1}
-        fadeStretchX={0.5}
-        fadeStretchY={0.5}
-        fadeStart={0.2}
-        fadeMiddle={0.4}
-        tileStyle={tileStyleNames[1]}
-      />
-    );
+    const drawing = () => <Floor layout={layout} {...softwareFloorLook} />;
 
     return { drawing };
   })();

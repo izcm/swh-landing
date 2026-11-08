@@ -9,7 +9,10 @@ export function cubeStackLayout(size: number) {
   const groupWidth = size * 2;
   const groupHeight = cube.height * 2 - cube.depth / 2;
 
-  return { cube, groupWidth, groupHeight };
+  const baseY = cube.edgeLength - cube.depth / 2;
+  const floorCenter = { x: size, y: baseY + cube.depth * 2 + cube.edgeLength };
+
+  return { cube, groupWidth, groupHeight, floorCenter };
 }
 
 // a 2x2 base of glass cubes with one more floating on top

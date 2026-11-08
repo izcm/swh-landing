@@ -91,7 +91,7 @@ export function BoxedCube({
         cy={bigCube.thickness + bigCube.depth}
         rx={smallCube.size * 0.4}
         ry={smallCube.size * 0.4 * Math.tan(Math.PI / 6)}
-        fill="var(--accent-glow)"
+        fill="var(--accent)"
         fillOpacity={0.25}
         style={{ filter: "blur(6px)" }}
       />

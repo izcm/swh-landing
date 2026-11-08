@@ -10,7 +10,7 @@
   @apply font-light tracking-wider text-fg-tinted text-sm;
 }
 
-@utility border-faint-accent {
+@utility border-faint {
   @apply border-accent-muted/20;
 }
 

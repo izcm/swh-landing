@@ -48,7 +48,7 @@ export function SectionBase({
 
         {/* lg:mt-auto: side by side with the diagram, sits at the column's bottom */}
         {tldr && (
-          <aside className=" mt-6 rounded border border-faint-accent bg-raised/40 px-4 py-3">
+          <aside className=" mt-6 rounded border border-faint bg-raised/40 px-4 py-3">
             <span className="text-xs font-medium uppercase tracking-wider text-accent">
               TL;DR
             </span>

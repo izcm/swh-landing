@@ -77,20 +77,31 @@ export function CityMap({
 
     // the busy cities: a bigger sharp dot over one big blurred circle
     const busyRings: Ring[] = [
-      { radius: dotRadius * 3.5, opacity: 0.6, blur: dotRadius * 1.4 },
+      { radius: dotRadius * 4, opacity: 0.6, blur: dotRadius * 1.2 },
       { radius: dotRadius * 1.4, opacity: 1 },
     ];
 
     const veryBusyRings: Ring[] = [
-      { radius: dotRadius * 6, opacity: 0.6, blur: dotRadius * 2.4 },
+      { radius: dotRadius * 6, opacity: 0.6, blur: dotRadius * 1.6 },
       { radius: dotRadius * 1.8, opacity: 1 },
+    ];
+
+    const mostBusyRings: Ring[] = [
+      { radius: dotRadius * 10, opacity: 0.6, blur: dotRadius * 2.5 },
+      { radius: dotRadius * 2.2, opacity: 1 },
     ];
 
     const points = Object.values(cities)
       .flat()
-      .map(({ x, y, busy, veryBusy }) => ({
+      .map(({ x, y, busy, veryBusy, mostBusy }) => ({
         ...toDrawnMap({ x, y }),
-        rings: veryBusy ? veryBusyRings : busy ? busyRings : rings,
+        rings: mostBusy
+          ? mostBusyRings
+          : veryBusy
+            ? veryBusyRings
+            : busy
+              ? busyRings
+              : rings,
       }));
 
     return { points };

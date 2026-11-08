@@ -332,6 +332,7 @@ export function SoftwareDiagram({ className }: { className?: string }) {
     const layout = softwareFloorLayout({
       center: { x: viewboxWidth * 0.5, y: viewboxHeight * 0.6 },
       cubeSize,
+      tilesPerEdge: 11,
     });
 
     const drawing = () => <Floor layout={layout} {...softwareFloorLook} />;

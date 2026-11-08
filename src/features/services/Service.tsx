@@ -25,7 +25,7 @@ function ServiceNav() {
                 "rounded-sm border px-4 py-2 text-[11px] font-normal uppercase tracking-[0.2em] transition-colors",
                 isActive
                   ? "border-accent/40 bg-raised/40 text-accent"
-                  : "border-faint-accent text-subtle hover:text-fg",
+                  : "border-faint text-subtle hover:text-fg",
               )
             }
           >

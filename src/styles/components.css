@@ -105,6 +105,6 @@
   }
 
   .tab-container > header {
-    @apply mb-10 border-b border-faint-accent pb-8;
+    @apply mb-10 border-b border-faint pb-8;
   }
 }

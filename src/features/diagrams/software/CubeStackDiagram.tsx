@@ -44,6 +44,7 @@ export function CubeStackDiagram({ className }: { className?: string }) {
     const layout = softwareFloorLayout({
       center: floorCenter,
       cubeSize: cubeSize,
+      tilesPerEdge: 7,
     });
 
     const drawing = () => <Floor layout={layout} {...softwareFloorLook} />;

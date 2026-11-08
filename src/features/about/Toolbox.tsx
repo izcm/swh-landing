@@ -64,7 +64,7 @@ function Panel({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-lg border border-faint-accent bg-raised/40 p-5">
+    <div className="rounded-lg border border-faint bg-raised/40 p-5">
       <div className="flex items-center gap-3">
         <Icon className="size-6 text-accent" strokeWidth={1.4} />
         <h3 className="text-fg">{title}</h3>
@@ -76,7 +76,7 @@ function Panel({
 
 function Chip({ children }: { children: React.ReactNode }) {
   return (
-    <span className="rounded border border-faint-accent px-3 py-1.5 text-xs text-subtle">
+    <span className="rounded border border-faint px-3 py-1.5 text-xs text-subtle">
       {children}
     </span>
   );

@@ -61,7 +61,7 @@ const abouts: {
 export function About() {
   return (
     <>
-      <header className="border-b border-faint-accent mx-auto w-full px-6 py-24 mb-12">
+      <header className="border-b border-faint mx-auto w-full px-6 py-24 mb-12">
         <span className="eyebrow">THE DEV BEHIND</span>
 
         {/* <h1 className="mt-4 text-4xl text-fg">

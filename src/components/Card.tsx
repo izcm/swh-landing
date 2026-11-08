@@ -19,10 +19,7 @@ export function Card({
 }) {
   return (
     <section
-      className={cn(
-        "relative rounded-sm border border-faint-accent p-8",
-        className,
-      )}
+      className={cn("relative rounded-sm border border-faint p-8", className)}
     >
       {corners.map((corner) => (
         <Plus

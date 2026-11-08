@@ -1,1 +1,1 @@
-export { AISvg } from "./Diagram";
+export { AIDiagram as AISvg } from "./Diagram";

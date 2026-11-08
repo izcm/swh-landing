@@ -19,22 +19,22 @@ export function ConnectorRing({
         strokeDasharray="8 12"
       />
 
-      <circle
+      {/* <circle
         r={5}
         fill="var(--accent-dim)"
         opacity={0.8}
         className="path-dot"
         style={{ offsetPath: cssPath }}
-      />
+      /> */}
 
       {/* -6s = half of the 12s loop, so this dot runs half a lap ahead */}
-      <circle
+      {/* <circle
         r={5}
         fill="var(--accent-dim)"
         opacity={0.8}
         className="path-dot"
         style={{ offsetPath: cssPath, animationDelay: "-6s" }}
-      />
+      /> */}
     </>
   );
 }

@@ -1,21 +1,14 @@
-import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { cn } from "@/lib/cn";
 import { ArrowRight } from "./ArrowRight";
 
-export function ExampleBox({
-  examplePart,
-  diagram,
-}: {
-  examplePart: string;
-  diagram: ReactNode;
-}) {
+export function ExampleBox({ examplePart }: { examplePart: string }) {
   return (
     <section
       className={cn(
         "flex flex-col gap-4 mx-auto",
         "my-6 p-4",
-        "bg-raised/80 border border-faint rounded",
+        "bg-raised/80 border border-line rounded",
       )}
     >
       <h4 className="eyebrow text-xs">EXAMPLE – INTEGRATIONS</h4>
@@ -23,13 +16,9 @@ export function ExampleBox({
         Connecting multiple data sources
       </h3>
       <span className="text-subtle">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor incididunt ut labore. Ut enim ad minim veniam.{" "}
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore. Ut enim ad minim veniam.{" "}
       </span>
-
-      <div className="w-full max-w-175 mx-auto border-2 border-faint rounded-lg">
-        {diagram}
-      </div>
 
       <div className="horizontal-line my-3" />
 

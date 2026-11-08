@@ -19,7 +19,6 @@ function Layout() {
           { label: "Home", to: "/" },
           { label: "Services", to: "/services" },
           { label: "Work", to: "/work" },
-          // { label: "About", to: "/about" },
         ]}
       />
 
@@ -40,7 +39,6 @@ function Home() {
       <div className="md:min-h-below-nav-and-dev-banner mb-12 flex flex-col overflow-x-clip">
         <Hero />
       </div>
-      {/* <Story /> */}
       {/* <Demo /> */}
     </>
   );
@@ -54,7 +52,6 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/services/:id" element={<Service />} />
         <Route path="/work" element={<Work />} />
-        {/* <Route path="/about" element={<About />} /> */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

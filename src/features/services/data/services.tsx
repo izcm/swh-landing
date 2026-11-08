@@ -3,26 +3,6 @@ import { SvgPlaceholder } from "@/components/SvgPlaceholder";
 import { IntegrationsDiagram, Nodes } from "../../diagrams/integrations";
 import { GeoVisualization, VisualizationsDiagram } from "../../diagrams/visualizations";
 import { AutomationDiagram, GearPair } from "../../diagrams/automation";
-import { ConnectingSystems } from "../../diagrams/demo";
-
-const exampleDiagram = (
-  <ConnectingSystems
-    width={500}
-    height={250}
-    shares={{ sources: 1 / 3, connectors: 1 / 3, target: 1 / 3 }}
-    paddingUnits={0.6}
-    rowGapUnits={0.5}
-    sourceGapUnits={0.5}
-    targetWidthShare={0.85}
-    radius={6}
-    iconSizeUnits={0.7}
-    labelGapUnits={0.5}
-    sourceFontSizeUnits={0.55}
-    targetFontSizeUnits={0.72}
-    arrowSizeUnits={0.4}
-    strokeWidth={1.5}
-  />
-);
 
 export const services = [
   {
@@ -42,7 +22,6 @@ export const services = [
     ),
     heroDiagram: <IntegrationsDiagram />,
     examplePart: "connecting-systems",
-    exampleDiagram,
     today: [
       "A business usually run daily operations by using several pieces of software. Maybe an ERP for accounting, Microsoft teams for collaboration, and internal spreadsheets for etc. bookkeeping.",
       "Each system may work great on its own, where you can gain value is the interaction between them.",
@@ -61,7 +40,6 @@ export const services = [
     cardDiagram: <GeoVisualization />,
     heroDiagram: <VisualizationsDiagram />,
     examplePart: "understanding-data",
-    exampleDiagram,
     today: [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
@@ -79,7 +57,6 @@ export const services = [
       <SvgPlaceholder label="Interactive Tools" width={480} height={300} />
     ),
     examplePart: "working-with-records",
-    exampleDiagram,
     today: [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
@@ -93,7 +70,6 @@ export const services = [
     cardDiagram: <GearPair />,
     heroDiagram: <AutomationDiagram />,
     examplePart: "automating-updates",
-    exampleDiagram,
     today: [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "Duis aute irure dolor in reprehenderit in voluptate velit esse.",

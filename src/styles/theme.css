@@ -64,9 +64,9 @@
 
   /* text / borders */
   --fg: #e9edf6;
-  --line: rgba(129, 166, 211, 0.2);
+  --line: rgba(129, 166, 211, 0.32);
 
-  --subtle: rgba(201, 215, 233, 0.76);
+  --subtle: rgba(201, 215, 233, 0.86);
   --muted: rgba(171, 193, 220, 0.48);
   --faint: rgba(143, 173, 207, 0.2);
   --extra-faint: rgba(143, 173, 207, 0.09);
@@ -141,11 +141,11 @@
 
   /* text / borders */
   --fg: rgba(0, 0, 0, 0.9);
-  --line: rgba(0, 0, 0, 0.14);
+  --line: rgba(0, 0, 0, 0.3);
 
   --subtle: rgba(0, 0, 0, 0.7);
   --muted: rgba(0, 0, 0, 0.5);
-  --faint: rgba(0, 0, 0, 0.16);
+  --faint: rgba(0, 0, 0, 0.25);
   --extra-faint: rgba(0, 0, 0, 0.08);
 
   /* accent */

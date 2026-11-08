@@ -4,9 +4,9 @@ import { cn } from "@/lib/cn";
 import { GITHUB_URL } from "@/lib/links";
 
 const links = [
-  { to: "/", label: "Story" },
-  { to: "/about", label: "About" },
-  { to: "/", label: "Get in touch" },
+  { to: "/services", label: "Services" },
+  { to: "/work", label: "Work" },
+  { to: "/", label: "Contact" },
 ];
 
 export default function Footer() {

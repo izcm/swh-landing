@@ -7,8 +7,8 @@ export function Services() {
   return (
     <div className="tab-container">
       <header>
-        <span className="eyebrow tracking-[0.25em] font-normal">SERVICES</span>
-        <h1 className="mt-3 text-5xl">What I build</h1>
+        <span className="eyebrow">SERVICES</span>
+        <h1>What I build</h1>
       </header>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -18,7 +18,7 @@ export function Services() {
             className="flex flex-col gap-6 sm:h-90 sm:flex-row"
           >
             <div className="flex flex-col gap-3 sm:w-2/5">
-              <span className="eyebrow pb-4 text-[14px]">{`0${i + 1} / ${section.eyebrow}`}</span>
+              <span className="eyebrow pb-4">{`0${i + 1} / ${section.eyebrow}`}</span>
               <h2 className="mt-4 text-4xl text-fg">{section.title}</h2>
               <p className="font-light text-subtle">{section.short}</p>
 

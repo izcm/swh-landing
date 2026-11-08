@@ -1,5 +1,6 @@
 import { cn } from "@/lib/cn";
 import { CubeStackDiagram, SoftwareDiagram } from "../diagrams/software";
+import { DemoSection } from "./Demo";
 import { DemoIndex, type Demo } from "./DemoIndex";
 
 const demos: Demo[] = [
@@ -7,6 +8,17 @@ const demos: Demo[] = [
     id: "hubben",
     title: "Hubben",
     subtitle: "Business operations · Live demo",
+    client: "A medium sized vehicle rental operations.",
+    situation:
+      "Manual processes and fragmented information made inspections and follow-up time consuming and hard to scale.",
+    solution:
+      "A custom solution that brings inspections, data and operations together in one place, with integrations, clear visualization and automation.",
+    services: [
+      "integrations",
+      "visualization",
+      "interactive-tools",
+      "automation",
+    ],
   },
 ];
 
@@ -14,8 +26,8 @@ export function Work() {
   return (
     <div className="tab-container">
       <header>
-        <span className="eyebrow tracking-[0.25em] font-normal">MY WORK</span>
-        <h1 className="mt-3 text-5xl">Selected demos</h1>
+        <span className="eyebrow">MY WORK</span>
+        <h1>Selected demos</h1>
       </header>
       <div className="min-h-below-nav">
         <div className={cn("flex flex-col", "md:flex-row")}>
@@ -26,20 +38,18 @@ export function Work() {
             )}
           >
             <p>
-              Here you can get a better overview of the kind of work we do here
-              at SWH. Each demo will have link to live app, alongside
-              screenshots, video snippets and technical summaries for those
-              interested.
+              Here you can get a better overview of the kind of work SWH offers.
+              Each demo will have link to live app, alongside screenshots, video
+              snippets and technical summaries for those interested.
             </p>
             <p>
-              Recommended for Norwegian businesses:{" "}
+              I recommend having a look at:{" "}
               <a href="#hubben" className="text-accent underline">
                 Hubben
               </a>
             </p>
             <p>
-              For those who want to explore my decentralized payment services,
-              visit{" "}
+              For those interested in blockchain related services, visit{" "}
               <a
                 href="https://izblocks.com"
                 target="_blank"
@@ -48,17 +58,17 @@ export function Work() {
               >
                 izblocks.com
               </a>
-              , the designated site for my blockchain work.
+              , I publish all of my Web3 work there.
             </p>
             <nav
               aria-label="Project index"
-              className={cn("w-full border-t border-faint mt-6", "md:max-w-lg")}
+              className={cn("w-full border-t border-line mt-6", "md:max-w-lg")}
             >
               {demos.map((demo, i) => (
                 <DemoIndex key={demo.id} demo={demo} index={i} />
               ))}
 
-              <div className="flex items-center gap-5 border-b border-faint px-2 py-5 opacity-40">
+              <div className="flex items-center gap-5 border-b border-line px-2 py-5 opacity-60">
                 <span className="font-mono text-xs text-muted">
                   {String(demos.length + 1).padStart(2, "0")}
                 </span>
@@ -72,7 +82,7 @@ export function Work() {
             </nav>
           </div>
           <SoftwareDiagram
-            className={cn("hidden max-w-145 mx-auto min-w-0", "lg:block")}
+            className={cn("hidden max-w-125 mx-auto min-w-0", "lg:block")}
           />
           <CubeStackDiagram
             className={cn(
@@ -85,25 +95,7 @@ export function Work() {
       </div>
 
       {demos.map((demo) => (
-        <section
-          key={demo.id}
-          id={demo.id}
-          className="min-h-below-nav scroll-mt-18 flex flex-col gap-8"
-        >
-          <h2 className="text-3xl">{demo.title}</h2>
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg">Screenshots</h3>
-            <p className="text-subtle">Lorem ipsum dolor sit amet.</p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg">Video snippets</h3>
-            <p className="text-subtle">Lorem ipsum dolor sit amet.</p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg">Technical summary</h3>
-            <p className="text-subtle">Lorem ipsum dolor sit amet.</p>
-          </div>
-        </section>
+        <DemoSection key={demo.id} demo={demo} />
       ))}
     </div>
   );

@@ -107,4 +107,14 @@
   .tab-container > header {
     @apply mb-10 border-b border-faint pb-8;
   }
+
+  .tab-container > header > h1 {
+    @apply mt-3 text-5xl;
+  }
+}
+
+@layer utilities {
+  .tab-container > header > .eyebrow {
+    @apply tracking-[0.25em];
+  }
 }

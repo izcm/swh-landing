@@ -16,10 +16,16 @@
 
 ## SVG components: no hardcoded knobs
 
-- Any number that controls how something looks (size, ratio, gap,
-  angle, count, offset, opacity, glow) we might wanna make an input
-  passed by the caller. Optional inputs with a neutral default (0, 1, "no
-  change") are fine. Before giving an input an arbitrary default (like
+- This section is about **reusable** parts (shared components and layout
+  helpers used by more than one diagram).
+- A one-off parent SVG that draws its own stuff (e.g. `ConnectingSystems`)
+  is not a reusable part. Base most of its sizes on `unit`
+  (`const iconSize = unit * 0.7`) inside the component, and keep its props
+  few. Don't turn every size, gap or font size into a `*Units` prop.
+- In a reusable part, any number that controls how something looks (size,
+  ratio, gap, angle, count, offset, opacity, glow) we might wanna make an
+  input passed by the caller. Optional inputs with a neutral default (0, 1,
+  "no change") are fine. Before giving an input an arbitrary default (like
   count = 3 or gap = 45) or a constant inside the component, tell me why you
   think that is the better choice.
 - Shared SVG components and layout helpers must not assume anything about

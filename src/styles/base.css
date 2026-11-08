@@ -46,7 +46,7 @@
   }
 
   *::-webkit-scrollbar-thumb {
-    background: oklch(from var(--color-line) calc(l - 0.15) c h / alpha);
+    background: oklch(from var(--color-line) l c h / alpha);
     border-radius: 9999px;
   }
 

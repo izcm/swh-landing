@@ -25,7 +25,7 @@ function ServiceNav() {
                 "rounded-sm border px-4 py-2 text-[11px] font-normal uppercase tracking-[0.2em] transition-colors",
                 isActive
                   ? "border-accent/40 bg-raised/40 text-accent"
-                  : "border-faint text-subtle hover:text-fg",
+                  : "border-line text-subtle hover:text-fg",
               )
             }
           >
@@ -54,18 +54,15 @@ export function Service() {
       </div>
 
       <section className="mt-16">
-        <span className="eyebrow tracking-[0.25em] font-normal">TODAY</span>
-        <div className="mt-3 flex flex-col gap-3 text-lg leading-relaxed font-light text-subtle">
+        <span className="eyebrow">TODAY</span>
+        <div className="mt-3 flex flex-col gap-3 text-lg leading-relaxed text-subtle">
           {section.today.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
       </section>
 
-      <ExampleBox
-        examplePart={section.examplePart}
-        diagram={section.exampleDiagram}
-      />
+      <ExampleBox examplePart={section.examplePart} />
     </div>
   );
 }

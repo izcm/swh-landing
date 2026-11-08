@@ -13,6 +13,8 @@ type Props = {
   // pass if parent controls the index
   index?: number;
   onChange?: (i: number) => void;
+
+  className?: string;
 };
 
 // https://www.youtube.com/watch?v=HXIHpDnsizk&list=PLZlA0Gpn_vH8mpXIUHjWoMAAgoCEinL0R&index=67
@@ -23,6 +25,7 @@ export function Carosel({
   index: indexProp,
   defaultIndex,
   onChange,
+  className,
 }: Props) {
   const { index, direction, prev, next, goTo } = useSlides({
     count: items.length,
@@ -34,7 +37,7 @@ export function Carosel({
   const current = items[index];
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className={cn("flex flex-col gap-4", className)}>
       <div
         className={cn(
           "flex-1 self-center rounded-sm overflow-hidden",
@@ -47,7 +50,11 @@ export function Carosel({
       </div>
 
       <div className="flex gap-6 items-center justify-evenly">
-        <RoundIconBtn onClick={prev} label="Previous">
+        <RoundIconBtn
+          onClick={prev}
+          label="Previous"
+          className="border border-line"
+        >
           <ArrowLeft className="size-5" strokeWidth={1.8} />
         </RoundIconBtn>
 
@@ -56,7 +63,7 @@ export function Carosel({
             <div
               onClick={() => goTo(i)}
               className={cn(
-                "rounded cursor-pointer rounded border border-transparent p-0.5",
+                "cursor-pointer rounded border border-transparent p-0.5",
                 i !== index && "hover:border-accent/60",
                 i === index && "border border-accent",
               )}
@@ -67,7 +74,11 @@ export function Carosel({
           ))}
         </div>
 
-        <RoundIconBtn onClick={next} label="Next">
+        <RoundIconBtn
+          onClick={next}
+          label="Next"
+          className="border border-line"
+        >
           <ArrowRight className="size-5" strokeWidth={1.8} />
         </RoundIconBtn>
       </div>

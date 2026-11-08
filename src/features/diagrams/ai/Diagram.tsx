@@ -10,7 +10,7 @@ import {
 } from "@/lib/svg";
 import { CodeEditor } from "./editor/CodeEditor";
 
-export function AISvg({ className }: { className?: string }) {
+export function AIDiagram({ className }: { className?: string }) {
   const viewboxWidth = 600;
   const viewboxHeight = 400;
 

@@ -4,13 +4,17 @@ export type Demo = {
   id: string;
   title: string;
   subtitle: string;
+  client: string;
+  situation: string;
+  solution: string;
+  services: string[];
 };
 
 export function DemoIndex({ demo, index }: { demo: Demo; index: number }) {
   return (
     <a
       href={`#${demo.id}`}
-      className="group flex items-center gap-5 border-b border-faint px-2 py-5 transition-colors hover:bg-faint/20"
+      className="group flex items-center gap-5 border-b border-line px-2 py-5 transition-colors hover:bg-faint/20"
     >
       <span className="self-start pt-1 font-mono text-xs text-accent">
         {String(index + 1).padStart(2, "0")}

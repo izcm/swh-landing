@@ -23,7 +23,7 @@ export default function Hero() {
       >
         <h1
           className={cn(
-            "text-4xl font-normal leading-tight text-fg ",
+            "text-6xl font-normal leading-tight text-fg ",
             "sm:text-6xl",
           )}
         >

@@ -1,6 +1,6 @@
 import { cn } from "@/lib/cn";
 import { CubeStackDiagram, SoftwareDiagram } from "../diagrams/software";
-import { DemoSection } from "./Demo";
+import { DemoSection } from "./DemoSection";
 import { DemoIndex, type Demo } from "./DemoIndex";
 
 const demos: Demo[] = [

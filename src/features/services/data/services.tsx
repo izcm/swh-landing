@@ -1,7 +1,10 @@
 import { SvgPlaceholder } from "@/components/SvgPlaceholder";
 
 import { IntegrationsDiagram, Nodes } from "../../diagrams/integrations";
-import { GeoVisualization, VisualizationsDiagram } from "../../diagrams/visualizations";
+import {
+  GeoVisualization,
+  VisualizationsDiagram,
+} from "../../diagrams/visualizations";
 import { AutomationDiagram, GearPair } from "../../diagrams/automation";
 
 export const services = [
@@ -24,12 +27,13 @@ export const services = [
     examplePart: "connecting-systems",
     today: [
       "A business usually run daily operations by using several pieces of software. Maybe an ERP for accounting, Microsoft teams for collaboration, and internal spreadsheets for etc. bookkeeping.",
-      "Each system may work great on its own, where you can gain value is the interaction between them.",
-      "SWH helps you build these connections, unlocking new capabilities. Review the short example below to see how.",
+      "Connecting these systems helps break down what we call information silos, where valuable data is isolated in separate systems.",
+      "SWH can build and maintain such connections, unlocking new capabilities for your data.",
     ],
     sisterServices: [
       "After integrating successfully, several new doors open. Lets put those into two categories: ",
-      "",
+      "UI based: stuff you can do in the browser such as analyzing dashboard or manually trigger actions",
+      "Automation: stuff running in the background",
     ],
   },
   {

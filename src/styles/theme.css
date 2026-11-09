@@ -2,7 +2,7 @@
 @theme inline {
   --font-sans: "Inter", sans-serif;
   --font-serif: "Cormorant Garamond", serif;
-  --font-mono: var(--font-geist-mono);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --background-image-story-integrations: var(--story-integrations-bg);
   --background-image-story-visualizations: var(--story-visualizations-bg);

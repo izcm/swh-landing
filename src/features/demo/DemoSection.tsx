@@ -1,19 +1,8 @@
-import { Carosel } from "@/components/Carosel";
 import { services } from "../services/data/services";
 import type { Demo } from "./DemoIndex";
-import { LightBox } from "@/components/LightBox";
-import { useState } from "react";
+import { DemoShowcase } from "./DemoShowcase";
 
 export function DemoSection({ demo }: { demo: Demo }) {
-  const [openLightBox, setOpenLightBox] = useState(false);
-  const [slideIndex, setSlideIndex] = useState(0);
-
-  const mediaItems = Array.from({ length: 3 }).map((_, i) => ({
-    type: "image" as const,
-    src: `/hubben/hubben_${i + 1}.png`,
-    alt: "temporary alt",
-  }));
-
   const details = [
     { label: "CLIENT", text: demo.client },
     { label: "SITUATION", text: demo.situation },
@@ -55,32 +44,7 @@ export function DemoSection({ demo }: { demo: Demo }) {
           </span>
         </div>
 
-        <div className="max-w-200 mx-auto p-4 border border-line rounded">
-          <Carosel
-            items={mediaItems.map(({ src, alt }, i) => (
-              <img
-                className="border border-line rounded"
-                src={src}
-                alt={alt}
-                // the same img is used as a thumbnail — only the current
-                // slide opens the lightbox, others just navigate
-                onClick={() => {
-                  if (i === slideIndex) setOpenLightBox(true);
-                }}
-              />
-            ))}
-            index={slideIndex}
-            onChange={setSlideIndex}
-          />
-        </div>
-
-        <LightBox
-          items={mediaItems}
-          isOpen={openLightBox}
-          index={slideIndex}
-          onChange={setSlideIndex}
-          onClose={() => setOpenLightBox(false)}
-        />
+        <DemoShowcase />
       </div>
     </section>
   );

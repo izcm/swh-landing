@@ -105,7 +105,7 @@
   }
 
   .tab-container > header {
-    @apply mb-10 border-b border-faint pb-8;
+    @apply mb-6 border-b border-faint pb-8;
   }
 
   .tab-container > header > h1 {

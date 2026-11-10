@@ -73,7 +73,7 @@ export function Work() {
             className={cn(
               "order-first h-60 -mt-6 py-6 overflow-y-clip",
               "md:order-0 md:overflow-y-visible md:flex-1",
-              "lg:hidden",
+              "lg:hidden mb-8",
             )}
           >
             <CubeStackDiagram className={cn("h-50 min-w-0")} />

@@ -2,7 +2,7 @@ import { layoutUnit } from "@/lib/svg";
 import { floorLayout } from "./floorLayout";
 
 export const serviceFloorLook = {
-  tileOpacity: 0.3,
+  tileOpacity: 0.2,
   fadeStretchX: 0.75,
   fadeStretchY: 0.75,
   fadeStart: 0.5,

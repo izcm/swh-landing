@@ -3,6 +3,10 @@
 export const accentGlow = (blur: number, strength: number) =>
   `drop-shadow(0 0 ${blur}px oklch(from var(--accent) 0.55 0.12 h / ${strength}%))`;
 
+// --accent at an opacity
+export const accent = (opacity: number) =>
+  `oklch(from var(--accent) l c h / ${opacity})`;
+
 // faint dashed guide lines behind charts (LineChart, BarChart)
 export const chartSeparatorStyle = {
   strokeWidth: 1,

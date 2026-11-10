@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { ChevronRight, type LucideIcon } from "lucide-react";
 
 import {
+  accent,
   alignCenter,
   contentBoxLayout,
   glyphStrokeLucide,
@@ -163,7 +164,7 @@ function MenuRow({
         height={h}
         rx={radius}
         fill="var(--ground)"
-        stroke="oklch(from var(--accent) l c h / 0.4)" // knob: 0.4
+        stroke={accent(0.4)} // knob: 0.4
         strokeWidth={0.75}
       />
       {/* icon */}

@@ -2,6 +2,7 @@ import { useId } from "react";
 import {
   CornerLightMask,
   ISOCube,
+  accent,
   accentGlow,
   allFills,
   isoCubeMetrics,
@@ -10,16 +11,16 @@ import {
 
 type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
 
-export const innerRoofFill =
-  "oklch(from var(--accent) calc(l + 0.08) c h / 0.45)";
-export const innerFloorFill =
-  "oklch(from var(--accent) calc(l + 0.1) c h / 0.1875)";
+export const innerRoofFill = accent(0.4);
+export const innerFloorFill = accent(0.15);
 
-const innerLeftFill = "oklch(from var(--accent) calc(l - 0.2) c h / 0.6)";
-const innerRightFill = "oklch(from var(--accent) calc(l - 0.1) c h / 0.6)";
+const innerLeftFill = accent(0.3);
+const innerRightFill = accent(0.5);
+
+const outerLeftFill = accent(0.03);
+const outerRightFill = accent(0.05);
 
 const faintEdge = "oklch(from var(--accent-glow) l c h / 0.35)";
-const bluerAccent = "oklch(from var(--accent) calc(l - 0.2) c h)";
 const whiterAccent = "oklch(from var(--accent) calc(l + 0.2) c h)";
 
 // a big glass cube with a small cube floating inside. sizes from centerpieceLayout
@@ -31,8 +32,7 @@ export function Centerpiece({
   innerCubePos,
   floatLift,
   angle,
-  cubeStrokeWeight,
-  innerCubeStrokeWeight,
+  strokeWeight,
 }: {
   x: number;
   y: number;
@@ -41,8 +41,7 @@ export function Centerpiece({
   innerCubePos: Point;
   floatLift: number; // how far the small cube floats above the floor
   angle: number;
-  cubeStrokeWeight: number; // the big cube's edges, in viewBox units at any cube size
-  innerCubeStrokeWeight: number; // the small cube's edges, same
+  strokeWeight: number; // the cubes' edges, in viewBox units at any cube size
 }) {
   const { size, height, depth, thickness } = cube;
 
@@ -57,7 +56,7 @@ export function Centerpiece({
     size,
     thickness,
     angle,
-    strokeWidth: cubeStrokeWeight,
+    strokeWidth: strokeWeight,
     radius: 2,
   };
 
@@ -122,8 +121,8 @@ export function Centerpiece({
           r={size * 0.7}
         >
           <stop offset="0%" stopColor="var(--accent-glow)" stopOpacity={0} />
-          <stop offset="45%" stopColor={bluerAccent} stopOpacity={0.2} />
-          <stop offset="100%" stopColor="var(--accent)" stopOpacity={0.35} />
+          <stop offset="45%" stopColor="var(--accent)" stopOpacity={0.1} />
+          <stop offset="100%" stopColor="var(--accent)" stopOpacity={0.3} />
         </radialGradient>
 
         {/* corner light masks, one per cube */}
@@ -183,14 +182,14 @@ export function Centerpiece({
               floorTop: "var(--accent)",
               floor: "var(--accent)",
             }}
-            strokeWidth={innerCubeStrokeWeight}
+            strokeWidth={strokeWeight}
           />
           {/* its Y of front edges, seen through its corner light mask */}
           <path
             d={frontY(innerCube)}
             fill="none"
             stroke="white"
-            strokeWidth={innerCubeStrokeWeight} // knob
+            strokeWidth={strokeWeight} // knob
             mask={`url(#${innerCornerMaskId})`}
           />
         </g>
@@ -199,7 +198,12 @@ export function Centerpiece({
       {/* big cube, over half: faces and edges, over the small cube */}
       <ISOCube
         {...bigCube}
-        fills={{ ...allFills(`url(#${wallLightId})`), floor: [] }}
+        fills={{
+          ...allFills(`url(#${wallLightId})`),
+          left: [outerLeftFill, `url(#${wallLightId})`],
+          right: [outerRightFill, `url(#${wallLightId})`],
+          floor: [],
+        }}
         strokes={edgeStrokes(sideFadeId)}
       />
 
@@ -208,7 +212,7 @@ export function Centerpiece({
         d={frontY(cube)}
         fill="none"
         stroke="white"
-        strokeWidth={cubeStrokeWeight} // knob
+        strokeWidth={strokeWeight} // knob
         mask={`url(#${cornerMaskId})`}
       />
     </g>

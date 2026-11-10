@@ -101,7 +101,7 @@
   }
 
   .tab-container {
-    @apply mx-auto w-full max-w-360 px-6 py-16;
+    @apply mx-auto w-full max-w-360 px-4 py-16;
   }
 
   .tab-container > header {

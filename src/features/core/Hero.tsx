@@ -67,8 +67,9 @@ export default function Hero() {
 
       <div
         className={cn(
-          "w-full max-w-3xl mx-auto",
-          "xl:min-w-0 xl:max-w-4xl xl:flex-1",
+          "w-full max-w-65 mt-20 mx-auto",
+          "md:max-w-70",
+          "xl:min-w-0 xl:max-w-90 xl:flex-1 xl:mt-0",
         )}
       >
         <HeroDiagram />

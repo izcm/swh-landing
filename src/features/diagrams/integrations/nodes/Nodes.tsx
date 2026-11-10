@@ -2,6 +2,7 @@ import { useId } from "react";
 
 import { cn } from "@/lib/cn";
 import {
+  accent,
   allFills,
   allStrokes,
   BoxBody,
@@ -18,7 +19,7 @@ import {
   type NodesShares,
 } from "./layout";
 
-const wallFill = "oklch(from var(--accent) l c h / 0.1)";
+const wallFill = accent(0.1);
 const edge = "var(--accent-bright)";
 const faintEdge = "oklch(from var(--accent-bright) l c h / 0.3)";
 

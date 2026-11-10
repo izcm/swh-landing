@@ -52,7 +52,7 @@ export function Service() {
         <h1 className="text-5xl">{section.title}</h1>
       </header>
       <div className="flex mx-auto pb-16 border-b border-line overflow-y-clip">
-        <div className="max-w-140 w-full mx-auto">{section.diagrams.hero}</div>
+        <div className="max-w-2xl w-full mx-auto">{section.diagrams.hero}</div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 mt-6 lg:grid-cols-2">

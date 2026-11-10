@@ -15,8 +15,9 @@ export function Work() {
         <div className={cn("flex flex-col", "md:flex-row")}>
           <div
             className={cn(
-              "relative z-10 w-full max-w-2xl flex flex-col gap-4 text-subtle",
-              "md:min-w-lg",
+              "relative z-10 w-full max-w-xl flex flex-col gap-4 text-subtle",
+              "md:min-w-md md:max-w-lg",
+              "lg:max-w-2xl",
             )}
           >
             <p>
@@ -63,16 +64,20 @@ export function Work() {
               </div>
             </nav>
           </div>
+
           <SoftwareDiagram
             className={cn("hidden max-w-125 mx-auto min-w-0", "lg:block")}
           />
-          <CubeStackDiagram
+
+          <div
             className={cn(
-              "h-48 min-w-0 order-first mb-8",
-              "md:order-0",
+              "order-first h-60 -mt-6 py-6 overflow-y-clip",
+              "md:order-0 md:overflow-y-visible md:flex-1",
               "lg:hidden",
             )}
-          />
+          >
+            <CubeStackDiagram className={cn("h-50 min-w-0")} />
+          </div>
         </div>
       </div>
 

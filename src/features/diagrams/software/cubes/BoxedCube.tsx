@@ -1,8 +1,8 @@
 import { useId } from "react";
 
 import {
+  accent,
   accentGlow,
-  allFills,
   allStrokes,
   BoxBody,
   CornerLightMask,
@@ -45,6 +45,17 @@ export function BoxedCube({
   // was / 0.8 drawn twice; one layer at 0.96 looks the same
   const floatingCubeEdge = "var(--accent-bright)";
 
+  const floatingCubeFills = {
+    roof: accent(0.5),
+    left: accent(0.45),
+    right: accent(0.55),
+    floor: [],
+  };
+
+  const bigCubeLeftTint = accent(0.06);
+  const bigCubeRightTint = accent(0.08);
+  const bigCubeRoofTint = accent(0.04);
+
   const cornerMaskId = useId();
 
   // roof.left → roof.bottom → roof.right, then roof.bottom down to floor.bottom
@@ -80,7 +91,10 @@ export function BoxedCube({
           strokeWidth={1}
           radius={2}
           fills={{ floor: "var(--pane-fill)" }}
-          strokes={{ floorTop: bigCubeEdge }}
+          strokes={{
+            back: "var(--accent-faint)",
+            floorTop: "var(--accent-faint)",
+          }}
         />
       </g>
 
@@ -103,10 +117,7 @@ export function BoxedCube({
             x={smallCubePos.x}
             y={smallCubePos.y - floatLift}
             size={smallCube.size}
-            fills={{
-              ...allFills("var(--accent-dim)"),
-              floor: [],
-            }}
+            fills={floatingCubeFills}
             strokes={allStrokes(floatingCubeEdge)}
           />
         </g>
@@ -120,10 +131,9 @@ export function BoxedCube({
           strokeWidth={platformStyle.strokeWidth}
           radius={2}
           fills={{
-            ...allFills(
-              "color-mix(in oklab, var(--accent-dim) 6%, transparent)",
-            ),
-            floor: [],
+            roof: bigCubeRoofTint,
+            left: bigCubeLeftTint,
+            right: bigCubeRightTint,
           }}
           strokes={{ ...allStrokes(bigCubeEdge), back: [], floorTop: [] }}
         />

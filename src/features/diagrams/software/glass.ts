@@ -1,7 +1,7 @@
-import { allFills } from "@/lib/svg";
+import { accent, allFills } from "@/lib/svg";
 
 // the look of the old ISOCube: sharp dark glass at 80%, middle edge on.
-export const glassFill = "oklch(from var(--accent-dim) l c h / 0.3)";
+export const glassFill = accent(0.25);
 
 // more electric maybe later with some retouches?
 // const glassFill = "oklch(from var(--accent) 0.32 0.2 h / 0.35)";

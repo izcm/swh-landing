@@ -50,19 +50,19 @@ export function Service() {
         <h1 className="text-6xl">{section.title}</h1>
       </header>
       <div className="max-w-5xl mx-auto pb-20">
-        <div className="max-w-2xl mx-auto">{section.heroDiagram}</div>
+        <div className="max-w-2xl mx-auto">{section.diagrams.hero}</div>
       </div>
 
       <section className="mt-16">
-        <span className="eyebrow">TODAY</span>
+        <span className="eyebrow">OVERVIEW</span>
         <div className="mt-3 flex flex-col gap-3 text-lg leading-relaxed text-subtle">
-          {section.today.map((paragraph) => (
+          {section.overview.paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
       </section>
 
-      <ExampleBox examplePart={section.examplePart} />
+      <ExampleBox examplePart={section.example.part} />
     </div>
   );
 }

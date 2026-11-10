@@ -16,6 +16,8 @@ type Props = {
   index?: number;
   onChange?: (i: number) => void;
 
+  animate?: boolean;
+
   className?: string;
 };
 
@@ -29,6 +31,7 @@ export function Carosel({
   index: indexProp,
   defaultIndex,
   onChange,
+  animate = true,
   className,
 }: Props) {
   const { index, direction, prev, next, goTo } = useSlides({
@@ -40,7 +43,12 @@ export function Carosel({
 
   return (
     <div className={cn("flex flex-col gap-4", className)}>
-      <CaroselSlide key={index} item={items[index]} direction={direction} />
+      <CaroselSlide
+        key={index}
+        item={items[index]}
+        direction={direction}
+        animate={animate}
+      />
       <CaroselCaption
         title={items[index].title}
         index={index}
@@ -60,16 +68,18 @@ export function Carosel({
 export function CaroselSlide({
   item,
   direction,
+  animate = true,
 }: {
   item: CaroselItem;
   direction: "left" | "right";
+  animate?: boolean;
 }) {
   return (
     <div
       className={cn(
         "flex-1 self-center rounded-sm overflow-hidden",
-        direction === "right" && "in-from-right",
-        direction === "left" && "in-from-left",
+        animate && direction === "right" && "in-from-right",
+        animate && direction === "left" && "in-from-left",
       )}
     >
       {item.content}
@@ -142,11 +152,7 @@ export function CaroselControls({
         ))}
       </div>
 
-      <RoundIconBtn
-        onClick={next}
-        label="Next"
-        className="border border-line"
-      >
+      <RoundIconBtn onClick={next} label="Next" className="border border-line">
         <ArrowRight className="size-5" strokeWidth={1.8} />
       </RoundIconBtn>
     </div>

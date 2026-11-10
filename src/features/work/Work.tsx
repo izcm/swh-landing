@@ -1,26 +1,8 @@
 import { cn } from "@/lib/cn";
 import { CubeStackDiagram, SoftwareDiagram } from "../diagrams/software";
-import { DemoSection } from "./DemoSection";
-import { DemoIndex, type Demo } from "./DemoIndex";
-
-const demos: Demo[] = [
-  {
-    id: "hubben",
-    title: "Hubben",
-    subtitle: "Business operations · Live demo",
-    client: "A medium sized vehicle rental operations.",
-    situation:
-      "Manual processes and fragmented information made inspections and follow-up time consuming and hard to scale.",
-    solution:
-      "A custom solution that brings inspections, data and operations together in one place, with integrations, clear visualization and automation.",
-    services: [
-      "integrations",
-      "visualization",
-      "interactive-tools",
-      "automation",
-    ],
-  },
-];
+import { projects } from "./data/projects";
+import { Project } from "./Project";
+import { IndexRow } from "./IndexRow";
 
 export function Work() {
   return (
@@ -64,13 +46,13 @@ export function Work() {
               aria-label="Project index"
               className={cn("w-full border-t border-line mt-6", "md:max-w-lg")}
             >
-              {demos.map((demo, i) => (
-                <DemoIndex key={demo.id} demo={demo} index={i} />
+              {projects.map((project, i) => (
+                <IndexRow key={project.id} project={project} index={i} />
               ))}
 
               <div className="flex items-center gap-5 border-b border-line px-2 py-5 opacity-60">
                 <span className="font-mono text-xs text-muted">
-                  {String(demos.length + 1).padStart(2, "0")}
+                  {String(projects.length + 1).padStart(2, "0")}
                 </span>
 
                 <span className="flex-1 text-sm text-muted">
@@ -94,8 +76,8 @@ export function Work() {
         </div>
       </div>
 
-      {demos.map((demo) => (
-        <DemoSection key={demo.id} demo={demo} />
+      {projects.map((project) => (
+        <Project key={project.id} project={project} />
       ))}
     </div>
   );

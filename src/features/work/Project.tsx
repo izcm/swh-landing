@@ -1,18 +1,18 @@
 import { services } from "../services/data/services";
-import type { Demo } from "./DemoIndex";
-import { DemoShowcase } from "./DemoShowcase";
+import type { ProjectData } from "./data/projects";
+import { Showcase } from "./Showcase";
 
-export function DemoSection({ demo }: { demo: Demo }) {
+export function Project({ project }: { project: ProjectData }) {
   const details = [
-    { label: "CLIENT", text: demo.client },
-    { label: "SITUATION", text: demo.situation },
-    { label: "SOLUTION", text: demo.solution },
+    { label: "CLIENT", text: project.client },
+    { label: "SITUATION", text: project.situation },
+    { label: "SOLUTION", text: project.solution },
   ];
 
   return (
     <section
-      id={demo.id}
-      className="flex flex-col gap-8 min-h-below-nav scroll-mt-18 justify-center"
+      id={project.id}
+      className="flex flex-col gap-8 min-h-below-nav scroll-mt-24 mt-6"
     >
       <div className="flex flex-col xl:flex-row gap-6">
         {/* TEXT CONTENT */}
@@ -21,7 +21,7 @@ export function DemoSection({ demo }: { demo: Demo }) {
             <span className="inline-flex gap-2 eyebrow font-mono text-xs">
               WORK <span>/</span> PROJECT
             </span>
-            <h2 className="text-5xl">{demo.title}</h2>
+            <h2 className="text-5xl">{project.title}</h2>
           </div>
 
           <div className="horizontal-line" />
@@ -38,13 +38,13 @@ export function DemoSection({ demo }: { demo: Demo }) {
           <div className="horizontal-line" />
 
           <span className="text-sm text-accent-strong">
-            {demo.services
+            {project.services
               .map((id) => services.find((service) => service.id === id)?.title)
               .join(" · ")}
           </span>
         </div>
 
-        <DemoShowcase />
+        <Showcase technicalParts={project.technicalParts} />
       </div>
     </section>
   );

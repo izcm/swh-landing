@@ -33,7 +33,7 @@ export function Services() {
             <div className="cartesian-grid" />
 
             <div className="relative z20 order-first h-48 w-full shrink-0 items-center sm:order-0 sm:h-full sm:w-3/5">
-              {section.cardDiagram}
+              {section.diagrams.card}
             </div>
           </Card>
         ))}

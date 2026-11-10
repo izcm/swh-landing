@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { SvgPlaceholder } from "@/components/SvgPlaceholder";
 
 import { IntegrationsDiagram, Nodes } from "../../diagrams/integrations";
@@ -7,76 +9,128 @@ import {
 } from "../../diagrams/visualizations";
 import { AutomationDiagram, GearPair } from "../../diagrams/automation";
 
-export const services = [
+type Service = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  short: string;
+
+  diagrams: {
+    card: ReactNode;
+    hero: ReactNode;
+  };
+
+  overview: {
+    paragraphs: string[];
+  };
+
+  example: {
+    part: string;
+  };
+
+  contact: {
+    description: string;
+    cta: string;
+  };
+};
+
+export const services: Service[] = [
   {
     id: "integrations",
     eyebrow: "INT",
     title: "Integrations",
     short: "Connect your existing systems for optimized data flow.",
-    cardDiagram: (
-      <Nodes
-        width="100%"
-        height="100%"
-        viewboxWidth={320}
-        viewboxHeight={240}
-        strokeWidth={1}
-        shares={{ nodes: 1 / 3, connectors: 1 / 3, cube: 1 / 3 }}
-      />
-    ),
-    heroDiagram: <IntegrationsDiagram />,
-    examplePart: "connecting-systems",
-    today: [
-      "A business usually run daily operations by using several pieces of software. Maybe an ERP for accounting, Microsoft teams for collaboration, and internal spreadsheets for etc. bookkeeping.",
-      "Connecting these systems helps break down what we call information silos, where valuable data is isolated in separate systems.",
-      "SWH can build and maintain such connections, unlocking new capabilities for your data.",
-    ],
-    sisterServices: [
-      "After integrating successfully, several new doors open. Lets put those into two categories: ",
-      "UI based: stuff you can do in the browser such as analyzing dashboard or manually trigger actions",
-      "Automation: stuff running in the background",
-    ],
+    diagrams: {
+      card: (
+        <Nodes
+          width="100%"
+          height="100%"
+          viewboxWidth={320}
+          viewboxHeight={240}
+          strokeWidth={1}
+          shares={{ nodes: 1 / 3, connectors: 1 / 3, cube: 1 / 3 }}
+        />
+      ),
+      hero: <IntegrationsDiagram />,
+    },
+    overview: {
+      paragraphs: [
+        "A business usually run daily operations by using several pieces of software. Maybe an ERP for accounting, Microsoft teams for collaboration, and internal spreadsheets for etc. bookkeeping.",
+        "Connecting these systems helps break down what we call information silos, where valuable data is isolated in separate systems.",
+        "SWH can build and maintain such connections, unlocking new capabilities for your data.",
+      ],
+    },
+    example: { part: "connecting-systems" },
+    contact: {
+      description: "Lorem ipsum dolor sit amet.",
+      cta: "Lorem ipsum",
+    },
   },
   {
     id: "visualization",
     eyebrow: "VIS",
     title: "Visualization",
     short: "Turn complex data into clear, actionable insight.",
-    cardDiagram: <GeoVisualization />,
-    heroDiagram: <VisualizationsDiagram />,
-    examplePart: "understanding-data",
-    today: [
-      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
-    ],
+    diagrams: {
+      card: <GeoVisualization />,
+      hero: <VisualizationsDiagram />,
+    },
+    overview: {
+      paragraphs: [
+        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
+      ],
+    },
+    example: { part: "understanding-data" },
+    contact: {
+      description: "Lorem ipsum dolor sit amet.",
+      cta: "Lorem ipsum",
+    },
   },
   {
     id: "interactive-tools",
     eyebrow: "TOOLS",
     title: "Interactive Tools",
     short: "Give users the right tools to explore, analyze, and act.",
-    cardDiagram: (
-      <SvgPlaceholder label="Interactive Tools" width={480} height={300} />
-    ),
-    heroDiagram: (
-      <SvgPlaceholder label="Interactive Tools" width={480} height={300} />
-    ),
-    examplePart: "working-with-records",
-    today: [
-      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
-    ],
+    diagrams: {
+      card: (
+        <SvgPlaceholder label="Interactive Tools" width={480} height={300} />
+      ),
+      hero: (
+        <SvgPlaceholder label="Interactive Tools" width={480} height={300} />
+      ),
+    },
+    overview: {
+      paragraphs: [
+        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
+      ],
+    },
+    example: { part: "working-with-records" },
+    contact: {
+      description: "Lorem ipsum dolor sit amet.",
+      cta: "Lorem ipsum",
+    },
   },
   {
     id: "automation",
     eyebrow: "AUTO",
     title: "Automation",
     short: "Streamline processes and reduce manual work.",
-    cardDiagram: <GearPair />,
-    heroDiagram: <AutomationDiagram />,
-    examplePart: "automating-updates",
-    today: [
-      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
-    ],
+    diagrams: {
+      card: <GearPair />,
+      hero: <AutomationDiagram />,
+    },
+    overview: {
+      paragraphs: [
+        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
+      ],
+    },
+    example: { part: "automating-updates" },
+    contact: {
+      description: "Lorem ipsum dolor sit amet.",
+      cta: "Lorem ipsum",
+    },
   },
 ];

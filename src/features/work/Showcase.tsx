@@ -3,11 +3,15 @@ import { useState } from "react";
 import { Carosel } from "@/components/Carosel";
 import { LightBox } from "@/components/LightBox";
 import { cn } from "@/lib/cn";
-import { TechnicalView } from "./TechnicalView";
+import { TechnicalView, type TechnicalPart } from "./TechnicalView";
 
 const tabs = ["Application", "Technical overview"] as const;
 
-export function DemoShowcase() {
+export function Showcase({
+  technicalParts,
+}: {
+  technicalParts: TechnicalPart[];
+}) {
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>(tabs[0]);
   const [openLightBox, setOpenLightBox] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
@@ -23,7 +27,8 @@ export function DemoShowcase() {
     <>
       <div
         className={cn(
-          "max-w-200 w-full mx-auto px-4 py-2",
+          "flex flex-col max-w-200 w-full mx-auto px-4 py-2",
+          "max-h-[calc(100dvh-var(--nav-height)-4rem)]",
           "bg-lowered border border-line rounded",
         )}
       >
@@ -47,29 +52,32 @@ export function DemoShowcase() {
           ))}
         </div>
 
-        {activeTab === "Application" ? (
-          <Carosel
-            items={mediaItems.map(({ src, alt, title }, i) => ({
-              title,
-              content: (
-                <img
-                  className="border border-line rounded"
-                  src={src}
-                  alt={alt}
-                  // the same img is used as a thumbnail — only the current
-                  // slide opens the lightbox, others just navigate
-                  onClick={() => {
-                    if (i === slideIndex) setOpenLightBox(true);
-                  }}
-                />
-              ),
-            }))}
-            index={slideIndex}
-            onChange={setSlideIndex}
-          />
-        ) : (
-          <TechnicalView />
-        )}
+        <div className="overflow-y-auto">
+          {activeTab === "Application" ? (
+            <Carosel
+              items={mediaItems.map(({ src, alt, title }, i) => ({
+                title,
+                content: (
+                  <img
+                    className="border border-line rounded"
+                    src={src}
+                    alt={alt}
+                    // the same img is used as a thumbnail — only the current
+                    // slide opens the lightbox, others just navigate
+                    onClick={() => {
+                      if (i === slideIndex) setOpenLightBox(true);
+                    }}
+                  />
+                ),
+              }))}
+              index={slideIndex}
+              onChange={setSlideIndex}
+              animate={false}
+            />
+          ) : (
+            <TechnicalView parts={technicalParts} />
+          )}
+        </div>
       </div>
 
       <LightBox

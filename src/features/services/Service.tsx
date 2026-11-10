@@ -46,18 +46,23 @@ export function Service() {
   if (!section) return <Navigate to="/services" replace />;
 
   return (
-    <div className="tab-container max-w-7xl">
+    <div className="tab-container max-w-6xl">
       <ServiceNav />
       <header className="mt-10">
         <h1 className="text-5xl">{section.title}</h1>
       </header>
-      <div className="flex mx-auto pb-16 border-b border-line overflow-y-clip">
-        <div className="max-w-2xl w-full mx-auto">{section.diagrams.hero}</div>
+      <div
+        className={cn(
+          "flex mx-auto py-8 bg-transparent border-y border-line/40 rounded-none overflow-clip",
+          "md:border md:bg-lowered/40 md:rounded-sm",
+        )}
+      >
+        <div className="max-w-160 w-full mx-auto">{section.diagrams.hero}</div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 mt-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <section>
-          <span className="eyebrow font-semibold">OVERVIEW</span>
+          <span className="eyebrow">OVERVIEW</span>
 
           <div className="mt-3 flex flex-col gap-3 leading-relaxed text-subtle text-lg font-light">
             {section.overview.paragraphs.map((paragraph) => (

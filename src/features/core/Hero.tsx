@@ -67,8 +67,8 @@ export default function Hero() {
 
       <div
         className={cn(
-          "w-full max-w-65 mt-20 mx-auto",
-          "md:max-w-70",
+          "w-full max-w-65 mt-24 mx-auto",
+          "md:max-w-90",
           "xl:min-w-0 xl:max-w-90 xl:flex-1 xl:mt-0",
         )}
       >

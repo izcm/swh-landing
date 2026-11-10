@@ -97,6 +97,7 @@ export function Floor({
   fadeMiddle,
   tileFill = "color-mix(in oklab, var(--accent) 15%, transparent)",
   tileStyle = "lines",
+  fadeShape = "circle",
 }: {
   layout: ReturnType<typeof floorLayout>;
   tileOpacity: number;
@@ -106,6 +107,7 @@ export function Floor({
   fadeMiddle: number; // the opacity halfway through the fade
   tileFill?: string;
   tileStyle?: keyof typeof tileStyles;
+  fadeShape?: "circle" | "rect";
 }) {
   const { tile, d, width, height, fade } = layout;
 
@@ -113,6 +115,33 @@ export function Floor({
   const floorMaskId = useId();
   const floorFadeId = useId();
   const floorGlowId = useId();
+  const fadeAcrossId = useId();
+  const fadeDownId = useId();
+  const maskAcrossId = useId();
+  const maskDownId = useId();
+
+  // the circle fade's bounding box
+  const fadeRect = (() => {
+    const halfWidth = fade.r * fadeStretchX;
+    const halfHeight = fade.r * fade.squash * fadeStretchY;
+    return {
+      x: fade.cx - halfWidth,
+      y: fade.cy - halfHeight,
+      width: halfWidth * 2,
+      height: halfHeight * 2,
+    };
+  })();
+
+  // the circle's stops, mirrored on both sides of the middle
+  const fadeMiddleAt = fadeStart + (1 - fadeStart) * 0.5;
+  const edgeFadeStops = [
+    [0, 0],
+    [0.5 - fadeMiddleAt * 0.5, fadeMiddle],
+    [0.5 - fadeStart * 0.5, 1],
+    [0.5 + fadeStart * 0.5, 1],
+    [0.5 + fadeMiddleAt * 0.5, fadeMiddle],
+    [1, 0],
+  ];
 
   return (
     <>
@@ -172,15 +201,88 @@ export function Floor({
             glowId: floorGlowId,
           })}
         </pattern>
+
+        {fadeShape === "rect" && (
+          <>
+            <linearGradient
+              id={fadeAcrossId}
+              gradientUnits="userSpaceOnUse"
+              x1={fadeRect.x}
+              x2={fadeRect.x + fadeRect.width}
+              y1={0}
+              y2={0}
+            >
+              {edgeFadeStops.map(([offset, opacity], i) => (
+                <stop
+                  key={i}
+                  offset={offset}
+                  stopColor="white"
+                  stopOpacity={opacity}
+                />
+              ))}
+            </linearGradient>
+
+            <linearGradient
+              id={fadeDownId}
+              gradientUnits="userSpaceOnUse"
+              x1={0}
+              x2={0}
+              y1={fadeRect.y}
+              y2={fadeRect.y + fadeRect.height}
+            >
+              {edgeFadeStops.map(([offset, opacity], i) => (
+                <stop
+                  key={i}
+                  offset={offset}
+                  stopColor="white"
+                  stopOpacity={opacity}
+                />
+              ))}
+            </linearGradient>
+
+            <mask
+              id={maskAcrossId}
+              maskUnits="userSpaceOnUse"
+              x={0}
+              y={0}
+              width={width}
+              height={height}
+            >
+              <rect {...fadeRect} fill={`url(#${fadeAcrossId})`} />
+            </mask>
+
+            <mask
+              id={maskDownId}
+              maskUnits="userSpaceOnUse"
+              x={0}
+              y={0}
+              width={width}
+              height={height}
+            >
+              <rect {...fadeRect} fill={`url(#${fadeDownId})`} />
+            </mask>
+          </>
+        )}
       </defs>
 
       <g transform={`translate(${layout.translateX}, ${layout.translateY})`}>
-        <path
-          d={d}
-          fill={`url(#${floorTileId})`}
-          opacity={tileOpacity}
-          mask={`url(#${floorMaskId})`}
-        />
+        {fadeShape === "circle" ? (
+          <path
+            d={d}
+            fill={`url(#${floorTileId})`}
+            opacity={tileOpacity}
+            mask={`url(#${floorMaskId})`}
+          />
+        ) : (
+          <g mask={`url(#${maskAcrossId})`}>
+            <rect
+              {...fadeRect}
+              fill={`url(#${floorTileId})`}
+              opacity={tileOpacity}
+              mask={`url(#${maskDownId})`}
+            />
+          </g>
+        )}
       </g>
     </>
   );

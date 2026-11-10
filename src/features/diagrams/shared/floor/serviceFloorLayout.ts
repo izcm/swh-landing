@@ -2,11 +2,12 @@ import { layoutUnit } from "@/lib/svg";
 import { floorLayout } from "./floorLayout";
 
 export const serviceFloorLook = {
-  tileOpacity: 0.2,
-  fadeStretchX: 0.75,
+  fadeShape: "rect" as const,
+  tileOpacity: 0.32,
+  fadeStretchX: 1,
   fadeStretchY: 0.75,
-  fadeStart: 0.5,
-  fadeMiddle: 0.75,
+  fadeStart: 0.25,
+  fadeMiddle: 0.5,
 };
 
 export function serviceFloorLayout({

@@ -5,7 +5,7 @@ import {
   isoCubeMetrics,
   type BoxLook,
 } from "@/lib/svg";
-import { glassCube, glassGlow } from "./glass";
+import { glassCube, glassGlow } from "../glass";
 
 // the shared 2x2 base, drawn top to bottom. y = where the top cube sits
 export function CubeBase({

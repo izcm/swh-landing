@@ -11,9 +11,9 @@ import {
   type BoxRoof,
   type Point,
 } from "@/lib/svg";
-import { EdgeGradient } from "../shared/gradients";
-import { glassCube, glassGlow } from "./glass";
-import { platformStyle } from "./Platform";
+import { EdgeGradient } from "../../shared/gradients";
+import { glassCube, glassEdgeOpacity, glassGlow } from "../glass";
+import { platformStyle } from "../platform/Platform";
 
 type IsoMetrics = ReturnType<typeof isoCubeMetrics>;
 
@@ -60,7 +60,7 @@ export function BoxedCube({
           id={bigCubeEdgeId}
           width={bigCube.size}
           height={bigCube.height}
-          opacity={platformStyle.edgeOpacity}
+          opacity={glassEdgeOpacity}
         />
 
         <CornerLightMask
@@ -77,7 +77,7 @@ export function BoxedCube({
         <BoxBody
           roof={bigCubeRoof}
           thickness={bigCube.thickness}
-          strokeWidth={platformStyle.strokeWidth}
+          strokeWidth={1}
           radius={2}
           fills={{ floor: "var(--pane-fill)" }}
           strokes={{ floorTop: bigCubeEdge }}

@@ -39,6 +39,7 @@ export function nodesLayout({
   shares: NodesShares;
 }) {
   const unit = layoutUnit(height);
+  const radius = 2;
 
   // left to right: the nodes, the connectors, the cube
   const columns = (() => {
@@ -57,7 +58,6 @@ export function nodesLayout({
     // -- BOX · one shape, used for every node, as wide as groupWidth --
     const box = (() => {
       const thickness = unit * 2;
-      const radius = 6;
 
       const lengthA = unit * 2; // knob: roof.left → roof.bottom
       // roof.bottom → roof.right: the rest of groupWidth
@@ -140,7 +140,6 @@ export function nodesLayout({
     const translateX = columns.starts[2];
 
     const angle = deg(20);
-    const radius = 3;
     const metrics = isoCubeMetrics(groupWidth, groupWidth * 0.625, {
       angleA: angle,
       angleB: angle,

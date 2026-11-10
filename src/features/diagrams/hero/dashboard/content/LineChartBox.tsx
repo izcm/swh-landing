@@ -1,9 +1,4 @@
-import {
-  ChartGuides,
-  LineChart,
-  stackWithGaps,
-  Tube,
-} from "@/lib/svg";
+import { ChartGuides, LineChart, stackWithGaps, Tube } from "@/lib/svg";
 
 // the line chart's box: its own curve, nothing selected, with a title +
 // subtitle in its top-left corner. drawn from (0, 0)
@@ -49,13 +44,13 @@ export function LineChartBox({
         height={height}
         count={3}
         insetX={width * 0.04}
-        color="var(--accent-deep)"
+        color="var(--accent)"
       />
       <LineChart
         width={width}
         height={height}
         values={values}
-        color="var(--accent-deep)"
+        color="var(--accent)"
         dotRadius={unit * 0.1}
         areaOpacity={0.15}
         areaRadius={radius} // same corners as the box

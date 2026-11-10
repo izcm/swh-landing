@@ -18,7 +18,7 @@ import {
   type NodesShares,
 } from "./layout";
 
-const wallFill = "oklch(from var(--accent-ink) l c h / 0.45)";
+const wallFill = "oklch(from var(--accent) l c h / 0.1)";
 const edge = "var(--accent-bright)";
 const faintEdge = "oklch(from var(--accent-bright) l c h / 0.3)";
 
@@ -216,8 +216,7 @@ function GlassBox({
                 r={reach}
               >
                 <stop offset="0%" stopColor="white" stopOpacity={0} />
-                <stop offset="60%" stopColor="white" stopOpacity={0.05} />
-                <stop offset="100%" stopColor="white" stopOpacity={0.2} />
+                <stop offset="60%" stopColor="white" stopOpacity={0.06} />
               </radialGradient>
               <mask
                 id={maskId}

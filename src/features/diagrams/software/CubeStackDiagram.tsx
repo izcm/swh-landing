@@ -3,7 +3,7 @@ import { useId } from "react";
 import { cn } from "@/lib/cn";
 import { Floor } from "../shared/floor/Floor";
 import { EdgeGradient } from "../shared/gradients";
-import { CubeStack, cubeStackLayout } from "./CubeStack";
+import { CubeStack, cubeStackLayout } from "./cubes/CubeStack";
 import { softwareFloorLayout, softwareFloorLook } from "./floor";
 import { glassEdgeOpacity } from "./glass";
 

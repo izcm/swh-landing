@@ -122,8 +122,8 @@ export function Centerpiece({
           r={size * 0.7}
         >
           <stop offset="0%" stopColor="var(--accent-glow)" stopOpacity={0} />
-          <stop offset="45%" stopColor={bluerAccent} stopOpacity={0.25} />
-          <stop offset="100%" stopColor="var(--accent)" stopOpacity={0.5} />
+          <stop offset="45%" stopColor={bluerAccent} stopOpacity={0.2} />
+          <stop offset="100%" stopColor="var(--accent)" stopOpacity={0.35} />
         </radialGradient>
 
         {/* corner light masks, one per cube */}

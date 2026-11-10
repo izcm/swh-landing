@@ -31,10 +31,10 @@ export function TechnicalView({ parts }: { parts: TechnicalPart[] }) {
             type="button"
             onClick={() => setActiveIndex(i)}
             className={cn(
-              "py-0.5 px-3 rounded-2xl border font-semibold text-sm whitespace-nowrap transition-colors",
+              "h-8 w-auto px-3 rounded-xl border font-normal text-sm whitespace-nowrap transition-colors",
               i === activeIndex
-                ? "border-accent bg-transparent text-accent"
-                : "border-transparent bg-ground text-subtle hover:text-fg",
+                ? "border-accent text-accent"
+                : "border-transparent text-subtle hover:text-fg",
             )}
           >
             {tab.padStart(2, "0")}

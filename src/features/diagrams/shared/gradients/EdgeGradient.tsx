@@ -27,7 +27,7 @@ export function EdgeGradient({
       <stop offset="0%" stopColor="var(--accent)" stopOpacity={opacity[0]} />
       <stop
         offset="55%"
-        style={{ stopColor: "var(--accent-deep)" }}
+        style={{ stopColor: "var(--accent)" }}
         stopOpacity={opacity[1]}
       />
       <stop offset="100%" stopColor="var(--accent)" stopOpacity={opacity[2]} />

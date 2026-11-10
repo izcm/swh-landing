@@ -24,7 +24,7 @@ export const deepAccentSeries = accentSeries.map(
   (color) => `oklch(from ${color} l calc(c + 0.05) h)`,
 );
 
-// `count` shades of --accent-deep for things in a row (bars):
+// `count` shades of --accent for things in a row (bars):
 // a bit more colorful than deep itself, darker on the left, lighter to the right.
 // start: which step to begin on (0 = darkest), to skip the darkest ones
 export const deepShades = (count: number, start = 0) =>

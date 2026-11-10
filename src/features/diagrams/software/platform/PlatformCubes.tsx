@@ -5,8 +5,8 @@ import {
   isoCubeMetrics,
   type BoxLook,
 } from "@/lib/svg";
-import { CubeBase } from "./CubeBase";
-import { glassCube, glassGlow } from "./glass";
+import { CubeBase } from "../cubes/CubeBase";
+import { glassCube, glassGlow } from "../glass";
 import { Platform } from "./Platform";
 
 type IsoMetrics = ReturnType<typeof isoCubeMetrics>;

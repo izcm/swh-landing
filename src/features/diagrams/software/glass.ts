@@ -15,7 +15,7 @@ export const glassCube = {
 // ISOCube drew every edge twice (face outline + edge line) and its edge
 // gradient is see-through, so the doubled edges were brighter: two layers of
 // 50% / 100% / 35% stack up to 75% / 100% / 58%, which is what this is
-export const glassEdgeOpacity: [number, number, number] = [1, 1, 1];
+export const glassEdgeOpacity: [number, number, number] = [1, 0.75, 0.5];
 
 // the glass look's halo, for the caller's wrapping <g>: ISOCube draws no glow
 export const glassGlow = { blur: 4, strength: 12 };

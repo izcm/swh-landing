@@ -1,8 +1,10 @@
 import { Link, Navigate, NavLink, useParams } from "react-router";
 
+import { SvgPlaceholder } from "@/components/SvgPlaceholder";
 import { cn } from "@/lib/cn";
 import { services } from "./data/services";
 import { ExampleBox } from "./ExampleBox";
+import { RelatedServices } from "./RelatedServices";
 
 function ServiceNav() {
   return (
@@ -44,25 +46,36 @@ export function Service() {
   if (!section) return <Navigate to="/services" replace />;
 
   return (
-    <div className="tab-container max-w-4xl">
+    <div className="tab-container max-w-7xl">
       <ServiceNav />
       <header className="mt-10">
-        <h1 className="text-6xl">{section.title}</h1>
+        <h1 className="text-5xl">{section.title}</h1>
       </header>
-      <div className="max-w-5xl mx-auto pb-20">
-        <div className="max-w-2xl mx-auto">{section.diagrams.hero}</div>
+      <div className="flex mx-auto pb-16 border-b border-line overflow-y-clip">
+        <div className="max-w-140 w-full mx-auto">{section.diagrams.hero}</div>
       </div>
 
-      <section className="mt-16">
-        <span className="eyebrow">OVERVIEW</span>
-        <div className="mt-3 flex flex-col gap-3 text-lg leading-relaxed text-subtle">
-          {section.overview.paragraphs.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </div>
-      </section>
+      <div className="grid grid-cols-1 gap-6 mt-6 lg:grid-cols-2">
+        <section>
+          <span className="eyebrow font-semibold">OVERVIEW</span>
 
-      <ExampleBox examplePart={section.example.part} />
+          <div className="mt-3 flex flex-col gap-3 leading-relaxed text-subtle text-lg font-light">
+            {section.overview.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
+        </section>
+
+        {/* <section
+        className={cn("mt-16 p-6", "bg-lowered border border-line rounded")}
+      >
+        <SvgPlaceholder label="Diagram" width={450} height={200} />
+      </section> */}
+
+        {section.relatedServices && (
+          <RelatedServices relatedServices={section.relatedServices} />
+        )}
+      </div>
     </div>
   );
 }

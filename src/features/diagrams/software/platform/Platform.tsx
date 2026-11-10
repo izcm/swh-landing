@@ -8,7 +8,7 @@ import {
   type BoxSize,
   type Point,
 } from "@/lib/svg";
-import { EdgeGradient } from "../shared/gradients";
+import { EdgeGradient } from "../../shared/gradients";
 
 // the platform look: solid accent roof, dark walls, a floor, soft glow.
 // (what ISOCube's defaults used to be, before they became glassCube)

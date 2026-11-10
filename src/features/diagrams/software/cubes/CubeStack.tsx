@@ -1,6 +1,6 @@
 import { accentGlow, ISOCube, isoCubeMetrics, type BoxLook } from "@/lib/svg";
 import { CubeBase } from "./CubeBase";
-import { glassCube, glassGlow } from "./glass";
+import { glassCube, glassGlow } from "../glass";
 
 export function cubeStackLayout(size: number) {
   const cube = isoCubeMetrics(size);

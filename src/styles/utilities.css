@@ -7,7 +7,7 @@
 }
 
 @utility eyebrow {
-  @apply font-normal tracking-[0.15em] text-fg-tinted text-sm;
+  @apply font-mono tracking-[0.15em] text-fg-tinted text-sm;
 }
 
 @utility border-faint {

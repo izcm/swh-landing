@@ -52,7 +52,7 @@ export function Showcase({
           ))}
         </div>
 
-        <div className="overflow-y-auto">
+        <div className="overflow-y-auto p-1">
           {activeTab === "Application" ? (
             <Carosel
               items={mediaItems.map(({ src, alt, title }, i) => ({

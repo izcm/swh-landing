@@ -19,7 +19,7 @@ export function RelatedServices({
         {groups.map((group) => (
           <div key={group.serviceIds.join("-")} className="flex flex-col gap-2">
             {group.label && (
-              <span className="font-mono font-normal text-sm tracking-[0.2em] uppercase">
+              <span className="font-mono font-normal text-xs tracking-[0.2em] uppercase">
                 {group.label}
               </span>
             )}
@@ -34,7 +34,7 @@ export function RelatedServices({
                 <Link
                   key={service.id}
                   to={`/services/${service.id}`}
-                  className="btn btn-ghost flex justify-between items-center pr-2"
+                  className="btn btn-ghost flex justify-between items-center py-2.5 pr-2"
                 >
                   <div className="flex flex-col gap-1">
                     <span className="font-normal">{service.title}</span>

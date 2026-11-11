@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import { ArrowList, ArrowRow } from "@a2zb/react";
 
 import { cn } from "@/lib/cn";
 
@@ -24,23 +25,34 @@ export function TechnicalView({ parts }: { parts: TechnicalPart[] }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap gap-3">
-        {tabs.map((tab, i) => (
-          <button
+      <ArrowList
+        items={tabs}
+        getId={(tab) => tab}
+        selectedId={tabs[activeIndex]}
+        onSelect={(tab) => setActiveIndex(tabs.indexOf(tab))}
+        direction="horizontal"
+        className="flex flex-wrap gap-3"
+        htmlUlElementProps={{ role: "tablist" }}
+        bare
+      >
+        {({ item: tab, isSelected, onSelect }) => (
+          <ArrowRow
             key={tab}
-            type="button"
-            onClick={() => setActiveIndex(i)}
+            isSelected={isSelected}
+            onSelect={onSelect}
+            focusOnMount={false}
+            htmlLiElementProps={{ role: "tab", "aria-selected": isSelected }}
             className={cn(
-              "h-8 w-auto px-3 rounded-xl border font-normal text-sm whitespace-nowrap transition-colors",
-              i === activeIndex
-                ? "border-accent text-accent"
-                : "border-transparent text-subtle hover:text-fg",
+              "flex items-center h-8.5 w-auto px-3 rounded-xl border text-sm whitespace-nowrap transition-colors",
+              isSelected
+                ? "border-accent text-accent font-medium"
+                : "border-transparent text-subtle hover:text-fg cursor-pointer",
             )}
           >
             {tab.padStart(2, "0")}
-          </button>
-        ))}
-      </div>
+          </ArrowRow>
+        )}
+      </ArrowList>
 
       <div className="flex flex-col gap-6">
         <span className="eyebrow uppercase">
@@ -49,9 +61,7 @@ export function TechnicalView({ parts }: { parts: TechnicalPart[] }) {
 
         {details.map(({ label, paragraphs }) => (
           <div key={label} className="flex flex-col gap-2">
-            <span className="font-mono font-normal text-xs tracking-[0.2em]">
-              {label}
-            </span>
+            <span className="font-mono text-xs tracking-[0.2em]">{label}</span>
             {paragraphs.map((paragraph) => (
               <p key={paragraph} className="text-subtle">
                 {paragraph}

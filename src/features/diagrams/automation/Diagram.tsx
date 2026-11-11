@@ -212,7 +212,7 @@ export function AutomationDiagram({ className }: { className?: string }) {
       <Floor
         layout={layout}
         {...serviceFloorLook}
-        tileStyle={tileStyleNames[1]}
+        tileStyle={tileStyleNames[3]}
       />
     );
 

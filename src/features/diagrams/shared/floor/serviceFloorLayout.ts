@@ -3,11 +3,11 @@ import { floorLayout } from "./floorLayout";
 
 export const serviceFloorLook = {
   fadeShape: "rect" as const,
-  tileOpacity: 0.32,
+  tileOpacity: 0.2,
   fadeStretchX: 1,
   fadeStretchY: 0.75,
-  fadeStart: 0.25,
-  fadeMiddle: 0.5,
+  fadeStart: 0.1,
+  fadeMiddle: 0.2,
 };
 
 export function serviceFloorLayout({

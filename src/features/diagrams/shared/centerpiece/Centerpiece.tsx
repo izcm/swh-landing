@@ -179,8 +179,7 @@ export function Centerpiece({
             }}
             strokes={{
               ...edgeStrokes(innerFadeId),
-              floorTop: "var(--accent)",
-              floor: "var(--accent)",
+              floorTop: "var(--accent-dim)",
             }}
             strokeWidth={strokeWeight}
           />

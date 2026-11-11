@@ -15,15 +15,15 @@ export function Work() {
         <div className={cn("flex flex-col", "md:flex-row")}>
           <div
             className={cn(
-              "relative z-10 w-full max-w-xl flex flex-col gap-4 text-subtle",
-              "md:min-w-md md:max-w-lg",
-              "lg:max-w-2xl",
+              "relative z-10 w-full flex flex-col gap-4 text-subtle",
+              "md:max-w-lg",
+              "lg:max-w-3xl",
             )}
           >
             <p>
-              Here you can get a better overview of the kind of work SWH offers.
-              Each demo will have link to live app, alongside screenshots, video
-              snippets and technical summaries for those interested.
+              Take a closer look at the services SWH offers and the work behind
+              them. Each demo includes a link to a live app, alongside
+              screenshots, short videos, and technical summaries.
             </p>
             <p>
               I recommend having a look at:{" "}

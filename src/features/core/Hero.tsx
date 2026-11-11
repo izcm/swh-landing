@@ -8,7 +8,7 @@ export default function Hero() {
   return (
     <section
       className={cn(
-        "flex flex-1 flex-col justify-center gap-0",
+        "flex flex-1 flex-col justify-start gap-0",
         "w-full px-4 mt-8 sm:px-8",
         "xl:mx-auto xl:w-[94vw] xl:flex-row xl:items-center",
         "xl:gap-0 xl:px-0 xl:py-0",
@@ -67,9 +67,9 @@ export default function Hero() {
 
       <div
         className={cn(
-          "w-full max-w-65 mt-24 mx-auto",
+          "w-full max-w-75 mt-12 mx-auto",
           "md:max-w-90",
-          "xl:min-w-0 xl:max-w-90 xl:flex-1 xl:mt-0",
+          "xl:min-w-0 xl:max-w-90 xl:flex-1",
         )}
       >
         <HeroDiagram />

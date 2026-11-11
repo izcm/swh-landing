@@ -1,6 +1,8 @@
-import { Link, NavLink, useNavigate } from "react-router";
+import { useState } from "react";
+import { Link, NavLink } from "react-router";
 
 import { cn } from "@/lib/cn";
+import { ContactModal } from "../contact";
 
 type NavTab = {
   label: string;
@@ -8,7 +10,7 @@ type NavTab = {
 };
 
 export default function Nav({ tabs }: { tabs: NavTab[] }) {
-  const navigate = useNavigate();
+  const [contactOpen, setContactOpen] = useState(false);
 
   return (
     <>
@@ -19,7 +21,7 @@ export default function Nav({ tabs }: { tabs: NavTab[] }) {
       <header
         className="
           sticky top-0 z-20
-          flex items-center gap-6 px-6 py-3 sm:px-8
+          flex items-center gap-6 px-4 py-3
           backdrop-blur
         "
       >
@@ -47,11 +49,15 @@ export default function Nav({ tabs }: { tabs: NavTab[] }) {
 
         <button
           type="button"
-          onClick={() => navigate("/")}
+          onClick={() => setContactOpen(true)}
           className="btn btn-secondary w-24 tracking-wide text-sm"
         >
           Contact
         </button>
+        <ContactModal
+          isOpen={contactOpen}
+          onClose={() => setContactOpen(false)}
+        />
       </header>
     </>
   );

@@ -6,7 +6,7 @@ import { GITHUB_URL } from "@/lib/links";
 const links = [
   { to: "/services", label: "Services" },
   { to: "/work", label: "Work" },
-  { to: "/", label: "Contact" },
+  { to: "/contact", label: "Contact" },
 ];
 
 export default function Footer() {

@@ -28,7 +28,7 @@ export function Project({ project }: { project: ProjectData }) {
 
           {details.map(({ label, text }) => (
             <div key={label} className="flex flex-col gap-2">
-              <span className="font-mono font-normal text-xs tracking-[0.2em]">
+              <span className="font-mono text-xs tracking-[0.2em]">
                 {label}
               </span>
               <p className="text-subtle">{text}</p>

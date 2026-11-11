@@ -12,13 +12,14 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@a2zb/react": "0.100.0-reset",
-    "@a2zb/styles": "0.100.0-reset",
+    "@a2zb/react": "0.100.1-reset",
+    "@a2zb/styles": "0.100.1-reset",
     "clsx": "^2.1.1",
     "lucide-react": "^1.41.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router": "^8.5.1",
+    "sonner": "2.0.8",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {

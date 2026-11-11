@@ -1,10 +1,13 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router";
-import { Nav, Footer, Hero, Work } from "./features";
+import { ResponsiveToaster, useTheme } from "@a2zb/react";
+
+import { Nav, Footer, Hero, Work, Contact } from "./features";
 import { Service, Services } from "./features/services";
 
 function Layout() {
   const { pathname, state } = useLocation();
+  const { theme } = useTheme();
 
   useLayoutEffect(() => {
     if (state?.keepScroll) return;
@@ -29,6 +32,8 @@ function Layout() {
       <div className="mt-auto">
         <Footer />
       </div>
+
+      <ResponsiveToaster theme={theme === "dark" ? "dark" : "light"} />
     </>
   );
 }
@@ -52,6 +57,7 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/services/:id" element={<Service />} />
         <Route path="/work" element={<Work />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

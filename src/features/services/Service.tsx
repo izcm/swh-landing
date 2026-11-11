@@ -1,9 +1,7 @@
 import { Link, Navigate, NavLink, useParams } from "react-router";
 
-import { SvgPlaceholder } from "@/components/SvgPlaceholder";
 import { cn } from "@/lib/cn";
 import { services } from "./data/services";
-import { ExampleBox } from "./ExampleBox";
 import { RelatedServices } from "./RelatedServices";
 
 function ServiceNav() {
@@ -24,9 +22,9 @@ function ServiceNav() {
             state={{ keepScroll: true }}
             className={({ isActive }) =>
               cn(
-                "rounded-sm border px-4 py-2 text-[11px] font-normal uppercase tracking-[0.2em] transition-colors",
+                "rounded-sm border px-4 py-2 text-[11px] uppercase tracking-[0.2em] transition-colors",
                 isActive
-                  ? "border-accent/40 bg-raised/40 text-accent"
+                  ? "border-accent/50 bg-raised/40 text-accent font-medium"
                   : "border-line text-subtle hover:text-fg",
               )
             }

@@ -43,7 +43,7 @@ export function TechnicalView({ parts }: { parts: TechnicalPart[] }) {
             focusOnMount={false}
             htmlLiElementProps={{ role: "tab", "aria-selected": isSelected }}
             className={cn(
-              "flex items-center h-8.5 w-auto px-3 rounded-xl border text-sm whitespace-nowrap transition-colors",
+              "flex tracking-wider items-center h-8.5 w-auto px-3 rounded-xl border text-sm whitespace-nowrap transition-colors",
               isSelected
                 ? "border-accent text-accent font-medium"
                 : "border-transparent text-subtle hover:text-fg cursor-pointer",

@@ -29,7 +29,7 @@ export function Showcase({
         className={cn(
           "flex flex-col max-w-200 w-full mx-auto px-4 py-2",
           "max-h-[calc(100dvh-var(--nav-height)-4rem)]",
-          "bg-lowered border border-line rounded",
+          "bg-raised/80 border border-line rounded",
         )}
       >
         <div role="tablist" className="flex gap-6 mb-4 border-b border-line">

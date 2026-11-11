@@ -2,6 +2,7 @@ import { useId, useState, type ReactNode } from "react";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
+import { cn } from "@/lib/cn";
 import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/links";
 
 const subject = "Project inquiry";
@@ -23,7 +24,7 @@ export function ContactContent() {
   return (
     <div className="flex flex-col">
       <span className="eyebrow text-xs">CONTACT</span>
-      <h2 className="mt-3 text-5xl font-light">Let's talk.</h2>
+      <h2 className="mt-3 text-5xl">Let's talk.</h2>
       <p className="mt-4 text-subtle text-sm">
         Have a project in mind, or just want to explore an idea? Feel free to
         get in touch.
@@ -41,16 +42,16 @@ export function ContactContent() {
         className="mt-2 w-full resize-y rounded border border-line p-3 text-sm"
       />
 
-      <div className="mt-6 flex items-center gap-4">
+      <div className="mt-4">
         <a
           href={mailto}
-          className="btn font-medium h-10 bg-fg/90 text-ground px-6"
+          className={cn(
+            "btn btn-secondary min-h-10 px-6",
+            "bg-accent/80 hover:bg-accent text-ground font-medium",
+          )}
         >
           Open in email
         </a>
-        <CopyButton value={CONTACT_EMAIL}>
-          Copy email <Copy className="size-3.5" />
-        </CopyButton>
       </div>
 
       <div className="mt-6 border-t border-line pt-3">

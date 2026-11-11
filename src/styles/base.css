@@ -8,6 +8,10 @@
 
   h1,
   h2 {
+    font-family: "Newsreader", serif;
+  }
+
+  .pretty-text {
     font-family: "Cormorant Garamond", serif;
   }
 

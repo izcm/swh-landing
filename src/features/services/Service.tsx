@@ -1,21 +1,26 @@
 import { Link, Navigate, NavLink, useParams } from "react-router";
 
 import { cn } from "@/lib/cn";
+import { useLanguage } from "@/lib/context/language";
+import { copy } from "./data/copy";
 import { services } from "./data/services";
 import { RelatedServices } from "./RelatedServices";
 
 function ServiceNav() {
+  const { lang } = useLanguage();
+  const t = copy[lang].serviceNav;
+
   return (
     <nav className="flex flex-col items-start gap-8">
       <Link
         to="/services"
         className="eyebrow text-xs tracking-[0.25em] underline decoration-accent/50 decoration-1 underline-offset-8 hover:text-fg"
       >
-        ALL SERVICES
+        {t.allServices}
       </Link>
 
       <div className="flex flex-wrap items-center gap-2">
-        {services.map((service) => (
+        {services[lang].map((service) => (
           <NavLink
             key={service.id}
             to={`/services/${service.id}`}
@@ -39,8 +44,11 @@ function ServiceNav() {
 
 export function Service() {
   const { id } = useParams();
-  const section = services.find((s) => s.id === id);
 
+  const { lang } = useLanguage();
+  const t = copy[lang].service;
+
+  const section = services[lang].find((s) => s.id === id);
   if (!section) return <Navigate to="/services" replace />;
 
   return (
@@ -60,11 +68,11 @@ export function Service() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <section>
-          <span className="eyebrow">OVERVIEW</span>
+          <span className="eyebrow">{t.overview}</span>
 
           <div className="mt-3 flex flex-col gap-3 leading-relaxed text-subtle text-lg font-light">
-            {section.overview.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
+            {section.overview.paragraphs.map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
             ))}
           </div>
         </section>

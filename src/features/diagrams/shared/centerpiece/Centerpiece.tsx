@@ -150,14 +150,17 @@ export function Centerpiece({
       <ISOCube
         {...bigCube}
         strokes={{ back: faintEdge, floorTop: faintEdge }}
+        fills={{
+          floor: accent(0.08),
+        }}
       />
 
       {/* float shadow: the small cube's light on the floor */}
       <ellipse
         className="float-shadow"
         {...floatShadow}
-        fill={whiterAccent}
-        fillOpacity={0.12}
+        fill={"black"}
+        fillOpacity={0.2}
         style={{ filter: "blur(6px)" }}
       />
 

@@ -1,20 +1,26 @@
 import { Link } from "react-router";
 import { Card } from "@/components/Card";
+import { useLanguage } from "@/lib/context/language";
 import { ArrowRight } from "./ArrowRight";
+import { copy } from "./data/copy";
 import { services } from "./data/services";
 
 export function Services() {
+  const { lang } = useLanguage();
+  const t = copy[lang];
+  const serviceList = services[lang];
+
   return (
     <div className="tab-container">
       <header>
-        <span className="eyebrow">SERVICES</span>
-        <h1>What I build</h1>
+        <span className="eyebrow">{t.eyebrow}</span>
+        <h1>{t.heading}</h1>
       </header>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        {services.map((section, i) => (
+        {serviceList.map((section, i) => (
           <Card
-            key={section.eyebrow}
+            key={section.id}
             className="flex flex-col gap-6 sm:h-90 sm:flex-row"
           >
             <div className="flex flex-col gap-3 sm:w-2/5">
@@ -26,7 +32,7 @@ export function Services() {
                 to={`/services/${section.id}`}
                 className="btn btn-ghost self-start mt-auto px-1 inline-flex gap-3"
               >
-                Explore
+                {t.explore}
                 <ArrowRight color="var(--fg)" size={24} strokeWidth={1} />
               </Link>
             </div>

@@ -1,12 +1,18 @@
+import { useLanguage } from "@/lib/context/language";
 import { services } from "../services/data/services";
+import { copy } from "./data/copy";
 import type { ProjectData } from "./data/projects";
 import { Showcase } from "./Showcase";
 
 export function Project({ project }: { project: ProjectData }) {
+  const { lang } = useLanguage();
+  const t = copy[lang];
+  const labels = t.project;
+
   const details = [
-    { label: "CLIENT", text: project.client },
-    { label: "SITUATION", text: project.situation },
-    { label: "SOLUTION", text: project.solution },
+    { label: labels.client, text: project.client },
+    { label: labels.situation, text: project.situation },
+    { label: labels.solution, text: project.solution },
   ];
 
   return (
@@ -19,16 +25,16 @@ export function Project({ project }: { project: ProjectData }) {
         <div className="w-full flex flex-col gap-6 xl:max-w-sm">
           <div className="flex flex-col gap-3">
             <span className="inline-flex gap-2 eyebrow font-mono text-xs">
-              WORK <span>/</span> PROJECT
+              {labels.work} <span>/</span> {labels.project}
             </span>
             <h2 className="text-5xl">{project.title}</h2>
           </div>
 
           <div className="horizontal-line" />
 
-          {details.map(({ label, text }) => (
-            <div key={label} className="flex flex-col gap-2">
-              <span className="font-mono text-xs tracking-[0.2em]">
+          {details.map(({ label, text }, i) => (
+            <div key={i} className="flex flex-col gap-2">
+              <span className="eyebrow text-xs tracking-[0.2em]">
                 {label}
               </span>
               <p className="text-subtle">{text}</p>
@@ -39,12 +45,19 @@ export function Project({ project }: { project: ProjectData }) {
 
           <span className="text-sm text-accent-strong">
             {project.services
-              .map((id) => services.find((service) => service.id === id)?.title)
+              .map(
+                (id) =>
+                  services[lang].find((service) => service.id === id)?.title,
+              )
               .join(" · ")}
           </span>
         </div>
 
-        <Showcase technicalParts={project.technicalParts} />
+        <Showcase
+          labels={t.showcase}
+          mediaItems={project.mediaItems}
+          technicalParts={project.technicalParts}
+        />
       </div>
     </section>
   );

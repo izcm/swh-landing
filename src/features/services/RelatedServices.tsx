@@ -1,6 +1,8 @@
 import { Link } from "react-router";
 
+import { useLanguage } from "@/lib/context/language";
 import { ArrowRight } from "./ArrowRight";
+import { copy } from "./data/copy";
 import { services, type RelatedServicesData } from "./data/services";
 
 export function RelatedServices({
@@ -8,27 +10,29 @@ export function RelatedServices({
 }: {
   relatedServices: RelatedServicesData;
 }) {
+  const { lang } = useLanguage();
+  const t = copy[lang].service;
   const { description, groups } = relatedServices;
 
   return (
     <section className="px-6 border-l-2 border-line rounded-sm bg-faint/10 py-6">
-      <span className="eyebrow font-semibold">RELATED SERVICES</span>
+      <h2 className="eyebrow font-semibold">{t.relatedServices}</h2>
       <p className="mt-3 leading-relaxed text-subtle">{description}</p>
 
       <div className="mt-6 flex flex-col gap-6">
         {groups.map((group) => (
           <div key={group.serviceIds.join("-")} className="flex flex-col gap-2">
             {group.label && (
-              <span className="font-mono font-normal text-xs tracking-[0.2em] uppercase">
+              <h3 className="font-mono font-normal text-xs tracking-[0.2em] uppercase">
                 {group.label}
-              </span>
+              </h3>
             )}
             {group.description && (
               <p className="text-subtle">{group.description}</p>
             )}
 
             {group.serviceIds
-              .map((id) => services.find((service) => service.id === id))
+              .map((id) => services[lang].find((service) => service.id === id))
               .filter((service) => service !== undefined)
               .map((service) => (
                 <Link

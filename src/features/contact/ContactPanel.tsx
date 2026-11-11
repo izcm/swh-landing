@@ -3,42 +3,51 @@ import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
 import { cn } from "@/lib/cn";
-import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/links";
 
-const subject = "Project inquiry";
+export type ContactLink = { label: string; value: string; href: string };
 
-const directContact = [
-  { label: "Email", value: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
-  {
-    label: "Phone",
-    value: CONTACT_PHONE,
-    href: `tel:${CONTACT_PHONE.replaceAll(" ", "")}`,
-  },
-];
+export type ContactPanelLabels = {
+  subject: string;
+  intro: { eyebrow: string; heading: string; text: string };
+  message: {
+    label: string;
+    placeholder: string;
+    openInEmail: string;
+    emailNote: string;
+  };
+  directContact: { title: string; copyButton: string; copied: string };
+};
 
-export function ContactContent() {
+export function ContactPanel({
+  email,
+  links,
+  labels,
+}: {
+  email: string;
+  links: ContactLink[];
+  labels: ContactPanelLabels;
+}) {
+  const { intro, message: messageLabels, directContact } = labels;
+
   const [message, setMessage] = useState("");
   const messageId = useId();
-  const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+  const mailto = `mailto:${email}?subject=${encodeURIComponent(labels.subject)}&body=${encodeURIComponent(message)}`;
 
   return (
     <div className="flex flex-col">
-      <span className="eyebrow text-xs">CONTACT</span>
-      <h2 className="mt-3 text-5xl">Let's talk.</h2>
-      <p className="mt-4 text-subtle text-sm">
-        Have a project in mind, or just want to explore an idea? Feel free to
-        get in touch.
-      </p>
+      <span className="eyebrow text-xs">{intro.eyebrow}</span>
+      <h2 className="mt-3 text-5xl">{intro.heading}</h2>
+      <p className="mt-4 text-subtle text-sm">{intro.text}</p>
 
       <label htmlFor={messageId} className="eyebrow text-xs mt-6">
-        MESSAGE
+        {messageLabels.label}
       </label>
       <textarea
         id={messageId}
         rows={4}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        placeholder="I'd like to get in touch about a project..."
+        placeholder={messageLabels.placeholder}
         className="mt-2 w-full resize-y rounded border border-line p-3 text-sm"
       />
 
@@ -50,24 +59,24 @@ export function ContactContent() {
             "bg-accent/80 hover:bg-accent text-ground font-medium",
           )}
         >
-          Open in email
+          {messageLabels.openInEmail}
         </a>
       </div>
 
       <div className="mt-6 border-t border-line pt-3">
-        <span className="eyebrow text-xs">DIRECT CONTACT</span>
+        <span className="eyebrow text-xs">{directContact.title}</span>
         <div className="mt-1">
-          {directContact.map(({ label, value, href }) => (
+          {links.map(({ label, value, href }) => (
             <div
-              key={label}
+              key={value}
               className="flex items-center gap-6 border-b border-faint/60 py-1.5 text-sm"
             >
               <span className="w-16 text-subtle">{label}</span>
               <a href={href} className="flex-1 underline underline-offset-4">
                 {value}
               </a>
-              <CopyButton value={value}>
-                <Copy className="size-3.5" /> Copy
+              <CopyButton value={value} copied={directContact.copied}>
+                <Copy className="size-3.5" /> {directContact.copyButton}
               </CopyButton>
             </div>
           ))}
@@ -75,7 +84,7 @@ export function ContactContent() {
       </div>
 
       <p className="mt-4 text-xs italic text-muted">
-        This opens your default email app.
+        {messageLabels.emailNote}
       </p>
     </div>
   );
@@ -83,14 +92,16 @@ export function ContactContent() {
 
 function CopyButton({
   value,
+  copied,
   children,
 }: {
   value: string;
+  copied: string;
   children: ReactNode;
 }) {
   async function copy() {
     await navigator.clipboard.writeText(value);
-    toast.success("Copied", { description: value });
+    toast.success(copied, { description: value });
   }
 
   return (

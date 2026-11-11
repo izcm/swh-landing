@@ -7,8 +7,11 @@ import { useSlides } from "@/lib/useSlides";
 
 export type CaroselItem = { content: ReactNode; title: string };
 
+const defaultLabels = { previous: "Previous", next: "Next", figure: "FIG." };
+
 type Props = {
   items: CaroselItem[];
+  labels?: Partial<typeof defaultLabels>;
 
   defaultIndex?: number; // where to start when uncontrolled
 
@@ -28,12 +31,14 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
 export function Carosel({
   items,
+  labels: labelsProp,
   index: indexProp,
   defaultIndex,
   onChange,
   animate = true,
   className,
 }: Props) {
+  const labels = { ...defaultLabels, ...labelsProp };
   const { index, direction, prev, next, goTo } = useSlides({
     count: items.length,
     index: indexProp,
@@ -50,12 +55,14 @@ export function Carosel({
         animate={animate}
       />
       <CaroselCaption
+        figure={labels.figure}
         title={items[index].title}
         index={index}
         count={items.length}
       />
       <CaroselControls
         items={items}
+        labels={labels}
         index={index}
         prev={prev}
         next={next}
@@ -88,10 +95,12 @@ export function CaroselSlide({
 }
 
 export function CaroselCaption({
+  figure,
   title,
   index,
   count,
 }: {
+  figure: string;
   title: string;
   index: number;
   count: number;
@@ -100,7 +109,7 @@ export function CaroselCaption({
     <div>
       <div className="flex items-center gap-3 font-mono tracking-wider text-xs text-subtle">
         <span className="whitespace-nowrap">
-          FIG. {pad(index + 1)} – {title}
+          {figure} {pad(index + 1)} – {title}
         </span>
         <div className="horizontal-line" />
         <span className="whitespace-nowrap">
@@ -115,12 +124,14 @@ export function CaroselCaption({
 
 export function CaroselControls({
   items,
+  labels,
   index,
   prev,
   next,
   goTo,
 }: {
   items: CaroselItem[];
+  labels: { previous: string; next: string };
   index: number;
   prev: () => void;
   next: () => void;
@@ -130,7 +141,7 @@ export function CaroselControls({
     <div className="flex gap-6 p-3 items-center justify-evenly">
       <RoundIconBtn
         onClick={prev}
-        label="Previous"
+        label={labels.previous}
         className="border border-line"
       >
         <ArrowLeft className="size-5" strokeWidth={1.8} />
@@ -152,7 +163,7 @@ export function CaroselControls({
         ))}
       </div>
 
-      <RoundIconBtn onClick={next} label="Next" className="border border-line">
+      <RoundIconBtn onClick={next} label={labels.next} className="border border-line">
         <ArrowRight className="size-5" strokeWidth={1.8} />
       </RoundIconBtn>
     </div>

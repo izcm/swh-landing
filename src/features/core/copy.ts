@@ -12,7 +12,7 @@ export const copy: Localized<{
   };
 }> = {
   en: {
-    underDevelopment: "CURRENTLY UNDER DEVELOPMENT",
+    underDevelopment: "Currently under development",
     contact: "Contact",
     home: "Home",
     services: "Services",
@@ -26,7 +26,7 @@ export const copy: Localized<{
     },
   },
   no: {
-    underDevelopment: "UNDER UTVIKLING",
+    underDevelopment: "Under utvikling",
     contact: "Kontakt",
     home: "Hjem",
     services: "Tjenester",

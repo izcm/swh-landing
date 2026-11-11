@@ -1,3 +1,7 @@
+## How to treat a2zb/ packages
+
+- The user owns all `@a2zb/*` packages (e.g. `@a2zb/react`, `@a2zb/lib`). When a fix or improvement would belong in one of those packages rather than in this repo, suggest that instead of working around it here.
+
 ## SVG components: share the layout, not the drawing
 
 - When a part of a diagram should be reusable, share the **layout function**
@@ -74,16 +78,20 @@ const leftBox = (() => {
   the section first, so the elements read plain names:
 
 ```tsx
-{/* icon in a circle */}
-{(() => {
-  const { cx, cy, radius: r, size } = icon;
-  return (
-    <>
-      <circle cx={cx} cy={cy} r={r} />
-      <Icon x={cx - size / 2} y={cy - size / 2} size={size} />
-    </>
-  );
-})()}
+{
+  /* icon in a circle */
+}
+{
+  (() => {
+    const { cx, cy, radius: r, size } = icon;
+    return (
+      <>
+        <circle cx={cx} cy={cy} r={r} />
+        <Icon x={cx - size / 2} y={cy - size / 2} size={size} />
+      </>
+    );
+  })();
+}
 ```
 
 - Don't bother for a single element with only a couple of fields

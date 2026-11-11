@@ -1,27 +1,39 @@
 import { useState } from "react";
 
+import { cn } from "@/lib/cn";
+
 import { Carosel } from "@/components/Carosel";
 import { LightBox } from "@/components/LightBox";
-import { cn } from "@/lib/cn";
+
 import { TechnicalView, type TechnicalPart } from "./TechnicalView";
 
-const tabs = ["Application", "Technical overview"] as const;
+export type MediaItem =
+  | { type: "image"; src: string; alt: string; title: string }
+  | { type: "video"; src: string; title: string };
+
+const tabs = ["application", "technicalOverview"] as const;
 
 export function Showcase({
+  labels,
+  mediaItems,
   technicalParts,
 }: {
+  labels: {
+    application: string;
+    technicalOverview: string;
+    approach: string;
+    result: string;
+    previous: string;
+    next: string;
+    figure: string;
+    close: string;
+  };
+  mediaItems: MediaItem[];
   technicalParts: TechnicalPart[];
 }) {
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>(tabs[0]);
   const [openLightBox, setOpenLightBox] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
-
-  const mediaItems = Array.from({ length: 3 }).map((_, i) => ({
-    type: "image" as const,
-    src: `/hubben/hubben_${i + 1}.png`,
-    alt: "temporary alt",
-    title: "Inspection overview",
-  }));
 
   return (
     <>
@@ -47,41 +59,52 @@ export function Showcase({
                   : "border-transparent text-subtle hover:text-fg",
               )}
             >
-              {tab}
+              {labels[tab]}
             </button>
           ))}
         </div>
 
         <div className="overflow-y-auto p-1">
-          {activeTab === "Application" ? (
+          {activeTab === "application" ? (
             <Carosel
-              items={mediaItems.map(({ src, alt, title }, i) => ({
-                title,
-                content: (
-                  <img
-                    className="border border-line rounded"
-                    src={src}
-                    alt={alt}
-                    // the same img is used as a thumbnail — only the current
-                    // slide opens the lightbox, others just navigate
-                    onClick={() => {
-                      if (i === slideIndex) setOpenLightBox(true);
-                    }}
-                  />
-                ),
+              items={mediaItems.map((item, i) => ({
+                title: item.title,
+                content:
+                  item.type === "image" ? (
+                    <img
+                      className="border border-line rounded"
+                      src={item.src}
+                      alt={item.alt}
+                      // the same img is used as a thumbnail — only the current
+                      // slide opens the lightbox, others just navigate
+                      onClick={() => {
+                        if (i === slideIndex) setOpenLightBox(true);
+                      }}
+                    />
+                  ) : (
+                    <video
+                      className="border border-line rounded"
+                      src={item.src}
+                      onClick={() => {
+                        if (i === slideIndex) setOpenLightBox(true);
+                      }}
+                    />
+                  ),
               }))}
+              labels={labels}
               index={slideIndex}
               onChange={setSlideIndex}
               animate={false}
             />
           ) : (
-            <TechnicalView parts={technicalParts} />
+            <TechnicalView parts={technicalParts} labels={labels} />
           )}
         </div>
       </div>
 
       <LightBox
         items={mediaItems}
+        labels={labels}
         isOpen={openLightBox}
         index={slideIndex}
         onChange={setSlideIndex}

@@ -11,7 +11,13 @@ export type TechnicalPart = {
   diagram: ReactNode;
 };
 
-export function TechnicalView({ parts }: { parts: TechnicalPart[] }) {
+export function TechnicalView({
+  parts,
+  labels,
+}: {
+  parts: TechnicalPart[];
+  labels: { approach: string; result: string };
+}) {
   const tabs = parts.map(
     (part, i) => `${String(i + 1).padStart(2, "0")} ${part.label}`,
   );
@@ -19,8 +25,8 @@ export function TechnicalView({ parts }: { parts: TechnicalPart[] }) {
   const active = parts[activeIndex];
 
   const details = [
-    { label: "APPROACH", paragraphs: active.approach },
-    { label: "RESULT", paragraphs: active.result },
+    { label: labels.approach, paragraphs: active.approach },
+    { label: labels.result, paragraphs: active.result },
   ];
 
   return (
@@ -59,11 +65,11 @@ export function TechnicalView({ parts }: { parts: TechnicalPart[] }) {
           {active.title ?? active.label}
         </span>
 
-        {details.map(({ label, paragraphs }) => (
-          <div key={label} className="flex flex-col gap-2">
-            <span className="font-mono text-xs tracking-[0.2em]">{label}</span>
-            {paragraphs.map((paragraph) => (
-              <p key={paragraph} className="text-subtle">
+        {details.map(({ label, paragraphs }, i) => (
+          <div key={i} className="flex flex-col gap-2">
+            <span className="font-mono text-xs tracking-[0.2em] uppercase">{label}</span>
+            {paragraphs.map((paragraph, i) => (
+              <p key={i} className="text-subtle">
                 {paragraph}
               </p>
             ))}

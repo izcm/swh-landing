@@ -9,9 +9,26 @@ export const copy: Localized<{
   web3After: string;
   projectIndex: string;
   moreProjects: string;
+  showcase: {
+    application: string;
+    technicalOverview: string;
+    approach: string;
+    result: string;
+    previous: string;
+    next: string;
+    figure: string;
+    close: string;
+  };
+  project: {
+    work: string;
+    project: string;
+    client: string;
+    situation: string;
+    solution: string;
+  };
 }> = {
   en: {
-    eyebrow: "MY WORK",
+    eyebrow: "My work",
     heading: "Selected demos",
     intro:
       "Take a closer look at the services SWH offers and the work behind them. Each demo includes a link to a live app, alongside screenshots, short videos, and technical summaries.",
@@ -20,9 +37,26 @@ export const copy: Localized<{
     web3After: ", I publish all of my Web3 work there.",
     projectIndex: "Project index",
     moreProjects: "More projects to follow",
+    showcase: {
+      application: "Application",
+      technicalOverview: "Technical overview",
+      approach: "Approach",
+      result: "Result",
+      previous: "Previous",
+      next: "Next",
+      figure: "FIG.",
+      close: "Close",
+    },
+    project: {
+      work: "Work",
+      project: "Project",
+      client: "Client",
+      situation: "Situation",
+      solution: "Solution",
+    },
   },
   no: {
-    eyebrow: "PORTEFØLJE",
+    eyebrow: "Portefølje",
     heading: "Utvalgt arbeid",
     intro: "Lorem ipsum",
     recommend: "Lorem ipsum",
@@ -30,5 +64,22 @@ export const copy: Localized<{
     web3After: "Lorem ipsum",
     projectIndex: "Lorem ipsum",
     moreProjects: "Lorem ipsum",
+    showcase: {
+      application: "Lorem ipsum",
+      technicalOverview: "Lorem ipsum",
+      approach: "Lorem ipsum",
+      result: "Lorem ipsum",
+      previous: "Lorem ipsum",
+      next: "Lorem ipsum",
+      figure: "Lorem ipsum",
+      close: "Lorem ipsum",
+    },
+    project: {
+      work: "Lorem ipsum",
+      project: "Lorem ipsum",
+      client: "Lorem ipsum",
+      situation: "Lorem ipsum",
+      solution: "Lorem ipsum",
+    },
   },
 };

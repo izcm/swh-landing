@@ -7,8 +7,11 @@ type LightboxItem =
   | { type: "image"; src: string; title?: string; alt: string }
   | { type: "video"; src: string; title?: string };
 
+const defaultLabels = { close: "Close", previous: "Previous", next: "Next" };
+
 type Props = {
   items: LightboxItem[];
+  labels?: Partial<typeof defaultLabels>;
 
   defaultIndex?: number; // where to start when uncontrolled
   isOpen: boolean;
@@ -21,12 +24,14 @@ type Props = {
 
 export function LightBox({
   items,
+  labels: labelsProp,
   index: indexProp,
   defaultIndex,
   onChange,
   isOpen,
   onClose,
 }: Props) {
+  const labels = { ...defaultLabels, ...labelsProp };
   const { index, prev, next } = useSlides({
     count: items.length,
     index: indexProp,
@@ -57,7 +62,7 @@ export function LightBox({
           <RoundIconBtn
             onClick={onClose}
             className="size-12 border-transparent"
-            label="Close"
+            label={labels.close}
           >
             <X />
           </RoundIconBtn>
@@ -72,7 +77,7 @@ export function LightBox({
         >
           <RoundIconBtn
             onClick={prev}
-            label="Previous"
+            label={labels.previous}
             className="size-12 border-transparent"
           >
             <ArrowLeft className="size-8" strokeWidth={1.2} />
@@ -98,7 +103,7 @@ export function LightBox({
 
           <RoundIconBtn
             onClick={next}
-            label="Next"
+            label={labels.next}
             className="size-12 border-transparent"
           >
             <ArrowRight className="size-8" strokeWidth={1.2} />

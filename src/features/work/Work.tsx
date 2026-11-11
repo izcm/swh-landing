@@ -1,14 +1,18 @@
 import { cn } from "@/lib/cn";
 import { useLanguage } from "@/lib/context/language";
+
 import { CubeStackDiagram, SoftwareDiagram } from "../diagrams/software";
+
 import { copy } from "./data/copy";
 import { projects } from "./data/projects";
+
 import { Project } from "./Project";
 import { IndexRow } from "./IndexRow";
 
 export function Work() {
   const { lang } = useLanguage();
   const t = copy[lang];
+  const projectList = projects[lang];
 
   return (
     <div className="tab-container">
@@ -48,13 +52,13 @@ export function Work() {
               aria-label={t.projectIndex}
               className={cn("w-full border-t border-line mt-6", "md:max-w-lg")}
             >
-              {projects.map((project, i) => (
+              {projectList.map((project, i) => (
                 <IndexRow key={project.id} project={project} index={i} />
               ))}
 
               <div className="flex items-center gap-5 border-b border-line px-2 py-5 opacity-60">
                 <span className="font-mono text-xs text-muted">
-                  {String(projects.length + 1).padStart(2, "0")}
+                  {String(projectList.length + 1).padStart(2, "0")}
                 </span>
 
                 <span className="flex-1 text-sm text-muted">
@@ -82,7 +86,7 @@ export function Work() {
         </div>
       </div>
 
-      {projects.map((project) => (
+      {projectList.map((project) => (
         <Project key={project.id} project={project} />
       ))}
     </div>

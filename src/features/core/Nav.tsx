@@ -2,20 +2,25 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router";
 
 import { cn } from "@/lib/cn";
+import { useLanguage } from "@/lib/context/language";
 import { ContactModal } from "../contact";
+import { copy } from "./copy";
 
-type NavTab = {
-  label: string;
-  to: string;
-};
-
-export default function Nav({ tabs }: { tabs: NavTab[] }) {
+export default function Nav() {
   const [contactOpen, setContactOpen] = useState(false);
+  const { lang, setLang } = useLanguage();
+  const t = copy[lang];
+
+  const tabs = [
+    { label: t.home, to: "/" },
+    { label: t.services, to: "/services" },
+    { label: t.work, to: "/work" },
+  ];
 
   return (
     <>
       <div className="bg-linear-to-r from-muted/25 via-muted/10 to-muted/25 ring-1 ring-inset ring-muted py-1.5 text-center text-xs font-semibold tracking-widest text-subtle">
-        CURRENTLY UNDER DEVELOPMENT
+        {t.underDevelopment}
       </div>
 
       <header
@@ -49,10 +54,20 @@ export default function Nav({ tabs }: { tabs: NavTab[] }) {
 
         <button
           type="button"
+          onClick={() => setLang(lang === "no" ? "en" : "no")}
+          className="btn btn-ghost text-sm tracking-wide"
+        >
+          <span className={lang === "no" ? "text-fg" : "text-muted"}>NO</span>
+          {" / "}
+          <span className={lang === "en" ? "text-fg" : "text-muted"}>EN</span>
+        </button>
+
+        <button
+          type="button"
           onClick={() => setContactOpen(true)}
           className="btn btn-secondary w-24 tracking-wide text-sm"
         >
-          Contact
+          {t.contact}
         </button>
         <ContactModal
           isOpen={contactOpen}

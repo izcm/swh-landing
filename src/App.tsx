@@ -17,13 +17,7 @@ function Layout() {
 
   return (
     <>
-      <Nav
-        tabs={[
-          { label: "Home", to: "/" },
-          { label: "Services", to: "/services" },
-          { label: "Work", to: "/work" },
-        ]}
-      />
+      <Nav />
 
       <main className="min-h-dvh">
         <Outlet />

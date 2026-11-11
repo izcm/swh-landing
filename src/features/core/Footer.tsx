@@ -2,14 +2,19 @@ import { Link } from "react-router";
 
 import { cn } from "@/lib/cn";
 import { GITHUB_URL } from "@/lib/links";
-
-const links = [
-  { to: "/services", label: "Services" },
-  { to: "/work", label: "Work" },
-  { to: "/contact", label: "Contact" },
-];
+import { useLanguage } from "@/lib/context/language";
+import { copy } from "./copy";
 
 export default function Footer() {
+  const { lang } = useLanguage();
+  const t = copy[lang];
+
+  const links = [
+    { to: "/services", label: t.services },
+    { to: "/work", label: t.work },
+    { to: "/contact", label: t.contact },
+  ];
+
   return (
     <footer
       className={cn(

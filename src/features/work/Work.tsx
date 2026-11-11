@@ -1,15 +1,20 @@
 import { cn } from "@/lib/cn";
+import { useLanguage } from "@/lib/context/language";
 import { CubeStackDiagram, SoftwareDiagram } from "../diagrams/software";
+import { copy } from "./data/copy";
 import { projects } from "./data/projects";
 import { Project } from "./Project";
 import { IndexRow } from "./IndexRow";
 
 export function Work() {
+  const { lang } = useLanguage();
+  const t = copy[lang];
+
   return (
     <div className="tab-container">
       <header>
-        <span className="eyebrow">MY WORK</span>
-        <h1>Selected demos</h1>
+        <span className="eyebrow">{t.eyebrow}</span>
+        <h1>{t.heading}</h1>
       </header>
       <div className="min-h-below-nav">
         <div className={cn("flex flex-col", "md:flex-row")}>
@@ -20,19 +25,15 @@ export function Work() {
               "lg:max-w-3xl",
             )}
           >
+            <p>{t.intro}</p>
             <p>
-              Take a closer look at the services SWH offers and the work behind
-              them. Each demo includes a link to a live app, alongside
-              screenshots, short videos, and technical summaries.
-            </p>
-            <p>
-              I recommend having a look at:{" "}
+              {t.recommend}{" "}
               <a href="#hubben" className="text-accent underline">
                 Hubben
               </a>
             </p>
             <p>
-              For those interested in blockchain related services, visit{" "}
+              {t.web3Before}{" "}
               <a
                 href="https://izblocks.com"
                 target="_blank"
@@ -41,10 +42,10 @@ export function Work() {
               >
                 izblocks.com
               </a>
-              , I publish all of my Web3 work there.
+              {t.web3After}
             </p>
             <nav
-              aria-label="Project index"
+              aria-label={t.projectIndex}
               className={cn("w-full border-t border-line mt-6", "md:max-w-lg")}
             >
               {projects.map((project, i) => (
@@ -57,7 +58,7 @@ export function Work() {
                 </span>
 
                 <span className="flex-1 text-sm text-muted">
-                  More projects to follow
+                  {t.moreProjects}
                 </span>
 
                 <span className="text-muted px-2">—</span>

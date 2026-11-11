@@ -17,8 +17,8 @@ export const innerFloorFill = accent(0.15);
 const innerLeftFill = accent(0.3);
 const innerRightFill = accent(0.5);
 
-const outerLeftFill = accent(0.03);
-const outerRightFill = accent(0.05);
+const outerLeftFill = accent(0.05);
+const outerRightFill = accent(0.12);
 
 const faintEdge = "oklch(from var(--accent-glow) l c h / 0.35)";
 const whiterAccent = "oklch(from var(--accent) calc(l + 0.2) c h)";

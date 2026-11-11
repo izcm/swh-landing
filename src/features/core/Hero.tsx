@@ -3,8 +3,13 @@ import { Link } from "react-router";
 
 import { cn } from "@/lib/cn";
 import { HeroDiagram } from "@/features/diagrams/hero";
+import { useLanguage } from "@/lib/context/language";
+import { copy } from "./copy";
 
 export default function Hero() {
+  const { lang } = useLanguage();
+  const t = copy[lang].hero;
+
   return (
     <section
       className={cn(
@@ -38,17 +43,9 @@ export default function Hero() {
             "sm:text-lg",
           )}
         >
-          <p>
-            Welcome to SWH Studio, an independent software studio focused on
-            helping Norwegian businesses modernize their technology and
-            operations.
-          </p>
-
-          <p>
-            With technology evolving faster than ever, my mission is to make it
-            easier for small and medium-sized companies to explore and adopt new
-            solutions, including AI.
-          </p>
+          {t.welcome.map((paragraph, i) => (
+            <p key={i}>{paragraph}</p>
+          ))}
         </div>
 
         <Link
@@ -58,7 +55,7 @@ export default function Hero() {
             "text-lg font-light text-accent",
           )}
         >
-          See what I build
+          {t.cta}
           <span aria-hidden="true">
             <ArrowRight size={16} />
           </span>
@@ -67,8 +64,8 @@ export default function Hero() {
 
       <div
         className={cn(
-          "w-full max-w-75 mt-12 mx-auto",
-          "md:max-w-90",
+          "w-full max-w-75 mt-16 mx-auto",
+          "md:max-w-80",
           "xl:min-w-0 xl:max-w-90 xl:flex-1",
         )}
       >

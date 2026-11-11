@@ -23,7 +23,7 @@ export function ContactContent() {
   return (
     <div className="flex flex-col">
       <span className="eyebrow text-xs">CONTACT</span>
-      <h2 className="mt-3 font-serif text-5xl font-semibold">Let's talk.</h2>
+      <h2 className="mt-3 text-5xl font-light">Let's talk.</h2>
       <p className="mt-4 text-subtle text-sm">
         Have a project in mind, or just want to explore an idea? Feel free to
         get in touch.
@@ -42,7 +42,10 @@ export function ContactContent() {
       />
 
       <div className="mt-6 flex items-center gap-4">
-        <a href={mailto} className="btn h-10 bg-fg/90 text-ground px-6">
+        <a
+          href={mailto}
+          className="btn font-medium h-10 bg-fg/90 text-ground px-6"
+        >
           Open in email
         </a>
         <CopyButton value={CONTACT_EMAIL}>

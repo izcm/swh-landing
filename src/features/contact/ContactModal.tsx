@@ -19,7 +19,7 @@ export function ContactModal({
       ariaLabel="Contact"
       overlayClassName="bg-black/40 backdrop-blur-sm"
       className={cn(
-        "relative w-full max-w-lg mx-2 max-h-[90dvh] overflow-y-auto p-6",
+        "relative w-full max-w-lg mx-2 max-h-[90dvh] overflow-y-auto p-8",
         "rounded border border-line bg-raised shadow-panel",
       )}
     >

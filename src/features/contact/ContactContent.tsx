@@ -38,7 +38,7 @@ export function ContactContent() {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="I'd like to get in touch about a project..."
-        className="mt-2 w-full resize-y rounded border border-line bg-ground p-3 text-sm"
+        className="mt-2 w-full resize-y rounded border border-line p-3 text-sm"
       />
 
       <div className="mt-6 flex items-center gap-4">

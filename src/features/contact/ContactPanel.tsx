@@ -55,8 +55,8 @@ export function ContactPanel({
         <a
           href={mailto}
           className={cn(
-            "btn btn-secondary min-h-10 px-6",
-            "bg-accent/80 hover:bg-accent text-ground font-medium",
+            "btn btn-primary min-h-10 px-6",
+            // "text-ground font-medium",
           )}
         >
           {messageLabels.openInEmail}

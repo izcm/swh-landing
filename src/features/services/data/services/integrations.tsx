@@ -25,7 +25,7 @@ export const integrations: Localized<Service> = {
     ...shared,
     eyebrow: "INT",
     title: "Integrations",
-    short: "Connect systems to unlock new capabilities.",
+    short: "Discover new capabilities through connections.",
     overview: {
       title: "Connecting systems, making data accessible",
       paragraphs: [
@@ -59,9 +59,9 @@ export const integrations: Localized<Service> = {
     ...shared,
     eyebrow: "INT",
     title: "Integrasjoner",
-    short: "Koble sammen systemer for å skape nye muligheter.",
+    short: "Lag koplingene som skaper nye muligheter.",
     overview: {
-      title: "Koble sammen systemer og gjøre data tilgjengelig",
+      title: "Nye muligheter gjennom forbedret dataflyt.",
       paragraphs: [
         "De fleste bedrifter bruker flere ulike systemer i den daglige driften. Et regnskapssystem, samarbeidsverktøy og interne regneark kan alle inneholde informasjon som er nyttig på tvers av virksomheten.",
         "Når data ikke flyter mellom systemer, blir informasjon liggende isolert i det vi kaller informasjonssiloer. Ved å koble sammen systemene kan data utveksles, bearbeides og kombineres på nye måter, slik at informasjonen blir enklere å hente ut og bruke.",
@@ -69,7 +69,7 @@ export const integrations: Localized<Service> = {
       ],
     },
     contact: {
-      description: "Har du systemer du ønsker å koble sammen?",
+      description: "Trenger du en ny kopling?",
       cta: "Ta kontakt",
     },
     relatedServices: {

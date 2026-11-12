@@ -46,9 +46,9 @@ export const visualization: Localized<Service> = {
     ...shared,
     eyebrow: "VIS",
     title: "Visualisering",
-    short: "Gjør komplekse data til tydelig og nyttig innsikt.",
+    short: "Øk innsikt med interaktive dashboard.",
     overview: {
-      title: "Gjør data enklere å forstå",
+      title: "",
       paragraphs: ["Lorem ipsum."],
     },
     contact: {

@@ -44,7 +44,7 @@ export const projects: Localized<ProjectData[]> = {
             "Create a way for other parts of the application to access the data. This is called an API.",
           ],
           result: [
-            "A centralized datastore containing information from all four systems, ready for use by the rest of the application.",
+            "A backend application that periodically fetches the data, transforms it, and stores the result in a centralized datastore containing information from all four systems, ready for use by the rest of the application.",
           ],
           diagram: <SvgPlaceholder label="Diagram" width={450} height={200} />,
         },
@@ -73,7 +73,9 @@ export const projects: Localized<ProjectData[]> = {
         },
         {
           label: "Automation",
-          approach: ["Lorem ipsum dolor sit amet, consectetur adipiscing elit."],
+          approach: [
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          ],
           result: ["Ut enim ad minim veniam, quis nostrud exercitation."],
           diagram: <SvgPlaceholder label="Diagram" width={450} height={200} />,
         },
@@ -89,31 +91,37 @@ export const projects: Localized<ProjectData[]> = {
   no: [
     {
       ...hubben,
-      subtitle: "Lorem ipsum",
-      client: "Lorem ipsum",
-      situation: "Lorem ipsum",
+      subtitle: "En typisk første webapp",
+      client: "Et medium-sized bilutleiefirma",
+      situation:
+        "Manuelle prosesser på tvers av flere plattformer førte til krevende oppfølgning av mandatory EU inspeksjoner. Den hypotetiske bedriften ønsker informatsjon om utleide bilers kontrakt, resulteter fra workshops, tidslinje og annen relevant info og actions, samlet i en løsning, med automatisering der man fant regelsett.",
       solution: "Lorem ipsum",
       technicalParts: [
         {
-          label: "Lorem ipsum",
-          approach: ["Lorem ipsum", "Lorem ipsum"],
-          result: ["Lorem ipsum"],
+          label: "Integrasjoner",
+          approach: [
+            "Integrer de fire systemene, transformer dataen slik at vå får den på det formatet som passer applikasjonens behov. Lagre deretter dataene til en separat database vi har kontroll over.",
+            "Gjør det mulig å hente ut dataen for bruk i de andre delene av applikasjonen, en slik portal (idk what to say portalworks but ???) kalles et API.",
+          ],
+          result: [
+            "En backend applikasjon som periodesvis henter ut data, får dem på rett format, og lagrer dem på et sentralisert med mulighet for å hente ut.",
+          ],
           diagram: <SvgPlaceholder label="Diagram" width={450} height={200} />,
         },
         {
-          label: "Lorem ipsum",
+          label: "Visualisering",
           approach: ["Lorem ipsum", "Lorem ipsum"],
           result: ["Lorem ipsum", "Lorem ipsum"],
           diagram: <SvgPlaceholder label="Diagram" width={450} height={200} />,
         },
         {
-          label: "Lorem ipsum",
+          label: "Interaktive verktøy",
           approach: ["Lorem ipsum", "Lorem ipsum"],
           result: ["Lorem ipsum"],
           diagram: <SvgPlaceholder label="Diagram" width={450} height={200} />,
         },
         {
-          label: "Lorem ipsum",
+          label: "Automatisering",
           approach: ["Lorem ipsum"],
           result: ["Lorem ipsum"],
           diagram: <SvgPlaceholder label="Diagram" width={450} height={200} />,

@@ -19,7 +19,7 @@ function readStoredLang(): Lang {
     const stored = localStorage.getItem("lang");
     if (stored === "no" || stored === "en") return stored;
   } catch {}
-  return "en";
+  return "no";
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {

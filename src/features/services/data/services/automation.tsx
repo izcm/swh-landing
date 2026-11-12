@@ -18,36 +18,36 @@ export const automation: Localized<Service> = {
     title: "Automation",
     short: "Streamline processes and reduce manual work.",
     overview: {
-      title: "Lorem ipsum dolor sit amet",
+      title: "Let software handle repetitive tasks",
       paragraphs: [
-        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
+        "Businesses spend time updating records, transferring information, and sending notifications. These tasks are necessary, but many can be automated.",
+        "Automation allows software to execute predefined tasks based on specific conditions or events. For example, processing incoming emails, updating records, or notifying the right person when something changes.",
+        "SWH develops automated processes tailored to your workflows, reducing manual work and keeping information up to date.",
       ],
     },
     contact: {
-      description: "Lorem ipsum dolor sit amet.",
-      cta: "Lorem ipsum",
+      description: "Lorem ipsum",
+      cta: "Get in touch",
     },
     relatedServices: {
       description:
-        "Automation can operate independently or across several systems. When a process requires information from multiple applications, integrations can provide the necessary connections to automate the workflow.",
-      groups: [
-        {
-          serviceIds: ["integrations"],
-        },
-      ],
+        "Automation works within a single system or across several. When a process depends on data from multiple applications, integrations provide the connections needed.",
+      groups: [{ serviceIds: ["integrations"] }],
     },
   },
   no: {
     ...shared,
-    eyebrow: "Lorem ipsum",
-    title: "Lorem ipsum",
-    short: "Lorem ipsum",
+    eyebrow: "AUTO",
+    title: "Automatisering",
+    short: "Reduser manuelt arbeid med bakgrunnsprosesser.",
     overview: {
-      title: "Lorem ipsum",
-      paragraphs: ["Lorem ipsum", "Lorem ipsum"],
+      title: "Automatiser gjentakende oppgaver",
+      paragraphs: ["Lorem ipsum"],
     },
-    contact: { description: "Lorem ipsum", cta: "Lorem ipsum" },
+    contact: {
+      description: "Lorem ipsum",
+      cta: "Ta kontakt",
+    },
     relatedServices: {
       description: "Lorem ipsum",
       groups: [{ serviceIds: ["integrations"] }],

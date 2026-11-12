@@ -51,10 +51,17 @@ export function GearPair({ className }: { className?: string }) {
   // both gears, centered in the viewbox
   const gearPair = (() => {
     const groupWidth = smallGear.translateX + smallGear.layout.groupWidth;
-    const groupHeight = bigGear.layout.groupHeight;
+
+    const top = Math.min(bigGear.translateY, smallGear.translateY);
+    const bottom = Math.max(
+      bigGear.translateY + bigGear.layout.groupHeight,
+      smallGear.translateY + smallGear.layout.groupHeight,
+    );
+    const groupHeight = bottom - top;
 
     const { offset: translateX } = alignCenter(viewboxWidth, groupWidth);
-    const { offset: translateY } = alignCenter(viewboxHeight, groupHeight);
+    const { offset } = alignCenter(viewboxHeight, groupHeight);
+    const translateY = offset - top;
 
     return { translateX, translateY };
   })();

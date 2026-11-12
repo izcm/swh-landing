@@ -26,14 +26,14 @@ export const copy: Localized<{
   },
   no: {
     eyebrow: "Tjenester",
-    heading: "Lorem ipsum",
-    explore: "Lorem ipsum",
+    heading: "Hva jeg lager",
+    explore: "Les mer",
     service: {
-      overview: "Lorem ipsum",
-      relatedServices: "Lorem ipsum",
+      overview: "Om tjenesten",
+      relatedServices: "Relaterte tjenester",
     },
     serviceNav: {
-      allServices: "Lorem ipsum",
+      allServices: "Alle tjenester",
     },
   },
 };

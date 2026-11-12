@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { Card } from "@/components/Card";
+import { cn } from "@/lib/cn";
 import { useLanguage } from "@/lib/context/language";
 import { ArrowRight } from "./ArrowRight";
 import { copy } from "./data/copy";
@@ -36,9 +37,15 @@ export function Services() {
                 <ArrowRight color="var(--fg)" size={24} strokeWidth={1} />
               </Link>
             </div>
-            <div className="cartesian-grid" />
+            <div className="cartesian-grid opacity-12.5" />
 
-            <div className="relative z20 order-first h-48 w-full shrink-0 items-center sm:order-0 sm:h-full sm:w-3/5">
+            <div
+              className={cn(
+                "relative z20 order-first h-48 w-full shrink-0 items-center",
+                "sm:order-0 sm:h-full sm:w-3/5 xl:max-w-80 sm:max-h-65 self-center",
+                section.id === "integrations" && "bg-red",
+              )}
+            >
               {section.diagrams.card}
             </div>
           </Card>

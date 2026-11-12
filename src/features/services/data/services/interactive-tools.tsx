@@ -40,8 +40,8 @@ export const interactiveTools: Localized<Service> = {
   },
   no: {
     ...shared,
-    eyebrow: "Lorem ipsum",
-    title: "Lorem ipsum",
+    eyebrow: "TOOLS",
+    title: "Interaktive verktøy",
     short: "Lorem ipsum",
     overview: {
       title: "Lorem ipsum",

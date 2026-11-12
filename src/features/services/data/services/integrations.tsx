@@ -25,18 +25,18 @@ export const integrations: Localized<Service> = {
     ...shared,
     eyebrow: "INT",
     title: "Integrations",
-    short: "Connect your existing systems for optimized data flow.",
+    short: "Connect systems to unlock new capabilities.",
     overview: {
       title: "Connecting systems, making data accessible",
       paragraphs: [
-        "A business usually run daily operations by using several pieces of software. Maybe an ERP for accounting, Microsoft teams for collaboration, and internal spreadsheets for etc. bookkeeping.",
-        "Connecting these systems helps break down what we call information silos, where valuable data is isolated in separate systems.",
-        "SWH can build and maintain such connections, unlocking new capabilities for your data.",
+        "Businesses often rely on several software systems for their daily operations. An accounting system, collaboration tools, and internal spreadsheets may all contain information needed across the business.",
+        "When these systems operate independently, valuable information becomes isolated in what we call information silos. Integrations allow data to move between systems, reducing manual work and making information more accessible.",
+        "SWH develops and maintains these connections, allowing existing systems to work together and support new capabilities.",
       ],
     },
     contact: {
-      description: "Lorem ipsum dolor sit amet.",
-      cta: "Lorem ipsum",
+      description: "Have systems you'd like to connect?",
+      cta: "Get in touch",
     },
     relatedServices: {
       description:
@@ -57,25 +57,34 @@ export const integrations: Localized<Service> = {
   },
   no: {
     ...shared,
-    eyebrow: "Lorem ipsum",
-    title: "Lorem ipsum",
-    short: "Lorem ipsum",
+    eyebrow: "INT",
+    title: "Integrasjoner",
+    short: "Koble sammen systemer for å skape nye muligheter.",
     overview: {
-      title: "Lorem ipsum",
-      paragraphs: ["Lorem ipsum", "Lorem ipsum", "Lorem ipsum"],
+      title: "Koble sammen systemer og gjøre data tilgjengelig",
+      paragraphs: [
+        "De fleste bedrifter bruker flere ulike systemer i den daglige driften. Et regnskapssystem, samarbeidsverktøy og interne regneark kan alle inneholde informasjon som er nyttig på tvers av virksomheten.",
+        "Når data ikke flyter mellom systemer, blir informasjon liggende isolert i det vi kaller informasjonssiloer. Ved å koble sammen systemene kan data utveksles, bearbeides og kombineres på nye måter, slik at informasjonen blir enklere å hente ut og bruke.",
+        "SWH utvikler og vedlikeholder slike koblinger.",
+      ],
     },
-    contact: { description: "Lorem ipsum", cta: "Lorem ipsum" },
+    contact: {
+      description: "Har du systemer du ønsker å koble sammen?",
+      cta: "Ta kontakt",
+    },
     relatedServices: {
-      description: "Lorem ipsum",
+      description:
+        "Integrasjoner legger ofte grunnlaget for å utvide funksjonaliteten i eksisterende systemer.",
       groups: [
         {
-          label: "Lorem ipsum",
-          description: "Lorem ipsum",
+          label: "Brukerrettede løsninger",
+          description:
+            "Utforsk data og utfør handlinger direkte i nettleseren.",
           serviceIds: ["visualization", "interactive-tools"],
         },
         {
-          label: "Lorem ipsum",
-          description: "Lorem ipsum",
+          label: "Bakgrunnsprosesser",
+          description: "La oppgaver og oppdateringer skje automatisk.",
           serviceIds: ["automation"],
         },
       ],

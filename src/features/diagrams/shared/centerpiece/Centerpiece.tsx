@@ -151,7 +151,7 @@ export function Centerpiece({
         {...bigCube}
         strokes={{ back: faintEdge, floorTop: faintEdge }}
         fills={{
-          floor: accent(0.08),
+          floor: accent(0.125),
         }}
       />
 

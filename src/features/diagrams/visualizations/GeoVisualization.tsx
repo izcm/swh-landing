@@ -4,8 +4,10 @@ import { CityMap } from "./map/CityMap";
 import { scandinaviaOrthographicBounds } from "./map/ScandinaviaOrthographic";
 
 export function GeoVisualization({ className }: { className?: string }) {
-  const viewboxWidth = 320;
   const viewboxHeight = 240;
+  const viewboxWidth =
+    (viewboxHeight * scandinaviaOrthographicBounds.width) /
+    scandinaviaOrthographicBounds.height;
 
   const unit = layoutUnit(viewboxHeight);
 

@@ -29,7 +29,7 @@ export const copy: Localized<{
     subject: "Project inquiry",
     intro: {
       eyebrow: "Contact",
-      heading: "Let's talk.",
+      heading: "Hello.",
       text: "Have a project in mind, or just want to explore an idea? Feel free to get in touch.",
     },
     message: {
@@ -51,28 +51,28 @@ export const copy: Localized<{
     },
   },
   no: {
-    subject: "Lorem ipsum",
+    subject: "Prosjektforespørsel",
     intro: {
       eyebrow: "Kontakt",
-      heading: "Lorem ipsum",
-      text: "Lorem ipsum",
+      heading: "Hallo.",
+      text: "Har en idé eller et spørsmål? Ta kontakt da.",
     },
     message: {
-      label: "Lorem ipsum",
-      placeholder: "Lorem ipsum",
-      openInEmail: "Lorem ipsum",
-      emailNote: "Lorem ipsum",
+      label: "Melding",
+      placeholder: "Jeg tar kontakt angående et prosjekt...",
+      openInEmail: "Åpne i e-post",
+      emailNote: "Dette åpner standard e-postappen din.",
     },
     directContact: {
-      title: "Lorem ipsum",
-      copyButton: "Lorem ipsum",
-      copied: "Lorem ipsum",
+      title: "Direkte kontakt",
+      copyButton: "Kopier",
+      copied: "Kopiert",
     },
-    email: "Lorem ipsum",
-    phone: "Lorem ipsum",
+    email: "E-post",
+    phone: "Telefon",
     modal: {
       label: "Kontakt",
-      close: "Lorem ipsum",
+      close: "Lukk",
     },
   },
 };

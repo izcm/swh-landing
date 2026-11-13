@@ -17,7 +17,7 @@ export function RoundIconBtn({ onClick, label, children, className }: Props) {
       aria-label={label}
       className={cn(
         "grid size-10 shrink-0 place-items-center rounded-full",
-        "bg-current/10 transition-colors hover:bg-current/10",
+        "bg-current/15 transition-colors hover:bg-current/10",
         "touch-manipulation",
         className,
       )}

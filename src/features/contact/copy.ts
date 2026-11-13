@@ -26,7 +26,7 @@ export const copy: Localized<{
   };
 }> = {
   en: {
-    subject: "Project inquiry",
+    subject: "Website inquiry",
     intro: {
       eyebrow: "Contact",
       heading: "Hello.",
@@ -34,7 +34,7 @@ export const copy: Localized<{
     },
     message: {
       label: "Message",
-      placeholder: "I'd like to get in touch about a project...",
+      placeholder: "Hi! I'm wondering about...",
       openInEmail: "Open in email",
       emailNote: "This opens your default email app.",
     },
@@ -51,7 +51,7 @@ export const copy: Localized<{
     },
   },
   no: {
-    subject: "Prosjektforespørsel",
+    subject: "Henvendelse via nettsiden",
     intro: {
       eyebrow: "Kontakt",
       heading: "Hallo.",
@@ -59,7 +59,7 @@ export const copy: Localized<{
     },
     message: {
       label: "Melding",
-      placeholder: "Jeg tar kontakt angående et prosjekt...",
+      placeholder: "Hei! Jeg lurer på...",
       openInEmail: "Åpne i e-post",
       emailNote: "Dette åpner standard e-postappen din.",
     },

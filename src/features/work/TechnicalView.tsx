@@ -8,6 +8,7 @@ export type TechnicalPart = {
   title?: string;
   approach: string[];
   result: string[];
+  note?: string;
   diagram: ReactNode;
 };
 
@@ -61,13 +62,15 @@ export function TechnicalView({
       </ArrowList>
 
       <div className="flex flex-col gap-6">
-        <span className="eyebrow uppercase">
-          {active.title ?? active.label}
-        </span>
+        {active.title && (
+          <span className="eyebrow uppercase">{active.title}</span>
+        )}
 
         {details.map(({ label, paragraphs }, i) => (
           <div key={i} className="flex flex-col gap-2">
-            <span className="font-mono text-xs tracking-[0.2em] uppercase">{label}</span>
+            <span className="font-mono text-xs tracking-[0.2em] uppercase">
+              {label}
+            </span>
             {paragraphs.map((paragraph, i) => (
               <p key={i} className="text-subtle">
                 {paragraph}
@@ -75,6 +78,8 @@ export function TechnicalView({
             ))}
           </div>
         ))}
+
+        {active.note && <p className="text-subtle italic">{active.note}</p>}
       </div>
 
       {active.diagram}

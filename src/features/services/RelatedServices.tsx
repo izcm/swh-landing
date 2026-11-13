@@ -16,7 +16,7 @@ export function RelatedServices({
 
   return (
     <section className="px-6 border-l-2 border-line rounded-sm bg-faint/10 py-6">
-      <h2 className="eyebrow font-semibold">{t.relatedServices}</h2>
+      <h2 className="eyebrow">{t.relatedServices}</h2>
       <p className="mt-3 leading-relaxed text-subtle">{description}</p>
 
       <div className="mt-6 flex flex-col gap-6">

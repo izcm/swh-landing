@@ -31,8 +31,8 @@ export const copy: Localized<{
     eyebrow: "My work",
     heading: "Selected demos",
     intro:
-      "Take a closer look at the services SWH offers and the work behind them. Each demo includes a link to a live app, alongside screenshots, short videos, and technical summaries.",
-    recommend: "I recommend having a look at:",
+      "Take a closer look at the services SWH offers and the work behind them. Each demo includes a link to the live app, alongside screenshots, short videos, and technical summaries.",
+    recommend: "I recommend having a look at",
     web3Before: "For those interested in blockchain related services, visit",
     web3After: ", I publish all of my Web3 work there.",
     projectIndex: "Project index",
@@ -60,7 +60,7 @@ export const copy: Localized<{
     heading: "Utvalgt arbeid",
     intro:
       "Sjekk ut hva SWH tilbyr gjennom disse utvalgte demoene. Hver demo inkluderer link til live applikasjon, skjermbilder og videoer, samt en teknisk oppsummering.",
-    recommend: "Jeg anbefaler å sjekke ut: ",
+    recommend: "Jeg anbefaler å sjekke ut ",
     web3Before:
       "For de som er interesserte i SWHs blockchain relaterte arbeid, besøk",
     web3After: ".",

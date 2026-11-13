@@ -40,8 +40,8 @@ export function Showcase({
       <div
         className={cn(
           "flex flex-col max-w-200 w-full mx-auto px-4 py-2",
-          "max-h-[calc(100dvh-var(--nav-height)-4rem)]",
           "bg-raised/80 border border-line rounded",
+          activeTab === "technicalOverview" && "h-200", // kind of random rn
         )}
       >
         <div role="tablist" className="flex gap-6 mb-4 border-b border-line">

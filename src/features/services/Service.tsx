@@ -30,7 +30,7 @@ function ServiceNav() {
                 "rounded-sm border px-4 py-2 text-[11px] uppercase tracking-[0.2em] transition-colors",
                 isActive
                   ? "border-accent/50 bg-raised/40 text-accent font-medium"
-                  : "border-line text-subtle hover:text-fg",
+                  : "border-line text-subtle hover:text-fg font-normal",
               )
             }
           >
@@ -70,7 +70,7 @@ export function Service() {
         <section>
           <span className="eyebrow">{t.overview}</span>
 
-          <div className="mt-3 flex flex-col gap-3 leading-relaxed text-subtle text-lg font-light">
+          <div className="mt-3 flex flex-col gap-3 leading-relaxed text-subtle text-lg">
             {section.overview.paragraphs.map((paragraph, i) => (
               <p key={i}>{paragraph}</p>
             ))}

@@ -53,7 +53,7 @@ export function TechnicalView({
               "flex tracking-wider items-center h-8.5 w-auto px-3 rounded-xl border text-sm whitespace-nowrap transition-colors",
               isSelected
                 ? "border-accent text-accent font-medium"
-                : "border-transparent text-subtle hover:text-fg cursor-pointer",
+                : "border-transparent text-subtle hover:text-fg cursor-pointer font-normal",
             )}
           >
             {tab.padStart(2, "0")}

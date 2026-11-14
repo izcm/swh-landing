@@ -29,20 +29,14 @@ export default function Hero() {
           "xl:mx-0 xl:basis-2/5 xl:shrink-0 xl:gap-6",
         )}
       >
-        <h1
-          className={cn(
-            "text-6xl font-normal leading-tight text-fg ",
-            "sm:text-6xl",
-          )}
-        >
-          SWH{" "}
-          <span className="font-normal text-accent pretty-text">Studio.</span>
+        <h1 className={cn("text-6xl leading-tight text-fg ", "sm:text-6xl")}>
+          SWH <span className="text-accent pretty-text">Studio.</span>
         </h1>
 
         <div
           className={cn(
             "flex flex-col gap-4",
-            "text-base leading-relaxed font-light",
+            "text-base leading-relaxed",
             "sm:text-lg",
           )}
         >

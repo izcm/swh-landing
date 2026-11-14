@@ -20,9 +20,9 @@ export const automation: Localized<Service> = {
     overview: {
       title: "Let software handle repetitive tasks",
       paragraphs: [
-        "Businesses spend time updating records, transferring information, and sending notifications. These tasks are necessary, but many can be automated.",
-        "Automation allows software to execute predefined tasks based on specific conditions or events. For example, processing incoming emails, updating records, or notifying the right person when something changes.",
-        "SWH develops automated processes tailored to your workflows, reducing manual work and keeping information up to date.",
+        "Automation allows software to execute predefined tasks based on specific conditions, events, or schedules. This can include processing incoming emails, updating records, or notifying relevant people when something changes.",
+        "When integrating with external systems, automation can also be used to schedule regular data updates between them.",
+        "SWH helps identify which processes can be automated, define the necessary rules, and implement the technical solutions.",
       ],
     },
     contact: {
@@ -31,7 +31,7 @@ export const automation: Localized<Service> = {
     },
     relatedServices: {
       description:
-        "Automation works within a single system or across several. When a process depends on data from multiple applications, integrations provide the connections needed.",
+        "Integrations make it possible to automate processes across multiple systems.",
       groups: [{ serviceIds: ["integrations"] }],
     },
   },
@@ -42,14 +42,19 @@ export const automation: Localized<Service> = {
     short: "Reduser manuelt arbeid med bakgrunnsprosesser.",
     overview: {
       title: "Automatiser gjentakende oppgaver",
-      paragraphs: ["Lorem ipsum"],
+      paragraphs: [
+        "Automatisering innebærer at programvare utfører forhåndsdefinerte oppgaver uten at brukeren trenger å starte dem manuelt. Oppgavene kan utløses av bestemte hendelser, oppfylte betingelser eller faste tidspunkter.",
+        "Det kan for eksempel være å behandle innkommende e-poster, oppdatere oppføringer eller sende varsler når noe endrer seg. Automatisering kan også brukes til å hente inn data fra eksterne systemer med jevne mellomrom.",
+        "SWH hjelper med å kartlegge aktuelle prosesser, definere regelsett og stå for programmering og vedlikehold.",
+      ],
     },
     contact: {
       description: "Lorem ipsum",
       cta: "Ta kontakt",
     },
     relatedServices: {
-      description: "Lorem ipsum",
+      description:
+        "Man kan automatisere prosesser på tvers av systemer ved hjelp av integrasjoner.",
       groups: [{ serviceIds: ["integrations"] }],
     },
   },

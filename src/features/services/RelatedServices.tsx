@@ -23,7 +23,7 @@ export function RelatedServices({
         {groups.map((group) => (
           <div key={group.serviceIds.join("-")} className="flex flex-col gap-2">
             {group.label && (
-              <h3 className="font-mono font-normal text-xs tracking-[0.2em] uppercase">
+              <h3 className="font-mono text-xs tracking-[0.2em] uppercase">
                 {group.label}
               </h3>
             )}

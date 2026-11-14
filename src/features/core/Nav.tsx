@@ -30,7 +30,7 @@ export default function Nav() {
           backdrop-blur
         "
       >
-        <Link to="/" className="text-xl font-light tracking-tight">
+        <Link to="/" className="text-xl tracking-tight">
           SWH Studio
         </Link>
 
@@ -42,7 +42,7 @@ export default function Nav() {
               end={tab.to === "/"}
               className={({ isActive }) =>
                 cn(
-                  "rounded px-3 py-1.5 text-sm transition-colors",
+                  "rounded px-3 py-1.5 text-sm font-normal transition-colors",
                   isActive ? "text-fg" : "btn-ghost",
                 )
               }

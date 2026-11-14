@@ -59,7 +59,7 @@ export const integrations: Localized<Service> = {
     ...shared,
     eyebrow: "INT",
     title: "Integrasjoner",
-    short: "Lag koplingene som skaper nye muligheter.",
+    short: "Lag koblingene som skaper nye muligheter.",
     overview: {
       title: "Nye muligheter gjennom forbedret dataflyt.",
       paragraphs: [

@@ -21,7 +21,7 @@ export function Services() {
           <h1>{t.heading}</h1>
         </div>
 
-        <span className="self-end inline-flex items-center gap-2 text-sm font-light text-subtle">
+        <span className="self-end inline-flex items-center gap-2 text-sm text-subtle">
           <Info size={16} strokeWidth={1.5} className="text-accent" />
           {t.combine}
         </span>
@@ -36,7 +36,7 @@ export function Services() {
             <div className="flex flex-col gap-3 sm:w-2/5">
               <span className="eyebrow text-muted text-xs mb-4">{`0${i + 1} / ${section.eyebrow}`}</span>
               <h2 className="mt-4 text-4xl text-fg">{section.title}</h2>
-              <p className="font-light text-subtle">{section.short}</p>
+              <p className="text-subtle">{section.short}</p>
 
               <Link
                 to={`/services/${section.id}`}

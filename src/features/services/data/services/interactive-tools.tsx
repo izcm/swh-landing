@@ -48,7 +48,7 @@ export const interactiveTools: Localized<Service> = {
       title: "Lorem ipsum",
       paragraphs: [
         "Når man bruker flere systemer, må man ofte utføre én handling i ett system og den neste i et annet for å fullføre en oppgave. Med skreddersydd programvare kan vi samle disse stegene i én prosess som brukeren kan starte direkte fra applikasjonen.",
-        "Interaktive verktøy og automatisering bygger på lignende prinsipper. Begge kan utføre forhåndsdefinerte handlinger, men forskjellen ligger i hvordan de settes i gang. Mens automatisering starter prosesser basert på bestemte regler eller tidsplaner, lar interaktive verktøy brukeren selv starte dem fra applikasjonen.",
+        "Interaktive verktøy og automatisering bygger på lignende prinsipper. Begge kan utføre forhåndsdefinerte handlinger, men forskjellen ligger i hvordan de settes i gang. Mens automatisering starter prosesser basert på bestemte regler eller faste tidspunkter, lar interaktive verktøy brukeren selv starte dem fra applikasjonen.",
       ],
     },
     contact: { description: "Lorem ipsum", cta: "Lorem ipsum" },

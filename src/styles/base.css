@@ -1,6 +1,6 @@
 @layer base {
   body {
-    @apply bg-ground flex items-center justify-center;
+    @apply bg-ground flex items-center justify-center font-light;
     margin: 0;
     color: var(--fg);
     font-family: "Inter", sans-serif;
@@ -9,6 +9,21 @@
   h1,
   h2 {
     font-family: "Newsreader", serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  button,
+  input,
+  textarea,
+  select,
+  .btn,
+  svg {
+    @apply font-normal;
   }
 
   .pretty-text {

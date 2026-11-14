@@ -46,7 +46,12 @@ export function RelatedServices({
                       {service.short}
                     </span>
                   </div>
-                  <ArrowRight color="var(--fg)" size={24} strokeWidth={1} />
+                  <ArrowRight
+                    color="var(--fg)"
+                    size={24}
+                    strokeWidth={1}
+                    className="mr-2"
+                  />
                 </Link>
               ))}
           </div>

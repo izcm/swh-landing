@@ -63,13 +63,13 @@ export const integrations: Localized<Service> = {
     overview: {
       title: "Nye muligheter gjennom forbedret dataflyt.",
       paragraphs: [
-        "De fleste bedrifter bruker flere ulike systemer i den daglige driften. Et regnskapssystem, samarbeidsverktøy og interne regneark kan alle inneholde informasjon som er nyttig på tvers av virksomheten.",
-        "Når data ikke flyter mellom systemer, blir informasjon liggende isolert i det vi kaller informasjonssiloer. Ved å koble sammen systemene kan data utveksles, bearbeides og kombineres på nye måter, slik at informasjonen blir enklere å hente ut og bruke.",
+        "De fleste bedrifter bruker flere ulike systemer for daglig drift. Når data ikke flyter mellom disse systemene, blir informasjon liggende isolert i det vi kaller informasjonssiloer. Ved å koble sammen systemene kan data utveksles, bearbeides og kombineres på ulike måter.",
+        "Integrasjoner er ofte et naturlig første steg for bedrifter som ønsker å ta i bruk skreddersydd programvare for å forbedre sine arbeidsprosesser. De legger grunnlaget for flere av tjenestene vi tilbyr, blant annet visualisering, automatisering og interaktive verktøy.",
         "SWH utvikler og vedlikeholder slike koblinger.",
       ],
     },
     contact: {
-      description: "Trenger du en ny kopling?",
+      description: "Trenger du en ny kobling?",
       cta: "Ta kontakt",
     },
     relatedServices: {

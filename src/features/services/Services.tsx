@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { Info } from "lucide-react";
 import { Card } from "@/components/Card";
 import { cn } from "@/lib/cn";
 import { useLanguage } from "@/lib/context/language";
@@ -13,9 +14,17 @@ export function Services() {
 
   return (
     <div className="tab-container">
-      <header>
-        <span className="eyebrow">{t.eyebrow}</span>
-        <h1>{t.heading}</h1>
+      <header className="flex justify-between w-full">
+        <div>
+          {" "}
+          <span className="eyebrow">{t.eyebrow}</span>
+          <h1>{t.heading}</h1>
+        </div>
+
+        <span className="self-end inline-flex items-center gap-2 text-sm font-light text-subtle">
+          <Info size={16} strokeWidth={1.5} className="text-accent" />
+          {t.combine}
+        </span>
       </header>
 
       <div className="grid gap-6 lg:grid-cols-2">

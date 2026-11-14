@@ -4,10 +4,12 @@ export function ArrowRight({
   color,
   size,
   strokeWidth,
+  className,
 }: {
   color: string;
   size: number;
   strokeWidth: number;
+  className?: string;
 }) {
   const shaft = (() => {
     const y = size * 0.5;
@@ -35,6 +37,7 @@ export function ArrowRight({
       stroke={color}
       strokeWidth={strokeWidth}
       aria-hidden="true"
+      className={className}
     >
       <path d={`M 0 ${shaft.y} H ${shaft.tipX}`} />
       <path

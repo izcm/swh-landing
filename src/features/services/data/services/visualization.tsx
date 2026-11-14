@@ -23,9 +23,8 @@ export const visualization: Localized<Service> = {
     overview: {
       title: "Making sense of your data",
       paragraphs: [
-        "Businesses collect large amounts of data through their daily operations, but that information isn't always easy to understand or navigate. Spreadsheets and long lists can make it difficult to see the bigger picture.",
+        "Businesses collect large amounts of data through their daily operations, but that information isn't always easy to understand or navigate.",
         "Interactive dashboards bring information together in a visual format, using charts, maps, and other elements to highlight patterns, trends, and important details.",
-        // "SWH develops visualizations tailored to your data and workflows, making it easier to find relevant information and make informed decisions.",
       ],
     },
     contact: {
@@ -34,7 +33,8 @@ export const visualization: Localized<Service> = {
     },
     relatedServices: {
       description:
-        "Interactive tools are a natural extension of data visualization. They allow users to filter and locate specific records, then perform actions directly from the dashboard without switching between applications.",
+        "Interactive Tools complement Visualization by allowing users to perform actions directly from the information presented.",
+      // "Interactive tools are a natural extension of data visualization. They allow users to filter and locate specific records, then perform actions directly from the dashboard without switching between applications.",
       groups: [
         {
           serviceIds: ["interactive-tools"],
@@ -49,7 +49,10 @@ export const visualization: Localized<Service> = {
     short: "Øk innsikt med interaktive dashboard.",
     overview: {
       title: "",
-      paragraphs: ["Lorem ipsum."],
+      paragraphs: [
+        "Bedrifter genererer store mengder data gjennom den daglige driften. Når denne informasjonen samles og visualiseres, blir det enklere å oppdage mønstre, se sammenhenger og ta beslutninger basert på faktiske tall.",
+        "En skreddersydd webapplikasjon kan hente data fra eksisterende systemer og presentere dem gjennom interaktive grafer, kart og oversikter tilpasset bedriftens arbeidsprosesser.",
+      ],
     },
     contact: {
       description: "Lorem ipsum",
@@ -57,7 +60,7 @@ export const visualization: Localized<Service> = {
     },
     relatedServices: {
       description:
-        "Interaktive verktøy er en naturlig utvidelse av datavisualisering.",
+        "Interaktive verktøy utfyller visualisering ved å knytte konkrete handlinger til informasjonen som vises.",
       groups: [
         {
           serviceIds: ["interactive-tools"],

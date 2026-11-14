@@ -20,8 +20,9 @@ export const interactiveTools: Localized<Service> = {
     overview: {
       title: "Lorem ipsum dolor sit amet",
       paragraphs: [
-        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
+        "Beyond visualizing data, a web application can provide interactive tools that allow users to act on the information they see.",
+        "With custom software, we can define how these actions are carried out. Instead of moving between different systems to complete a task, we can bring the necessary steps together into a single workflow, triggered directly from the application.",
+        "Interactive tools are conceptually similar to automation, but differ in how actions are initiated. While automation executes predefined workflows based on schedules or conditions, interactive tools let users initiate actions directly from the application.",
       ],
     },
     contact: {
@@ -30,7 +31,7 @@ export const interactiveTools: Localized<Service> = {
     },
     relatedServices: {
       description:
-        "Interactive Tools and Visualization often work best together. Combining actions with charts, filters, and detailed data views allows users to understand the information they're working with before making changes.",
+        "Interactive Tools and Visualization work particularly well together, allowing users to navigate data and perform actions in one place.",
       groups: [
         {
           serviceIds: ["visualization"],
@@ -45,11 +46,15 @@ export const interactiveTools: Localized<Service> = {
     short: "Gjør oppgaver med mange steg til én enkel handling.",
     overview: {
       title: "Lorem ipsum",
-      paragraphs: ["Lorem ipsum", "Lorem ipsum"],
+      paragraphs: [
+        "Når man bruker flere systemer, må man ofte utføre én handling i ett system og den neste i et annet for å fullføre en oppgave. Med skreddersydd programvare kan vi samle disse stegene i én prosess som brukeren kan starte direkte fra applikasjonen.",
+        "Interaktive verktøy og automatisering bygger på lignende prinsipper. Begge kan utføre forhåndsdefinerte handlinger, men forskjellen ligger i hvordan de settes i gang. Mens automatisering starter prosesser basert på bestemte regler eller tidsplaner, lar interaktive verktøy brukeren selv starte dem fra applikasjonen.",
+      ],
     },
     contact: { description: "Lorem ipsum", cta: "Lorem ipsum" },
     relatedServices: {
-      description: "Lorem ipsum",
+      description:
+        "Interaktive verktøy og visualisering fungerer spesielt godt sammen, ettersom brukeren kan utforske data og utføre handlinger på ett og samme sted.",
       groups: [{ serviceIds: ["visualization"] }],
     },
   },
